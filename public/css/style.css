@@ -1,0 +1,13 @@
+@font-face {
+    font-family: Koodak;
+    src: url('../font/koodak.ttf');
+}
+body{
+    font-family:Koodak;
+}
+#mainHeader{
+    /*font-family: Koodak;*/
+    border: 1px solid #0f0f0f;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 2px #585858;
+}

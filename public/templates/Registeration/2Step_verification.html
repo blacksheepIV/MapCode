@@ -1,0 +1,16 @@
+<div ng-controller="registerCtrl"  ng-init="initvars()" ng-cloak>
+    <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
+    <md-content layout="row" layout-align="center center" ng-cloak>
+        <div layout="column" layout-align="center center" flex="100">
+             <p>یک پیام متن حاوی کد فعالسازی شما به شماره {{user. mobile_phone}} ارسال شد</p>
+            <h5 ng-show="!reSend">درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
+                <md-input-container class="md-block" flex="70">
+                   <input type="number" flex="70" placeholder="کد شش رقمی را وارد کنید" name="verificationCode" ng-model="v_code"/>
+                </md-input-container>
+            <div layout="row" layout-xs="column" md-theme="docs-dark">
+                <md-button class="md-raised md-warn md-hue-2" >تایید</md-button>
+                <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend">ارسال مجدد</md-button>
+            </div>
+            </div>
+        </md-content>
+    </div>
