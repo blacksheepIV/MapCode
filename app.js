@@ -1,8 +1,12 @@
 var express = require('express');
+var helmet = require('helmet');
 
 var originRefererChecker = require('./middlewares/origin-referer-checker');
 
+
 var app = express();
+
+app.use(helmet());
 
 app.use(originRefererChecker);
 
