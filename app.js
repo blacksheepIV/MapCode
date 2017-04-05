@@ -12,7 +12,10 @@ var app = express();
 
 app.use(helmet());
 
+app.use('/api', require('./api'));
+
 app.use(express.static(path.join(__dirname, 'public/')));
+
 
 var mainHtml = fs.readFileSync(path.join(__dirname + '/public/main.html'), 'utf8');
 app.get('/*', function (req, res) {
