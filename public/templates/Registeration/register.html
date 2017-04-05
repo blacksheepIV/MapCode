@@ -1,7 +1,7 @@
 <div ng-controller="registerCtrl" ng-init="initvars()" ng-cloak>
      <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
         <md-content layout="row">
-           <form name="registrationForm" ng-submit="submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;">
+           <form name="registrationForm" ng-submit="submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
                <!-- first row -->
                <div layout="row" layout-xs="row">
                <label flex="30"> من یک شخص :</label>
@@ -14,18 +14,27 @@
                <!-- 2nd row -->
                <div layout="row" layout-xs="column">
                 <md-input-container flex="25" flex-xs="70" class="md-block">
-                    <label>نام کامل:</label>
-                    <input type="text" name="fullName" ng-model="user.name" required ng-disabled="user.type!= 'naturalPerson'"/>
+                    <label for="fullName">نام کامل:</label>
+                    <label ng-show="user.type == 'legalPerson'">نام شرکت:</label>
+                    <input type="text" name="fullName" ng-model="user.name" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="40"/>
+                    <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                        <p ng-message="required">وارد کردن نام کاربری الزامی است.</p>
+                        <p ng-message="maxlength">نام کاربری طولانی تر از حد مجاز است.</p>
+                    </div>
                 </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>ایمیل:</label>
-                       <input type="text" name="mail" ng-model="user.email" required/>
+                       <input type="email" name="mail" ng-model="user.email" ng-pattern="/^.+@.+\..+$/" required/>
                    </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>نام کاربری:</label>
-                       <input type="text" name="username" ng-model="user.username" required />
+                       <input type="text" name="username" ng-model="user.username" ng-maxlength="15" required />
+                       <div ng-messages="registrationForm.username.$error" ng-if="registrationForm.username.$touched">
+                           <p ng-message="required">وارد کردن نام کاربری الزامی است.</p>
+                           <p ng-message="maxlength">نام کاربری طولانی تر از حد مجاز است.</p>
+                       </div>
                    </md-input-container>
                    </div>
                <!-- 2nd row -->
@@ -43,14 +52,21 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>کدملی:</label>
-                       <input type="text" name="nationalcode" ng-model="user.melli_code" required ng-disabled="user.type!= 'naturalPerson'"/>
+                       <input type="text" name="nationalcode" ng-model="user.melli_code" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="10" ng-minlength="10" md-maxlength="10"/>
+                       <!--input validation -->
+                       <div ng-messages="registrationForm.nationalCode.$error">
+                           <p ng-message="required">وارد کردن کدملی الزامی است.</p>
+                           <div ng-message="maxlength">کدملی طولانی تر از 10 رقم است.</div>
+                           <div ng-message="minlength">کدملی کم تر از 10 رقم است.</div>
+                       </div>
+                       <!--input validation -->
                    </md-input-container>
                </div>
                <!-- 3rd row -->
                <!-- 4th row -->
                <div layout="row" layout-xs="column">
                    <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>تاریخ تولد/ثبت:</label>
+                       <label>تاریخ تولد/ثبت:</label> <!-- date Picker -->
                        <input type="text" name="birthdate" ng-model="user.date" required />
                    </md-input-container>
                    <div flex="5"></div>
@@ -60,15 +76,15 @@
                    </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>نام شرکت:</label>
-                       <input type="text" name="corpName" ng-model="user.Corpname" required ng-disabled="user.type!= 'legalPerson'"/> <!-- ?phone number instead -->
+                       <label>تلفن ثابت:</label>
+                       <input type="tel" name="corpName" ng-model="user.Corpname" required ng-disabled="user.type!= 'legalPerson'"/> <!-- ?phone number instead -->
                    </md-input-container>
                </div>
                <!-- 4th row -->
                <!-- 5th row -->
                <div layout="row" layout-xs="column">
                    <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>کدثبت:</label>
+                       <label>کدثبت:</label> <!-- what it looks like -->
                        <input type="text" name="code" ng-model="user.code" required ng-disabled="user.type!= 'legalPerson'"/>
                    </md-input-container>
                    <div flex="5"></div>
@@ -83,10 +99,10 @@
                </div>
                <!-- 5th row -->
                <div md-theme="docs-dark"  layout="row" layout-xs="row" layout-align="center center">
-                   <md-button class="md-raised md-accent md-hue-2" ng-click="levelPage(2,cb)">
+                   <md-button class="md-raised md-accent md-hue-2" ng-click="levelPage(2)">
                        تایید و ادامه
                    </md-button>
-                   <md-button class="md-raised md-warn md-hue-2" ng-click="levelPage(0,cb)">
+                   <md-button class="md-raised md-warn md-hue-2" ng-click="levelPage(0)">
                        انصراف
                    </md-button>
                </div>

@@ -5,8 +5,8 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
     $scope.initvars = function (){
          $scope.reSend = false;
         $scope.is2ndPage = false;
-        $scope.levelPage(1,cb);
-        $scope.user = {
+        $scope.levelPage(1);
+        $rootScope.user = {
             name: '',
             melli_code: 0,
             email: '',
@@ -38,23 +38,19 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
 
     }//end of function cb
     //******************************************************************************************************************
-$scope.levelPage = function(level,cb){
+$scope.levelPage = function(level){
      switch (level){
          case 0:
              $location.path('/');
-             cb();
              break;
          case 1:
              $rootScope.pageTitle = "ثبت نام";
-             cb();
              break;
          case 2:
              $rootScope.pageTitle = "تایید ثبت نام"
              regService.setUserInfo($scope.user);
-             console.log("hello");
-             $scope.is2ndPage = true;
-             cb();
-             console.log("hello2");
+             /*$scope.is2ndPage = true;
+             cb(); */
              $location.path('/verify');
              break;
      }
