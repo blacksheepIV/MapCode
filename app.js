@@ -7,7 +7,6 @@ var mustache = require('mustache');
 
 
 require('dotenv').config({path: path.join(__dirname, '/.env')});
-console.log(process.env.API_HREF);
 
 var app = express();
 
