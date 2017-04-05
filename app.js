@@ -6,8 +6,6 @@ var helmet = require('helmet');
 var mustache = require('mustache');
 
 
-require('dotenv').config({path: path.join(__dirname, '/.env')});
-
 var app = express();
 
 app.use(helmet());
