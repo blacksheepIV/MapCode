@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+var path = require('path');
+
 /**
  * Module dependencies.
  */
-require('dotenv').config({path: '../.env'});
+require('dotenv').config({path: path.join(__dirname, '/../.env')});
 
 var app = require('../app');
 var debug = require('debug')('src:server');
@@ -14,7 +16,6 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
 
 /**
  * Create HTTP server.
