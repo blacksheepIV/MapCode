@@ -5,12 +5,19 @@
                        <div layout="row">
                             <md-input-container class="md-icon-float md-block">
                                <!-- <span style="width:25px;height: 25px; " flex="40" class="fa fa-user-circle-o fa-lg"></span> -->
-                               <input type="text" required name="username" placeholder="نام کاربری:" ng-model="user.userName">
+                               <input type="text" required name="username" placeholder="نام کاربری:" ng-model="user.userName" ng-maxlength="15">
+                                <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
+                                    <p ng-message="required">نام کاربری را وارد کنید!</p>
+                                    <div ng-message="maxlength">نام کاربری طولانی!</div>
+                                </div>
                              </md-input-container>
                        </div>
                        <md-input-container class="md-icon-float md-block">
                            <!-- <span class="fa fa-lock fa-lg"></span> -->
                            <input type="text" required name="password" placeholder="رمز عبور :" ng-model="user.pass">
+                           <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+                               <p ng-message="required">رمز عبور را وارد کنید!</p>
+                           </div>
                         </md-input-container>
 
                        <div layout-gt-xs="row" layout-xs="column" md-theme="docs-dark">

@@ -67,4 +67,21 @@ $scope.levelPage = function(level){
         }
     }//end of function on time out
     var mytimeout = $timeout($scope.onTimeout,1000);
+    //******************************************************Persian_DatePicker config*********************************************************
+    $(document).ready(function () {
+        $("#Bdate").pDatepicker(
+            {
+                altField: '#dateALT',
+                altFormat: 'unix',
+                timePicker: {
+                    enabled: true,
+                    showSeconds: true,
+                    showMeridian: true,
+                    scrollEnabled: false,
+
+                },
+
+                autoClose: true
+    });
+    });
 }//end of registerCtrl

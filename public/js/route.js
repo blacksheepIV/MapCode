@@ -4,8 +4,8 @@
 mapCodeApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider
         .when("/", {
-            templateUrl: "./templates/login.html"
-            // templateUrl: "./templates/Panel/home.html"
+            //templateUrl: "./templates/login.html"
+             templateUrl: "./templates/Panel/home.html"
         })
         .when("/registration", {
             templateUrl: "./templates/Registeration/register.html"

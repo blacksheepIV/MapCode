@@ -11,3 +11,6 @@ body{
     border-radius: 4px;
     box-shadow: 0 2px 6px 2px #585858;
 }
+#dateALT{
+    display:none;
+}

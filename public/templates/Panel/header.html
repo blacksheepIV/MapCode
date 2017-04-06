@@ -1,12 +1,9 @@
 <md-toolbar md-theme="docs-dark" class="md-tall md-primary md-hue-2" dir="rtl" id="mainHeader" ng-controller="headerCtrl">
     <div class="md-toolbar-tools">
-        <br/>
-        <nit-advanced-searchbox
-                ng-model="searchParams"
-                parameters="availableSearchParams"
-                placeholder="جستجو کن..."
-        templateUrl="./templates/Panel/angular-advanced-searchbox.html">
-        </nit-advanced-searchbox>
+        <div layout="row">
+            <md-button class="md-raised md-accent md-hue-2">ورود</md-button>
+            <md-button class="md-raised md-warn md-hue-2">ثبت نام</md-button>
+        </div>
        <!-- <h2 class="md-display-4">صفحه اصلی</h2> -->
     </div>
 </md-toolbar>
