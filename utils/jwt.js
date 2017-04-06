@@ -2,8 +2,7 @@ var path = require('path');
 
 var jwt = require('express-jwt');
 
-var redis = require('redis'),
-    redis_client = redis.createClient();
+var redis = require('./redis');
 
 
 module.exports.JWTCheck = jwt({
@@ -15,7 +14,7 @@ module.exports.JWTCheck = jwt({
         return null;
     },
     isRevoked: function (req, payload, done) {
-        redis_client.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':wtoken',
+        redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':wtoken',
             function (err, reply) {
                 if (err) {
                     done(err);
@@ -27,7 +26,7 @@ module.exports.JWTCheck = jwt({
                         return;
                     }
                 }
-                redis_client.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':mtoken',
+                redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':mtoken',
                     function (err, reply) {
                         if (err) {
                             done(err);
