@@ -3,7 +3,12 @@ var path = require('path');
 
 var router = require('express').Router();
 var jwt = require('../utils/jwt');
+var bodyParser = require('body-parser');
 
+
+router.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 /*
  Returns absolute path of all files in the directory
