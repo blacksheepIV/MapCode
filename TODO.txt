@@ -1,2 +1,5 @@
 - Rate limiting
     - Specially for SMS API
+
+- Redis security
+- Redis save to disk
