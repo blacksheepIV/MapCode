@@ -4,11 +4,16 @@ var fs = require('fs');
 var express = require('express');
 var helmet = require('helmet');
 var mustache = require('mustache');
+var bodyParser = require('body-parser');
 
 
 var app = express();
 
 app.use(helmet());
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use('/api', require('./api'));
 
