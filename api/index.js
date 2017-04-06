@@ -10,29 +10,35 @@ var jwt = require('../utils/jwt');
 
  dir : string : relative path of directory
  */
-function getDirJsFiles(dir) {
-    // List of all js files in the directory
-    var jsFiles = [];
+function getDirJsFiles(dir, callback) {
     // Directory's absolute path
     var dirAbPath = path.join(__dirname, dir);
-    fs.readdirSync(dirAbPath)
-        .forEach(function (file) {
-            if (file.endsWith('.js')) {
-                jsFiles.push(path.join(dirAbPath, file));
-            }
-        });
-
-    return jsFiles;
+    fs.readdir(dirAbPath, function (err, files) {
+        if (!err) {
+            // List of all js files in the directory
+            var jsFiles = [];
+            files.forEach(function (file) {
+                if (file.endsWith('.js')) {
+                    jsFiles.push(path.join(dirAbPath, file));
+                }
+            });
+            callback(jsFiles);
+        } else {
+            console.error("API Loader: Directory '%s' not exists.", dirAbPath);
+        }
+    });
 }
 
-getDirJsFiles('/public/').forEach(function (public_api) {
-    router.use(require(public_api));
+getDirJsFiles('/public/', function(jsFiles) {
+    jsFiles.forEach(function (public_api) {
+        router.use(require(public_api));
+    });
 });
 
-getDirJsFiles('/private/').forEach(function (private_api) {
-    router.use(jwt.JWTCheck,
-        require(private_api),
-        jwt.JWTErrorHandler);
+getDirJsFiles('/private/', function(jsFiles) {
+    jsFiles.forEach(function (private_api) {
+        router.use(require(private_api));
+    });
 });
 
 module.exports = router;
