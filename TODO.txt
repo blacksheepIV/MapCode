@@ -5,3 +5,5 @@
 - Redis save to disk
 
 - Header check X-Requested-With == XMLHttpRequest
+
+- SMS service API
