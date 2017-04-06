@@ -7,3 +7,5 @@
 - Header check X-Requested-With == XMLHttpRequest
 
 - SMS service API
+
+- Proper error logging
