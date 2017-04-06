@@ -34,13 +34,13 @@ function getDirJsFiles(dir, callback) {
     });
 }
 
-getDirJsFiles('/public/', function(jsFiles) {
+getDirJsFiles('/public/', function (jsFiles) {
     jsFiles.forEach(function (public_api) {
         router.use(require(public_api));
     });
 });
 
-getDirJsFiles('/private/', function(jsFiles) {
+getDirJsFiles('/private/', function (jsFiles) {
     jsFiles.forEach(function (private_api) {
         router.use(require(private_api));
     });
