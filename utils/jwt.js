@@ -4,7 +4,6 @@ var jwt = require('express-jwt');
 
 var redis = require('./redis');
 
-
 module.exports.JWTCheck = jwt({
     secret: process.env.JWT_SECRET_CODE,
     getToken: function fromHeaderOrQuerystring(req) {
