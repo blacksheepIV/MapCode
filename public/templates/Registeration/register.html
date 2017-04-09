@@ -25,7 +25,7 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>ایمیل:</label>
-                       <input type="email" name="mail" ng-model="user.email" ng-pattern="/^.+@.+\..+$/" required/>
+                       <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern" required/>
                    </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -53,7 +53,7 @@
                        <label>تکرار کلمه عبور:</label>
                        <input type="text" name="passRepeat" ng-model="user.passRepeat" ng-minlength="8" required/>
                        <div ng-messages="registrationForm.passRepeat.$error" ng-if="registrationForm.passRepeat.$touched">
-                           <p ng-message="required">وارد کردن تکرار رمز فراموش شده است!</p>
+                           <p ng-message="required"> تکرار رمز فراموش شده است!</p>
                        </div>
                    </md-input-container>
                    <div flex="5"></div>
@@ -94,8 +94,8 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>تلفن ثابت:</label>
-                       <input type="tel" name="corpName" ng-model="user.Corpname" required ng-disabled="user.type!= 'legalPerson'" ng-minlength="11" ng-maxlength="11"/> <!-- ?phone number instead -->
-                       <div ng-messages="registrationForm.cellNumber.$error" ng-if="registrationForm.cellNumber.$touched">
+                       <input type="tel" name="phoneNum" ng-model="user.phone" required ng-disabled="user.type!= 'legalPerson'" ng-minlength="11" ng-maxlength="11"/> <!-- ?phone number instead -->
+                       <div ng-messages="registrationForm.phoneNum.$error" ng-if="registrationForm.phoneNum.$touched">
                            <p ng-message="required">وارد کردن شماره تلفن الزامی است.</p>
                            <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
                            <div ng-message="minlength">شماره تلفن نامعتبر!</div>

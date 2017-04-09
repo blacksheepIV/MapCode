@@ -4,7 +4,9 @@
 var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
     $scope.initvars = function (){
          $scope.reSend = false;
-        $scope.is2ndPage = false;
+        $scope.resubmits = 0; //counts the times user asked for resubmission
+       // $scope.is2ndPage = false;
+        $scope.emailPattern = /^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$/;
         $scope.levelPage(1);
         $rootScope.user = {
             name: '',
@@ -16,7 +18,6 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
             username: '',
             password: '',
             passRepeat:'',
-            Corpname:'', //no corp name
             address: '',
             description: '',
             isRecommended: false,
@@ -48,9 +49,12 @@ $scope.levelPage = function(level){
              break;
          case 2:
              $rootScope.pageTitle = "تایید ثبت نام"
-             regService.setUserInfo($scope.user);
+             if($rootScope.user.password!= $rootScope.user.passRepeat)
+                 console.log("پسوردها مشابه نیستند!!!");
+             regService.setUserInfo($rootScope.user);
              /*$scope.is2ndPage = true;
              cb(); */
+             console.log($rootScope.user);
              $location.path('/verify');
              break;
      }
@@ -67,8 +71,13 @@ $scope.levelPage = function(level){
         }
     }//end of function on time out
     var mytimeout = $timeout($scope.onTimeout,1000);
+    //********************************************************************************************************************
+    $scope.resendCode=function(){
+        //here u gotta send a request to server to ask for code again
+        $sope.resubmits++;//we addup the counter ;when it reaches to it's limit u gotta cancel the users registration
+    }
     //******************************************************Persian_DatePicker config*********************************************************
-    $(document).ready(function () {
+   /* $(document).ready(function () {
         $("#Bdate").pDatepicker(
             {
                 altField: '#dateALT',
@@ -83,5 +92,5 @@ $scope.levelPage = function(level){
 
                 autoClose: true
     });
-    });
+    }); */
 }//end of registerCtrl

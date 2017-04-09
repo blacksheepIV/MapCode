@@ -1,8 +1,12 @@
-<md-toolbar md-theme="docs-dark" class="md-tall md-primary md-hue-2" dir="rtl" id="mainHeader" ng-controller="headerCtrl">
+<md-toolbar md-theme="docs-dark" class="md-tall md-primary md-hue-2" dir="rtl" id="mainHeader">
     <div class="md-toolbar-tools">
-        <div layout="row">
-            <md-button class="md-raised md-accent md-hue-2">ورود</md-button>
-            <md-button class="md-raised md-warn md-hue-2">ثبت نام</md-button>
+        <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" >
+           <span  class="fa fa-ellipsis-v fa-lg"></span>
+           <md-tooltip md-direction="bottom left"> منو</md-tooltip>
+        </md-button>
+        <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="!isLoggedIn">
+            <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
+            <md-button class="md-raised md-warn md-hue-2" ng-click="register()">ثبت نام</md-button>
         </div>
        <!-- <h2 class="md-display-4">صفحه اصلی</h2> -->
     </div>

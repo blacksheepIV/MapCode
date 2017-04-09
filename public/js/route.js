@@ -10,11 +10,17 @@ mapCodeApp.config(function ($routeProvider, $locationProvider) {
         .when("/registration", {
             templateUrl: "./templates/Registeration/register.html"
         })
+        .when("/login",{
+            templateUrl:"./templates/login.html"
+        })
         .when('/verify', {
             templateUrl: "./templates/Registeration/2step_verification.html"
         })
+        .when('/panel',{
+            templateUrl:"./templates/Panel/userPanel.html"
+        })
         .otherwise({
-            template: "<h2>oh oh!Nothing went Right!!!</h2>"
+           template: "<h2>oh oh!Nothing went Right!!!</h2>"
         });
 
     // use the HTML5 History API
