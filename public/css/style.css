@@ -99,3 +99,16 @@ md-sidenav.md-closed.md-locked-open-add-active {
     margin: 20px;
     background-color: #FFF2E0; }
 
+/* ################################################################################## */
+.hint {
+    /* Position the hint */
+    position: absolute;
+    left: 2px;
+    right: auto;
+    bottom: 7px;
+    /* Copy styles from ng-messages */
+    font-size: 12px;
+    line-height: 8px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    /* Set our own color */
+    color: darkred; }

@@ -1,31 +1,32 @@
 <div>
     <!-- <div ng-include="'./templates/Panel/header.html'"></div> -->
-    <md-content class="md-padding" md-theme="docs-dark">
-        <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-            <md-nav-item md-nav-click="goto('page1')" name="page1">
-              <span class="fa fa-pencil-square-o"></span>  ویرایش اطلاعات
-            </md-nav-item>
-            <md-nav-item md-nav-click="goto('page2')" name="page2">
-            <span class="fa fa-key"></span>    تغییر رمز عبور
-            </md-nav-item>
-            <md-nav-item md-nav-click="goto('page3')" name="page3">
-      <span class="fa fa-map-marker"></span>          نقاط من
-            </md-nav-item>
-            <md-nav-item md-nav-click="goto('page3')" name="page3">
-              <span class="fa fa-users"></span> لیست دوستان و گروه ها
-            </md-nav-item>
-            <md-nav-item md-nav-click="goto('page3')" name="page3">
-          <span class="fa fa-envelope-o"></span>    پیغام های شخصی
-            </md-nav-item>
-            <!-- these require actual routing with ui-router or ng-route, so they
-            won't work in the demo
-            <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
-            <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
-            You can also add options for the <code>ui-sref-opts</code> attribute.
-            <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
-              Page Six
-            </md-nav-item>
-            -->
-        </md-nav-bar>
+    <md-content class="md-padding">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="ویرایش اطلاعات">
+                <md-content class="md-padding">
+                    <div ng-include="'./templates/Panel/EditInfo.html'"></div>
+                </md-content>
+            </md-tab>
+            <md-tab label="تغییر رمز عبور">
+                <md-content class="md-padding">
+                    <div ng-include="'./templates/Panel/passChange.html'"></div>
+                </md-content>
+            </md-tab>
+            <md-tab label=" نقاط من">
+                <md-content class="md-padding">
+                   <p>My Points</p>
+                </md-content>
+            </md-tab>
+            <md-tab label="لیست دوستان و گروه ها">
+                <md-content class="md-padding">
+                    <p>My Friends</p>
+                </md-content>
+            </md-tab>
+            <md-tab label="پیغام های شخصی">
+                <md-content class="md-padding">
+                   <p>My Messages</p>
+                </md-content>
+            </md-tab>
+        </md-tabs>
     </md-content>
 </div>
