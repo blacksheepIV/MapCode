@@ -1,0 +1,98 @@
+<div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
+    <md-content layout="row">
+        <form name="userForm" ng-submit="submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
+            <!-- first row -->
+            <div layout="row" layout-xs="column">
+           <md-input-container flex="25" flex-xs="70" class="md-block">
+               <label>نوع کاربر</label>
+               <input type="text" name="userType" ng-model="user.type" ng-disabled="!investigate" value="hello"/>
+               <div class="hint" ng-if="!investigate">وضعیت شما هنوز تایید نشده است،لطفا در اسرع وقت به تکمیل اطلاعات خود بپردازید.</div>
+           </md-input-container>
+                <div flex="5"></div>
+            <md-input-container flex="25" flex-xs="70" class="md-block">
+                <label for="fullName" ng-show="user.type != 'legalPerson'">نام کامل:</label>
+                <input type="text" id="fullName" name="fullName" ng-model="user.name" ng-disabled="false" ng-maxlength="40" /> <!--REGEX -->
+            </md-input-container>
+                <div flex="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>نام کاربری:</label>
+                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15"  />
+                </md-input-container>
+                </div>
+            <!-- first row -->
+            <!-- 2nd row -->
+            <div layout="row" layout-xs="column">
+                <div flex="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>ایمیل:</label>
+                    <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern"/>
+                </md-input-container>
+                <div flex="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>تاریخ تولد:</label>
+                    <input type="text" name="birthdate"  />
+                    <!--<input id="dateALT" ng.model="user.date"/> -->
+                </md-input-container>
+                <div flex="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>کدملی:</label>
+                    <input type="text" name="nationalcode" ng-model="user.melli_code"  ng-maxlength="10" ng-minlength="10" md-maxlength="10"/>
+                    <!--input validation -->
+                </md-input-container>
+            </div>
+            <!-- 2nd row -->
+            <!-- 3rd row -->
+            <div layout="row" layout-xs="column">
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>شماره موبایل:</label>
+                    <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11" ng-maxlength="11" />
+                </md-input-container>
+                <div flex="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>تلفن ثابت:</label>
+                    <input type="tel" name="phoneNum" ng-model="user.phone"  ng-minlength="11" ng-maxlength="11"/> <!-- ?phone number instead -->
+                </md-input-container>
+                <div flex="5"></div>
+               <md-input-container flex="25" flex-xs="70" class="md-block">
+                  <label>آدرس:</label>
+                   <input type="text" name="address" ng-model="user.address"/>
+               </md-input-container>
+            </div>
+            <!-- 3rd row -->
+            <!-- 4th row -->
+            <div layout="row" layout-xs="column">
+                <div flex="25" flex-xs="70">
+                    <div
+                        class="btn btn-primary btn-upload"
+                        upload-button
+                        url="/upload"
+                        on-success="onSuccess(response)"
+                    >آواتار:</div>
+                </div> <!-- gotta check the file being uploaded for corect type -->
+                <div flex="5"></div>
+                <md-input-container flex="20" flex-xs="70" class="md-block">
+                    <label>کدثبت:</label>
+                    <input type="text" name="code" ng-model="user.code" />
+                </md-input-container>
+                <div flex="5"></div>
+                <div flex="25" flex-xs="70">
+                    <div
+                            class="btn btn-primary btn-upload"
+                            upload-button
+                            url="/upload"
+                            on-success="onSuccess(response)"
+                    >مدارک:</div>
+                </div>
+            </div>
+            <!-- 4th row -->
+            <div md-theme="docs-dark"  layout="row" layout-xs="row" layout-align="center center">
+                <md-button class="md-raised md-accent md-hue-2" >
+                   اعمال تغییرات
+                </md-button>
+                <md-button class="md-raised md-warn md-hue-2" >
+                    انصراف
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

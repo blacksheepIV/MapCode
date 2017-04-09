@@ -1,0 +1,23 @@
+<div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
+   <md-content layout="row">
+       <form name="userForm" ng-submit="submit()" dir="rtl"  style="padding:15px 10px 0 0;margin:auto;" layout-align="center center"  novalidate>
+           <div layout="column" layout-xs="column" flex="100">
+             <md-input-container flex="25" flex-xs="70">
+                 <label>رمز عبور فعلی:</label>
+                 <input type="text" name="passwd" ng-model="user.password"/>
+             </md-input-container>
+               <md-input-container flex="25" flex-xs="70">
+                   <label>رمز عبور جدید:</label>
+                   <input type="text" name="newPasswd"/>
+               </md-input-container>
+               <md-input-container flex="25" flex-xs="70">
+                   <label>تایید رمز عبور جدید:</label>
+                   <input type="text" name="ConfirmNewPasswd"/>
+               </md-input-container>
+               <div layout="row" layout-xs="column" md-theme="docs-dark" layout-align="center center">
+                   <md-button flex class="md-raised md-warn md-hue-2">تغییر رمز</md-button>
+               </div>
+           </div>
+       </form>
+   </md-content>
+</div>
