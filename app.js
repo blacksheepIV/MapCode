@@ -5,6 +5,11 @@ var express = require('express');
 var helmet = require('helmet');
 var mustache = require('mustache');
 
+process.on('SIGINT', function() {
+    // Cleanly quit the redis connection
+    require('utils/redis').quit();
+});
+
 var app = express();
 
 app.use(helmet());
