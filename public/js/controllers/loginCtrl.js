@@ -16,6 +16,7 @@ var loginCtrl = function ($scope,$location,$mdDialog) {
             };
             //TODO : Gotta send incomer to a service which will fetch the user
             console.log(incomer);
+            //set $rootScope.guest equal to false if login was a success
         }//end of login
     };
     $scope.register = function(){

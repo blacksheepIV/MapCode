@@ -1,6 +1,6 @@
 <div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
     <md-content layout="row">
-        <form name="userForm" ng-submit="submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
+        <form name="userForm" class="form" ng-submit="submit()" dir="rtl" flex="100" novalidate>
             <!-- first row -->
             <div layout="row" layout-xs="column">
            <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -30,9 +30,9 @@
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>تاریخ تولد:</label>
-                    <input type="text" name="birthdate"  />
-                    <!--<input id="dateALT" ng.model="user.date"/> -->
+                    <input type="text" name="birthdate" id="creationDate" />
                 </md-input-container>
+                <input id="dateAltEdit" ng.model="user.date"/>
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>کدملی:</label>

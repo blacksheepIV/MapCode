@@ -1,9 +1,9 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$mdSidenav,$log,$location){
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
+    $rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
     $scope.initVar = function(){
-        $scope.isLoggedIn = false;
     }//end of initVar
     $scope.toggleRight= buildToggler('right');
     $scope.isOpenRight = function(){
