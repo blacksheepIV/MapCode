@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "./node_modules/.bin/bower install",
-    "start": "node ./bin/www"
+    "start": "pm2 startOrReload ecosystem.config.js --env production"
   },
   "dependencies": {
     "bcryptjs": "latest",
