@@ -9,3 +9,5 @@
 - SMS service API
 
 - Proper error logging
+
+- Auto minimize front-end sources
