@@ -1,7 +1,7 @@
 module.exports = {
   apps : [
     {
-      name      : 'PorjectM',
+      name      : 'ProjectM',
       script    : 'bin/www',
       env: {
       },
