@@ -7,7 +7,7 @@ var mustache = require('mustache');
 
 process.on('SIGINT', function() {
     // Cleanly quit the redis connection
-    require('utils/redis').quit();
+    require('./utils/redis').quit();
 });
 
 var app = express();
