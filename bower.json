@@ -20,6 +20,8 @@
     "angular-route": "^1.6.4",
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
-    "persian-date": "^0.1.8"
+    "persian-date": "^0.1.8",
+    "persian-datepicker": "^0.4.5",
+    "angular-upload": "^1.0.12"
   }
 }
