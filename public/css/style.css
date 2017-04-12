@@ -14,6 +14,34 @@ body{
 #dateALT{
     display:none;
 }
+#loginForm{
+    width:500px; height:350px; margin: auto; margin-top: 5em;background: transparent;
+}
+.loginInput{
+    width: 200px;
+    height: 30px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    color: #fff;
+    font-family: Koodak, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 4px;
+    display: block;
+}
+.loginMSGs{
+    color: yellow;
+    font-size:10px;
+
+}
+.red{
+    border: solid 1px red;
+}
+#Bdate{
+    font-family: Koodak;
+    color: darkred;
+}
 /* ###########################################################################################################*/
 md-sidenav,
 md-sidenav.md-locked-open,
@@ -83,15 +111,19 @@ md-sidenav.md-closed.md-locked-open-add-active {
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.25em;
     color: #818181;
-    display: block;
+    display: inline-block;
     transition: 0.3s
 }
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover, .offcanvas a:focus{
     color: #f1f1f1;
+}
+.SNav_items{
+    display: block;
+    border-bottom: 1px dashed black;
 }
 /* ************************************************************************************************************* */
 .navBardemoBasicUsage md-content .ext-content {

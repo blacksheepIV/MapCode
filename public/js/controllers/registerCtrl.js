@@ -1,12 +1,13 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
+var registerCtrl = function($scope,$rootScope,$location,$timeout,userService){
     $scope.initvars = function (){
          $scope.reSend = false;
         $scope.resubmits = 0; //counts the times user asked for resubmission
        // $scope.is2ndPage = false;
-        $scope.emailPattern = /^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$/;
+        $scope.emailPattern = '^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$';
+        $scope.namePattern='^[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF]+\s[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF]+$';
         $scope.levelPage(1);
         $rootScope.user = {
             name: '',
@@ -33,7 +34,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,regService){
     //******************************************************************************************************************
     $scope.cb = function(){
         if($scope.is2ndPage){
-            $scope.user = regService.getUserInfo();
+            $scope.user = userService.getUserInfo();
             console.log("we R here");
         }
 
@@ -51,7 +52,7 @@ $scope.levelPage = function(level){
              $rootScope.pageTitle = "تایید ثبت نام"
              if($rootScope.user.password!= $rootScope.user.passRepeat)
                  console.log("پسوردها مشابه نیستند!!!");
-             regService.setUserInfo($rootScope.user);
+             userService.setUserInfo($rootScope.user);
              /*$scope.is2ndPage = true;
              cb(); */
              console.log($rootScope.user);
@@ -60,6 +61,9 @@ $scope.levelPage = function(level){
      }
 }//end of function level page
     //******************************************************************************************************************
+    $scope.submit = function(){
+        $scope.levelPage(2);
+    }
     //******************************************************************************************************************
     $scope.counter = 30;
     $scope.onTimeout=function(){
@@ -77,20 +81,16 @@ $scope.levelPage = function(level){
         $sope.resubmits++;//we addup the counter ;when it reaches to it's limit u gotta cancel the users registration
     }
     //******************************************************Persian_DatePicker config*********************************************************
-   /* $(document).ready(function () {
+    $(document).ready(function () {
         $("#Bdate").pDatepicker(
             {
+                format:"YYYY - MM - DD dddd",
+                viewMode : "year",
+                persianDigit: true,
                 altField: '#dateALT',
                 altFormat: 'unix',
-                timePicker: {
-                    enabled: true,
-                    showSeconds: true,
-                    showMeridian: true,
-                    scrollEnabled: false,
-
-                },
-
+                position: "auto",
                 autoClose: true
     });
-    }); */
+    });
 }//end of registerCtrl

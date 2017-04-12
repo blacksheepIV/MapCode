@@ -1,11 +1,11 @@
 <div ng-controller="registerCtrl" ng-init="initvars()" ng-cloak>
      <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
         <md-content layout="row">
-           <form name="registrationForm" ng-submit="submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
+           <form name="registrationForm" ng-submit="registrationForm.$valid && submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
                <!-- first row -->
                <div layout="row" layout-xs="row">
                <label flex="30"> من یک شخص :</label>
-               <md-radio-group layout="row" flex="80"  ng-model="user.type">
+               <md-radio-group class="md-warn md-hue-4" layout="row" flex="80"  ng-model="user.type">
                    <md-radio-button flex="auto"  value="naturalPerson">حقیقی هستم</md-radio-button>
                    <md-radio-button flex="auto"  value="legalPerson">حقوقی هستم</md-radio-button>
                </md-radio-group>
@@ -16,7 +16,7 @@
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label for="fullName" ng-show="user.type != 'legalPerson'">نام کامل:</label>
                     <label ng-show="user.type == 'legalPerson'">نام شرکت:</label>
-                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="40" /> <!--REGEX -->
+                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="40" ng-pattern="namePattern" /> <!--REGEX -->
                     <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
                         <p ng-message="required">وارد کردن نام  الزامی است.</p>
                         <p ng-message="maxlength">نام  طولانی تر از حد مجاز است!</p>
@@ -26,6 +26,9 @@
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>ایمیل:</label>
                        <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern" required/>
+                       <div ng-messages="registrationForm.mail.$error" ng-if="registrationForm.mail.$touched">
+                           <p ng-message="required">وارد کردن ایمیل الزامی است.</p>
+                       </div>
                    </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -75,12 +78,12 @@
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label ng-show="user.type != 'legalPerson'">تاریخ تولد:</label>
                        <label ng-show="user.type == 'legalPerson'">تاریخ ثبت:</label>
-                       <input type="text" name="birthdate" id="Bdate" required />
-                       <!--<input id="dateALT" ng.model="user.date"/> -->
+                       <input type="text" name="birthdate" id="Bdate"  required />
                        <div ng-messages="registrationForm.birthdate.$error" ng-if="registrationForm.birthdate.$touched">
                            <p ng-message="required">وارد کردن تاریخ تولد الزامی است.</p>
                            </div>
                    </md-input-container>
+                   <input id="dateALT" ng.model="user.date"/>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>شماره موبایل:</label>
@@ -121,7 +124,7 @@
                </div>
                <!-- 5th row -->
                <div md-theme="docs-dark"  layout="row" layout-xs="row" layout-align="center center">
-                   <md-button class="md-raised md-accent md-hue-2" ng-click="levelPage(2)">
+                   <md-button class="md-raised md-accent md-hue-2" type="submit">
                        تایید و ادامه
                    </md-button>
                    <md-button class="md-raised md-warn md-hue-2" ng-click="levelPage(0)">

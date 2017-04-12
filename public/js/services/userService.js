@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 04-Apr-17.
  */
-var regService = function(){
+var userService = function(){
     var user = {}; //empty object literal
     this.setUserInfo = function(userData){
         user = userData;

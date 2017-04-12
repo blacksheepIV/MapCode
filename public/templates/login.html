@@ -1,35 +1,32 @@
-<md-content ng-controller="loginCtrl"  layout-align="center end" layout-padding style="height:100%;background-image: url('../img/milad1.JPG');background-repeat: no-repeat;background-size: 100% 100%;">
-   <md-card layout-align="center center" style="width:500px; height:350px; margin: auto; margin-top: 5em;">
-                <form name="loginForm" layout="column" layout-align="center center"  ng-cloak>
-                    <div flex-xs="75" flex-sm="55" flex-gt-sm="25">
-                       <div layout="row">
-                            <md-input-container class="md-icon-float md-block">
+<md-content ng-controller="loginCtrl" ng-init="init()"  layout-align="center end" layout-padding style="height:100%;background-image: url('../img/milad tower.jpg');background-repeat: no-repeat;background-size: 100% 100%;">
+  <!-- <md-card layout-align="center center" style="width:500px; height:350px; margin: auto; margin-top: 5em;background: transparent;"> -->
+                <form name="loginForm" id="loginForm" layout="column" layout-align="center center" ng-submit="loginForm.$valid && login.submit()" novalidate ng-cloak>
+                          <div layout="column" layout-align="center center" flex="100">
                                <!-- <span style="width:25px;height: 25px; " flex="40" class="fa fa-user-circle-o fa-lg"></span> -->
-                               <input type="text" required name="username" placeholder="نام کاربری:" ng-model="user.userName" ng-maxlength="15">
-                                <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
-                                    <p ng-message="required">نام کاربری را وارد کنید!</p>
-                                    <div ng-message="maxlength">نام کاربری طولانی!</div>
+                               <div layout="column" layout-align="center center" >
+                                    <input type="text" class="loginInput" required name="username" placeholder="نام کاربری:" ng-model="user.username" ng-maxlength="15" ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
+                                    <div class="loginMSGs" ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
+                                        <div ng-message="required">نام کاربری را وارد کنید!</div>
+                                        <div ng-message="maxlength">نام کاربری طولانی!</div>
+                                     </div>
                                 </div>
-                             </md-input-container>
-                       </div>
-                       <md-input-container class="md-icon-float md-block">
-                           <!-- <span class="fa fa-lock fa-lg"></span> -->
-                           <input type="text" required name="password" placeholder="رمز عبور :" ng-model="user.pass">
-                           <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
-                               <p ng-message="required">رمز عبور را وارد کنید!</p>
-                           </div>
-                        </md-input-container>
-
-                       <div layout-gt-xs="row" layout-xs="column" md-theme="docs-dark">
-                           <md-button flex-gt-xs="45" class="md-raised md-accent md-hue-2" ng-click="login()">
+                               <div flex="5"></div>
+                               <div layout="column" layout-align="center center" >
+                                   <input type="password" class="loginInput" required name="pass" placeholder="رمز عبور :" ng-model="user.pass" ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
+                                   <div class="loginMSGs" ng-messages="loginForm.pass.$error" ng-if="loginForm.pass.$touched">
+                                       <div ng-message="required">رمز عبور را وارد کنید!</div>
+                                    </div>
+                               </div>
+                               <div layout="row" layout-xs="column" md-theme="docs-dark" flex="10">
+                                    <md-button  class="md-raised  md-accent md-hue-2" type="submit" >
                 ورود
-                          </md-button>
-                        <div flex></div>
-                        <md-button flex-gt-xs="45" class="md-raised md-warn md-hue-2" ng-click="register()">
+                                     </md-button>
+
+                                    <md-button class="md-raised  md-warn md-hue-2" ng-click="register()">
                 ثبت نام
-                         </md-button>
-                        </div>
-                      </div>
+                                     </md-button>
+                               </div>
+                          </div>
                  </form>
-        </md-card>
+       <!-- </md-card> -->
         </md-content>

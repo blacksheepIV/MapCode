@@ -1,23 +1,32 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
-    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout-padding>
-        <div class="md-toolbar-tools">
-            <div layout="row" flex="80">
-                <h2 flex="60" class="md-display-3" layout-align="start start">John Doe</h2>
+    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding  >
+        <div class="md-toolbar-tools" >
+                <div layout="row" flex="80">
+                    <h2  class="md-display-3" >John Doe</h2>
+                    <div flex="20"></div>
+                    <image style="width:70px;height:70px;border-radius:4px; " src="../img/Unknown.jpg" alt="default_profilePic"/>
+                 </div>
                 <div flex></div>
-                <image flex="auto" style="width:70px;height:70px;border-radius:4px; " src="../img/Unknown.jpg" alt="default_profilePic"/>
-            </div>
-            <div layout="row" flex="80">
-               <div flex></div>
-                <md-button flex="auto" class="md-raised md-accent md-hue-2 md-block" ng-click="logOut();">خروج از حساب کاربری</md-button>
-            </div>
+                <div layout="column">
+                    <md-button class="md-raised md-accent md-hue-2 md-block" ng-click="logOut();">خروج از حساب کاربری</md-button>
+                </div>
         </div>
     </md-toolbar>
-    <md-content layout-margin dir="rtl">
+    <md-content layout-margin dir="rtl" layout-align="center center">
         <div id="mySidenav" class="sidenav">
-            <a href="/panel">حساب کاربری من</a>
-                 <a href="#">Services</a>
-                 <a href="#">Clients</a>
-            <a href="#">Contact</a>
+            <div class="SNav_items">
+                <span class="fa fa-address-card fa-lg"></span>
+                 <a href="/panel">حساب کاربری من</a>
+                </div>
+            <div class="SNav_items">
+                <span class="fa fa-map-pin fa-lg"></span>
+                 <a href="#">مکان های منتخب من</a>
+            </div>
+            <div class="SNav_items">
+                <span class="fa fa-map-marker fa-lg"></span>
+                 <a href="#">ثبت یک مکان جدید</a>
+            </div>
+
         </div>
     </md-content>
 </md-sidenav>
