@@ -1,19 +1,20 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,userService){
+var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog){
     $scope.initvars = function (){
          $scope.reSend = false;
         $scope.resubmits = 0; //counts the times user asked for resubmission
        // $scope.is2ndPage = false;
-        $scope.emailPattern = '^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$';
-        $scope.namePattern='^[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF]+\s[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF]+$';
+        $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
+        $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.levelPage(1);
         $rootScope.user = {
             name: '',
             melli_code: 0,
             email: '',
-            date: '',
+            date: 0,
             mobile_phone: '',
             phone: '',
             username: '',
@@ -31,6 +32,18 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService){
     }//end ofo function initVars
     //****************************************************************************************************************************************
     //****************************************************************************************************************************************
+    $scope.showAlert = function(ev) {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('خطا!')
+                .textContent('رمز عبور و تکرار رمز عبور مشابه نیستند!!!')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+                .targetEvent(ev)
+        );
+    };
     //******************************************************************************************************************
     $scope.cb = function(){
         if($scope.is2ndPage){
@@ -50,19 +63,22 @@ $scope.levelPage = function(level){
              break;
          case 2:
              $rootScope.pageTitle = "تایید ثبت نام"
-             if($rootScope.user.password!= $rootScope.user.passRepeat)
-                 console.log("پسوردها مشابه نیستند!!!");
              userService.setUserInfo($rootScope.user);
-             /*$scope.is2ndPage = true;
-             cb(); */
              console.log($rootScope.user);
              $location.path('/verify');
              break;
      }
 }//end of function level page
     //******************************************************************************************************************
-    $scope.submit = function(){
-        $scope.levelPage(2);
+    $scope.submit = function($event){
+        $scope.ev = $event;
+        if($rootScope.user.password!= $rootScope.user.passRepeat)
+        //console.log("پسوردها مشابه نیستند!!!");
+           $scope.showAlert($scope.ev)
+        else {
+            $scope.levelPage(2);
+            console.log($rootScope.user.date);
+        }
     }
     //******************************************************************************************************************
     $scope.counter = 30;

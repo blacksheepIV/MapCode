@@ -24,5 +24,17 @@ var userCtrl = function($scope){
             bonus: 0
         }
         //u get user's type from database;store it in a variable and then the user's type gotta be equal to that value
-    }
+    };
+    $(document).ready(function () {
+        $("#creationDate").pDatepicker(
+            {
+                format:"YYYY - MM - DD dddd",
+                viewMode : "year",
+                persianDigit: true,
+                altField: '#dateAltEdit',
+                altFormat: 'unix',
+                position: "auto",
+                autoClose: true
+            });
+    });
 }//end of userCtrl controller

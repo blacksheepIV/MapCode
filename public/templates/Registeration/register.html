@@ -1,7 +1,7 @@
-<div ng-controller="registerCtrl" ng-init="initvars()" ng-cloak>
+<div ng-controller="registerCtrl" ng-init="initvars()" id="popupContainer" ng-cloak>
      <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
         <md-content layout="row">
-           <form name="registrationForm" ng-submit="registrationForm.$valid && submit()" dir="rtl" flex="100" style="padding:15px 10px 0 0;" novalidate>
+           <form name="registrationForm" class="form" ng-submit="registrationForm.$valid && submit($event)" dir="rtl" flex="100"  novalidate>
                <!-- first row -->
                <div layout="row" layout-xs="row">
                <label flex="30"> من یک شخص :</label>
@@ -16,10 +16,11 @@
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label for="fullName" ng-show="user.type != 'legalPerson'">نام کامل:</label>
                     <label ng-show="user.type == 'legalPerson'">نام شرکت:</label>
-                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="40" ng-pattern="namePattern" /> <!--REGEX -->
+                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-maxlength="40" ng-pattern="namePattern" /> <!-- * -->
                     <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
                         <p ng-message="required">وارد کردن نام  الزامی است.</p>
                         <p ng-message="maxlength">نام  طولانی تر از حد مجاز است!</p>
+                        <p ng-message="pattern">لطفا نام فارسی وارد کنید!</p>
                     </div>
                 </md-input-container>
                    <div flex="5"></div>
@@ -62,10 +63,11 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>کدملی:</label>
-                       <input type="text" name="nationalcode" ng-model="user.melli_code" required ng-disabled="user.type!= 'naturalPerson'" ng-maxlength="10" ng-minlength="10" md-maxlength="10"/>
+                       <!-- * -->  <input type="text" name="nationalcode" ng-model="user.melli_code" ng-disabled="user.type!= 'naturalPerson'"
+                                         ng-required="user.type == 'naturalPerson'" ng-maxlength="user.type!= 'naturalPerson'? false:10" ng-minlength="user.type!= 'naturalPerson' ? false:10" md-maxlength="10"/>
                        <!--input validation -->
                        <div ng-messages="registrationForm.nationalCode.$error" ng-if="registrationForm.nationalCode.$touched">
-                           <p ng-message="required">وارد کردن کدملی الزامی است.</p>
+                          <!-- <p ng-message="required">وارد کردن کدملی الزامی است.</p> -->
                            <div ng-message="maxlength">کدملی طولانی تر از 10 رقم است.</div>
                            <div ng-message="minlength">کدملی کم تر از 10 رقم است.</div>
                        </div>
@@ -87,17 +89,19 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>شماره موبایل:</label>
-                       <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11" ng-maxlength="11" required />
+                       <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11" ng-maxlength="11" ng-pattern="mobilePattern" required />
                        <div ng-messages="registrationForm.cellNumber.$error" ng-if="registrationForm.cellNumber.$touched">
                            <p ng-message="required">وارد کردن شماره همراه الزامی است.</p>
                            <div ng-message="maxlength">شماره همراه طولانی تر از 11 رقم است.</div>
                            <div ng-message="minlength">شماره همراه نامعتبر!</div>
+                           <div ng-message="pattern">عدم همخوانی با شماره های اپراتورهای ایران!</div>
                        </div>
                    </md-input-container>
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>تلفن ثابت:</label>
-                       <input type="tel" name="phoneNum" ng-model="user.phone" required ng-disabled="user.type!= 'legalPerson'" ng-minlength="11" ng-maxlength="11"/> <!-- ?phone number instead -->
+                       <!-- * -->  <input type="tel" name="phoneNum" ng-model="user.phone" ng-disabled="user.type!= 'legalPerson'"
+                                          ng-required="user.type == 'legalPerson'" ng-minlength="user.type != 'legalPerson' ? false:11" ng-maxlength="user.type!= 'legalPerson' ? false:11"/>
                        <div ng-messages="registrationForm.phoneNum.$error" ng-if="registrationForm.phoneNum.$touched">
                            <p ng-message="required">وارد کردن شماره تلفن الزامی است.</p>
                            <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
@@ -110,7 +114,7 @@
                <div layout="row" layout-xs="column">
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>کدثبت:</label> <!-- what it looks like -->
-                       <input type="text" name="code" ng-model="user.code" required ng-disabled="user.type!= 'legalPerson'"/>
+                       <input type="text" name="code" ng-model="user.code" ng-disabled="user.type!= 'legalPerson'" ng-required="user.type == 'legalPerson'"/><!-- * -->
                    </md-input-container>
                    <div flex="5"></div>
                    <div flex="25" flex-xs="70">
@@ -119,7 +123,8 @@
                    <div flex="5"></div>
                    <md-input-container flex="25" flex-xs="70" class="md-block" >
                        <label>کد معرف:</label>
-                       <input type="text" name="recommender" ng-model="user.recommender" required ng-disabled="!user.isRecommended" ng-minlength="8" ng-maxlength="8"/>
+                       <input type="text" name="recommender" ng-model="user.recommender"  ng-disabled="!user.isRecommended"
+                              ng-required="user.isRecommended" ng-minlength="!user.isRecommended ? false:8" ng-maxlength="!user.isRecommended ? false:8"/> <!-- * -->
                    </md-input-container>
                </div>
                <!-- 5th row -->

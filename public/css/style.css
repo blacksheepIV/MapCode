@@ -144,3 +144,14 @@ md-sidenav.md-closed.md-locked-open-add-active {
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     /* Set our own color */
     color: darkred; }
+/* ################################################################################################## */
+.form{
+    padding:15px 10px 0 0;
+}
+#creationDate{
+    font-family: Koodak;
+    color: darkred;
+}
+#dateAltEdit{
+    display: none;
+}
