@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test",
+    "mocha": "mocha ./tests/**/test*.js",
+    "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test && echo \">> mocha\" && npm run mocha",
     "install": "./node_modules/.bin/bower install",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production",
@@ -11,7 +12,7 @@
   },
   "apidoc": {
     "name": "ProjectM",
-    "title":"ProjectM API",
+    "title": "ProjectM API",
     "url": "http://mapcode.ir/api",
     "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json"
   },
@@ -19,6 +20,8 @@
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",
     "bower": "latest",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "dotenv": "^4.0.0",

@@ -9,12 +9,16 @@
 	- Install nsp and snyk NPM packages (Optional: For testing NPM packages security)
 	    `npm install -g nsp`
 	    `npm install -g snyk`
+	- Install mocha (Optional: For testing)
+	    `npm install -g mocha`
 
 * Run `npm install`
 
 * Create .env file for configurations.
   This file should set following variables:
   `
+      PROJECTM_ENV_CONF
+
       PORT = 3000
       # API URL
       API_HREF = 'http://localhost:3000/api/'

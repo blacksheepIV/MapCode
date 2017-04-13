@@ -1,6 +1,9 @@
 var path = require('path');
 var fs = require('fs');
 
+if (!process.env.PROJECTM_ENV_CONF)
+    require('dotenv').config({path: path.join(__dirname, '.env')});
+
 var express = require('express');
 var helmet = require('helmet');
 var mustache = require('mustache');
