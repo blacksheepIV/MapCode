@@ -3,6 +3,7 @@ module.exports = {
         {
             name: 'ProjectM',
             script: 'bin/www',
+            kill_timeout:5000,
             env: {},
             env_production: {
                 NODE_ENV: 'production'

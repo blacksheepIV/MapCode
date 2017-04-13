@@ -8,12 +8,17 @@ var express = require('express');
 var helmet = require('helmet');
 var mustache = require('mustache');
 
-process.on('SIGINT', function() {
-    // Cleanly quit the redis connection
-    require('./utils/redis').quit();
-});
 
 var app = express();
+
+process.on('SIGINT', function() {
+    app.http_server.close(function() {
+        // Cleanly quit the redis connection
+        require('./utils/redis').quit();
+
+        process.exit(0);
+    });
+});
 
 app.use(helmet());
 
