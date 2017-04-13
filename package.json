@@ -8,6 +8,12 @@
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production"
   },
+  "apidoc": {
+    "name": "ProjectM",
+    "title":"ProjectM API",
+    "url": "http://mapcode.ir/api",
+    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json"
+  },
   "dependencies": {
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",

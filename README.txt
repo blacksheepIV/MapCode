@@ -3,6 +3,9 @@
 	- Install Redis
 	- Install NodeJS and NPM
 	- Install PM2
+	    `npm install -g pm2`
+	- Install apiDoc (Optional: For generating API documentations)
+	    `npm install -g apidoc`
 
 * Run `npm install`
 
