@@ -17,8 +17,8 @@
 * Create .env file for configurations.
   This file should set following variables:
   `
+      # This variable indicates whether or not .env config has been loaded
       PROJECTM_ENV_CONF
-
       PORT = 3000
       # API URL
       API_HREF = 'http://localhost:3000/api/'
