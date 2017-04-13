@@ -35,31 +35,29 @@ describe('SMS', function () {
         });
     });
 
-    var phone_number = '09365788764';
-    var redis_key = process.env.REDIS_PREFIX + 'mphone:' + phone_number;
-
     describe('when given valid new phone number', function () {
         it('should successfully generate verification code', function (done) {
-            redis.del(redis_key, function (err) {
-                if (err)
-                    return done(err);
+            var phone_number = '09365788764';
+            var redis_key = process.env.REDIS_PREFIX + 'mphone:' + phone_number;
 
-                chai.request(server)
-                    .post('/api/sms')
-                    .send({phone_number: phone_number})
-                    .end(function (err, res) {
-                        res.should.have.status(200);
+            chai.request(server)
+                .post('/api/sms')
+                .send({phone_number: phone_number})
+                .end(function (err, res) {
+                    res.should.have.status(200);
 
-                        redis.del(redis_key);
+                    redis.del(redis_key);
 
-                        done();
-                    });
-            });
+                    done();
+                });
         });
     });
 
     describe('when given multiple request within 120 seconds for same number', function () {
         it('should ignore request and respond an error', function (done) {
+            var phone_number = '09375968744';
+            var redis_key = process.env.REDIS_PREFIX + 'mphone:' + phone_number;
+
             chai.request(server)
                 .post('/api/sms')
                 .send({phone_number: phone_number})
