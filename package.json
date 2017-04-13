@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test",
     "install": "./node_modules/.bin/bower install",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production",
