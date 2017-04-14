@@ -6,6 +6,7 @@ var chaiHttp = require('chai-http');
 
 var server = require('../../../app');
 var redis = require('../../../utils/redis');
+var smsModel = require('../../../models/sms');
 
 var should = chai.should();
 
@@ -15,7 +16,7 @@ chai.use(chaiHttp);
 
 describe('SMS', function () {
     describe('When given invalid phone number', function () {
-        it('should give validation error for phone_number', function (done) {
+        it('should give validation error for mobile_phone', function (done) {
             chai.request(server)
                 .post('/api/sms')
                 .send({})
@@ -24,11 +25,11 @@ describe('SMS', function () {
                     res.should.be.json;
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
-                    res.body.errors.should.have.property('phone_number');
-                    res.body.errors.phone_number.should.be.a('array');
-                    res.body.errors.phone_number.should.include('empty');
-                    res.body.errors.phone_number.should.include('not_int');
-                    res.body.errors.phone_number.should.include('length_not_11');
+                    res.body.errors.should.have.property('mobile_phone');
+                    res.body.errors.mobile_phone.should.be.a('array');
+                    res.body.errors.mobile_phone.should.include('empty');
+                    res.body.errors.mobile_phone.should.include('not_numeric');
+                    res.body.errors.mobile_phone.should.include('length_not_11');
 
                     done();
                 });
@@ -37,16 +38,15 @@ describe('SMS', function () {
 
     describe('when given valid new phone number', function () {
         it('should successfully generate verification code', function (done) {
-            var phone_number = '09365788764';
-            var redis_key = process.env.REDIS_PREFIX + 'mphone:' + phone_number;
+            var mobile_phone = '09365788764';
 
             chai.request(server)
                 .post('/api/sms')
-                .send({phone_number: phone_number})
+                .send({mobile_phone: mobile_phone})
                 .end(function (err, res) {
                     res.should.have.status(200);
 
-                    redis.del(redis_key);
+                    redis.del(smsModel.phoneNumberKey(mobile_phone));
 
                     done();
                 });
@@ -55,16 +55,15 @@ describe('SMS', function () {
 
     describe('when given multiple request within 120 seconds for same number', function () {
         it('should ignore request and respond an error', function (done) {
-            var phone_number = '09375968744';
-            var redis_key = process.env.REDIS_PREFIX + 'mphone:' + phone_number;
+            var mobile_phone = '09375968744';
 
             chai.request(server)
                 .post('/api/sms')
-                .send({phone_number: phone_number})
+                .send({mobile_phone: mobile_phone})
                 .end(function (err, res) {
                     chai.request(server)
                         .post('/api/sms')
-                        .send({phone_number: phone_number})
+                        .send({mobile_phone: mobile_phone})
                         .end(function (err, res) {
                             res.should.have.status(429);
                             res.should.be.json;
@@ -72,7 +71,7 @@ describe('SMS', function () {
                             res.body.errors.should.be.a('array');
                             res.body.errors.should.include('PhoneNumberAlreadyHasACode');
 
-                            redis.del(redis_key);
+                            redis.del(smsModel.phoneNumberKey(mobile_phone));
 
                             done();
                         });

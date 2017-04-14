@@ -3,23 +3,8 @@ var randomstring = require("randomstring");
 
 var redis = require('../../utils/redis');
 
+var smsModel = require('../../models/sms');
 
-var schema = {
-    'phone_number': {
-        notEmpty: {
-            options: true,
-            errorMessage: 'empty'
-        },
-        isInt: {
-            options: true,
-            errorMessage: 'not_int'
-        },
-        isLength: {
-            options: {max: 11, min: 11},
-            errorMessage: 'length_not_11'
-        }
-    }
-};
 
 router.route('/sms')
     /**
@@ -34,11 +19,11 @@ router.route('/sms')
      * The generated code will be expired after 120 seconds. <br />
      * If already there is a code for given phone number, the request will be ignored.
      *
-     * @apiParam {String{11}} phone_number User's phone number.
+     * @apiParam {String{11}} mobile_phone User's phone number.
      *
      * @apiExample {json} Request-Example:
      *     {
-     *         "phone_number": "09337658744"
+     *         "mobile_phone": "09337658744"
      *     }
      *
      * @apiSuccessExample Success-Response:
@@ -52,24 +37,24 @@ router.route('/sms')
      *         "errors": ["PhoneNumberAlreadyHasACode"]
      *     }
      *
-     * @apiError (400) {phone_number} empty Phone number is empty.
-     * @apiError (400) {phone_number} not_int Phone number can only contain digits.
-     * @apiError (400) {phone_number} length_not_11 Phone number should have a length of 11.
+     * @apiError (400) {mobile_phone} empty Phone number is empty.
+     * @apiError (400) {mobile_phone} not_numeric Phone number can only contain digits.
+     * @apiError (400) {mobile_phone} length_not_11 Phone number should have a length of 11.
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400 Bad Request
      *     {
      *         "errors" : {
-     *             "phone_number": [
-     *                 "not_int",
+     *             "mobile_phone": [
+     *                 "not_numeric",
      *                 "length_not_11"
      *             ]
      *         }
      *     }
      */
     .post(function (req, res) {
-        req.validateBodyWithSchema(schema, ['phone_number'], function () {
-            var redis_key = process.env.REDIS_PREFIX + 'mphone:' + req.body.phone_number;
+        req.validateBodyWithSchema(smsModel.schema, 'all', function () {
+            var redis_key = smsModel.phoneNumberKey(req.body.mobile_phone);
 
             redis.setnx(redis_key, randomstring.generate({
                 length: 5,
@@ -81,7 +66,7 @@ router.route('/sms')
                         redis.expire(redis_key, 120, function (err, reply) {
                             if (err) {
                                 res.status(500).end();
-                                console.error("Redis: Setting phone verification code expiration : " + err);
+                                console.error("Redis: Setting phone verification code expiration: " + err);
                                 return;
                             }
                             // If key does not exist or the timeout could not be set

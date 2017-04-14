@@ -8,13 +8,14 @@
     "install": "./node_modules/.bin/bower install",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production",
-    "gen-api-doc": "apidoc -i ./api -o ../documents/api && cd ../documents && git add ./api && git commit && git push"
+    "gen-api-doc": "apidoc -i ./api -o ../documents/api && cd ../documents && git add ./api && git commit && git push",
+    "mkdb": "./bin/mkdb"
   },
   "apidoc": {
     "name": "ProjectM",
     "title": "ProjectM API",
     "url": "http://mapcode.ir/api",
-    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json"
+    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500 there is a server error."
   },
   "dependencies": {
     "bcryptjs": "latest",
@@ -28,10 +29,12 @@
     "express": "~4.15.2",
     "express-jwt": "^5.1.0",
     "express-validator": "^3.1.3",
+    "hashids": "^1.1.1",
     "helmet": "^3.5.0",
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "randomstring": "^1.1.5",
-    "redis": "^2.7.1"
+    "redis": "^2.7.1",
+    "validator": "^7.0.0"
   }
 }

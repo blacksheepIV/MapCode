@@ -12,11 +12,20 @@ var mustache = require('mustache');
 var app = express();
 
 process.on('SIGINT', function() {
-    app.http_server.close(function() {
-        // Cleanly quit the redis connection
-        require('./utils/redis').quit();
+    // Close http server
+    app.http_server.close();
+    // Close MySQL connection pool
+    require('./db').end(function (mysqlError) {
+        if (mysqlError)
+            console.error("Error happened in closing MySQL connection pool: %s", mysqlError);
 
-        process.exit(0);
+        // Cleanly quit the redis connection
+        require('./utils/redis').quit(function (redisError) {
+            if (redisError)
+                console.error("Error happened in closing Redis connection: %s", redisError);
+
+            process.exit(mysqlError || redisError ? 1 : 0);
+        });
     });
 });
 

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+# Read MySQL database name
+read -p "Enter database: " database;
+# Read MySQL username
+read -p "Enter username: " username;
+# Set MySQL login path
+mysql_config_editor set --skip-warn --login-path=$npm_package_name --host=localhost --user=$username --password
+echo;
+
+
+if [ "$1" = "remake" ]; then
+    read -p "Are you sure you want to delete and remake the database? (Y/y): " -r
+    echo    #move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        echo "> Droping and recreating database $database...";
+        mysql --login-path=$npm_package_name --verbose -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database" || exit 1;
+        echo;
+    else
+        exit 0;
+    fi
+fi
+
+
+SOURCE="${BASH_SOURCE[0]}";
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )";
+SQLDIR=$DIR"/../db/sql/";
+
+echo "> Executing SQL files...";
+
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-tables.sql" || exit 1;
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql" || exit 1;
+
+
+exit 0;

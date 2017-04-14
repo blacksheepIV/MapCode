@@ -1,0 +1,10 @@
+- Length of email, phone_number and phone fields
+- Length of `user`(`password`) should be compatible with our hashing algorithm
+- Length of `user`(`code`) is based on our code generation algorithm
+- Length of `verification_sms`(`code`) is based on code generation algorithm
+- `expired_points` table
+- Indexes on database tables
+- User's number of friends constraint
+- Auto increment point popularity
+- All user's message (from another user or group) in one view or function
+

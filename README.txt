@@ -28,6 +28,29 @@
       REDIS_PREFIX = 'projectm:'
       # Only set this if Redis server is configured with a password
       REDIS_PASSWORD = 'myRedisPassword!!'
+      # Database configurations
+      DB_HOST = 'localhost'
+      DB_USER = 'projectm'
+      DB_PASS = 'projectm123456'
+      DB_NAME = 'projectmdb'
+      # Hashids unique key (In order to generate unique hashids)
+      HASHIDS_KEY = 'r5309rfadfn'
   `
+
+* Create database
+    You should have a MySQL username and password that at least have full
+    access on a single database (for example database `projectm`).
+
+    `npm run mkdb`
+        Gets your MySQL information and tries to execute SQL
+        files in an existing database.
+
+    `npm run mkdb -- remake`
+        Gets your MySQL information and drops the database if
+        it exists and the recreates it and then executes SQL
+        files in it.
+
+    For the first time, if you have created the database just
+    execute the first command, otherwise execute the second one.
 
 * Run `npm start`
