@@ -36,7 +36,10 @@ SQLDIR=$DIR"/../db/sql/";
 echo "> Executing SQL files...";
 
 execute_sql_file $SQLDIR"create-tables.sql";
-execute_sql_file $SQLDIR"dummy-inserts.sql";
+
+if [ "$1" = "dummy-inserts" ]; then
+    execute_sql_file $SQLDIR"dummy-inserts.sql";
+fi
 
 
 exit 0;
