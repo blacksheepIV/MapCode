@@ -5,9 +5,9 @@
 read -p "Enter database: " database;
 # Read MySQL username
 read -p "Enter username: " username;
-# Read MySQL password
-read -p -s "Enter password: " password;
-echo
+# Set MySQL login path
+mysql_config_editor set --skip-warn --login-path=$npm_package_name --host=localhost --user=$username --password
+echo;
 
 
 if [ "$1" = "remake" ]; then
@@ -16,7 +16,7 @@ if [ "$1" = "remake" ]; then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         echo "> Droping and recreating database $database...";
-        mysql -u $username -p$password --verbose -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database" || exit 1;
+        mysql --login-path=$npm_package_name --verbose -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database" || exit 1;
         echo;
     else
         exit 0;
@@ -24,19 +24,14 @@ if [ "$1" = "remake" ]; then
 fi
 
 
-function execute_sql_file()
-{
-    mysql -u $username -p$password --verbose $database < $1 || exit 1;
-}
-
 SOURCE="${BASH_SOURCE[0]}";
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )";
 SQLDIR=$DIR"/../db/sql/";
 
 echo "> Executing SQL files...";
 
-execute_sql_file $SQLDIR"create-tables.sql";
-execute_sql_file $SQLDIR"dummy-inserts.sql";
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-tables.sql" || exit 1;
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql" || exit 1;
 
 
 exit 0;
