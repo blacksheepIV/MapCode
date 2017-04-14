@@ -6,3 +6,5 @@
 - SMS service API
 
 - Auto minimize front-end sources
+
+- SMS API tests
