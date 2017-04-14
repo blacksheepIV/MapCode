@@ -26,8 +26,14 @@ router.route('/sms')
      *         "mobile_phone": "09337658744"
      *     }
      *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample (In production environment) Success-Response:
      *     HTTP/1.1 200 OK
+     *
+     * @apiSuccessExample (In non-production environment) Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *         "sms_code": "34523"
+     *     }
      *
      * @apiError (429) PhoneNumberAlreadyHasACode This phone number already has a registered verification code.
      *
@@ -56,10 +62,11 @@ router.route('/sms')
         req.validateBodyWithSchema(smsModel.schema, 'all', function () {
             var redis_key = smsModel.phoneNumberKey(req.body.mobile_phone);
 
-            redis.setnx(redis_key, randomstring.generate({
+            var smsVerificationCode = randomstring.generate({
                 length: 5,
                 charset: 'numeric'
-            }), function (err, reply) {
+            });
+            redis.setnx(redis_key, smsVerificationCode, function (err, reply) {
                 if (!err) {
                     // The key didn't exist and was set
                     if (reply === 1) {
@@ -76,7 +83,14 @@ router.route('/sms')
                             }
                             // Phone verification code successfully generated
                             else {
-                                res.status(200).end();
+                                res.status(200);
+
+                                if (process.env.NODE_ENV !== 'production')
+                                    res.json({
+                                        'sms_code': smsVerificationCode
+                                    });
+                                else
+                                    res.end();
 
                                 // TODO: Send SMS request to SMS service provider API
                             }
