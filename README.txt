@@ -26,6 +26,8 @@
       JWT_SECRET_CODE = 'A Sekret Kode!'
       # Every redis key will have this string as it's prefix
       REDIS_PREFIX = 'projectm:'
+      # Only set this if Redis server is configured with a password
+      REDIS_PASSWORD = 'myRedisPassword!!'
   `
 
 * Run `npm start`
