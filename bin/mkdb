@@ -6,8 +6,8 @@ read -p "Enter database: " database;
 # Read MySQL username
 read -p "Enter username: " username;
 # Read MySQL password
-read -p -s "Enter password: " password;
-echo
+read -s -p "Enter password: " password;
+echo;
 
 
 if [ "$1" = "remake" ]; then
