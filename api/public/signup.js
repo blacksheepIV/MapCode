@@ -19,7 +19,7 @@ router.route('/signup')
      *
      * @apiParam {string{1..40}} name Person's first name and last name or company's name
      * @apiParam {Number{10}} melli_code Person's melli code or company's code
-     * @apiParam {Email{1..320}} email Person or company's email
+     * @apiParam {Email{1..100}} email Person or company's email
      * @apiParam {Date} date Person or company's birthdate
      * @apiParam {Number{11}} mobile_phone Person or company's mobile phone number
      * @apiParam {String{5..15}} username Person or company's username
@@ -57,7 +57,7 @@ router.route('/signup')
      *
      * @apiError (400) {email} empty
      * @apiError (400) {email} invalid_email Does not have the correct email format
-     * @apiError (400) {email} length_not_1_to_320
+     * @apiError (400) {email} length_not_1_to_100
      *
      * @apiError (400) {date} empty
      * @apiError (400) {date} not_a_date Does not have the correct date format

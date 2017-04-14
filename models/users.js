@@ -41,8 +41,8 @@ module.exports.schema = {
             errorMessage: 'invalid_email'
         },
         isLength: {
-            options: {min: 1, max: 320},
-            errorMessage: "length_not_1_to_320"
+            options: {min: 1, max: 100},
+            errorMessage: "length_not_1_to_100"
         }
     },
     'date': {
