@@ -1,15 +1,21 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
     <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding  >
         <div class="md-toolbar-tools" >
-                <div layout="row" flex="80">
-                    <h2  class="md-display-3" >John Doe</h2>
-                    <div flex="20"></div>
-                    <image style="width:70px;height:70px;border-radius:4px; " src="../img/Unknown.jpg" alt="default_profilePic"/>
-                 </div>
-                <div flex></div>
-                <div layout="column">
-                    <md-button class="md-raised md-accent md-hue-2 md-block" ng-click="logOut();">خروج از حساب کاربری</md-button>
-                </div>
+            <md-card style="width: inherit;height:150px;">
+                <md-card-title>
+                    <md-card-title-media>
+                        <div class="md-media-sm card-media" >
+                            <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
+                        </div>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                        <span class="md-headline">کاربر مهمان</span>
+                        <span class="md-subhead description">اعتبار:0</span>
+                        <span class="md-subhead description">امتیاز:0</span>
+                    </md-card-title-text>
+                </md-card-title>
+<md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="!guest">خروج از حساب کاربری</md-button>
+            </md-card>
         </div>
     </md-toolbar>
     <md-content layout-margin dir="rtl" layout-align="center center">

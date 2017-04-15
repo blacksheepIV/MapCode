@@ -4,6 +4,46 @@
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
     $rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
     $scope.initVar = function(){
+        $scope.SearchTopics =[
+            {id:1 , name:'نام نقطه'},
+            {id:2 , name:'کد نقطه'},
+            {id:3 , name:'نام کاربر ثبت کننده نقطه'},
+            {id:4 , name:'تگ ها'},
+            {id:5 , name:'نام کاربری'},
+        ] ;
+        var map = new google.maps.Map(document.getElementById('map'),{
+            center:{lat:33.9870993,lng:51.4405203},
+            zoom:10
+        });
+        var infoWindow = new google.maps.InfoWindow;
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('شما اینجایید.');
+                infoWindow.open(map);
+                map.setCenter(pos);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
     }//end of initVar
     $scope.toggleRight= buildToggler('right');
     $scope.isOpenRight = function(){
@@ -31,36 +71,5 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
         //sth needed to distroy user's session/token,whatever
     }
     //******************************************************************************************************************
-    var map = new google.maps.Map(document.getElementById('map'),{
-            center:{lat:33.9870993,lng:51.4405203},
-            zoom:10
-        });
-    var infoWindow = new google.maps.InfoWindow;
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('شما اینجایید.');
-            infoWindow.open(map);
-            map.setCenter(pos);
-        }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-        });
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-    }
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-}
 }//end of main controller

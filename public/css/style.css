@@ -11,8 +11,8 @@ body{
     border-radius: 4px;
     box-shadow: 0 2px 6px 2px #585858;
 }
-#dateALT{
-    display:none;
+#BdateALT{
+    display: none;
 }
 #loginForm{
     width:500px; height:350px; margin: auto; margin-top: 5em;background: transparent;
@@ -155,3 +155,21 @@ md-sidenav.md-closed.md-locked-open-add-active {
 #dateAltEdit{
     display: none;
 }
+#SearchBox{
+    width:300px;
+    border-radius: 2px;
+    font-family: Koodak;
+}
+ .card-media {
+    margin-right: 16px;
+    border-radius: 50%;
+    overflow: hidden; }
+
+.card-media md-icon {
+    width: 40px;
+    height: 40px;
+     }
+
+.colorsdemoBasicUsage span.card-title {
+    padding-left: 15px;
+    margin-top: 20px; }
