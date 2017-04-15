@@ -57,4 +57,7 @@
         Add this argument to npm run mkdb if you want to insert some
         dummy rows into database tables.
 
+    Note: Use `npm run mkdb` for MySQL version < 5.6
+          and `npm run mkdb-new` for MySQL version >= 5.6
+
 * Run `npm start`
