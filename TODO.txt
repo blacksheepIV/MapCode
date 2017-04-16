@@ -8,3 +8,5 @@
 - Auto minimize front-end sources
 
 - SMS API tests
+
+- Check XSS
