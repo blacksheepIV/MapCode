@@ -7,8 +7,6 @@ var db = require('../db');
 
 // Verification schema
 module.exports.schema = {
-    ignorables: ['recommender_user'],
-
     'name': {
         notEmpty: {
             errorMessage: 'empty'

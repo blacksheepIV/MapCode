@@ -1,0 +1,108 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ProjectM",
+		"_postman_id": "3afa8060-07ee-67b5-2780-ad69ac8f8cc5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API",
+			"description": "",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"url": "http://localhost:3000/api/signup",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"حمیدرضا\",\n\t\"melli_code\": \"1234567890\",\n\t\"email\": \"h.mahdavipanah@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"mobile_phone\": \"09378887744\",\n\t\"username\": \"mahdavipanah\",\n\t\"password\": \"123456\",\n\t\"type\": \"0\",\n\t\"sms_code\": \"24906\",\n\t\"__OPTIONAL__recommender_user\": \"1234567890\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SMS",
+					"request": {
+						"url": "http://localhost:3000/api/sms",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mobile_phone\": \"09378887744\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2972.ir/api/",
+			"request": {
+				"url": "2972.ir/api/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "arshinco",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "azarmehr",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "number",
+							"value": "10000297201579",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "recipient",
+							"value": "09365075855",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "message",
+							"value": "Hello from dummy service",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
