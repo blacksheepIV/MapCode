@@ -43,7 +43,7 @@ router.route('/signup')
      *     }
      *
      * @apiSuccessExample Success-Response
-     *     HTTP/1.1 200 OK
+     *     HTTP/1.1 201 Created
      *
      *
      *
@@ -115,7 +115,7 @@ router.route('/signup')
 
                 usersModel.createNewUser(req.body, function (err) {
                     if (err === null)
-                        res.status(200).end();
+                        res.status(201).end();
                     else {
                         if (err === 'serverError') {
                             res.status(500).end();
