@@ -1,8 +1,9 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
     <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding  >
         <div class="md-toolbar-tools" >
-            <md-card style="width: inherit;height:auto;">
-                <md-card-title>
+            <div layout="row" layout-padding layout-align="center center" id="Myusercard"  flex="100">
+            <md-card>
+                <md-card-title >
                     <md-card-title-media>
                         <div class="md-media-sm card-media" >
                             <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
@@ -16,6 +17,7 @@
                 </md-card-title>
 <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="!guest">خروج از حساب کاربری</md-button>
             </md-card>
+                </div>
         </div>
     </md-toolbar>
     <md-content layout-margin dir="rtl" layout-align="center center">
