@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 
 
-module.exports.conn = mysql.createPool({
+var conn = mysql.createPool({
     connectionLimit: 100,
     host: process.env.DB_HOST    ,
     user: process.env.DB_USER,
@@ -9,6 +9,8 @@ module.exports.conn = mysql.createPool({
     database: process.env.DB_NAME,
     supportBigNumbers: true
 });
+
+module.exports.conn = conn;
 
 
 module.exports.objectInsertQuery = function (tableName, obj, callback) {
@@ -19,7 +21,7 @@ module.exports.objectInsertQuery = function (tableName, obj, callback) {
         values.push(obj[key]);
     }
     query = query.substr(0, query.length - 2) + ';';
-    connection.query(query, values, function (err, results, fields) {
+    conn.query(query, values, function (err, results, fields) {
         callback(err, results, fields);
     });
 };
