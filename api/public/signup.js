@@ -105,7 +105,7 @@ router.route('/signup')
                 // or does not match
                 if (reply === null || req.body.sms_code !== reply) {
                     res.status(400).json({
-                        error: ['SMSCodeNotValid']
+                        errors: ['SMSCodeNotValid']
                     });
 
                     return;
