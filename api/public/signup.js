@@ -83,13 +83,13 @@ router.route('/signup')
      * @apiError (400) {sms_code} not_numeric
      * @apiError (400) {sms_code} length_not_5
      *
-     * @apiError (400) SMSCodeNotValid
-     * @apiError (400) noRecommenderUserWithThisCode
+     * @apiError (400) sms_code_not_valid
+     * @apiError (400) no_recommender_user_with_this_code
      *
-     * @apiError (409) duplicateMelli_code
-     * @apiError (409) duplicateEmail
-     * @apiError (409) duplicateMobile_phone
-     * @apiError (409) duplicateUsername
+     * @apiError (409) duplicate_melli_code
+     * @apiError (409) duplicate_email
+     * @apiError (409) duplicate_mobile_phone
+     * @apiError (409) duplicate_username
      */
     .post(function(req, res) {
         req.validateBodyWithSchema(usersModel.schema, 'all', function () {
@@ -105,7 +105,7 @@ router.route('/signup')
                 // or does not match
                 if (reply === null || req.body.sms_code !== reply) {
                     res.status(400).json({
-                        errors: ['SMSCodeNotValid']
+                        errors: ['sms_code_not_valid']
                     });
 
                     return;
@@ -120,7 +120,7 @@ router.route('/signup')
                         if (err === 'serverError') {
                             res.status(500).end();
                         }
-                        else if (err === 'noRecommenderUserWithThisCode') {
+                        else if (err === 'no_recommender_user_with_this_code') {
                             res.status(400).json({
                                 errors: [err]
                             });

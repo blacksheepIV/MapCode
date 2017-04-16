@@ -35,12 +35,12 @@ router.route('/sms')
      *         "sms_code": "34523"
      *     }
      *
-     * @apiError (429) PhoneNumberAlreadyHasACode This phone number already has a registered verification code.
+     * @apiError (429) phone_number_already_has_a_code This phone number already has a registered verification code.
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 429 Too Many Requests
      *     {
-     *         "errors": ["PhoneNumberAlreadyHasACode"]
+     *         "errors": ["no_recommender_user_with_this_code"]
      *     }
      *
      * @apiError (400) {mobile_phone} empty Phone number is empty.
@@ -100,7 +100,7 @@ router.route('/sms')
                     else {
                         // Too many requests
                         res.status(429).json({
-                            errors: ['PhoneNumberAlreadyHasACode']
+                            errors: ['no_recommender_user_with_this_code']
                         });
                     }
                 }

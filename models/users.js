@@ -122,8 +122,8 @@ module.exports.schema = {
 
  Errors:
     - serverError
-    - noRecommenderUserWithThisCode
-    - Array of duplicate rows. e.g. ['duplicateEmail']
+    - no_recommender_user_with_this_code
+    - Array of duplicate rows. e.g. ['duplicate_email']
   */
 module.exports.createNewUser = function (user, callback) {
     function saveUser() {
@@ -189,7 +189,7 @@ module.exports.createNewUser = function (user, callback) {
                 }
                 // There is no user with this code
                 else {
-                    callback('noRecommenderUserWithThisCode');
+                    callback('no_recommender_user_with_this_code');
                     return;
                 }
             });
