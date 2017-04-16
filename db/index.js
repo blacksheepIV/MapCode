@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 
 
-var connection = mysql.createPool({
+module.exports.conn = mysql.createPool({
     connectionLimit: 100,
     host: process.env.DB_HOST    ,
     user: process.env.DB_USER,
@@ -10,7 +10,8 @@ var connection = mysql.createPool({
     supportBigNumbers: true
 });
 
-connection.objectInsertQuery = function (tableName, obj, callback) {
+
+module.exports.objectInsertQuery = function (tableName, obj, callback) {
     var values = [tableName];
     var query = "INSERT INTO ?? SET ";
     for (var key in obj) {
@@ -23,7 +24,8 @@ connection.objectInsertQuery = function (tableName, obj, callback) {
     });
 };
 
-connection.listOfDuplicates = function (err) {
+
+module.exports.listOfDuplicates = function (err) {
     err = String(err);
 
     var fields = err.match(/key '\w+'/g);
@@ -34,5 +36,3 @@ connection.listOfDuplicates = function (err) {
 
     return fields;
 };
-
-module.exports = connection;

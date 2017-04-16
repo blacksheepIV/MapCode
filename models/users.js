@@ -153,7 +153,7 @@ module.exports.createNewUser = function (user, callback) {
                     return;
                 }
 
-                db.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
+                db.conn.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
                     [hashids.encode(results.insertId), results.insertId],
                     function (err) {
                         if (err) {
@@ -171,7 +171,7 @@ module.exports.createNewUser = function (user, callback) {
 
     // We should check the recommender_user existence
     if (user.recommender_user !== undefined) {
-        db.query("SELECT `id` FROM `users` WHERE `code`= ?;",
+        db.conn.query("SELECT `id` FROM `users` WHERE `code`= ?;",
             user.recommender_user,
             function (err, results, fields) {
                 if (err) {
