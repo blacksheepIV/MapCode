@@ -55,7 +55,7 @@ router.use(function (req, res, next) {
 });
 
 router.use(function (req, res, next) {
-    req.validateBodyWithSchema = function (schema, params, callback) {
+    req.validateBodyWithSchema = function (schema, params, callback, ignorables) {
         var newSchema = {};
 
         if (params === 'all') {
@@ -67,14 +67,12 @@ router.use(function (req, res, next) {
         });
 
 
-        if (schema.ignorables !== undefined) {
-            for (var i = 0; i < schema.ignorables.length; i++) {
-                if (req.body[schema.ignorables[i]] === undefined) {
-                    delete newSchema[schema.ignorables[i]];
+        if (ignorables !== undefined) {
+            for (var i = 0; i < ignorables.length; i++) {
+                if (req.body[ignorables[i]] === undefined) {
+                    delete newSchema[ignorables[i]];
                 }
             }
-
-            delete newSchema['ignorables'];
         }
 
         req.checkBody(newSchema);

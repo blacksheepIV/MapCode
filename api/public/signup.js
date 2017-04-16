@@ -127,7 +127,9 @@ router.route('/signup')
                     }
                 });
             });
-        });
+        },
+        // Ignore this field's validation if it does not exist in request
+        ['recommender_user']);
     });
 
 
