@@ -9,7 +9,7 @@
     "update": "echo \"> bower install\" && ./node_modules/.bin/bower install && echo \"> bower update\" && ./node_modules/.bin/bower update",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production",
-    "gen-api-doc": "apidoc -i ./api -o ../documents/api && cd ../documents && git add ./api && git commit && git push",
+    "gen-api-doc": "apidoc -i ./api -o ../documents/api && cd ../documents && git add ./api && git commit",
     "mkdb": "./bin/mkdb",
     "mkdb-new": "./bin/mkdb-new"
   },
