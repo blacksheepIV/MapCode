@@ -85,10 +85,11 @@ router.route('/signup')
      *
      * @apiError (400) SMSCodeNotValid
      * @apiError (400) noRecommenderUserWithThisCode
-     * @apiError (400) duplicateMelli_code
-     * @apiError (400) duplicateEmail
-     * @apiError (400) duplicateMobile_phone
-     * @apiError (400) duplicateUsername
+     *
+     * @apiError (409) duplicateMelli_code
+     * @apiError (409) duplicateEmail
+     * @apiError (409) duplicateMobile_phone
+     * @apiError (409) duplicateUsername
      */
     .post(function(req, res) {
         req.validateBodyWithSchema(usersModel.schema, 'all', function () {
@@ -119,9 +120,15 @@ router.route('/signup')
                         if (err === 'serverError') {
                             res.status(500).end();
                         }
-                        else {
+                        else if (err === 'noRecommenderUserWithThisCode') {
                             res.status(400).json({
-                                errors: Array.isArray(err) ? err : [err]
+                                errors: [err]
+                            });
+                        }
+                        // Duplication error in request fields
+                        else {
+                            res.status(409).json({
+                                errors: err
                             });
                         }
                     }
