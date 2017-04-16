@@ -30,8 +30,7 @@ module.exports.listOfDuplicates = function (err) {
 
     var fields = err.match(/key '\w+'/g);
     for (var i = 0; i < fields.length; i++) {
-        fields[i] = fields[i].substr(5, fields[i].length - 6);
-        fields[i] = 'duplicate' + fields[i][0].toUpperCase() + fields[i].substr(1);
+        fields[i] = "duplicate_" + fields[i].substr(5, fields[i].length - 6);
     }
 
     return fields;
