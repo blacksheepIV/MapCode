@@ -1,17 +1,26 @@
 <md-toolbar md-theme="docs-dark" class="md-tall md-primary md-hue-2" dir="rtl" id="mainHeader">
     <div class="md-toolbar-tools" layout="row">
-        <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" >
-           <span  class="fa fa-ellipsis-v fa-lg"></span>
-           <md-tooltip md-direction="bottom left"> منو</md-tooltip>
-        </md-button>
-
-           <div layout="row" flex="100" layout-align="center top">
-              <input name="SearchBox" id="SearchBox" ng-model="searchBox" placeholder="جستجوی ..."/>
-              <a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a>
-           </div>
+        <div layout="row" flex="auto">
+            <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" >
+                <span  class="fa fa-ellipsis-v fa-lg"></span>
+                <md-tooltip md-direction="bottom left"> منو</md-tooltip>
+             </md-button>
+        </div>
+        <div flex="30"></div>
+           <div layout="column">
             <md-select placeholder="جستجو بر اساس" ng-model="searchTopic">
                 <md-option ng-value="Stopic" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
             </md-select>
+             <!-- <a href="#">جستجوی پیشرفته</a> -->
+           </div>
+        <div flex="5"></div>
+        <div layout="row" flex="100" layout-align="center top">
+            <input name="SearchBox" id="SearchBox" ng-model="searchBox" placeholder="جستجوی ..."/>
+            <!--<a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
+            <md-button  class="md-icon-button md-warn" aria-label="searchBtn">
+                <md-icon md-font-icon="fa fa-search fa-2x"></md-icon>
+            </md-button>
+        </div>
         <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="guest">
             <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
             <md-button class="md-raised md-warn md-hue-2" ng-click="register()">ثبت نام</md-button>
