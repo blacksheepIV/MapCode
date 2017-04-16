@@ -206,3 +206,15 @@ md-sidenav.md-closed.md-locked-open-add-active {
 }
 
 /* contact chip */
+#searchIcon
+{
+    position: absolute;
+    bottom: 4px;
+    left:3px;
+}
+#Myusercard{
+    margin-top: 30px;
+}
+md-card.md-docs-dark-theme{
+    background-color: transparent;
+}

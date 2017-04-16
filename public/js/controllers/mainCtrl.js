@@ -5,8 +5,8 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
     $rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
     $scope.initVar = function(){
         $scope.SearchTopics =[
-            {id:1 , name:'نام نقطه'},
-            {id:2 , name:'کد نقطه'},
+            {id:1 , name:'کد نقطه'},
+            {id:2 , name:'نام نقطه'},
             {id:3 , name:'نام کاربر ثبت کننده نقطه'},
             {id:4 , name:'تگ ها'},
             {id:5 , name:'نام کاربری'},

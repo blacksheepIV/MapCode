@@ -30,6 +30,8 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             credit: 0,
             bonus: 0
         }
+        //var date = persianDate(1492300800*1000).format();
+       // console.log(date);
     }//end ofo function initVars
     //****************************************************************************************************************************************
         $("#Bdate").pDatepicker(
@@ -38,7 +40,6 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
                 altFormat: 'YYYY - MM - DD',
                 format:'YYYY - MM - DD dddd',
                 viewMode : "year",
-                persianDigit: true,
                 position: "auto",
                 autoClose: true
             });
@@ -57,6 +58,18 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
         );
     };
     //******************************************************************************************************************
+    $scope.showSucces = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('تبریک')
+                .textContent('ثبت نام با موفقیت انجام شد!')
+                .ariaLabel('AlertDialog')
+                .ok('مرسی')
+                .targetEvent(ev)
+        );
+    };
     //******************************************************************************************************************
 $scope.levelPage = function(level){
      switch (level){
@@ -92,11 +105,11 @@ $scope.levelPage = function(level){
                 data : cellNum
             }).then(
                 function(response){
-                    //console.log(response.data.sms_code);
+                    console.log(response.data.sms_code);
                     $rootScope.obtainedCode = response.data.sms_code;
                 },
                 function(response){
-                    console.log("failure"+response);
+                    console.log(response); //failure
                 }
             );
             $scope.levelPage(2);
@@ -119,8 +132,9 @@ $scope.levelPage = function(level){
     //********************************************************************************************************************
     $scope.finSignUp = function(){
         if($scope.v_code == $rootScope.obtainedCode){
-            console.log("SuccessFull signUp");
+            console.log("SuccessFull codeMatch");
             //where the hell this token thing gets activated???
+           // $rootScope.user.cDate.split()
             if($rootScope.user.recommender_user === '')
                 $http({
                         url: "http://localhost:3000/api/signup",
@@ -129,7 +143,7 @@ $scope.levelPage = function(level){
                             name:$rootScope.user.name,
                             melli_code: $rootScope.user.melli_code,
                             email: $rootScope.user.email,
-                            date: $rootScope.user.date,
+                            date: $rootScope.user.cDate,
                             mobile_phone: $rootScope.user.mobile_phone,
                             username: $rootScope.user.username,
                             password: $rootScope.user.password,
@@ -138,9 +152,16 @@ $scope.levelPage = function(level){
                         }
                     }
                 ).then(function(response){
-                    $location.path('/');
+                    if(response.status == 201) {
+                        console.log("Successful log");
+                        $scope.showSucces();
+                        $location.path('/');
+                    }
                 },function(response){
-                    console.log(response);
+                    if(response.status == 409)
+                        console.log('کاربر قبلا ثبت نام کرده');
+                    else
+                       console.log(response);
                 });
             else
                $http({
@@ -150,7 +171,7 @@ $scope.levelPage = function(level){
                         name:$rootScope.user.name,
                         melli_code: $rootScope.user.melli_code,
                         email: $rootScope.user.email,
-                        date: $rootScope.user.date,
+                        date: $rootScope.user.cDate,
                         mobile_phone: $rootScope.user.mobile_phone,
                         username: $rootScope.user.username,
                         password: $rootScope.user.password,
@@ -162,10 +183,14 @@ $scope.levelPage = function(level){
             ).then(function(response){
                 $location.path('/');
             },function(response){
-                console.log(response);
+                   if(response.status == 409)
+                       console.log('کاربر قبلا ثبت نام کرده');
+                   else
+                       console.log(response);
             });
 
-        }
+        }//end if
+
         else{
             console.log("Wrong verification code!!!");
         }
