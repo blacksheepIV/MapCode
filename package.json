@@ -17,7 +17,7 @@
     "name": "ProjectM",
     "title": "ProjectM API",
     "url": "http://mapcode.ir/api",
-    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500 there is a server error."
+    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500: there is a server error."
   },
   "dependencies": {
     "bcryptjs": "latest",
