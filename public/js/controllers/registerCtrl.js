@@ -1,10 +1,11 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http){
+var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,$filter){
     $scope.reSend = false;
     $scope.resubmits = 0; //counts the times user asked for resubmission
     $scope.v_code= 0;
+    $scope.holding = [];
     $scope.initvars = function (){
        // $scope.is2ndPage = false;
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
@@ -15,7 +16,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             name: '',
             melli_code: 0,
             email: '',
-            cDate: '1-1-1300',
+            cDate: '',
             mobile_phone: '',
             phone: '',
             username: '',
@@ -30,19 +31,9 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             credit: 0,
             bonus: 0
         }
-        //var date = persianDate(1492300800*1000).format();
-       // console.log(date);
     }//end ofo function initVars
     //****************************************************************************************************************************************
-        $("#Bdate").pDatepicker(
-            {
-                altField: '#BdateALT',
-                altFormat: 'YYYY - MM - DD',
-                format:'YYYY - MM - DD dddd',
-                viewMode : "year",
-                position: "auto",
-                autoClose: true
-            });
+
 
     //****************************************************************************************************************************************
     $scope.showAlert = function(ev) {
@@ -81,7 +72,7 @@ $scope.levelPage = function(level){
              break;
          case 2:
              $rootScope.pageTitle = "تایید ثبت نام"
-             userService.setUserInfo($rootScope.user);
+            // userService.setUserInfo($rootScope.user);
              console.log($rootScope.user);
              $location.path('/verify');
              break;
@@ -94,11 +85,15 @@ $scope.levelPage = function(level){
         //console.log("پسوردها مشابه نیستند!!!");
            $scope.showAlert($event)
         else {
-            console.log($rootScope.user.date);
+            console.log($rootScope.user.cDate);
+            $rootScope.sth=$rootScope.user.cDate;
+            console.log($rootScope.sth);
             var cellNum = {
 
                 mobile_phone: $rootScope.user.mobile_phone
+
             };
+            console.log($rootScope.user.mobile_phone);
             $http({
                 url :"http://localhost:3000/api/sms" ,
                 method: "POST" ,
@@ -116,9 +111,9 @@ $scope.levelPage = function(level){
         }
     }
     //******************************************************************************************************************
-
         $scope.counter = 120;
         $scope.onTimeout=function(){
+           // console.log($rootScope.user.cDate / 1000);
             $scope.counter --;
             mytimeout = $timeout($scope.onTimeout,1000);
             if($scope.counter == 0) {
@@ -128,13 +123,24 @@ $scope.levelPage = function(level){
             }
         }//end of function on time out
         var mytimeout = $timeout($scope.onTimeout,1000);
-
+     //*******************************************************************************************************************
     //********************************************************************************************************************
     $scope.finSignUp = function(){
         if($scope.v_code == $rootScope.obtainedCode){
             console.log("SuccessFull codeMatch");
             //where the hell this token thing gets activated???
-           // $rootScope.user.cDate.split()
+            console.log( $rootScope.user.cDate);
+            console.log($rootScope.sth);
+           // var a = $rootScope.sth/1000;
+           // console.log(a);
+          var date = new Date($rootScope.sth*10);
+           // var userDate = $filter('date')(new Date(a), 'YYYY - MM - dd');
+            console.log(date);
+          //  var year= date.getFullYear();
+          //  var month= date.getMonth();
+         //   var day= date.getDate();
+          //  var userDate = year +"-" + month + "-" + day;
+          //  console.log(userDate);
             if($rootScope.user.recommender_user === '')
                 $http({
                         url: "http://localhost:3000/api/signup",
@@ -143,7 +149,7 @@ $scope.levelPage = function(level){
                             name:$rootScope.user.name,
                             melli_code: $rootScope.user.melli_code,
                             email: $rootScope.user.email,
-                            date: $rootScope.user.cDate,
+                            date:  $rootScope.user.cDate,
                             mobile_phone: $rootScope.user.mobile_phone,
                             username: $rootScope.user.username,
                             password: $rootScope.user.password,
@@ -171,7 +177,7 @@ $scope.levelPage = function(level){
                         name:$rootScope.user.name,
                         melli_code: $rootScope.user.melli_code,
                         email: $rootScope.user.email,
-                        date: $rootScope.user.cDate,
+                        date:  $rootScope.user.cDate,
                         mobile_phone: $rootScope.user.mobile_phone,
                         username: $rootScope.user.username,
                         password: $rootScope.user.password,
@@ -219,5 +225,13 @@ $scope.levelPage = function(level){
         console.log($scope.resubmits);
     }
     //******************************************************Persian_DatePicker config*********************************************************
-
+    $("#Bdate").pDatepicker(
+        {
+            altField: '#BdateALT',
+            altFormat: 'YYYY - MM - DD',
+            format:'YYYY - MM - DD dddd',
+            viewMode : "year",
+            position: "auto",
+            autoClose: true
+        });
 }//end of registerCtrl

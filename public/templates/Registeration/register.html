@@ -102,25 +102,26 @@
                        </div>
                    </md-input-container>
                    <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
+                 <!--  <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label>تلفن ثابت:</label>
-                       <!-- * -->  <input type="tel" name="phoneNum" ng-model="user.phone" ng-disabled="user.type!= 2"
+                       <input type="tel" name="phoneNum" ng-model="user.phone" ng-disabled="user.type!= 2"
                                           ng-required="user.type == 2" ng-minlength="user.type != 2 ? false:11" ng-maxlength="user.type!= 2 ? false:11"/>
                        <div ng-messages="registrationForm.phoneNum.$error" ng-if="registrationForm.phoneNum.$touched">
                            <p ng-message="required">وارد کردن شماره تلفن الزامی است.</p>
                            <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
                            <div ng-message="minlength">شماره تلفن نامعتبر!</div>
                        </div>
+                   </md-input-container>  -->
+                   <md-input-container flex="25" flex-xs="70" class="md-block">
+                       <label>کدثبت:</label> <!-- what it looks like -->
+                       <input type="text" name="code" ng-model="user.code" ng-disabled="user.type!= 2" ng-required="user.type == 2"/><!-- * -->
                    </md-input-container>
                </div>
                <!-- 4th row -->
                <!-- 5th row -->
                <div layout="row" layout-xs="column">
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>کدثبت:</label> <!-- what it looks like -->
-                       <input type="text" name="code" ng-model="user.code" ng-disabled="user.type!= 2" ng-required="user.type == 2"/><!-- * -->
-                   </md-input-container>
-                   <div flex="5"></div>
+
+                    <!-- <div flex="30"></div> -->
                    <div flex="25" flex-xs="70">
                        <md-checkbox ng-model="user.isRecommended" class="md-warn md-align-bottom-right">از طریق  معرف با سایت آشنا شدم</md-checkbox>
                    </div>
