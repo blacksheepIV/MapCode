@@ -9,7 +9,7 @@
     "update": "echo \"> bower install\" && ./node_modules/.bin/bower install && echo \"> bower update\" && ./node_modules/.bin/bower update",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
     "deploy": "pm2 deploy production",
-    "gen-api-doc": "apidoc -i ./api -o ../documents/api && cd ../documents && git add ./api && git commit",
+    "gen-api-doc": "apidoc -i ./api -o ../documents/api",
     "mkdb": "./bin/mkdb",
     "mkdb-new": "./bin/mkdb-new"
   },
@@ -33,6 +33,7 @@
     "express-validator": "^3.1.3",
     "hashids": "^1.1.1",
     "helmet": "^3.5.0",
+    "jsonwebtoken": "^7.3.0",
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "randomstring": "^1.1.5",

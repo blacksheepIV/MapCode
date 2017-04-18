@@ -8,3 +8,5 @@
 - Auto minimize front-end sources
 
 - Check XSS
+
+- Signup API : Retry if hashids generated a duplicate code

@@ -114,7 +114,11 @@ getDirJsFiles(__dirname, '/public/', function (jsFiles) {
 
 getDirJsFiles(__dirname, '/private/', function (jsFiles) {
     jsFiles.forEach(function (private_api) {
-        router.use(require(private_api));
+        router.use(
+            jwt.JWTCheck,
+            require(private_api),
+            jwt.JWTErrorHandler
+        );
     });
 });
 
