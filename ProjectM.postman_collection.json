@@ -25,7 +25,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"حمیدرضا\",\n\t\"melli_code\": \"1234567890\",\n\t\"email\": \"h.mahdavipanah@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"mobile_phone\": \"09378887744\",\n\t\"username\": \"mahdavipanah\",\n\t\"password\": \"123456\",\n\t\"type\": \"0\",\n\t\"sms_code\": \"24906\",\n\t\"__OPTIONAL__recommender_user\": \"1234567890\"\n}"
+							"raw": "{\n\t\"name\": \"حمیدرضا\",\n\t\"melli_code\": \"1234567890\",\n\t\"email\": \"h.mahdavipanah@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"mobile_phone\": \"09378887744\",\n\t\"username\": \"mahdavipanah\",\n\t\"password\": \"123456\",\n\t\"type\": \"0\",\n\t\"sms_code\": \"13976\",\n\t\"__OPTIONAL__recommender_user\": \"1234567890\"\n}"
 						},
 						"description": ""
 					},
@@ -46,6 +46,26 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"mobile_phone\": \"09378887744\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"url": "http://localhost:3000/api/signin?m",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"alireza\",\n\t\"password\": \"123456\"\n}"
 						},
 						"description": ""
 					},
