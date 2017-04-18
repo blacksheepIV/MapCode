@@ -173,7 +173,7 @@ module.exports.createNewUser = function (user, callback) {
     if (user.recommender_user !== undefined) {
         db.conn.query("SELECT `id` FROM `users` WHERE `code`= ?;",
             user.recommender_user,
-            function (err, results, fields) {
+            function (err, results) {
                 if (err) {
                     callback('serverError');
                     console.error("MySQL: Error happened in checking signup recommender_user existence: %s", err);
@@ -196,4 +196,49 @@ module.exports.createNewUser = function (user, callback) {
     }
     else
         saveUser();
+};
+
+
+/*
+ Checks if there is a user with given username and password
+
+ Errors:
+    - serverError
+    - username_or_password_is_wrong
+ */
+module.exports.signIn = function (username, password, callback) {
+    // Try to retrieve user's info with given username from DB
+    db.conn.query("SELECT `password`, `code` from `users` WHERE `username` = ?",
+        username,
+        function (err, results) {
+            if (err) {
+                callback('serverError');
+                console.error("MySQL: Error in retrieving user's info for signin: %s", err);
+                return;
+            }
+
+            // If no user found with given username
+            if (results.length === 0) {
+                callback('username_or_password_is_wrong');
+            }
+            else {
+                // Check password
+                bcrypt.compare(password, results[0].password, function (err, result) {
+                    if (err) {
+                        callback('serverError');
+                        console.error("bcryptjs: Error in comparing password in signin: %s", err);
+                    }
+                    else {
+                        // If password does not match
+                        if (result === false) {
+                            callback('username_or_password_is_wrong');
+                        }
+                        else {
+                            callback(null, results[0].code);
+                        }
+                    }
+                });
+            }
+        }
+    );
 };

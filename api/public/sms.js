@@ -40,7 +40,7 @@ router.route('/sms')
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 429 Too Many Requests
      *     {
-     *         "errors": ["no_recommender_user_with_this_code"]
+     *         "errors": ["mobile_phone_already_has_a_code"]
      *     }
      *
      * @apiError (400) {mobile_phone} empty Phone number is empty.
@@ -100,7 +100,7 @@ router.route('/sms')
                     else {
                         // Too many requests
                         res.status(429).json({
-                            errors: ['no_recommender_user_with_this_code']
+                            errors: ['mobile_phone_already_has_a_code']
                         });
                     }
                 }

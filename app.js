@@ -15,7 +15,7 @@ process.on('SIGINT', function() {
     // Close http server
     app.http_server.close();
     // Close MySQL connection pool
-    require('./db').end(function (mysqlError) {
+    require('./db').conn.end(function (mysqlError) {
         if (mysqlError)
             console.error("Error happened in closing MySQL connection pool: %s", mysqlError);
 

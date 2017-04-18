@@ -1,6 +1,8 @@
 var path = require('path');
 
 var jwt = require('express-jwt');
+var jsonwebtoken = require('jsonwebtoken');
+var randomstring = require('randomstring');
 
 var redis = require('./redis');
 
@@ -44,8 +46,46 @@ module.exports.JWTCheck = jwt({
         )
     }
 });
+
+
 module.exports.JWTErrorHandler = function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         res.status(401).end();
     }
+};
+
+
+/*
+ Generates a new JWT and stores it in Redis
+
+ Errors:
+    - serverError
+ */
+module.exports.generateToken = function (userCode, isMobile, callback) {
+    var jti = randomstring.generate({length: 5});
+
+    jsonwebtoken.sign({
+        userCode: userCode,
+        jti: jti
+    }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
+        if (err) {
+            callback('serverError');
+            console.error("jsonwebtoken: Error in generating a new JWT: %s", err);
+        }
+        else {
+            redis.set(
+                process.env.REDIS_PREFIX + 'user:' + userCode + (isMobile === true ? ':mtoken' : ':wtoken'),
+                jti,
+                function (err, reply) {
+                    if (err) {
+                        callback('serverError');
+                        console.error('Redis: Error in setting JWT key for new generated JWT in Signin: %s', err);
+                    }
+                    else {
+                        callback(null, token);
+                    }
+                }
+            );
+        }
+    });
 };
