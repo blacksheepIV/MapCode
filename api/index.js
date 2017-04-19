@@ -28,6 +28,13 @@ router.use(expressValidator({
         },
         isOneOf: function (str, values) {
             return values.includes(String(str));
+        },
+        isDecimal: function(str, options) {
+            str = String(str);
+
+            var re = new RegExp('^-?[0-9]{1,' + (options[0] - options[1]) + '}(.[0-9]{1,' + options[1] + '})?$');
+
+            return re.test(str);
         }
     }
 }));
