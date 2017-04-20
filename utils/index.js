@@ -18,9 +18,9 @@ module.exports.getDirJsFiles = function (baseDir, dir, callback) {
                     jsFiles.push(path.join(dirAbPath, file));
                 }
             });
-            callback(jsFiles);
+            callback(null, jsFiles);
         } else {
-            console.error("API Loader: Directory '%s' not exists.", dirAbPath);
+            callback('dirNotExists');
         }
     });
 };
