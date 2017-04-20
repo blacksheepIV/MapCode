@@ -25,7 +25,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"حمیدرضا\",\n\t\"melli_code\": \"1234567890\",\n\t\"email\": \"h.mahdavipanah@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"mobile_phone\": \"09378887744\",\n\t\"username\": \"mahdavipanah\",\n\t\"password\": \"123456\",\n\t\"type\": \"0\",\n\t\"sms_code\": \"13976\",\n\t\"__OPTIONAL__recommender_user\": \"1234567890\"\n}"
+							"raw": "{\n\t\"name\": \"علیرضا\",\n\t\"melli_code\": \"1234567654\",\n\t\"email\": \"a.alireza@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"mobile_phone\": \"09368765417\",\n\t\"username\": \"alireza\",\n\t\"password\": \"123456\",\n\t\"type\": \"0\",\n\t\"sms_code\": \"53935\",\n\t\"__OPTIONAL__recommender_user\": \"1234567890\"\n}"
 						},
 						"description": ""
 					},
@@ -45,7 +45,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"mobile_phone\": \"09378887744\"\n}"
+							"raw": "{\n\t\"mobile_phone\": \"09368765417\"\n}"
 						},
 						"description": ""
 					},
@@ -66,6 +66,31 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"username\": \"alireza\",\n\t\"password\": \"123456\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Point submission",
+					"request": {
+						"url": "http://localhost:3000/api/point",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImp0aSI6IkZsVERCIn0.JLd5LzZcEXT_Gg2NX7NqaNlqkU2XVSR1NSzLLrqoyXA",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"lat\": \"21.323\",\n\t\"lng\": \"32.3343\",\n\t\"name\": \"پیتزا آرشین\",\n\t\"phone\": \"03155447658\",\n\t\"province\": \"اصفهان\",\n\t\"city\": \"کاشان\",\n\t\"address\": \"خیابان امیرکبیر\",\n\t\"public\": \"1\"\n}"
 						},
 						"description": ""
 					},

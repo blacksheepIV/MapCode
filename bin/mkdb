@@ -44,5 +44,7 @@ echo "> Executing SQL files...";
 
 execute_sql_file $SQLDIR"create-tables.sql";
 
+execute_sql_file $SQLDIR"create-procedures.sql";
+
 
 exit 0;

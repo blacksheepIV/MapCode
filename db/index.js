@@ -7,7 +7,8 @@ var conn = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    supportBigNumbers: true
+    supportBigNumbers: true,
+    multipleStatements: true
 });
 
 module.exports.conn = conn;
