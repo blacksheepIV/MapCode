@@ -1,8 +1,12 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken){
     $rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
+    console.log(authenticationToken.isAuthenticated);
+    if(authenticationToken.isAuthenticated)
+        $rootScope.isUser = true;
+    console.log( $rootScope.isUser );
     $scope.initVar = function(){
         $scope.SearchTopics =[
             {id:1 , name:'کد نقطه'},
@@ -11,37 +15,26 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
             {id:4 , name:'تگ ها'},
             {id:5 , name:'نام کاربری'},
         ] ;
-        var map = new google.maps.Map(document.getElementById('map'),{
+        $scope.map = new google.maps.Map(document.getElementById('map'),{
             center:{lat:33.9870993,lng:51.4405203},
             zoom:10
         });
-        var infoWindow = new google.maps.InfoWindow;
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
 
-                infoWindow.setPosition(pos);
-                infoWindow.setContent('شما اینجایید.');
-                infoWindow.open(map);
-                map.setCenter(pos);
-            }, function() {
-                handleLocationError(true, infoWindow, map.getCenter());
+       /* var marker = new google.maps.Marker({
+            position:{lat:33.9870993,lng:51.4405203},
+            map:map,
+            draggable:true,
+            title:"drag me!"
+        }); */
+        google.maps.event.addListener($scope.map, 'click', function(event) {
+            placeMarker(event.latLng);
+        });
+
+        function placeMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location,
+                map: $scope.map
             });
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
-        }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-            infoWindow.open(map);
         }
 
     }//end of initVar
@@ -71,5 +64,52 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location){
         //sth needed to distroy user's session/token,whatever
     }
     //******************************************************************************************************************
+    var last = {
+        bottom: true,
+        top: false,
+        left: true,
+        right: false
+    };
 
+    $scope.toastPosition = angular.extend({},last);
+
+    $scope.getToastPosition = function() {
+        sanitizePosition();
+
+        return Object.keys($scope.toastPosition)
+            .filter(function(pos) { return $scope.toastPosition[pos]; })
+            .join(' ');
+    };
+
+    function sanitizePosition() {
+        var current = $scope.toastPosition;
+
+        if ( current.bottom && last.top ) current.top = false;
+        if ( current.top && last.bottom ) current.bottom = false;
+        if ( current.right && last.left ) current.left = false;
+        if ( current.left && last.right ) current.right = false;
+
+        last = angular.extend({},current);
+    }
+    //******************************************************************************************************************
+     function showSimpleToast (){
+         var pinTo = $scope.getToastPosition();
+         $mdToast.show(
+             $mdToast.simple()
+                 .textContent('روی نقشه بیشتر زوم کنید')
+                 .position(pinTo )
+                 .hideDelay(3000)
+         );
+    };
+    //******************************************************************************************************************
+$scope.addPoint = function(){
+    $scope.toggleRight();
+    if($scope.map.getZoom() < 15) {
+        showSimpleToast();
+        $scope.map.addListener('zoom_changed', function () {
+            console.log("user just zoomed the map in.");
+            console.log($scope.map.getZoom());
+        });
+    } //end if condition
+}//end of addPoint
 }//end of main controller

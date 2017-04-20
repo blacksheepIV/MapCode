@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-mapCodeApp.config(function ($routeProvider, $locationProvider) {
+mapCodeApp.config(function ($routeProvider, $locationProvider,$httpProvider) {
     $routeProvider
         .when("/", {
             //templateUrl: "./templates/login.html"
@@ -20,9 +20,9 @@ mapCodeApp.config(function ($routeProvider, $locationProvider) {
             templateUrl:"./templates/Panel/userPanel.html"
         })
         .otherwise({
-           template: "<h2>oh oh!Nothing went Right!!!</h2>"
+            redirectTo:"/"
         });
-
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
 });

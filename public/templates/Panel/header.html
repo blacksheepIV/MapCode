@@ -26,7 +26,7 @@
                 <md-icon md-font-icon="fa fa-search fa-2x" id="searchIcon"></md-icon>
             </md-button>
         </div>
-        <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="guest">
+        <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="!isUser">
             <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
             <md-button class="md-raised md-warn md-hue-2" ng-click="register()">ثبت نام</md-button>
         </div>
