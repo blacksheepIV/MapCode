@@ -6,7 +6,7 @@ var authenticationToken = function(localStorageService){
         savedToken : null,
     isAuthenticated :false ,
        setToken:function(token) {
-           savedToken = token;
+           authToken.savedToken = token;
            if (localStorageService.isSupported) {
                localStorageService.set('userToken', token);
                isAuthenticated = true;
@@ -15,12 +15,12 @@ var authenticationToken = function(localStorageService){
                console.log("localSession is not supported");
        },
         getToken:function () {
-           if(!savedToken)
-              savedToken=localStorageService.get('userToken');
-           return savedToken;
+           if(! authToken.savedToken)
+               authToken.savedToken=localStorageService.get('userToken');
+           return authToken.savedToken;
         },
         removeToken:function(){
-            savedToken = null;
+            authToken.savedToken = null;
             localStorageService.remove('userToken');
             isAuthenticated = false;
         }
