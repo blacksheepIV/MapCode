@@ -15,26 +15,26 @@ module.exports.JWTCheck = jwt({
         return null;
     },
     isRevoked: function (req, payload, done) {
-        redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':wtoken',
+        redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userId + ':wtoken',
             function (err, reply) {
                 if (err) {
                     done(err);
                     return;
                 }
                 if (reply !== null) {
-                    if (payload.jti == reply) {
+                    if (payload.jti === reply) {
                         done(null, false);
                         return;
                     }
                 }
-                redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userCode + ':mtoken',
+                redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userId + ':mtoken',
                     function (err, reply) {
                         if (err) {
                             done(err);
                             return;
                         }
                         if (reply !== null) {
-                            if (payload.jti == reply) {
+                            if (payload.jti === reply) {
                                 done(null, false);
                                 return;
                             }
@@ -61,11 +61,11 @@ module.exports.JWTErrorHandler = function (err, req, res, next) {
  Errors:
     - serverError
  */
-module.exports.generateToken = function (userCode, isMobile, callback) {
+module.exports.generateToken = function (userId, isMobile, callback) {
     var jti = randomstring.generate({length: 5});
 
     jsonwebtoken.sign({
-        userCode: userCode,
+        userId: userId,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
         if (err) {
@@ -74,7 +74,7 @@ module.exports.generateToken = function (userCode, isMobile, callback) {
         }
         else {
             redis.set(
-                process.env.REDIS_PREFIX + 'user:' + userCode + (isMobile === true ? ':mtoken' : ':wtoken'),
+                process.env.REDIS_PREFIX + 'user:' + String(userId) + (isMobile === true ? ':mtoken' : ':wtoken'),
                 jti,
                 function (err, reply) {
                     if (err) {

@@ -69,7 +69,7 @@ describe('SMS', function () {
                             res.should.be.json;
                             res.body.should.have.property('errors');
                             res.body.errors.should.be.a('array');
-                            res.body.errors.should.include('PhoneNumberAlreadyHasACode');
+                            res.body.errors.should.include('mobile_phone_already_has_a_code');
 
                             redis.del(smsModel.phoneNumberKey(mobile_phone));
 

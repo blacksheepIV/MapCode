@@ -10,6 +10,7 @@
 - Check XSS
 
 - Signup API : Retry if hashids generated a duplicate code
+- Point POST API : Retry if hashids generated a duplicate code
 
 - Proper express-connect-like error handling in APIs
 
