@@ -53,9 +53,8 @@
     For the first time, if you have created the database just
     execute the first command, otherwise execute the second one.
 
-    `--dummy-inserts`
-        Add this argument to npm run mkdb if you want to insert some
-        dummy rows into database tables.
+    `npm run mkdb -- dummy-inserts`
+        Insert some dummy rows into database tables.
 
     Note: Use `npm run mkdb` for MySQL version < 5.6
           and `npm run mkdb-new` for MySQL version >= 5.6
