@@ -27,12 +27,18 @@ router.use(expressValidator({
             return /^[a-zA-Z]([a-zA-Z-0-9]|_)*$/.test(str);
         },
         isOneOf: function (str, values) {
-            return values.includes(String(str));
+            // Convert param to string
+            str = String(str);
+            for (var i = 1; i < arguments.length; i++)
+                if (arguments[i] ===  str)
+                    return true;
+
+            return false;
         },
-        isDecimal: function(str, options) {
+        isDecimal: function(str, M, D) {
             str = String(str);
 
-            var re = new RegExp('^-?[0-9]{1,' + (options[0] - options[1]) + '}(.[0-9]{1,' + options[1] + '})?$');
+            var re = new RegExp('^-?[0-9]{1,' + (M - D) + '}(.[0-9]{1,' + D + '})?$');
 
             return re.test(str);
         }
