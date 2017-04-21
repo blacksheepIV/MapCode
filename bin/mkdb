@@ -35,7 +35,7 @@ SQLDIR=$DIR"/../db/sql/";
 
 if [ "$1" = "dummy-inserts" ]; then
     echo "> Inserting dummy rows...";
-    mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql" || exit 1;
+    execute_sql_file $SQLDIR"dummy-inserts.sql";
 
     exit 0;
 fi
