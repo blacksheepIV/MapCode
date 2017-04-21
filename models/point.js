@@ -120,7 +120,7 @@ module.exports.addPoint = function (point, callback) {
             else if (procErr !== 0) {
                 if (procErr === 2) {
                     callback('owner_not_found');
-                    console.error("!!!: A non existing user have passed auth and is requesting to submit a point!");
+                    console.error("!!!: A non existing user have passed auth and is requesting to submit a point!: user's id: %s", point.owner);
                 }
                 else {
                     callback('not_enough_credit_bonus');
