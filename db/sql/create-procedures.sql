@@ -4,6 +4,7 @@
      2 : Owner not found
      3 : Not enough credit and bonus
  */
+DELIMITER ~
 CREATE PROCEDURE `addPoint`
   (
     IN  `owner`           MEDIUMINT UNSIGNED,
@@ -25,7 +26,7 @@ CREATE PROCEDURE `addPoint`
                           COLLATE utf8_persian_ci,
     IN  `public`          BOOLEAN,
 
-    OUT insert_id         INT UNSIGNED,
+    OUT `insert_id`       INT UNSIGNED,
     OUT `err`             TINYINT UNSIGNED
   )
     PROC: BEGIN
@@ -107,4 +108,5 @@ CREATE PROCEDURE `addPoint`
 
     -- Success
     SET err = 0;
-  END;
+  END~
+  delimiter ;
