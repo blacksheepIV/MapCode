@@ -96,8 +96,9 @@ CREATE PROCEDURE `addPoint`
     IF bonus = 0
     THEN
       SET @column_name = 'credit';
-      SET @column_value = credit - 1;
+      SET @column_value = credit;
     END IF;
+    SET @column_value = @column_value - 1;
     SET @owner = owner;
     SET @query = CONCAT('UPDATE `users` SET `', @column_name, '` = ? WHERE `id` = ?');
     PREPARE decrease_credit_bonus_statement FROM @query;
