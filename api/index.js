@@ -27,7 +27,20 @@ router.use(expressValidator({
             return /^[a-zA-Z]([a-zA-Z-0-9]|_)*$/.test(str);
         },
         isOneOf: function (str, values) {
-            return values.includes(String(str));
+            // Convert param to string
+            str = String(str);
+            for (var i = 1; i < arguments.length; i++)
+                if (arguments[i] ===  str)
+                    return true;
+
+            return false;
+        },
+        isDecimal: function(str, M, D) {
+            str = String(str);
+
+            var re = new RegExp('^-?[0-9]{1,' + (M - D) + '}(.[0-9]{1,' + D + '})?$');
+
+            return re.test(str);
         }
     }
 }));
@@ -106,20 +119,24 @@ router.use(function (req, res, next) {
     next();
 });
 
-getDirJsFiles(__dirname, '/public/', function (jsFiles) {
-    jsFiles.forEach(function (public_api) {
-        router.use(require(public_api));
-    });
+getDirJsFiles(__dirname, '/public/', function (err, jsFiles) {
+    if (!err) {
+        jsFiles.forEach(function (public_api) {
+            router.use(require(public_api));
+        });
+    }
 });
 
-getDirJsFiles(__dirname, '/private/', function (jsFiles) {
-    jsFiles.forEach(function (private_api) {
-        router.use(
-            jwt.JWTCheck,
-            require(private_api),
-            jwt.JWTErrorHandler
-        );
-    });
+getDirJsFiles(__dirname, '/private/', function (err, jsFiles) {
+    if (!err) {
+        jsFiles.forEach(function (private_api) {
+            router.use(
+                jwt.JWTCheck,
+                require(private_api),
+                jwt.JWTErrorHandler
+            );
+        });
+    }
 });
 
 module.exports = router;

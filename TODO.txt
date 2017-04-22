@@ -10,3 +10,4 @@
 - Check XSS
 
 - Signup API : Retry if hashids generated a duplicate code
+- Point POST API : Retry if hashids generated a duplicate code

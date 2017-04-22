@@ -28,13 +28,18 @@ SOURCE="${BASH_SOURCE[0]}";
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )";
 SQLDIR=$DIR"/../db/sql/";
 
+if [ "$1" = "dummy-inserts" ]; then
+    echo "> Inserting dummy rows...";
+    mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql" || exit 1;
+
+    exit 0;
+fi
+
 echo "> Executing SQL files...";
 
 mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-tables.sql" || exit 1;
 
-if [ "$1" = "dummy-inserts" ]; then
-    mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql" || exit 1;
-fi
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-procedures.sql" || exit 1;
 
 
 exit 0;
