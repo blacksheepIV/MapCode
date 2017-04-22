@@ -53,7 +53,7 @@ module.exports.getFromBy = function (columns, table, conditions, callback) {
 
     query += "WHERE ";
     var keys = Object.keys(conditions);
-    for (var i = 0; i < keys.length; i++) {
+    for (i = 0; i < keys.length; i++) {
         query += '?? = ?' + (i !== keys.length - 1 ? 'AND ' : ';');
         values.push(keys[i], conditions[keys[i]]);
     }

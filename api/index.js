@@ -13,7 +13,7 @@ router.use(expressValidator({
         isPersianString: function (str) {
             if (typeof str !== 'string')
                 return false;
-
+            /* jshint -W100 */
             return /^(ء|أ|آ|ا|ب|پ|ت|ث|ج|چ|ح|خ|د|ذ|ر|ز|ژ|س|ش|ص|ض|ط|ظ|ع|غ|ف|ق|ک|گ|ل|م|ن|و|ه|ی| |‌)+$/
                 .test(str);
         },
@@ -72,7 +72,7 @@ router.use(function (req, res, next) {
         var newSchema = {};
 
         if (params === 'all') {
-            params = Object.keys(schema)
+            params = Object.keys(schema);
         }
 
         params.forEach(function (param) {

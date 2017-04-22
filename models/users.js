@@ -181,7 +181,7 @@ module.exports.createNewUser = function (user, callback) {
                 }
 
                 // There is a user with this code
-                if (results.length != 0) {
+                if (results.length !== 0) {
                     // Change recommender_user field from code to id
                     user.recommender_user = results[0].id;
 

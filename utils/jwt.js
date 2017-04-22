@@ -41,9 +41,9 @@ module.exports.JWTCheck = jwt({
                         }
                         done(null, true);
                     }
-                )
+                );
             }
-        )
+        );
     }
 });
 

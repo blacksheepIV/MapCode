@@ -93,8 +93,7 @@ module.exports.schema = {
  */
 module.exports.addPoint = function (point, callback) {
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @insert_id, @err); \
-         SELECT @err AS `err`, @insert_id AS `insertId`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @insert_id, @err); SELECT @err AS `err`, @insert_id AS `insertId`;",
         [
             point.owner,
             point.lat,
