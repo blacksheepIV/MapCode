@@ -1,7 +1,6 @@
 var router = require('express').Router();
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
-var validator = require('validator');
 
 var getDirJsFiles = require('../utils/').getDirJsFiles;
 var jwt = require('../utils/jwt');
@@ -93,8 +92,8 @@ router.use(function (req, res, next) {
         req.getValidationResult().then(function (result) {
             // Parameters are not valid
             if (!result.isEmpty()) {
-                errorMessages = {};
-                resultArray = result.array();
+                var errorMessages = {};
+                var resultArray = result.array();
                 for (var i = 0; i < resultArray.length; i++) {
                     if (typeof errorMessages[resultArray[i].param] === 'undefined')
                         errorMessages[resultArray[i].param] = [];

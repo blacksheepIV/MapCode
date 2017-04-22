@@ -1,5 +1,3 @@
-var path = require('path');
-
 var jwt = require('express-jwt');
 var jsonwebtoken = require('jsonwebtoken');
 var randomstring = require('randomstring');
