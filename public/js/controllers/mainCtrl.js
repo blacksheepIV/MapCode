@@ -2,9 +2,10 @@
  * Created by blackSheep on 03-Apr-17.
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken){
-    $rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
-    console.log(authenticationToken.isAuthenticated);
-    if(authenticationToken.isAuthenticated)
+    //$rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
+    console.log(authenticationToken.getToken());
+    //console.log(authenticationToken.isAuthenticated);
+    if(authenticationToken.getToken())
         $rootScope.isUser = true;
     console.log( $rootScope.isUser );
     $scope.initVar = function(){
@@ -13,29 +14,22 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
             {id:2 , name:'نام نقطه'},
             {id:3 , name:'نام کاربر ثبت کننده نقطه'},
             {id:4 , name:'تگ ها'},
-            {id:5 , name:'نام کاربری'},
+            {id:5 , name:'نام کاربری'}
         ] ;
-        $scope.map = new google.maps.Map(document.getElementById('map'),{
-            center:{lat:33.9870993,lng:51.4405203},
-            zoom:10
-        });
-
-       /* var marker = new google.maps.Marker({
-            position:{lat:33.9870993,lng:51.4405203},
-            map:map,
-            draggable:true,
-            title:"drag me!"
-        }); */
-        google.maps.event.addListener($scope.map, 'click', function(event) {
-            placeMarker(event.latLng);
-        });
-
-        function placeMarker(location) {
-            var marker = new google.maps.Marker({
-                position: location,
-                map: $scope.map
+        function initialize() {
+            $scope.map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 33.9870993, lng: 51.4405203},
+                zoom: 10
             });
-        }
+            /* var marker = new google.maps.Marker({
+             position:{lat:33.9870993,lng:51.4405203},
+             map:map,
+             draggable:true,
+             title:"drag me!"
+             }); */
+        }//end of initialize
+        google.maps.event.addDomListener(window, 'load', initialize);
+        google.maps.event.trigger(map, 'resize');
 
     }//end of initVar
     $scope.toggleRight= buildToggler('right');
@@ -61,7 +55,10 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
     };
     $scope.logOut=function(){
         console.log("user just logged out.");
-        //sth needed to distroy user's session/token,whatever
+        //TODO:sth needed to distroy user's session/token,whatever
+        authenticationToken.removeToken();
+        $rootScope.isUser = false;
+        $location.path("/");
     }
     //******************************************************************************************************************
     var last = {
@@ -111,5 +108,17 @@ $scope.addPoint = function(){
             console.log($scope.map.getZoom());
         });
     } //end if condition
+    if($scope.map.getZoom()>=15){
+        google.maps.event.addListener($scope.map, 'click', function(event) {
+            placeMarker(event.latLng);
+        });
+
+        function placeMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location,
+                map: $scope.map
+            });
+        }
+    }
 }//end of addPoint
 }//end of main controller

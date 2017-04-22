@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 19-Apr-17.
  */
-var authentication = function($http,$location){
+var authentication = function($http){
     var auth = {
         response :[] ,
             validateUser:validateUser
@@ -14,7 +14,7 @@ var authentication = function($http,$location){
                auth.response = data
             })//successful request to server
            .error(function(){
-               console.log("can't connect to server!");
+               console.log("sth did not go well!");
            });
     }; //end validation function
 }//end of authentication function

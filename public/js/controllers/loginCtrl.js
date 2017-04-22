@@ -7,6 +7,9 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
            username : '' ,
             pass : ''
         };
+        // somehow check wether user is already signed in or not
+        if(authenticationToken.getToken())
+            $location.path('/');
     }//end of function Init
     $scope.login={
         submit:function(){
@@ -25,7 +28,7 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
                  console.log(res);
                 // console.log(res.status);
                  if(res.status == 400)
-                     console.log("نام کاربری غیر معتبر!");
+                     console.log("نام کاربری با الگوی غیر معتبر!");
                      else if(res.status == 404)
                          console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
              }//failure

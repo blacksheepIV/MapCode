@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,$filter){
+var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,$filter,authentication,authenticationToken){
     $scope.reSend = false;
     $scope.resubmits = 0; //counts the times user asked for resubmission
     $scope.v_code= 0;
@@ -187,7 +187,21 @@ $scope.levelPage = function(level){
                     }
                 }
             ).then(function(response){
-                $location.path('/');
+                   authentication.validateUser(incomer).then( //setUp was a success need to get a token
+                       function(res){
+                           console.log(res.data.token); // gotta set the token
+                           authenticationToken.setToken(res.data.token);
+                           $location.path('/');
+                       },
+                       function(res){
+                           console.log(res);
+                           // console.log(res.status);
+                           if(res.status == 400)
+                               console.log("نام کاربری غیر معتبر!");
+                           else if(res.status == 404)
+                               console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                       }//failure
+                   );
             },function(response){
                    if(response.status == 409)
                        console.log('کاربر قبلا ثبت نام کرده');

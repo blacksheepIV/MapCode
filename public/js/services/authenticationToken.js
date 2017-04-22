@@ -9,7 +9,7 @@ var authenticationToken = function(localStorageService){
            authToken.savedToken = token;
            if (localStorageService.isSupported) {
                localStorageService.set('userToken', token);
-               isAuthenticated = true;
+               authToken.isAuthenticated = true;
            }
            else
                console.log("localSession is not supported");
@@ -22,7 +22,7 @@ var authenticationToken = function(localStorageService){
         removeToken:function(){
             authToken.savedToken = null;
             localStorageService.remove('userToken');
-            isAuthenticated = false;
+            authToken.isAuthenticated = false;
         }
     }; //end of authToken
     return authToken;

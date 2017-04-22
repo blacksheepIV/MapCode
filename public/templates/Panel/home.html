@@ -1,8 +1,8 @@
 <div layout="column" ng-controller="mainCtrl"  ng-init="initVar()" ng-cloak>
     <div ng-include="'./templates/Panel/header.html'"></div>
     <div ng-include="'./templates/Panel/sideNav.html'"></div>
-    <md-content style="height:600px;">
-               <div id="map" style="height: 100%; font-family: Koodak; "></div>
+    <md-content style="height:600px;overflow-y: hidden;"ng-cloak>
+               <div id="map" style="height: 100%; font-family: Koodak;overflow-y: hidden; "></div>
 
     </md-content>
 </div>
