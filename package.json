@@ -38,7 +38,6 @@
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "randomstring": "^1.1.5",
-    "redis": "^2.7.1",
-    "validator": "^7.0.0"
+    "redis": "^2.7.1"
   }
 }
