@@ -11,6 +11,8 @@
 	    `npm install -g snyk`
 	- Install mocha (Optional: For testing)
 	    `npm install -g mocha`
+	- Install jshint (Optional: For testing)
+	    `npm install -g jshint`
 
 * Run `npm install`
 
