@@ -1,14 +1,20 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken){
-    //$rootScope.guest = true; // we have a guest in the site;so some parts should be disabled
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService){
     console.log(authenticationToken.getToken());
-    //console.log(authenticationToken.isAuthenticated);
     if(authenticationToken.getToken())
         $rootScope.isUser = true;
     console.log( $rootScope.isUser );
+        //   $scope.map.setMapTypeId('Dark');
+        /* var marker = new google.maps.Marker({
+         position:{lat:33.9870993,lng:51.4405203},
+         map:map,
+         draggable:true,
+         title:"drag me!"
+         }); */
     $scope.initVar = function(){
+        $scope.customFullscreen = false;
         $scope.SearchTopics =[
             {id:1 , name:'کد نقطه'},
             {id:2 , name:'نام نقطه'},
@@ -16,19 +22,219 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
             {id:4 , name:'تگ ها'},
             {id:5 , name:'نام کاربری'}
         ] ;
-        function initialize() {
+
+            /* var Dark = [
+             {
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#212121"
+             }
+             ]
+             },
+             {
+             "elementType": "labels.icon",
+             "stylers": [
+             {
+             "visibility": "off"
+             }
+             ]
+             },
+             {
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#757575"
+             }
+             ]
+             },
+             {
+             "elementType": "labels.text.stroke",
+             "stylers": [
+             {
+             "color": "#212121"
+             }
+             ]
+             },
+             {
+             "featureType": "administrative",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#757575"
+             }
+             ]
+             },
+             {
+             "featureType": "administrative.country",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#9e9e9e"
+             }
+             ]
+             },
+             {
+             "featureType": "administrative.land_parcel",
+             "stylers": [
+             {
+             "visibility": "off"
+             }
+             ]
+             },
+             {
+             "featureType": "administrative.locality",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#bdbdbd"
+             }
+             ]
+             },
+             {
+             "featureType": "poi",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#757575"
+             }
+             ]
+             },
+             {
+             "featureType": "poi.park",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#181818"
+             }
+             ]
+             },
+             {
+             "featureType": "poi.park",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#616161"
+             }
+             ]
+             },
+             {
+             "featureType": "poi.park",
+             "elementType": "labels.text.stroke",
+             "stylers": [
+             {
+             "color": "#1b1b1b"
+             }
+             ]
+             },
+             {
+             "featureType": "road",
+             "elementType": "geometry.fill",
+             "stylers": [
+             {
+             "color": "#2c2c2c"
+             }
+             ]
+             },
+             {
+             "featureType": "road",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#8a8a8a"
+             }
+             ]
+             },
+             {
+             "featureType": "road.arterial",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#373737"
+             }
+             ]
+             },
+             {
+             "featureType": "road.highway",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#3c3c3c"
+             }
+             ]
+             },
+             {
+             "featureType": "road.highway",
+             "elementType": "geometry.fill",
+             "stylers": [
+             {
+             "color": "#a54755"
+             }
+             ]
+             },
+             {
+             "featureType": "road.highway.controlled_access",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#4e4e4e"
+             }
+             ]
+             },
+             {
+             "featureType": "road.highway.controlled_access",
+             "elementType": "geometry.fill",
+             "stylers": [
+             {
+             "color": "#563a54"
+             }
+             ]
+             },
+             {
+             "featureType": "road.local",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#616161"
+             }
+             ]
+             },
+             {
+             "featureType": "transit",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#757575"
+             }
+             ]
+             },
+             {
+             "featureType": "water",
+             "elementType": "geometry",
+             "stylers": [
+             {
+             "color": "#000000"
+             }
+             ]
+             },
+             {
+             "featureType": "water",
+             "elementType": "labels.text.fill",
+             "stylers": [
+             {
+             "color": "#3d3d3d"
+             }
+             ]
+             }
+             ];
+             var DarkStyle= new google.maps.StyledMapType(Dark,{name: 'تم تیره'}); */
             $scope.map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 33.9870993, lng: 51.4405203},
                 zoom: 10
+                /* mapTypeIds: ['roadmap', 'satellite',
+                 'Dark'] */
             });
-            /* var marker = new google.maps.Marker({
-             position:{lat:33.9870993,lng:51.4405203},
-             map:map,
-             draggable:true,
-             title:"drag me!"
-             }); */
-        }//end of initialize
-        google.maps.event.addDomListener(window, 'load', initialize);
+       // google.maps.event.addDomListener(window, 'load', initialize);
         google.maps.event.trigger(map, 'resize');
 
     }//end of initVar
@@ -99,6 +305,16 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
          );
     };
     //******************************************************************************************************************
+    $scope.showAdvanced = function() {
+        $mdDialog.show({
+            controller: pointCtrl,
+            templateUrl: 'templates/Panel/addPoint.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+    //******************************************************************************************************************
 $scope.addPoint = function(){
     $scope.toggleRight();
     if($scope.map.getZoom() < 15) {
@@ -108,17 +324,23 @@ $scope.addPoint = function(){
             console.log($scope.map.getZoom());
         });
     } //end if condition
-    if($scope.map.getZoom()>=15){
+    if($scope.map.getZoom()>=17){
         google.maps.event.addListener($scope.map, 'click', function(event) {
-            placeMarker(event.latLng);
+            placeMarker(event.latLng,$scope.showAdvanced);
         });
 
-        function placeMarker(location) {
+        function placeMarker(location,callback) {
             var marker = new google.maps.Marker({
+                icon:'../img/Icons/map-marker.png',
                 position: location,
                 map: $scope.map
             });
+           // callback(location);
+            var lat = location.lat();
+            var lang = location.lng();
+            pointService.setLocation(lat,lang);
+            callback();
         }
-    }
+    }//end if condition
 }//end of addPoint
 }//end of main controller

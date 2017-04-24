@@ -11,7 +11,7 @@ mapCodeApp.config(function ($routeProvider, $locationProvider,$httpProvider) {
             templateUrl: "./templates/Registeration/register.html"
         })
         .when("/login",{
-            templateUrl:"./templates/login.html"
+            templateUrl:"./templates/LogIn/login.html"
         })
         .when('/verify', {
             templateUrl: "./templates/Registeration/2step_verification.html"

@@ -1,0 +1,64 @@
+<md-dialog aria-label="AddNewPoint" ng-controller="pointCtrl" ng-init="initPoint()">
+    <md-toolbar md-theme="docs-dark" class="md-warn md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools">
+            <h2 class="md-display-2">نقطه جدید اضافه می کنیم(:</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout="row">
+        <div class="md-dialog-content" dir="rtl">
+            <form name="addPoint" class="form" dir="rtl" flex="100" novalidate>
+                 <div layout="row" layout-xs="column">
+                     <md-input-container flex="25" flex-xs="70" class="md-block">
+                         <label>نام نقطه</label>
+                         <input type="text"name="PointName" ng-model="point.name"/>
+                     </md-input-container>
+                     <div flex="5"></div>
+                     <md-input-container flex="25" flex-xs="70" class="md-block">
+                         <label>طول جغرافیایی</label>
+                         <input type="text"name="lat" ng-model="point.lat"/>
+                      </md-input-container>
+                      <div flex="5"></div>
+                     <md-input-container flex="25" flex-xs="70" class="md-block">
+                        <label>عرض جغرافیایی</label>
+                        <input type="text"name="lang" ng-model="point.lng"/>
+                     </md-input-container>
+                 </div>
+                 <div layout="row" layout-xs="column">
+                     <md-input-container flex="25" flex-xs="70" class="md-block">
+                         <label>استان</label>
+                         <md-select ng-model="province">
+                             <md-option ng-value="pro" ng-repeat="pro in provinces">{{pro.name}}</md-option>
+                         </md-select>
+                     </md-input-container>
+                 <div flex="5"></div>
+                     <md-input-container flex="25" flex-xs="70" class="md-block">
+                         <label>شهر</label>
+                         <md-select ng-model="city">
+                            <md-option ng-value="c" ng-repeat="c in cities | filter:{pro:province}">{{c.name}}</md-option>
+                         </md-select>
+                     </md-input-container>
+                 <div flex="5"></div>
+                 <md-input-container flex="25" flex-xs="70" class="md-block">
+                     <label>شماره تماس</label>
+                     <input type="text" ng-model="point.phone"/>
+                  </md-input-container>
+               </div>
+           <div layout="row" layout-xs="column">
+               <md-input-container flex="25" flex-xs="70" class="md-block">
+                   <label>آدرس</label>
+                   <input type="text" ng-model="point.address"/>
+               </md-input-container>
+               <div flex="5"></div>
+               <div layout="row" layout-xs="row" flex="70" flex-xs="70">
+                   <label flex="30">این مکان :</label>
+                  <md-checkbox flex="40" ng-model="point.public" class="md-warn md-hue-4 md-align-top-right" ng-true-value="'1'"
+                               ng-false-value="'0'">یک مکان عمومی است.</md-checkbox>
+               </div>
+           </div>
+          </form>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+        <md-button class="md-raised md-accent md-hue-2 md-block"> نقطه رو ثبت کن</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -19,7 +19,7 @@
             <input name="SearchBox" id="SearchBox" ng-model="searchBox" placeholder="جستجوی ..."/>
             <!--<a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
             <div flex="5"></div>
-            <md-select placeholder="جستجو بر اساس" ng-model="searchTopic">
+            <md-select placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
                 <md-option ng-value="Stopic" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
             </md-select>
             <md-button  class="md-icon-button " id="searchBtn" aria-label="searchBtn">

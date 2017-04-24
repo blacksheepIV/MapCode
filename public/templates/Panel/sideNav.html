@@ -1,30 +1,30 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
     <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding  >
         <div class="md-toolbar-tools" >
-            <div layout="row" layout-padding layout-align="center center" id="Myusercard"  flex="100">
-            <md-card>
-                <md-card-title >
-                    <md-card-title-media>
-                        <div class="md-media-sm card-media" >
+            <div layout="row" layout-padding layout-align="center center" flex="100">
+               <md-card id="Myusercard"> <!-- md-card height surpasses -->
+                  <md-card-title>
+                      <md-card-title-media>
+                         <div class="md-media-sm card-media" >
                             <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
-                        </div>
-                    </md-card-title-media>
+                         </div>
+                      </md-card-title-media>
                     <md-card-title-text>
-                        <span class="md-headline">کاربر مهمان</span> <!-- has to get users info through -->
+                        <span class="md-headline">کاربر مهمان</span> <!-- has to get users info through database query -->
                         <span class="md-subhead description">اعتبار:0</span>
                         <span class="md-subhead description">امتیاز:0</span>
                     </md-card-title-text>
                 </md-card-title>
-<md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج از حساب کاربری</md-button>
             </md-card>
-                </div>
+            <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
+            </div>
         </div>
     </md-toolbar>
     <md-content layout-margin dir="rtl" layout-align="center center">
-        <div id="mySidenav" class="sidenav">
+        <div id="mySidenav" class="sidenav" ng-show="isUser">
             <div class="SNav_items">
                 <span class="fa fa-address-card fa-lg"></span>
-                 <a href="/panel">حساب کاربری من</a>
+                 <a href="/panel" >حساب کاربری من</a>
                 </div>
             <div class="SNav_items">
                 <span class="fa fa-map-pin fa-lg"></span>
