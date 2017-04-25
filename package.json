@@ -28,6 +28,7 @@
     "jshint": "latest"
   },
   "dependencies": {
+    "async": "^2.3.0",
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",
     "bower": "latest",
