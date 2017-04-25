@@ -45,6 +45,10 @@ router.route('/signup')
      * @apiSuccessExample Success-Response
      *     HTTP/1.1 201 Created
      *
+     *     {
+     *         "code": "f45Rfo29Rz"
+     *     }
+     *
      *
      *
      * @apiError (400) {name} empty
@@ -113,9 +117,11 @@ router.route('/signup')
 
                 delete req.body.sms_code;
 
-                usersModel.createNewUser(req.body, function (err) {
+                usersModel.createNewUser(req.body, function (err, userCode) {
                     if (!err)
-                        res.status(201).end();
+                        res.status(201).json({
+                            code: userCode
+                        });
                     else {
                         if (err === 'serverError') {
                             res.status(500).end();

@@ -159,24 +159,25 @@ module.exports.createNewUser = function (user, callback) {
                         return err.code === "ER_DUP_ENTRY";
                     }
                 }, function (done) {
+                    var uniqueCode = hashids.encode(results.insertId);
                     db.conn.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
-                        [hashids.encode(results.insertId), results.insertId],
+                        [uniqueCode, results.insertId],
                         function (err) {
                             if (err) {
                                 console.error("MySQL: Error happened in updating new user's code: %s", err);
                                 return done(err);
                             }
 
-                            done();
+                            done(null, uniqueCode);
                         }
                     );
-                }, function (err) {
+                }, function (err, result) {
                     if (err) {
                         console.error("!!!: Tried 5 times to generate a unique user code but failed.");
                         return callback('serverError');
                     }
 
-                    callback();
+                    callback(null, result);
                 });
             });
         });
