@@ -1,6 +1,7 @@
 var bcrypt = require('bcryptjs');
 var Hashids = require('hashids');
 var hashids = new Hashids(process.env.HASHIDS, 10);
+var asyncRetry = require('async/retry');
 
 var db = require('../db');
 
@@ -121,10 +122,10 @@ module.exports.schema = {
  Inserts a new user in database
 
  Errors:
-    - serverError
-    - no_recommender_user_with_this_code
-    - Array of duplicate rows. e.g. ['duplicate_email']
-  */
+ - serverError
+ - no_recommender_user_with_this_code
+ - Array of duplicate rows. e.g. ['duplicate_email']
+ */
 module.exports.createNewUser = function (user, callback) {
     function saveUser() {
         user.type = Number(user.type);
@@ -153,18 +154,30 @@ module.exports.createNewUser = function (user, callback) {
                     return;
                 }
 
-                db.conn.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
-                    [hashids.encode(results.insertId), results.insertId],
-                    function (err) {
-                        if (err) {
-                            callback('serverError');
-                            console.error("MySQL: Error happened in updating new user's code: %s", err);
-                            return;
-                        }
-
-                        callback(null);
+                asyncRetry({
+                    errorFilter: function (err) {
+                        return err.code === "ER_DUP_ENTRY";
                     }
-                );
+                }, function (done) {
+                    db.conn.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
+                        [hashids.encode(results.insertId), results.insertId],
+                        function (err) {
+                            if (err) {
+                                console.error("MySQL: Error happened in updating new user's code: %s", err);
+                                return done(err);
+                            }
+
+                            done();
+                        }
+                    );
+                }, function (err) {
+                    if (err) {
+                        console.error("!!!: Tried 5 times to generate a unique user code but failed.");
+                        return callback('serverError');
+                    }
+
+                    callback();
+                });
             });
         });
     }
@@ -203,8 +216,8 @@ module.exports.createNewUser = function (user, callback) {
  Checks if there is a user with given username and password
 
  Errors:
-    - serverError
-    - username_or_password_is_wrong
+ - serverError
+ - username_or_password_is_wrong
  */
 module.exports.signIn = function (username, password, callback) {
     // Try to retrieve user's info with given username from DB

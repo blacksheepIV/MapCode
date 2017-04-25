@@ -114,7 +114,7 @@ router.route('/signup')
                 delete req.body.sms_code;
 
                 usersModel.createNewUser(req.body, function (err) {
-                    if (err === null)
+                    if (!err)
                         res.status(201).end();
                     else {
                         if (err === 'serverError') {
