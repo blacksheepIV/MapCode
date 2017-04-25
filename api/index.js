@@ -131,8 +131,8 @@ getDirJsFiles(__dirname, '/private/', function (err, jsFiles) {
         jsFiles.forEach(function (private_api) {
             router.use(
                 jwt.JWTCheck,
-                require(private_api),
-                jwt.JWTErrorHandler
+                jwt.JWTErrorHandler,
+                require(private_api)
             );
         });
     }
