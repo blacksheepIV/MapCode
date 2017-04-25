@@ -317,7 +317,7 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
     //******************************************************************************************************************
 $scope.addPoint = function(){
     $scope.toggleRight();
-    if($scope.map.getZoom() < 15) {
+    if($scope.map.getZoom() < 17) {
         showSimpleToast();
         $scope.map.addListener('zoom_changed', function () {
             console.log("user just zoomed the map in.");

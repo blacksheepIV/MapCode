@@ -218,3 +218,11 @@ md-sidenav.md-closed.md-locked-open-add-active {
 md-card.md-docs-dark-theme{
     background-color: transparent;
 }
+md-checkbox {
+    padding-left: 0px; //was 10px
+}
+
+md-checkbox .md-label {
+    margin-left: 0px; //was 18px
+padding-left: 28px; //was null
+}
