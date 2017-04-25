@@ -9,7 +9,7 @@ var authentication = function($http,$rootScope){
     return auth;
     function validateUser(user){
 
-       return $http.post($rootScope.urlAdd+"api/signin/", user )
+       return $http.post($rootScope.urlAdd+"signin/", user )
             .success(function(data){
                auth.response = data
             })//successful request to server

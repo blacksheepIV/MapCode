@@ -141,7 +141,7 @@ $scope.levelPage = function(level){
          //   var day= date.getDate();
           //  var userDate = year +"-" + month + "-" + day;
           //  console.log(userDate);
-           var myurl=$rootScope.urlAdd+"api/signup";
+           var myurl=$rootScope.urlAdd+"signup/";
             if($rootScope.user.recommender_user === '')
                 $http({
                         url: myurl,
@@ -218,7 +218,7 @@ $scope.levelPage = function(level){
     }//end of function finalize signUp
     //********************************************************************************************************************
     $scope.resendCode=function(){
-        var mysmsUrl = $rootScope.urlAdd+"api/sms";
+        var mysmsUrl = $rootScope.urlAdd+"sms/";
         //here u gotta send a request to server to ask for code again
         $http({
             url :mysmsUrl ,
