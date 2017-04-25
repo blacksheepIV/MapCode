@@ -2,6 +2,8 @@
  * Created by blackSheep on 03-Apr-17.
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService){
+    $rootScope.urlAdd=window.location.href;
+    console.log($rootScope.urlAdd);
     console.log(authenticationToken.getToken());
     if(authenticationToken.getToken())
         $rootScope.isUser = true;

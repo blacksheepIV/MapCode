@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 19-Apr-17.
  */
-var authentication = function($http){
+var authentication = function($http,$rootScope){
     var auth = {
         response :[] ,
             validateUser:validateUser
@@ -9,7 +9,7 @@ var authentication = function($http){
     return auth;
     function validateUser(user){
 
-       return $http.post("http://localhost:3000/api/signin/", user )
+       return $http.post($rootScope.urlAdd+"api/signin/", user )
             .success(function(data){
                auth.response = data
             })//successful request to server
