@@ -8,5 +8,3 @@
 - Auto minimize front-end sources
 
 - Check XSS
-
-- Point POST API : Retry if hashids generated a duplicate code

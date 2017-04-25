@@ -1,5 +1,6 @@
 var Hashids = require('hashids');
 var hashids = new Hashids(process.env.HASHIDS, 20);
+var asyncRetry = require('async/retry');
 
 var db = require('../db');
 
@@ -87,9 +88,9 @@ module.exports.schema = {
  Inserts a new point in `points` table
 
  Errors:
-    - serverError
-    - owner_not_found
-    - not_enough_credit_bonus
+ - serverError
+ - owner_not_found
+ - not_enough_credit_bonus
  */
 module.exports.addPoint = function (point, callback) {
     db.conn.query(
@@ -127,20 +128,33 @@ module.exports.addPoint = function (point, callback) {
             }
             // Procedure has been successful
             else {
-                // TODO: Generate a unique code for new point
-                db.conn.query(
-                    "UPDATE `points` SET `code` = ? WHERE `id` = ?",
-                    [hashids.encode(resultId), resultId],
-                    function (err) {
-                        if (err) {
-                            callback('serverError');
-                            console.error("MySQL: Error happened in updating new point's code: %s", err);
-                        }
-                        else {
-                            callback(null);
-                        }
+                // Try 5 times to generate a unique code for new point
+                asyncRetry({
+                    errorFilter: function (err) {
+                        // Check if error has happened because of `code` duplication
+                        return err.code === "ER_DUP_ENTRY";
                     }
-                );
+                }, function (done) {
+                    db.conn.query(
+                        "UPDATE `points` SET `code` = ? WHERE `id` = ?",
+                        [hashids.encode(resultId), resultId],
+                        function (err) {
+                            if (err) {
+                                console.error("MySQL: Error happened in updating new point's code: %s", err);
+                                return done(err);
+                            }
+                            // Unique code generated successfully
+                            done();
+                        }
+                    );
+                }, function (err) {
+                    if (err) {
+                        console.error("!!!: Tried 5 times to generate a unique point code but failed.");
+                        return callback('serverError');
+                    }
+
+                    callback();
+                });
             }
         }
     );
