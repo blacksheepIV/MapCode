@@ -22,6 +22,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
     "persian-date": "^0.1.8",
-    "persian-datepicker": "^0.4.5"
+    "persian-datepicker": "^0.4.5",
+    "angular-local-storage": "^0.5.2"
   }
 }
