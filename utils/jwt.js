@@ -53,6 +53,14 @@ module.exports.JWTErrorHandler = function (err, req, res, next) {
 };
 
 
+module.exports.JWTErrorIgnore = function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        // Ignore the authentication error
+        next();
+    }
+};
+
+
 /*
  Generates a new JWT and stores it in Redis
 
