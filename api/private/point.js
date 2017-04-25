@@ -25,18 +25,22 @@ router.route('/point')
  *
  * @apiExample {json} Request-Example
  *     {
-     *         "lat": "21.323",
-     *         "lng": "32.3343",
-     *         "name": "پیتزا آرشین",
-     *         "phone": "03155447658",
-     *         "province": "اصفهان",
-     *         "city": "کاشان",
-     *         "address": "خیابان امیرکبیر",
-     *         "public": "1"
-     *     }
+ *         "lat": "21.323",
+ *         "lng": "32.3343",
+ *         "name": "پیتزا آرشین",
+ *         "phone": "03155447658",
+ *         "province": "اصفهان",
+ *         "city": "کاشان",
+ *         "address": "خیابان امیرکبیر",
+ *         "public": "1"
+ *     }
  *
  * @apiSuccessExample Success-Response
  *     HTTP/1.1 201 Created
+ *
+ *     {
+ *         "code": "rgP8V4y1aKReQGw5WvzA"
+ *     }
  *
  *
  * @apiError (400) lat:empty
@@ -85,10 +89,11 @@ router.route('/point')
                 point.expiration_date = new Date(date.getTime());
                 point.expiration_date.setFullYear(date.getFullYear() + 1);
 
-                pointModel.addPoint(point, function (err) {
+                pointModel.addPoint(point, function (err, pointCode) {
                     if (!err) {
-                        // TODO: Return point's code
-                        res.status(201).end();
+                        res.status(201).json({
+                            code: pointCode
+                        });
                     }
                     else if (err === 'serverError') {
                         res.status(500).end();

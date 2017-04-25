@@ -135,25 +135,26 @@ module.exports.addPoint = function (point, callback) {
                         return err.code === "ER_DUP_ENTRY";
                     }
                 }, function (done) {
+                    var uniqueCode = hashids.encode(resultId);
                     db.conn.query(
                         "UPDATE `points` SET `code` = ? WHERE `id` = ?",
-                        [hashids.encode(resultId), resultId],
+                        [uniqueCode, resultId],
                         function (err) {
                             if (err) {
                                 console.error("MySQL: Error happened in updating new point's code: %s", err);
                                 return done(err);
                             }
                             // Unique code generated successfully
-                            done();
+                            done(null, uniqueCode);
                         }
                     );
-                }, function (err) {
+                }, function (err, result) {
                     if (err) {
                         console.error("!!!: Tried 5 times to generate a unique point code but failed.");
                         return callback('serverError');
                     }
 
-                    callback();
+                    callback(null, result);
                 });
             }
         }
