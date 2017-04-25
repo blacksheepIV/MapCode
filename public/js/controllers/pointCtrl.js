@@ -38,6 +38,20 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
             public:-1
         };
     };
+    //******************************************************************************************************************
+    $scope.showSucces = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('تبریک')
+                .textContent('ثبت نقطه با موفقیت انجام شد!')
+                .ariaLabel('successDialog')
+                .ok('مرسی')
+                .targetEvent(ev)
+        );
+    };
+    //*****************************************************************************************************************
     $scope.submit=function(){
         console.log('data Was sent');
         var latitude= String($scope.point.lat).substr(0, 10);
@@ -62,6 +76,8 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
         }).then(
             function(response){
                 console.log(response);
+                $mdDialog.hide();
+                $scope.showSucces();
             },
             function(response){
                 console.log(response); //failure
