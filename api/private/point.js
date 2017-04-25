@@ -39,34 +39,35 @@ router.route('/point')
  *     HTTP/1.1 201 Created
  *
  *
- * @apiError (400) {lat} empty
- * @apiError (400) {lat} not_valid_latitude Latitude should be a decimal number with maximum of 2 non-fractional and maximum of 8 fractional digits
+ * @apiError (400) lat:empty
+ * @apiError (400) lat:not_valid_latitude Latitude should be a decimal number with maximum of 2 non-fractional and maximum of 8 fractional digits
  *
- * @apiError (400) {lng} empty
- * @apiError (400) {lng} not_valid_longitude Longitude should be a decimal number with maximum of 3 non-fractional and 8 maximum of 8 fractional digits
+ * @apiError (400) lng:empty
+ * @apiError (400) lng:not_valid_longitude Longitude should be a decimal number with maximum of 3 non-fractional and 8 maximum of 8 fractional digits
  *
- * @apiError (400) {name} empty
- * @apiError (400) {name} length_not_1_to_30
+ * @apiError (400) name:empty
+ * @apiError (400) name:length_not_1_to_30
  *
- * @apiError (400) {phone} empty
- * @apiError (400) {phone} not_numeric
- * @apiError (400) {phone} length_not_11
+ * @apiError (400) phone:empty
+ * @apiError (400) phone:not_numeric
+ * @apiError (400) phone:length_not_11
  *
- * @apiError (400) {province} empty
- * @apiError (400) {province} length_not_1_to_25
+ * @apiError (400) province:empty
+ * @apiError (400) province:length_not_1_to_25
  *
- * @apiError (400) {city} empty
- * @apiError (400) {city} length_not_1_to_25
+ * @apiError (400) city:empty
+ * @apiError (400) city:length_not_1_to_25
  *
- * @apiError (400) {address} empty
- * @apiError (400) {address} length_greater_than_21844
+ * @apiError (400) address:empty
+ * @apiError (400) address:length_greater_than_21844
  *
- * @apiError (400) {public} empty
- * @apiError (400) {public} not_0_or_1
+ * @apiError (400) public:empty
+ * @apiError (400) public:not_0_or_1
  *
- * @apiError (400) not_enough_credit_bonus
  *
  * @apiError (404) owner_not_found This is a bug! if this error got returned sign out the user.
+ *
+ * @apiError (400) not_enough_credit_bonus
  *
  *
  */
