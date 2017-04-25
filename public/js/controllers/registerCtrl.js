@@ -94,8 +94,9 @@ $scope.levelPage = function(level){
 
             };
             console.log($rootScope.user.mobile_phone);
+            var mysmsUrl = $rootScope.urlAdd+"sms/";
             $http({
-                url :"http://localhost:3000/api/sms" ,
+                url :mysmsUrl ,
                 method: "POST" ,
                 data : cellNum
             }).then(
