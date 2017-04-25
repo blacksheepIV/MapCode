@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 23-Apr-17.
  */
-function pointCtrl ($scope,pointService,$mdDialog,$http,$location){
+function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
     $scope.initPoint = function(){
         //TODO:
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
@@ -54,8 +54,9 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location){
             address: $scope.point.address,
             public: parseInt($scope.point.public)
         }; // data to be sent
+        var pointUrl = $rootScope.urlAdd+"api/point";
         $http({
-            url :"http://localhost:3000/api/point" ,
+            url : pointUrl ,
             method: "POST" ,
             data : pointInfo
         }).then(
