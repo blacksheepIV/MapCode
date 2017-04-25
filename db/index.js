@@ -14,14 +14,13 @@ var conn = mysql.createPool({
 module.exports.conn = conn;
 
 
-// TODO: SQL injection : use ??
 module.exports.objectInsertQuery = function (tableName, obj, callback) {
     var values = [tableName];
     var query = "INSERT INTO ?? SET ";
-    for (var key in obj) {
-        query += key + ' = ?, ';
-        values.push(obj[key]);
-    }
+    Object.keys(obj).forEach(function (key) {
+        query += ' ?? = ?, ';
+        values.push(key, obj[key]);
+    });
     query = query.substr(0, query.length - 2) + ';';
     conn.query(query, values, function (err, results, fields) {
         callback(err, results, fields);
