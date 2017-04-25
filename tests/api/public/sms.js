@@ -8,7 +8,7 @@ var server = require('../../../app');
 var redis = require('../../../utils/redis');
 var smsModel = require('../../../models/sms');
 
-var should = chai.should();
+chai.should();
 
 
 chai.use(chaiHttp);
@@ -22,7 +22,10 @@ describe('SMS', function () {
                 .send({})
                 .end(function (err, res) {
                     res.should.have.status(400);
+
+                    /* jshint -W030 */
                     res.should.be.json;
+
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
                     res.body.errors.should.have.property('mobile_phone');
@@ -66,7 +69,10 @@ describe('SMS', function () {
                         .send({mobile_phone: mobile_phone})
                         .end(function (err, res) {
                             res.should.have.status(429);
+
+                            /* jshint -W030 */
                             res.should.be.json;
+
                             res.body.should.have.property('errors');
                             res.body.errors.should.be.a('array');
                             res.body.errors.should.include('mobile_phone_already_has_a_code');

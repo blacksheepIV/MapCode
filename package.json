@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "mocha": "mocha ./tests/**/test*.js",
-    "lint": "jshint ./**/*.js --show-non-errors",
+    "lint": "jshint . --show-non-errors",
     "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test && echo \">> mocha\" && npm run lint && npm run mocha",
     "install": "echo \"> npm update\" && npm update && npm run update",
     "update": "echo \"> bower install\" && ./node_modules/.bin/bower install && echo \"> bower update\" && ./node_modules/.bin/bower update",

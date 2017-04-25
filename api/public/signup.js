@@ -111,7 +111,7 @@ router.route('/signup')
                     return;
                 }
 
-                delete req.body['sms_code'];
+                delete req.body.sms_code;
 
                 usersModel.createNewUser(req.body, function (err) {
                     if (err === null)

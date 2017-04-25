@@ -1,7 +1,6 @@
 var router = require('express').Router();
 
 var pointModel = require('../../models/point');
-var db = require('../../db');
 
 
 router.route('/point')
