@@ -150,7 +150,7 @@ $scope.levelPage = function(level){
                             name:$rootScope.user.name,
                             melli_code: $rootScope.user.melli_code,
                             email: $rootScope.user.email,
-                            date:  $rootScope.user.cDate,
+                            date:  "1996-02-05",
                             mobile_phone: $rootScope.user.mobile_phone,
                             username: $rootScope.user.username,
                             password: $rootScope.user.password,
