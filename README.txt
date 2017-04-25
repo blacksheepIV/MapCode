@@ -4,17 +4,10 @@
 	- Install NodeJS and NPM
 	- Install PM2
 	    `npm install -g pm2`
-	- Install apiDoc (Optional: For generating API documentations)
-	    `npm install -g apidoc`
-	- Install nsp and snyk NPM packages (Optional: For testing NPM packages security)
-	    `npm install -g nsp`
-	    `npm install -g snyk`
-	- Install mocha (Optional: For testing)
-	    `npm install -g mocha`
-	- Install jshint (Optional: For testing)
-	    `npm install -g jshint`
 
 * Run `npm install`
+  or `npm install --production` If you don't want to install
+  development tools.
 
 * Create .env file for configurations.
   This file should set following variables:

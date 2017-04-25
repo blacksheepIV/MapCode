@@ -20,6 +20,13 @@
     "url": "http://mapcode.ir/api",
     "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500: there is a server error."
   },
+  "devDependencies": {
+    "apidoc": "latest",
+    "nsp": "latest",
+    "snyk": "latest",
+    "mocha": "latest",
+    "jshint": "latest"
+  },
   "dependencies": {
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",
