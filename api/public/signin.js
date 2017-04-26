@@ -46,7 +46,7 @@ router.route('/signin')
         req.validateBodyWithSchema(usersModel.schema,
             ['username', 'password'],
             function () {
-                usersModel.signIn(req.body.username, req.body.password, function (err, userId) {
+                usersModel.signIn(req.body.username, req.body.password, function (err, userId, userCode) {
                     if (err !== null) {
                         if (err === 'serverError') {
                             res.status(500).end();
@@ -60,6 +60,7 @@ router.route('/signin')
                     else {
                         jwt.generateToken(
                             userId,
+                            userCode,
                             req.query.m !== undefined,
                             function (err, token) {
                                 if (err) {

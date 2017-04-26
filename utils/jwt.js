@@ -48,7 +48,12 @@ module.exports.JWTCheck = jwt({
 
 module.exports.JWTErrorHandler = function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
-        res.status(401).end();
+        res.status(401).json({
+            errors: ['auth_failure']
+        });
+    }
+    else {
+        next(err);
     }
 };
 
@@ -57,6 +62,9 @@ module.exports.JWTErrorIgnore = function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         // Ignore the authentication error
         next();
+    }
+    else {
+        next(err);
     }
 };
 
@@ -67,11 +75,12 @@ module.exports.JWTErrorIgnore = function (err, req, res, next) {
  Errors:
     - serverError
  */
-module.exports.generateToken = function (userId, isMobile, callback) {
+module.exports.generateToken = function (userId, userCode, isMobile, callback) {
     var jti = randomstring.generate({length: 5});
 
     jsonwebtoken.sign({
         userId: userId,
+        userCode: userCode,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
         if (err) {

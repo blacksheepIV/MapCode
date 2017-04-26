@@ -18,7 +18,7 @@
     "name": "ProjectM",
     "title": "ProjectM API",
     "url": "http://mapcode.ir/api",
-    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500: there is a server error. <br /> For private and signedin requests set this header with user's token: Authentication: Bearer [token]"
+    "description": "All requests should be in format of JSON and so all requests should have HEADER Content-Type: application/json <br /> Status code 500: there is a server error. <br /> For private and signedin requests set this header with user's token: Authorization: Bearer [token]"
   },
   "devDependencies": {
     "apidoc": "latest",
@@ -43,6 +43,8 @@
     "hashids": "^1.1.1",
     "helmet": "^3.5.0",
     "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "randomstring": "^1.1.5",

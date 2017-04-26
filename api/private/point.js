@@ -69,7 +69,7 @@ router.route('/point')
  * @apiError (400) public:not_0_or_1
  *
  *
- * @apiError (404) owner_not_found This is a bug! if this error got returned sign out the user.
+ * @apiError (404) owner_not_found If this error got returned sign out the user.
  *
  * @apiError (400) not_enough_credit_bonus
  *
