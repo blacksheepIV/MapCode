@@ -127,7 +127,7 @@ $scope.levelPage = function(level){
      //*******************************************************************************************************************
     //********************************************************************************************************************
     $scope.finSignUp = function() {
-        if ($scope.v_code === $rootScope.obtainedCode) {
+        if ($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
             //where the hell this token thing gets activated???
             console.log($rootScope.user.cDate);
@@ -169,16 +169,16 @@ $scope.levelPage = function(level){
                         };
                         //Gonna send the users data to sinIn api to get the token
                         authentication.validateUser(registeredUser).then(
-                            function (res) {
-                                console.log(res.data.token); // gotta set the token
-                                authenticationToken.setToken(res.data.token);
+                            function (response) {
+                                console.log(response.data.token); // gotta set the token
+                                authenticationToken.setToken(response.data.token);
                                 $location.path('/');
                             },
-                            function (res) {
-                                console.log(res);
-                                if (res.status == 400)
+                            function (response) {
+                                console.log(response);
+                                if (response.status == 400)
                                     console.log("نام کاربری با الگوی غیر معتبر!");
-                                else if (res.status == 404)
+                                else if (response.status == 404)
                                     console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
                             }//failure
                         );
@@ -201,7 +201,7 @@ $scope.levelPage = function(level){
                             name: $rootScope.user.name,
                             melli_code: $rootScope.user.melli_code,
                             email: $rootScope.user.email,
-                            date: $rootScope.user.cDate,
+                            date: "1996-02-05",
                             mobile_phone: $rootScope.user.mobile_phone,
                             username: $rootScope.user.username,
                             password: $rootScope.user.password,
@@ -245,6 +245,8 @@ $scope.levelPage = function(level){
                 );
             }//end else
         } // end if related for checking validity of the code submitted
+        else
+            console.log("the inserted code is not the same obtained from server");
         }//end of function finalize signUp
         //********************************************************************************************************************
         $scope.resendCode = function () {
