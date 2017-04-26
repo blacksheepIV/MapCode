@@ -36,7 +36,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
 
 
     //****************************************************************************************************************************************
-    $scope.showAlert = function(ev) {
+    $scope.showAlert = function() {
         $mdDialog.show(
             $mdDialog.alert()
                 .parent(angular.element(document.querySelector('#popupContainer')))
@@ -45,7 +45,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
                 .textContent('رمز عبور و تکرار رمز عبور مشابه نیستند!!!')
                 .ariaLabel('AlertDialog')
                 .ok('متوجه شدم')
-                .targetEvent(ev)
+               // .targetEvent(ev)
         );
     };
     //******************************************************************************************************************
@@ -79,11 +79,11 @@ $scope.levelPage = function(level){
      }
 }//end of function level page
     //******************************************************************************************************************
-    $scope.submit = function($event){
+    $scope.submit = function(){
        // $scope.ev = ;
         if($rootScope.user.password!= $rootScope.user.passRepeat)
         //console.log("پسوردها مشابه نیستند!!!");
-           $scope.showAlert($event);
+           $scope.showAlert();
         else {
             console.log($rootScope.user.cDate);
             $rootScope.sth=$rootScope.user.cDate;
@@ -94,7 +94,7 @@ $scope.levelPage = function(level){
 
             };
             console.log($rootScope.user.mobile_phone);
-            var mysmsUrl = $rootScope.urlAdd+"sms/";
+            var mysmsUrl = window.apiHref+"sms/";
             $http({
                 url :mysmsUrl ,
                 method: "POST" ,
@@ -142,7 +142,7 @@ $scope.levelPage = function(level){
             //   var day= date.getDate();
             //  var userDate = year +"-" + month + "-" + day;
             //  console.log(userDate);
-            var myurl = $rootScope.urlAdd + "signup/";
+            var myurl = window.apiHref + "signup/";
             if ($rootScope.user.recommender_user === '') {
                 $http({
                         url: myurl,
@@ -248,7 +248,7 @@ $scope.levelPage = function(level){
         }//end of function finalize signUp
         //********************************************************************************************************************
         $scope.resendCode = function () {
-            var mysmsUrl = $rootScope.urlAdd + "sms/";
+            var mysmsUrl = window.apiHref + "sms/";
             //here u gotta send a request to server to ask for code again
             $http({
                 url: mysmsUrl,

@@ -7,8 +7,7 @@ body{
 }
 #mainHeader{
     /*font-family: Koodak;*/
-    border: 1px solid #0f0f0f;
-    border-radius: 4px;
+    border-bottom: 1px solid #0f0f0f;
     box-shadow: 0 2px 6px 2px #585858;
 }
 #BdateALT{

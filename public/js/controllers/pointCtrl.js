@@ -68,7 +68,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
             address: $scope.point.address,
             public: parseInt($scope.point.public)
         }; // data to be sent
-        var pointUrl = $rootScope.urlAdd+"point/";
+        var pointUrl = window.apiHref+"point/";
         $http({
             url : pointUrl ,
             method: "POST" ,
