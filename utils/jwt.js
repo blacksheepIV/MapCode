@@ -55,9 +55,6 @@ module.exports.JWTErrorHandler = function (err, req, res, next) {
     else {
         next(err);
     }
-    else {
-        next(err);
-    }
 };
 
 
