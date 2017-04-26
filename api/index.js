@@ -118,24 +118,24 @@ router.use(function (req, res, next) {
     next();
 });
 
+
 getDirJsFiles(__dirname, '/public/', function (err, jsFiles) {
     if (!err) {
         jsFiles.forEach(function (public_api) {
             router.use(require(public_api));
         });
     }
+
+    router.use(jwt.JWTCheck, jwt.JWTErrorHandler);
+
+    getDirJsFiles(__dirname, '/private/', function (err, jsFiles) {
+        if (!err) {
+            jsFiles.forEach(function (private_api) {
+                router.use(require(private_api));
+            });
+        }
+    });
 });
 
-getDirJsFiles(__dirname, '/private/', function (err, jsFiles) {
-    if (!err) {
-        jsFiles.forEach(function (private_api) {
-            router.use(
-                jwt.JWTCheck,
-                require(private_api),
-                jwt.JWTErrorHandler
-            );
-        });
-    }
-});
 
 module.exports = router;
