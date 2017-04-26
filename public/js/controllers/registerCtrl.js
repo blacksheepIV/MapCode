@@ -167,18 +167,18 @@ $scope.levelPage = function(level){
                             username: $rootScope.user.username,
                             password: $rootScope.user.password
                         };
-                    //Gonna send the users data to sinIn api to get the token
+                        //Gonna send the users data to sinIn api to get the token
                         authentication.validateUser(registeredUser).then(
-                            function(res){
+                            function (res) {
                                 console.log(res.data.token); // gotta set the token
                                 authenticationToken.setToken(res.data.token);
                                 $location.path('/');
                             },
-                            function(res){
+                            function (res) {
                                 console.log(res);
-                                if(res.status == 400)
+                                if (res.status == 400)
                                     console.log("نام کاربری با الگوی غیر معتبر!");
-                                else if(res.status == 404)
+                                else if (res.status == 404)
                                     console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
                             }//failure
                         );
@@ -187,7 +187,7 @@ $scope.levelPage = function(level){
                 }, function (response) {
                     if (res.status == 400)
                         console.log("نام کاربری غیر معتبر!");
-                   else if (response.status == 409)
+                    else if (response.status == 409)
                         console.log('کاربر قبلا ثبت نام کرده');
                     else
                         console.log(response);
@@ -218,16 +218,16 @@ $scope.levelPage = function(level){
                         };
                         //Gonna send the users data to sinIn api to get the token
                         authentication.validateUser(registeredUser).then(
-                            function(res){
+                            function (res) {
                                 console.log(res.data.token); // gotta set the token
                                 authenticationToken.setToken(res.data.token);
                                 $location.path('/');
                             },
-                            function(res){
+                            function (res) {
                                 console.log(res);
-                                if(res.status == 400)
+                                if (res.status == 400)
                                     console.log("نام کاربری با الگوی غیر معتبر!");
-                                else if(res.status == 404)
+                                else if (res.status == 404)
                                     console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
                             }//failure
                         );
@@ -244,7 +244,7 @@ $scope.levelPage = function(level){
                     }//failure
                 );
             }//end else
-
+        } // end if related for checking validity of the code submitted
         }//end of function finalize signUp
         //********************************************************************************************************************
         $scope.resendCode = function () {
@@ -280,5 +280,5 @@ $scope.levelPage = function(level){
                 position: "auto",
                 autoClose: true
             });
-    }
+
 }//end of registerCtrl
