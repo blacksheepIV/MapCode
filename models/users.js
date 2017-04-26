@@ -6,6 +6,24 @@ var asyncRetry = require('async/retry');
 var db = require('../db');
 
 
+module.exports.publicFields = [
+    'name',
+    'melli_code',
+    'email',
+    'date',
+    'mobile_phone',
+    'phone',
+    'username',
+    'address',
+    'description',
+    'type',
+    'code',
+    'credit',
+    'bonus',
+    'recommender_user'
+
+];
+
 // Verification schema
 module.exports.schema = {
     'name': {
@@ -222,7 +240,7 @@ module.exports.createNewUser = function (user, callback) {
  */
 module.exports.signIn = function (username, password, callback) {
     // Try to retrieve user's info with given username from DB
-    db.conn.query("SELECT `password`, `id` from `users` WHERE `username` = ?",
+    db.conn.query("SELECT `password`, `id`, `code` from `users` WHERE `username` = ?",
         username,
         function (err, results) {
             if (err) {
@@ -248,7 +266,7 @@ module.exports.signIn = function (username, password, callback) {
                             callback('username_or_password_is_wrong');
                         }
                         else {
-                            callback(null, results[0].id);
+                            callback(null, results[0].id, results[0].code);
                         }
                     }
                 });

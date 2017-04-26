@@ -39,6 +39,8 @@ echo "> Executing SQL files...";
 
 mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-tables.sql" || exit 1;
 
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-views.sql" || exit 1;
+
 mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-procedures.sql" || exit 1;
 
 
