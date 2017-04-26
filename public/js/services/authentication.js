@@ -4,7 +4,7 @@
 var authentication = function($http,$rootScope){
     var auth = {
         response :[] ,
-            validateUser:validateUser
+        validateUser:validateUser
     };
     return auth;
     function validateUser(user){

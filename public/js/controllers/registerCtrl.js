@@ -31,7 +31,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             credit: 0,
             bonus: 0
         }
-    }//end ofo function initVars
+    }//end of function initVars
     //****************************************************************************************************************************************
 
 
@@ -110,7 +110,7 @@ $scope.levelPage = function(level){
             );
             $scope.levelPage(2);
         }
-    }
+    } //end of function submit
     //******************************************************************************************************************
         $scope.counter = 120;
         $scope.onTimeout=function(){
@@ -126,129 +126,159 @@ $scope.levelPage = function(level){
         var mytimeout = $timeout($scope.onTimeout,1000);
      //*******************************************************************************************************************
     //********************************************************************************************************************
-    $scope.finSignUp = function(){
-        if($scope.v_code == $rootScope.obtainedCode){
+    $scope.finSignUp = function() {
+        if ($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
             //where the hell this token thing gets activated???
-            console.log( $rootScope.user.cDate);
+            console.log($rootScope.user.cDate);
             console.log($rootScope.sth);
-           // var a = $rootScope.sth/1000;
-           // console.log(a);
-          var date = new Date($rootScope.sth*10);
-           // var userDate = $filter('date')(new Date(a), 'YYYY - MM - dd');
+            // var a = $rootScope.sth/1000;
+            // console.log(a);
+            var date = new Date($rootScope.sth * 10);
+            // var userDate = $filter('date')(new Date(a), 'YYYY - MM - dd');
             console.log(date);
-          //  var year= date.getFullYear();
-          //  var month= date.getMonth();
-         //   var day= date.getDate();
-          //  var userDate = year +"-" + month + "-" + day;
-          //  console.log(userDate);
-           var myurl=$rootScope.urlAdd+"signup/";
-            if($rootScope.user.recommender_user === '')
+            //  var year= date.getFullYear();
+            //  var month= date.getMonth();
+            //   var day= date.getDate();
+            //  var userDate = year +"-" + month + "-" + day;
+            //  console.log(userDate);
+            var myurl = $rootScope.urlAdd + "signup/";
+            if ($rootScope.user.recommender_user === '') {
                 $http({
                         url: myurl,
                         method: "POST",
                         data: {
-                            name:$rootScope.user.name,
+                            name: $rootScope.user.name,
                             melli_code: $rootScope.user.melli_code,
                             email: $rootScope.user.email,
-                            date:  "1996-02-05",
+                            date: "1996-02-05",
                             mobile_phone: $rootScope.user.mobile_phone,
                             username: $rootScope.user.username,
                             password: $rootScope.user.password,
                             type: $rootScope.user.type,
-                            sms_code:$scope.v_code ,
+                            sms_code: $scope.v_code,
                         }
                     }
-                ).then(function(response){
-                    if(response.status == 201) {
+                ).then(function (response) {
+                    if (response.status == 201) {
                         console.log("Successful log");
                         $scope.showSucces();
-                        $location.path('/');
+                        var registeredUser = {
+                            username: $rootScope.user.username,
+                            password: $rootScope.user.password
+                        };
+                    //Gonna send the users data to sinIn api to get the token
+                        authentication.validateUser(registeredUser).then(
+                            function(res){
+                                console.log(res.data.token); // gotta set the token
+                                authenticationToken.setToken(res.data.token);
+                                $location.path('/');
+                            },
+                            function(res){
+                                console.log(res);
+                                if(res.status == 400)
+                                    console.log("نام کاربری با الگوی غیر معتبر!");
+                                else if(res.status == 404)
+                                    console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                            }//failure
+                        );
+                        // *****************************************************************
                     }
-                },function(response){
-                    if(response.status == 409)
+                }, function (response) {
+                    if (res.status == 400)
+                        console.log("نام کاربری غیر معتبر!");
+                   else if (response.status == 409)
                         console.log('کاربر قبلا ثبت نام کرده');
                     else
-                       console.log(response);
+                        console.log(response);
                 });
-            else
-               $http({
-                    url: myurl,
-                    method: "POST",
-                    data: {
-                        name:$rootScope.user.name,
-                        melli_code: $rootScope.user.melli_code,
-                        email: $rootScope.user.email,
-                        date:  $rootScope.user.cDate,
-                        mobile_phone: $rootScope.user.mobile_phone,
-                        username: $rootScope.user.username,
-                        password: $rootScope.user.password,
-                        type: $rootScope.user.type,
-                        sms_code:$scope.v_code ,
-                        recommender_user: $rootScope.user.recommender_user
+            }//end if
+            else {
+                $http({
+                        url: myurl,
+                        method: "POST",
+                        data: {
+                            name: $rootScope.user.name,
+                            melli_code: $rootScope.user.melli_code,
+                            email: $rootScope.user.email,
+                            date: $rootScope.user.cDate,
+                            mobile_phone: $rootScope.user.mobile_phone,
+                            username: $rootScope.user.username,
+                            password: $rootScope.user.password,
+                            type: $rootScope.user.type,
+                            sms_code: $scope.v_code,
+                            recommender_user: $rootScope.user.recommender_user
+                        }
                     }
+                ).then(function (response) {
+                        $scope.showSucces();
+                        var registeredUser = {
+                            username: $rootScope.user.username,
+                            password: $rootScope.user.password
+                        };
+                        //Gonna send the users data to sinIn api to get the token
+                        authentication.validateUser(registeredUser).then(
+                            function(res){
+                                console.log(res.data.token); // gotta set the token
+                                authenticationToken.setToken(res.data.token);
+                                $location.path('/');
+                            },
+                            function(res){
+                                console.log(res);
+                                if(res.status == 400)
+                                    console.log("نام کاربری با الگوی غیر معتبر!");
+                                else if(res.status == 404)
+                                    console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                            }//failure
+                        );
+                        // *****************************************************************
+
+                    },
+                    function (res) {
+                        console.log(res);
+                        // console.log(res.status);
+                        if (res.status == 400)
+                            console.log("نام کاربری غیر معتبر!");
+                        else if (res.status == 404)
+                            console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                    }//failure
+                );
+            }//end else
+
+        }//end of function finalize signUp
+        //********************************************************************************************************************
+        $scope.resendCode = function () {
+            var mysmsUrl = $rootScope.urlAdd + "sms/";
+            //here u gotta send a request to server to ask for code again
+            $http({
+                url: mysmsUrl,
+                method: "POST",
+                data: {
+
+                    mobile_phone: $rootScope.user.mobile_phone
                 }
-            ).then(function(response){
-                   authentication.validateUser(incomer).then( //setUp was a success need to get a token
-                       function(res){
-                           console.log(res.data.token); // gotta set the token
-                           authenticationToken.setToken(res.data.token);
-                           $location.path('/');
-                       },
-                       function(res){
-                           console.log(res);
-                           // console.log(res.status);
-                           if(res.status == 400)
-                               console.log("نام کاربری غیر معتبر!");
-                           else if(res.status == 404)
-                               console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
-                       }//failure
-                   );
-            },function(response){
-                   if(response.status == 409)
-                       console.log('کاربر قبلا ثبت نام کرده');
-                   else
-                       console.log(response);
-            });
-
-        }//end if
-
-        else{
-            console.log("Wrong verification code!!!");
+            }).then(
+                function (response) {
+                    console.log(response);
+                    console.log(response.data.sms_code);
+                    $rootScope.obtainedCode = response.data.sms_code;
+                },
+                function (response) {
+                    console.log(response); // failure
+                }
+            );
+            $scope.resubmits++;//we add up the counter ;when it reaches to it's limit u gotta cancel the users registration
+            console.log($scope.resubmits);
         }
-    }//end of function finalize signUp
-    //********************************************************************************************************************
-    $scope.resendCode=function(){
-        var mysmsUrl = $rootScope.urlAdd+"sms/";
-        //here u gotta send a request to server to ask for code again
-        $http({
-            url :mysmsUrl ,
-            method: "POST" ,
-            data : {
-
-                mobile_phone: $rootScope.user.mobile_phone
-            }
-        }).then(
-            function(response){
-                console.log(response);
-                console.log(response.data.sms_code);
-                $rootScope.obtainedCode = response.data.sms_code;
-            },
-            function(response){
-                console.log(response); // failure
-            }
-        );
-        $scope.resubmits++;//we add up the counter ;when it reaches to it's limit u gotta cancel the users registration
-        console.log($scope.resubmits);
+        //******************************************************Persian_DatePicker config*********************************************************
+        $("#Bdate").pDatepicker(
+            {
+                altField: '#BdateALT',
+                altFormat: 'YYYY - MM - DD',
+                format: 'YYYY - MM - DD dddd',
+                viewMode: "year",
+                position: "auto",
+                autoClose: true
+            });
     }
-    //******************************************************Persian_DatePicker config*********************************************************
-    $("#Bdate").pDatepicker(
-        {
-            altField: '#BdateALT',
-            altFormat: 'YYYY - MM - DD',
-            format:'YYYY - MM - DD dddd',
-            viewMode : "year",
-            position: "auto",
-            autoClose: true
-        });
 }//end of registerCtrl
