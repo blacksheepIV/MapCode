@@ -83,7 +83,7 @@ $scope.levelPage = function(level){
        // $scope.ev = ;
         if($rootScope.user.password!= $rootScope.user.passRepeat)
         //console.log("پسوردها مشابه نیستند!!!");
-           $scope.showAlert($event)
+           $scope.showAlert($event);
         else {
             console.log($rootScope.user.cDate);
             $rootScope.sth=$rootScope.user.cDate;
@@ -110,14 +110,14 @@ $scope.levelPage = function(level){
             );
             $scope.levelPage(2);
         }
-    } //end of function submit
+    }; //end of function submit
     //******************************************************************************************************************
         $scope.counter = 120;
         $scope.onTimeout=function(){
            // console.log($rootScope.user.cDate / 1000);
             $scope.counter --;
             mytimeout = $timeout($scope.onTimeout,1000);
-            if($scope.counter == 0) {
+            if($scope.counter === 0) {
                 //if($scope.resubmits == 3)
                 $timeout.cancel(mytimeout);
                 $scope.reSend= true ;
@@ -127,7 +127,7 @@ $scope.levelPage = function(level){
      //*******************************************************************************************************************
     //********************************************************************************************************************
     $scope.finSignUp = function() {
-        if ($scope.v_code == $rootScope.obtainedCode) {
+        if ($scope.v_code === $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
             //where the hell this token thing gets activated???
             console.log($rootScope.user.cDate);
