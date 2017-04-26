@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "ProjectM",
-		"_postman_id": "3afa8060-07ee-67b5-2780-ad69ac8f8cc5",
+		"_postman_id": "4d78b391-f4f1-bb90-7a08-ea0f6f0a6384",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -92,6 +92,23 @@
 							"mode": "raw",
 							"raw": "{\n\t\"lat\": \"21.323\",\n\t\"lng\": \"32.3343\",\n\t\"name\": \"پیتزا آرشین\",\n\t\"phone\": \"03155447658\",\n\t\"province\": \"اصفهان\",\n\t\"city\": \"کاشان\",\n\t\"address\": \"خیابان امیرکبیر\",\n\t\"public\": \"1\"\n}"
 						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"url": "http://localhost:3000/api/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJDb2RlIjoiT3BuZWw1YUtCeiIsImp0aSI6IktFbTloIn0.UNphIMlJCXs5stiRD9WD_5rMg-winK-hUDL7U224m-w",
+								"description": ""
+							}
+						],
+						"body": {},
 						"description": ""
 					},
 					"response": []
