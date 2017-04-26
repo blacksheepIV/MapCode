@@ -49,9 +49,12 @@
     execute the first command, otherwise execute the second one.
 
     `npm run mkdb -- dummy-inserts`
-        Insert some dummy rows into database tables.
+        Insert some raw dummy rows into database tables.
 
     Note: Use `npm run mkdb` for MySQL version < 5.6
           and `npm run mkdb-new` for MySQL version >= 5.6
+
+* [Optional] Run 'npm run dummy-inserts'
+             to insert some dummy data into database using API.
 
 * Run `npm start`

@@ -12,7 +12,8 @@
     "deploy": "pm2 deploy production",
     "gen-api-doc": "apidoc -i ./api -o ../documents/api",
     "mkdb": "./bin/mkdb",
-    "mkdb-new": "./bin/mkdb-new"
+    "mkdb-new": "./bin/mkdb-new",
+    "dummy-inserts": "./bin/dummy-inserts.js"
   },
   "apidoc": {
     "name": "ProjectM",
@@ -48,6 +49,7 @@
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "randomstring": "^1.1.5",
-    "redis": "^2.7.1"
+    "redis": "^2.7.1",
+    "request": "^2.81.0"
   }
 }
