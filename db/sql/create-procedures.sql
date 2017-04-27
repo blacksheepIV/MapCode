@@ -39,18 +39,20 @@ CREATE PROCEDURE `addPoint`
       RESIGNAL;
     END;
 
-
+    START TRANSACTION;
     SELECT SQL_CALC_FOUND_ROWS
       users.credit,
       users.bonus
     INTO credit, bonus
     FROM users
-    WHERE id = owner;
+    WHERE id = owner
+    FOR UPDATE;
 
     IF FOUND_ROWS() != 1
     THEN
       -- Owner not found
       SET err = 2;
+      ROLLBACK;
       LEAVE PROC;
     END IF;
 
@@ -58,11 +60,10 @@ CREATE PROCEDURE `addPoint`
     THEN
       -- Not enough credit and bonus
       SET err = 3;
+      ROLLBACK;
       LEAVE PROC;
     END IF;
 
-
-    START TRANSACTION;
     INSERT INTO points (
       points.lat,
       points.lng,
@@ -104,8 +105,8 @@ CREATE PROCEDURE `addPoint`
     PREPARE decrease_credit_bonus_statement FROM @query;
     EXECUTE decrease_credit_bonus_statement
     USING @column_value, @owner;
-    DEALLOCATE PREPARE decrease_credit_bonus_statement;
     COMMIT;
+    DEALLOCATE PREPARE decrease_credit_bonus_statement;
 
     -- Success
     SET err = 0;
