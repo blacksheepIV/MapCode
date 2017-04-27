@@ -109,15 +109,15 @@ module.exports.addPoint = function (point, callback) {
             point.public
         ],
         function (err, results) {
+            if (err) {
+                console.error("MySQL: Error happened in inserting new point: %s", err);
+                return callback('serverError');
+            }
+
             var procErr = results[1][0].err,
                 resultId = results[1][0].insertId;
-
-            if (err) {
-                callback('serverError');
-                console.error("MySQL: Error happened in inserting new point: %s", err);
-            }
             // Procedure has returned an error
-            else if (procErr !== 0) {
+            if (procErr !== 0) {
                 if (procErr === 2) {
                     callback('owner_not_found');
                     console.error("!!!: A non existing user have passed auth and is requesting to submit a point!: user's id: %s", point.owner);
