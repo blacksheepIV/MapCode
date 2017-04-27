@@ -71,6 +71,11 @@ function watchMainHtml() {
         watchMainHtml();
     });
 }
-watchMainHtml();
+try {
+    watchMainHtml();
+}
+catch (e) {
+    console.error("Cannot watch '%s': %s", mainHtmlAbPath, e);
+}
 
 module.exports = app;
