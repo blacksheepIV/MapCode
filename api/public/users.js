@@ -93,7 +93,7 @@ router.route('/users/')
             usersModel.publicFields
         );
         if (fields.length === 0)
-            fields.push('*');
+            fields = usersModel.publicFields;
 
         db.getFromBy(
             fields,
