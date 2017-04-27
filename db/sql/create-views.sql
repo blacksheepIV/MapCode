@@ -1,23 +1,18 @@
 CREATE VIEW users_public AS
   SELECT
-    `name`,
-    `melli_code`,
-    `email`,
-    `date`,
-    `mobile_phone`,
-    `phone`,
-    `username`,
-    `address`,
-    `description`,
-    `type`,
+    `users`.name`,
+    `users`.`melli_code`,
+    `users`.`email`,
+    `users`.`date`,
+    `users`.`mobile_phone`,
+    `users`.`phone`,
+    `users`.`username`,
+    `users`.`address`,
+    `users`.`description`,
+    `users`.`type`,
     `users`.`code`,
-    `credit`,
-    `bonus`,
+    `users`.`credit`,
+    `users`.`bonus`,
     `T`.`code` AS `recommender_user`
   FROM `users`
-    LEFT JOIN (
-                 SELECT
-                   `id`,
-                   `code`
-                 FROM `users`
-               ) AS T ON `users`.`recommender_user` = `T`.`id`;
+    LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
