@@ -76,7 +76,7 @@ $scope.levelPage = function(level){
              console.log($rootScope.user);
              $location.path('/verify');
              break;
-     }
+     };
 }//end of function level page
     //******************************************************************************************************************
     $scope.submit = function(){

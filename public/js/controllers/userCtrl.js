@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,authenticationToken,$rootScope){
+var userCtrl = function($scope,$http,authenticationToken,$rootScope,RegisteredUsr){
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.user = {
@@ -24,37 +24,51 @@ var userCtrl = function($scope,$http,authenticationToken,$rootScope){
             bonus: 0
         };
         //****************************************************************************************
-        $http.get(window.apiHref+"users/").then(
-            function (res) {
-                console.log(res);
+        RegisteredUsr.getUSrInfo().then(
+            function (Info) {
+                console.log(Info);
+                console.log(Info.data.type);
+                switch( Info.data.type ){
+                    case 0 :
+                        $scope.investigate = false;
+                        $scope.user.type = "حقیقی تایید نشده";
+                        break;
+                    case 2:
+                        $scope.investigate = false;
+                        $scope.user.type = "حقوقی تایید نشده";
+                        break;
+                    default:
+                        $scope.user.type = " ";
+                        break;
+                }; //end of sitchCase
+
                 $scope.user = {
-                    name: res.data.name,
-                    melli_code: res.data.melli_code,
-                    email: res.data.email,
-                    date: res.data.date,
-                    mobile_phone: res.data.mobile_phone,
-                    phone: res.data.phone,
-                    username:res.data.username,
+                    name: Info.data.name,
+                    melli_code: Info.data.melli_code,
+                    email: Info.data.email,
+                    date: Info.data.date,
+                    mobile_phone: Info.data.mobile_phone,
+                    phone: Info.data.phone,
+                    username:Info.data.username,
                     password: '',
                     passRepeat:'',
-                    address: res.data.address,
-                    description:res.data.description,
+                    address: Info.data.address,
+                    description:Info.data.description,
                     isRecommended: false,
-                    recommender: res.data.recommender_user,
-                    type: res.data.type,
+                    recommender: Info.data.recommender_user,
                     code: '',
-                    credit: res.data.credit,
-                    bonus: res.data.bonus
+                    credit: Info.data.credit,
+                    bonus: Info.data.bonus
                 };
 
-            },function (res) {
-                if(res.status === 401) {
+            },function (Info) {
+                if(Info.status === 401) {
                     console.log("نقض قوانین!کاربر احراز هویت نشده!");
-                    $scope.goodriddance();
+                    RegisteredUsr.goodriddance();
                 }
-                if(res.status === 404){
+                if(Info.status === 404){
                     console.log("کاربری با این مشخصات در سامانه وجود ندارد.");
-                    $scope.goodriddance();
+                    RegisteredUsr.goodriddance();
                 }
 
             }
@@ -76,11 +90,7 @@ var userCtrl = function($scope,$http,authenticationToken,$rootScope){
             });
     });
 //**********************************************************************************************************************
-    $scope.goodriddance=function(){
-        authenticationToken.removeToken();
-        $rootScope.isUser = false;
-        $location.path("/");
-    };
+
     //******************************************************************************************************************
 
 }//end of userCtrl controller

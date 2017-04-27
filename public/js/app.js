@@ -12,4 +12,5 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .service('authenticationToken',authenticationToken)
         .service('authInterceptor',authInterceptor)
         .service('pointService',pointService)
+        .factory('RegisteredUsr',RegisteredUsr)
         .filter('date',date);
