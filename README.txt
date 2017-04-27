@@ -54,7 +54,15 @@
     Note: Use `npm run mkdb` for MySQL version < 5.6
           and `npm run mkdb-new` for MySQL version >= 5.6
 
-* [Optional] Run 'npm run dummy-inserts'
+* [Optional] Run `npm run dummy-inserts`
              to insert some dummy data into database using API.
+
+             Run `npm run dummy-inserts -- --fall-through`
+             to ignore errors and execute all jobs.
+             Useful when some of dummy data are already in the DB.
+
+             Run `npm run dummy-inserts -- --fall-through --update-existing`
+             To update existing data in DB if dummy data are already in there.
+
 
 * Run `npm start`
