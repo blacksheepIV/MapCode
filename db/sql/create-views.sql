@@ -1,6 +1,6 @@
 CREATE VIEW users_public AS
   SELECT
-    `users`.name`,
+    `users`.`name`,
     `users`.`melli_code`,
     `users`.`email`,
     `users`.`date`,
