@@ -5,7 +5,7 @@
             <div layout="row" layout-xs="column">
            <md-input-container flex="25" flex-xs="70" class="md-block">
                <label>نوع کاربر</label>
-               <input type="text" name="userType" ng-model="user.type" ng-disabled="!investigate" value="hello"/>
+               <input type="text" name="userType" ng-model="user.type" ng-disabled="true"/>
                <div class="hint" ng-if="!investigate">وضعیت شما هنوز تایید نشده است،لطفا در اسرع وقت به تکمیل اطلاعات خود بپردازید.</div>
            </md-input-container>
                 <div flex="5"></div>
@@ -16,7 +16,7 @@
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>نام کاربری:</label>
-                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15"  />
+                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15" />
                 </md-input-container>
                 </div>
             <!-- first row -->

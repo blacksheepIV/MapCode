@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Apr-17.
  */
-function RegisteredUsr ($http,$location,$rootScope){
+function RegisteredUsr ($http,$location,$rootScope,authenticationToken){
     var registeredUsr ={
         Info : null,
         getUSrInfo:function(){
@@ -13,7 +13,7 @@ function RegisteredUsr ($http,$location,$rootScope){
         goodriddance:function(){
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-        $location.path("/");
+        $location.path("/login");
     }
     };
     return registeredUsr;

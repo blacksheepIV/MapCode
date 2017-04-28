@@ -81,11 +81,11 @@
                <!-- 3rd row -->
                <!-- 4th row -->
                <div layout="row" layout-xs="column">
-                   <input type="text" id="BdateALT" ng-model="user.cDate" />
                    <md-input-container flex="25" flex-xs="70" class="md-block">
                        <label ng-show="user.type != 2">تاریخ تولد:</label>
                        <label ng-show="user.type == 2">تاریخ ثبت:</label>
                        <input type="text" name="birthdate" id="Bdate" required />
+                       <input type="hidden" id="BdateALT" ng-model="user.cDate" />
                        <div ng-messages="registrationForm.birthdate.$error" ng-if="registrationForm.birthdate.$touched">
                            <div ng-message="required">وارد کردن تاریخ  الزامی است.</div>
                            </div>

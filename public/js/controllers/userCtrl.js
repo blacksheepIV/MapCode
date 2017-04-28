@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,authenticationToken,$rootScope,RegisteredUsr){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr){
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.user = {
@@ -27,21 +27,6 @@ var userCtrl = function($scope,$http,authenticationToken,$rootScope,RegisteredUs
         RegisteredUsr.getUSrInfo().then(
             function (Info) {
                 console.log(Info);
-                console.log(Info.data.type);
-                switch( Info.data.type ){
-                    case 0 :
-                        $scope.investigate = false;
-                        $scope.user.type = "حقیقی تایید نشده";
-                        break;
-                    case 2:
-                        $scope.investigate = false;
-                        $scope.user.type = "حقوقی تایید نشده";
-                        break;
-                    default:
-                        $scope.user.type = " ";
-                        break;
-                }; //end of sitchCase
-
                 $scope.user = {
                     name: Info.data.name,
                     melli_code: Info.data.melli_code,
@@ -60,6 +45,20 @@ var userCtrl = function($scope,$http,authenticationToken,$rootScope,RegisteredUs
                     credit: Info.data.credit,
                     bonus: Info.data.bonus
                 };
+                console.log(Info.data.type);
+                switch( Info.data.type ){
+                    case 0 :
+                        $scope.investigate = false;
+                        $scope.user.type = "حقیقی تایید نشده";
+                        break;
+                    case 2:
+                        $scope.investigate = false;
+                        $scope.user.type = "حقوقی تایید نشده";
+                        break;
+                    default:
+                        $scope.user.type = " ";
+                        break;
+                }; //end of switchCase
 
             },function (Info) {
                 if(Info.status === 401) {

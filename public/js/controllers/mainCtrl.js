@@ -1,13 +1,8 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService){
-    $rootScope.urlAdd=window.apiHref;
-    console.log($rootScope.urlAdd);
-    console.log(authenticationToken.getToken());
-    if(authenticationToken.getToken())
-        $rootScope.isUser = true;
-    console.log( $rootScope.isUser );
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
+
         //   $scope.map.setMapTypeId('Dark');
         /* var marker = new google.maps.Marker({
          position:{lat:33.9870993,lng:51.4405203},
@@ -16,6 +11,25 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
          title:"drag me!"
          }); */
     $scope.initVar = function(){
+        $scope.U = {
+            name: "کاربر مهمان",
+            credit: 0,
+            bonus: 0
+        };
+        if(authenticationToken.getToken()) {
+            $rootScope.isUser = true;
+            RegisteredUsr.getUSrInfo().then(
+                function(Info) {
+                    $scope.U.name = Info.data.name;
+                    $scope.U.credit = Info.data.credit;
+                    $scope.U.bonus = Info.data.bonus;
+                },
+                function(Info){
+                console.log(Info); //failure in obtaining data
+                }
+                );
+        }
+        console.log( $rootScope.isUser );
         $scope.customFullscreen = false;
         $scope.SearchTopics =[
             {id:1 , name:'کد نقطه'},

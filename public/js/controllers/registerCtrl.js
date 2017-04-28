@@ -129,39 +129,31 @@ $scope.levelPage = function(level){
     $scope.finSignUp = function() {
         if ($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
-            //where the hell this token thing gets activated???
             console.log($rootScope.user.cDate);
             console.log($rootScope.sth);
-            // var a = $rootScope.sth/1000;
-            // console.log(a);
-            var date = new Date($rootScope.sth * 10);
-            // var userDate = $filter('date')(new Date(a), 'YYYY - MM - dd');
-            console.log(date);
-            //  var year= date.getFullYear();
-            //  var month= date.getMonth();
-            //   var day= date.getDate();
-            //  var userDate = year +"-" + month + "-" + day;
-            //  console.log(userDate);
+
             var myurl = window.apiHref + "signup/";
+            var d= {
+                name: $rootScope.user.name,
+                    melli_code: $rootScope.user.melli_code,
+                    email: $rootScope.user.email,
+                    date: "1996-02-05",
+                    mobile_phone: $rootScope.user.mobile_phone,
+                    username: $rootScope.user.username,
+                    password: $rootScope.user.password,
+                    type:parseInt($rootScope.user.type),
+                    sms_code: $scope.v_code
+            };
+            console.log(d);
             if ($rootScope.user.recommender_user === '') {
                 $http({
                         url: myurl,
                         method: "POST",
-                        data: {
-                            name: $rootScope.user.name,
-                            melli_code: $rootScope.user.melli_code,
-                            email: $rootScope.user.email,
-                            date: "1996-02-05",
-                            mobile_phone: $rootScope.user.mobile_phone,
-                            username: $rootScope.user.username,
-                            password: $rootScope.user.password,
-                            type: $rootScope.user.type,
-                            sms_code: $scope.v_code,
-                        }
+                        data: d
                     }
                 ).then(function (response) {
                     if (response.status == 201) {
-                        console.log("Successful log");
+                        console.log("Successful registeration");
                         $scope.showSucces();
                         var registeredUser = {
                             username: $rootScope.user.username,
@@ -185,7 +177,7 @@ $scope.levelPage = function(level){
                         // *****************************************************************
                     }
                 }, function (response) {
-                    if (res.status == 400)
+                    if (response.status == 400)
                         console.log("نام کاربری غیر معتبر!");
                     else if (response.status == 409)
                         console.log('کاربر قبلا ثبت نام کرده');
