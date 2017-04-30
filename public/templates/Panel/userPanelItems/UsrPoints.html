@@ -1,0 +1,22 @@
+<div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
+    <md-content layout="row">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{myPoint.name}}</span>
+                    <span class="md-subhead">ادرس:{{myPoint.address}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-sm card-media">
+                       <!-- <span class="fa fa-map-marker fa-3x"></span> -->
+                        <img src="../../../img/Icons/location_marker3.png"/>
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button>مشاهده</md-button>
+                <md-button>حذف</md-button>
+            </md-card-actions>
+        </md-card>
+    </md-content>
+</div>

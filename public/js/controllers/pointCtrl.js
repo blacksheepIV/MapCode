@@ -1,9 +1,10 @@
 /**
  * Created by blackSheep on 23-Apr-17.
  */
-function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
+function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,localStorageService){
     $scope.initPoint = function(){
-        //TODO:
+        $scope.pointNames=['point1','point2','point3','point4','point5','point6','point7','point8','point9','point10'];
+        $scope.index = 0;
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         $scope.provinces =[
             {id:1 , name:'اصفهان'},
@@ -48,7 +49,6 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
                 .textContent('ثبت نقطه با موفقیت انجام شد!')
                 .ariaLabel('successDialog')
                 .ok('مرسی')
-                .targetEvent(ev)
         );
     };
     //*****************************************************************************************************************
@@ -78,6 +78,10 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope){
                 console.log(response);
                 $mdDialog.hide();
                 $scope.showSucces();
+                if(localStorageService.isSupported) {
+                    localStorageService.set('point1',pointInfo);
+                   // $scope.index++;
+                }
             },
             function(response){
                 console.log(response); //failure

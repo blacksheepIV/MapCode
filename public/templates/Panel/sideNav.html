@@ -1,33 +1,38 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
-    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding  >
+    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding >
         <div class="md-toolbar-tools" >
             <div layout="row" layout-padding layout-align="center center" flex="100">
-               <md-card id="Myusercard"> <!-- md-card height surpasses -->
-                  <md-card-title>
-                      <md-card-title-media>
-                         <div class="md-media-sm card-media" >
-                            <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
-                         </div>
-                      </md-card-title-media>
-                    <md-card-title-text>
-                        <span class="md-headline">{{U.name}}</span> <!-- has to get users info through database query -->
-                        <span class="md-subhead description">اعتبار:{{U.credit}}</span>
-                        <span class="md-subhead description">امتیاز:{{U.bonus}}</span>
-                    </md-card-title-text>
-                </md-card-title>
+                <br>
+               <md-card id="Myusercard" class="image-no-fill">
+                   <md-card-header layout="row">
+                     <md-card-avatart>
+                            <md-icon class="fa fa-user-circle-o fa-3x"></md-icon>
+                       </md-card-avatart>
+                       <md-card-header-text>
+                           <span class="md-title">{{U.name}}</span>
+                       </md-card-header-text>
+                       </md-card-header>
+                   <md-card-title-text layout-alignment="start start">
+                       <span class="md-subhead description ">اعتبار:{{U.credit}}</span>
+                       <span class="md-subhead description">امتیاز:{{U.bonus}}</span>
+                   </md-card-title-text>
+                   <md-card-title-media layout="row" layout-align="center center">
+                      <md-card-actions layout="row" layout-align="center center">
+                          <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
+                      </md-card-actions>
+                   </md-card-title-media>
             </md-card>
-            <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
             </div>
         </div>
     </md-toolbar>
     <md-content layout-margin dir="rtl" layout-align="center center">
-        <div id="mySidenav" class="sidenav" ng-show="isUser">
+        <div id="mySidenav" class="sidenav" ng-show="isUser" layout-align="center center">
             <div class="SNav_items">
                 <span class="fa fa-address-card fa-lg"></span>
                  <a href="/panel" >حساب کاربری من</a>
                 </div>
             <div class="SNav_items">
-                <span class="fa fa-map-pin fa-lg"></span>
+                <span class="fa fa-heart fa-lg"></span>
                  <a href="#">مکان های منتخب من</a>
             </div>
             <div class="SNav_items">

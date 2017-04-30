@@ -5,7 +5,7 @@
             <div layout="row" flex="auto">
             <md-button  class="md-icon-button " aria-label="Menu" ng-click="toggleRight()">
                 <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
-                <md-tooltip md-direction="bottom "> منو</md-tooltip>
+                <md-tooltip md-direction="bottom"> منو</md-tooltip>
             </md-button>
                <!-- <span  class="fa fa-ellipsis-v fa-lg"></span> -->
             </div>
@@ -20,7 +20,7 @@
             <md-select placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
                 <md-option ng-value="Stopic" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
             </md-select>
-            <md-button  class="md-icon-button " id="searchBtn" aria-label="searchBtn">
+            <md-button class="md-icon-button " id="searchBtn" aria-label="searchBtn">
                 <md-icon md-font-icon="fa fa-search fa-2x" id="searchIcon" class="md-48"></md-icon>
             </md-button>
         </div>

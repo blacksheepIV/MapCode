@@ -1,9 +1,10 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService){
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
+        $scope.myPoint = null;
         $scope.user = {
             name: '',
             melli_code: 0,
@@ -73,7 +74,10 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr){
             }
         );
         //****************************************************************************************
-
+        if(localStorageService.isSupported) {
+           $scope.myPoint = localStorageService.get('point1');
+            console.log($scope.myPoint);
+        }
         //u get user's type from database;store it in a variable and then the user's type gotta be equal to that value
     };
     $(document).ready(function () {
