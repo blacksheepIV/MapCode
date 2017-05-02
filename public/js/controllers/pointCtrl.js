@@ -10,6 +10,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             {id:1 , name:'اصفهان'},
             {id:2 , name:'تهران'}
         ];
+        //TODO:in logOut clear users point from localStorage
         $scope.cities=[
             {prov:'اصفهان',name:'اصفهان'},
             {prov:'اصفهان',name:'اردستان'},

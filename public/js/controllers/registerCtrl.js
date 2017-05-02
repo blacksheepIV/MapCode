@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,$filter,authentication,authenticationToken){
+var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,authentication,authenticationToken){
     $scope.reSend = false;
     $scope.resubmits = 0; //counts the times user asked for resubmission
     $scope.v_code= 0;
@@ -30,8 +30,8 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             code: '',
             credit: 0,
             bonus: 0
-        }
-    }//end of function initVars
+        };
+    };//end of function initVars
     //****************************************************************************************************************************************
 
 
@@ -58,7 +58,6 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
                 .textContent('ثبت نام با موفقیت انجام شد!')
                 .ariaLabel('AlertDialog')
                 .ok('مرسی')
-                .targetEvent(ev)
         );
     };
     //******************************************************************************************************************
@@ -71,13 +70,13 @@ $scope.levelPage = function(level){
              $rootScope.pageTitle = "ثبت نام";
              break;
          case 2:
-             $rootScope.pageTitle = "تایید ثبت نام"
+             $rootScope.pageTitle = "تایید ثبت نام";
             // userService.setUserInfo($rootScope.user);
              console.log($rootScope.user);
              $location.path('/verify');
              break;
      };
-}//end of function level page
+};//end of function level page
     //******************************************************************************************************************
     $scope.submit = function(){
        // $scope.ev = ;
@@ -122,7 +121,7 @@ $scope.levelPage = function(level){
                 $timeout.cancel(mytimeout);
                 $scope.reSend= true ;
             }
-        }//end of function on time out
+        };//end of function on time out
         var mytimeout = $timeout($scope.onTimeout,1000);
      //*******************************************************************************************************************
     //********************************************************************************************************************
@@ -133,7 +132,7 @@ $scope.levelPage = function(level){
             console.log($rootScope.sth);
 
             var myurl = window.apiHref + "signup/";
-            var d= {
+            var usrInfo = {
                 name: $rootScope.user.name,
                     melli_code: $rootScope.user.melli_code,
                     email: $rootScope.user.email,
@@ -141,15 +140,26 @@ $scope.levelPage = function(level){
                     mobile_phone: $rootScope.user.mobile_phone,
                     username: $rootScope.user.username,
                     password: $rootScope.user.password,
-                    type:parseInt($rootScope.user.type),
-                    sms_code: $scope.v_code
+                    type:$rootScope.user.type,
+                    sms_code: String($scope.v_code)
             };
-            console.log(d);
+            var spare={
+                name: "شریلو",
+                melli_code: "1260312616",
+                email: "shooryl@yahoo.com",
+                date: "1996-02-05",
+                mobile_phone: "09385200125",
+                username: "shooryl2010",
+                password: "123456",
+                type:"0",
+                sms_code: String($scope.v_code)
+            };
+            console.log(usrInfo);
             if ($rootScope.user.recommender_user === '') {
                 $http({
                         url: myurl,
                         method: "POST",
-                        data: d
+                        data: usrInfo
                     }
                 ).then(function (response) {
                     if (response.status == 201) {
@@ -159,7 +169,7 @@ $scope.levelPage = function(level){
                             username: $rootScope.user.username,
                             password: $rootScope.user.password
                         };
-                        //Gonna send the users data to sinIn api to get the token
+                        //Gonna send the users data to signIn api to get the token
                         authentication.validateUser(registeredUser).then(
                             function (response) {
                                 console.log(response.data.token); // gotta set the token
@@ -177,8 +187,10 @@ $scope.levelPage = function(level){
                         // *****************************************************************
                     }
                 }, function (response) {
-                    if (response.status == 400)
+                    if (response.status == 400) {
                         console.log("نام کاربری غیر معتبر!");
+                        console.log(response);
+                    }
                     else if (response.status == 409)
                         console.log('کاربر قبلا ثبت نام کرده');
                     else
@@ -263,7 +275,7 @@ $scope.levelPage = function(level){
             );
             $scope.resubmits++;//we add up the counter ;when it reaches to it's limit u gotta cancel the users registration
             console.log($scope.resubmits);
-        }
+        };
         //******************************************************Persian_DatePicker config*********************************************************
         $("#Bdate").pDatepicker(
             {
