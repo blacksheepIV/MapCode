@@ -3,6 +3,7 @@
      0 : Success
      2 : Owner not found
      3 : Not enough credit and bonus
+     4 : Category not found
  */
 DELIMITER ~
 CREATE PROCEDURE `addPoint`
@@ -25,17 +26,20 @@ CREATE PROCEDURE `addPoint`
     IN  `address`         TEXT CHARACTER SET utf8
                           COLLATE utf8_persian_ci,
     IN  `public`          BOOLEAN,
+    IN  `category`        VARCHAR(30) CHARACTER SET utf8
+                          COLLATE utf8_persian_ci,
 
-    OUT `insert_id`       INT UNSIGNED,
+    OUT `point_code`      VARCHAR(17),
     OUT `err`             TINYINT UNSIGNED
   )
     PROC: BEGIN
     DECLARE credit, bonus SMALLINT UNSIGNED;
+    DECLARE first_code, second_code, category_id SMALLINT UNSIGNED;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       ROLLBACK;
-      SET insert_id = NULL;
+      SET point_code = NULL;
       RESIGNAL;
     END;
 
@@ -64,6 +68,32 @@ CREATE PROCEDURE `addPoint`
       LEAVE PROC;
     END IF;
 
+    SELECT SQL_CALC_FOUND_ROWS
+        U.`id`, T.`code`, U.`code`
+    INTO category_id, first_code, second_code
+    FROM point_categories AS U
+    JOIN point_categories AS T ON U.parent = T.id
+    WHERE U.name = category
+          AND U.`parent` IS NOT NULL;
+
+    IF FOUND_ROWS() != 1
+    THEN
+        -- category not found
+        SET err = 4;
+        ROLLBACK;
+        LEAVE PROC;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO @cat_count
+    FROM points
+    WHERE points.category = category_id;
+
+    SET @cat_count = @cat_count + 1;
+
+    -- TODO: Remove '-' from point code
+    SET @code = CONCAT('mp', CAST(first_code AS CHAR(10)), CAST(second_code AS CHAR(10)), CAST(@cat_count AS CHAR(10)));
+
     INSERT INTO points (
       points.lat,
       points.lng,
@@ -75,7 +105,9 @@ CREATE PROCEDURE `addPoint`
       points.city,
       points.address,
       points.public,
-      points.owner
+      points.category,
+      points.owner,
+      points.code
     ) VALUES (
       lat,
       lng,
@@ -87,20 +119,22 @@ CREATE PROCEDURE `addPoint`
       city,
       address,
       public,
-      owner
+      category_id,
+      owner,
+      @code
     );
-    SET insert_id = LAST_INSERT_ID();
+    SET point_code = @code;
 
-    -- TODO: decrease bonus first or credit first?
-    SET @column_name = 'bonus';
-    SET @column_value = bonus;
-    IF bonus = 0
+    SET @column_name = 'credit';
+    SET @column_value = credit;
+    IF credit = 0
     THEN
-      SET @column_name = 'credit';
-      SET @column_value = credit;
+      SET @column_name = 'bonus';
+      SET @column_value = bonus;
     END IF;
     SET @column_value = @column_value - 1;
     SET @owner = owner;
+
     SET @query = CONCAT('UPDATE `users` SET `', @column_name, '` = ? WHERE `id` = ?');
     PREPARE decrease_credit_bonus_statement FROM @query;
     EXECUTE decrease_credit_bonus_statement

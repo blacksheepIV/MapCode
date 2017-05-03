@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
+var moment = require('moment');
 
 var getDirJsFiles = require('../utils/').getDirJsFiles;
 var jwt = require('../utils/jwt');
@@ -17,10 +18,7 @@ router.use(expressValidator({
                 .test(str);
         },
         isDate: function (str) {
-            if (isNaN(Date.parse(str)))
-                return false;
-
-            return true;
+            return moment(str).isValid();
         },
         isUsername: function (str) {
             return /^[a-zA-Z]([a-zA-Z-0-9]|_)*$/.test(str);

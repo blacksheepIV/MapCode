@@ -43,7 +43,8 @@ var dummyUsers = [
                 "province": "اصفهان",
                 "city": "کاشان",
                 "address": "خیابان امیرکبیر",
-                "public": 1
+                "public": 1,
+                "category": "رستوران ایتالیایی"
             },
             {
                 "lat": "32.32",
@@ -54,7 +55,8 @@ var dummyUsers = [
                 "city": "یزد",
                 /* jshint -W100 */
                 "address": "خیابان کریم‌خان",
-                "public": 1
+                "public": 1,
+                "category": "فروشگاه لباس"
             },
             {
                 "lat": "24.32",
@@ -64,7 +66,8 @@ var dummyUsers = [
                 "province": "کرمان",
                 "city": "کرمان",
                 "address": "خیابان قسطنطنیه",
-                "public": 0
+                "public": 0,
+                "category": "کبابی"
             }
         ]
     }

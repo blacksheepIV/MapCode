@@ -98,6 +98,15 @@ module.exports.schema = {
             options: ['0', '1'],
             errorMessage: 'not_0_or_1'
         }
+    },
+    'category': {
+        notEmpty: {
+            errorMessage: 'empty'
+        },
+        isLength: {
+            options: {min: 1, max:30},
+            errorMessage: 'length_not_1_to_30'
+        }
     }
 };
 
@@ -111,7 +120,7 @@ module.exports.schema = {
  */
 module.exports.addPoint = function (point, callback) {
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @insert_id, @err); SELECT @err AS `err`, @insert_id AS `insertId`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
         [
             point.owner,
             point.lat,
@@ -123,57 +132,33 @@ module.exports.addPoint = function (point, callback) {
             point.province,
             point.city,
             point.address,
-            point.public
+            point.public,
+            point.category
         ],
         function (err, results) {
             if (err) {
+                console.log(point);
                 console.error("MySQL: Error happened in inserting new point: %s", err);
                 return callback('serverError');
             }
 
             var procErr = results[1][0].err,
-                resultId = results[1][0].insertId;
+                pointCode = results[1][0].pointCode;
             // Procedure has returned an error
             if (procErr !== 0) {
                 if (procErr === 2) {
                     callback('owner_not_found');
                     console.error("!!!: A non existing user have passed auth and is requesting to submit a point!: user's id: %s", point.owner);
                 }
+                else if (procErr === 4) {
+                    callback('category_not_found');
+                }
                 else {
                     callback('not_enough_credit_bonus');
                 }
             }
             // Procedure has been successful
-            else {
-                // Try 5 times to generate a unique code for new point
-                asyncRetry({
-                    errorFilter: function (err) {
-                        // Check if error has happened because of `code` duplication
-                        return err.code === "ER_DUP_ENTRY";
-                    }
-                }, function (done) {
-                    var uniqueCode = hashids.encode(resultId);
-                    db.conn.query(
-                        "UPDATE `points` SET `code` = ? WHERE `id` = ?",
-                        [uniqueCode, resultId],
-                        function (err) {
-                            if (err) {
-                                console.error("MySQL: Error happened in updating new point's code: %s", err);
-                                return done(err);
-                            }
-                            // Unique code generated successfully
-                            done(null, uniqueCode);
-                        }
-                    );
-                }, function (err, result) {
-                    if (err) {
-                        console.error("!!!: Tried 5 times to generate a unique point code but failed.");
-                        return callback('serverError');
-                    }
-
-                    callback(null, result);
-                });
-            }
+            callback(null, pointCode);
         }
     );
 };

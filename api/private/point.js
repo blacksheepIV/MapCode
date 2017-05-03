@@ -26,6 +26,7 @@ router.route('/point')
  * @apiParam {String{1..25}} city Point's city
  * @apiParam {String{1..21844}} address Point's address
  * @apiParam {Number=0,1} public Point is public/private
+ * @apiParam {String{1..30}} category
  *
  * @apiExample {json} Request-Example
  *     {
@@ -36,14 +37,15 @@ router.route('/point')
  *         "province": "اصفهان",
  *         "city": "کاشان",
  *         "address": "خیابان امیرکبیر",
- *         "public": "1"
+ *         "public": "1",
+ *         "category": "رستوران ایتالیایی"
  *     }
  *
  * @apiSuccessExample Success-Response
  *     HTTP/1.1 201 Created
  *
  *     {
- *         "code": "rgP8V4y1aKReQGw5WvzA"
+ *         "code": "mp001002000000345"
  *     }
  *
  *
@@ -72,8 +74,12 @@ router.route('/point')
  * @apiError (400) public:empty
  * @apiError (400) public:not_0_or_1
  *
+ * @apiError (400) category:empty
+ * @apiError (400) category:length_not_1_to_30
+ *
  *
  * @apiError (404) owner_not_found If this error got returned sign out the user.
+ * @apiError (404) category_not_found
  *
  * @apiError (400) not_enough_credit_bonus
  *
