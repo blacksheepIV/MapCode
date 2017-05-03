@@ -30,6 +30,9 @@
       DB_NAME = 'projectmdb'
       # Hashids unique key (In order to generate unique hashids)
       HASHIDS_KEY = 'r5309rfadfn'
+      # Max number that can be passed to MySQL queries with LIMIT
+      # Default = 100
+      QUERY_LIMIT_MAX = 50
   `
 
 * Create database

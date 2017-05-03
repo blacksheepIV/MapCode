@@ -1,6 +1,11 @@
 var router = require('express').Router();
+var lodashObject = require('lodash/object');
 
+var db = require('../../db');
 var pointModel = require('../../models/point');
+
+
+router.use(require('../../utils').skipLimitChecker);
 
 
 router.route('/point')
@@ -75,7 +80,7 @@ router.route('/point')
  *
  *
  */
-    .post(function (req, res, next) {
+    .post(function (req, res) {
         req.validateBodyWithSchema(
             pointModel.schema,
             'all',
@@ -109,6 +114,61 @@ router.route('/point')
                 });
             }
         );
+    })
+    /**
+     * @api {get} /point/ Get current user's public/private points
+     * @apiVersion 0.1.0
+     * @apiName getUserPoints
+     * @apiGroup point
+     * @apiPermission private
+     *
+     * @apiDescription Get the token user's public/private points.
+     *
+     * @apiParam {Number{1..}} [start=1] Send points from start-th point!
+     * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
+     * @apiParam {Boolean} [private] Only send private points.
+     * @apiParam {Boolean} [public] Only send public points (It will be ignored if `private` param is also set).
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/api/point/?private?start=1?limit=1
+     *     Response:
+     *        [
+     *          {
+     *            "lat": 24.32,
+     *            "lng": 113.32,
+     *            "submission_date": "2017-04-27T11:05:19.000Z",
+     *            "expiration_date": "2018-04-27T11:05:19.000Z",
+     *            "name": "قصابی اصغرآفا و پسران",
+     *            "phone": "03266118769",
+     *            "province": "کرمان",
+     *            "city": "کرمان",
+     *            "code": "gLPQZOpnel5aKBzyVXvA",
+     *            "address": "خیابان قسطنطنیه",
+     *            "public": 0,
+     *            "rate": 0,
+     *            "popularity": 0
+     *          }
+     *        ]
+     */
+    .get(function (req, res) {
+        db.conn.query(
+            "SELECT * FROM `points` WHERE `owner` = ? " +
+            (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
+            "LIMIT ?, ?",
+            [req.user.userId, req.queryStart, req.queryLimit],
+            function (err, results) {
+                if (err) {
+                    res.status(500).end();
+                    return console.log("MySQL: Error in getting token user's points: %s", err);
+                }
+                // Only pick public fields from results
+                res.send(results.map(function (result) {
+                    return lodashObject.pick(result, pointModel.publicFields);
+                }));
+            }
+        );
+
     });
 
 
