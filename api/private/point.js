@@ -1,6 +1,11 @@
 var router = require('express').Router();
+var lodashObject = require('lodash/object');
 
+var db = require('../../db');
 var pointModel = require('../../models/point');
+
+
+router.use(require('../../utils').skipLimitChecker);
 
 
 router.route('/point')
@@ -75,7 +80,7 @@ router.route('/point')
  *
  *
  */
-    .post(function (req, res, next) {
+    .post(function (req, res) {
         req.validateBodyWithSchema(
             pointModel.schema,
             'all',
@@ -109,6 +114,25 @@ router.route('/point')
                 });
             }
         );
+    })
+    .get(function (req, res) {
+        db.conn.query(
+            "SELECT * FROM `points` WHERE `owner` = ? " +
+            (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE ": "")) +
+            "LIMIT ?, ?",
+            [req.user.userId, req.queryStart, req.queryLimit],
+            function (err, results) {
+                if (err) {
+                    res.status(500).end();
+                    return console.log("MySQL: Error in getting token user's points: %s", err);
+                }
+                // Only pick public fields from results
+                res.send(results.map(function (result) {
+                    return lodashObject.pick(result, pointModel.publicFields);
+                }));
+            }
+        );
+
     });
 
 

@@ -5,6 +5,23 @@ var asyncRetry = require('async/retry');
 var db = require('../db');
 
 
+module.exports.publicFields = [
+    'lat',
+    'lng',
+    'submission_date',
+    'expiration_date',
+    'name',
+    'phone',
+    'province',
+    'city',
+    'code',
+    'address',
+    'public',
+    'rate',
+    'popularity'
+];
+
+
 // Verification schema
 module.exports.schema = {
     'lat': {
