@@ -10,3 +10,8 @@
 - Check XSS
 
 - Change dynamic query generators to static query strings for speed optimization
+
+- User's name can be persian
+
+
+- Add point tag and description

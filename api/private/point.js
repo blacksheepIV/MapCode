@@ -132,6 +132,8 @@ router.route('/point')
      *     Request-Example:
      *         GET http://mapcode.ir/api/point/?private?start=1?limit=1
      *     Response:
+     *        HTTP/1.1 200 OK
+     *
      *        [
      *          {
      *            "lat": 24.32,
@@ -162,6 +164,11 @@ router.route('/point')
                     res.status(500).end();
                     return console.log("MySQL: Error in getting token user's points: %s", err);
                 }
+
+                results.forEach(function (result) {
+                    result.tags = [];
+                    result.category = "";
+                });
 
                 res.send(results);
             }
