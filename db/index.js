@@ -27,6 +27,27 @@ module.exports.objectInsertQuery = function (tableName, obj, callback) {
     });
 };
 
+module.exports.objectUpdateQuery = function (tableName, obj, conditions, callback) {
+    var values = [tableName];
+    var query = "UPDATE ?? SET ";
+    Object.keys(obj).forEach(function (key) {
+        query += ' ?? = ?, ';
+        values.push(key, obj[key]);
+    });
+    query = query.substr(0, query.length - 2) + ' ';
+
+    query += "WHERE ";
+    var keys = Object.keys(conditions);
+    for (var i = 0; i < keys.length; i++) {
+        query += '?? = ?' + (i !== keys.length - 1 ? 'AND ' : ';');
+        values.push(keys[i], conditions[keys[i]]);
+    }
+
+    conn.query(query, values, function (err, results, fields) {
+        callback(err, results, fields);
+    });
+};
+
 
 module.exports.listOfDuplicates = function (err) {
     err = String(err);

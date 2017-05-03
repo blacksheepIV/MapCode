@@ -2,6 +2,8 @@ var bcrypt = require('bcryptjs');
 var Hashids = require('hashids');
 var hashids = new Hashids(process.env.HASHIDS, 10);
 var asyncRetry = require('async/retry');
+var asyncSeries = require('async/series');
+var asyncSetImmediate = require('async/setImmediate');
 
 var db = require('../db');
 
@@ -23,6 +25,35 @@ module.exports.publicFields = [
     'recommender_user'
 
 ];
+
+module.exports.updatableFields = [
+    'name',
+    'melli_code',
+    'email',
+    'date',
+    'mobile_phone',
+    'phone',
+    'username',
+    'password',
+    'address',
+    'description',
+    'sms_code'
+];
+
+
+module.exports.signUpFields = [
+    'name',
+    'melli_code',
+    'email',
+    'date',
+    'mobile_phone',
+    'username',
+    'password',
+    'recommender_user',
+    'type',
+    'sms_code'
+];
+
 
 // Verification schema
 module.exports.schema = {
@@ -70,6 +101,15 @@ module.exports.schema = {
             errorMessage: 'not_a_date'
         }
     },
+    'phone': {
+        isInt: {
+            errorMessage: 'not_numeric'
+        },
+        isLength: {
+            options: {max: 11, min: 11},
+            errorMessage: 'length_not_11'
+        }
+    },
     'mobile_phone': {
         notEmpty: {
             errorMessage: 'empty'
@@ -103,6 +143,18 @@ module.exports.schema = {
             errorMessage: 'length_not_6_to_20'
         }
     },
+    'address': {
+        isLength: {
+            options: {max: 21844},
+            errorMessage: 'length_greater_than_21844'
+        }
+    },
+    'description': {
+        isLength: {
+            options: {max: 21844},
+            errorMessage: 'length_greater_than_21844'
+        }
+    },
     'recommender_user': {
         isAlphanumeric: {
             errorMessage: 'not_alpha_numeric'
@@ -133,6 +185,63 @@ module.exports.schema = {
             errorMessage: 'length_not_5'
         }
     }
+};
+
+
+/*
+ Updates a user in database
+
+ Errors:
+ - serverError
+ - recommender_user_not_found
+ - Array of duplicate rows. e.g. ['duplicate_email']
+ */
+module.exports.updateUser = function (user, conditions, callback) {
+    asyncSeries([
+        // Handle `password` field
+        function (next) {
+            // If `password` doesn't need to get updated
+            if (!user.password) {
+                return asyncSetImmediate(function () {
+                    next();
+                });
+            }
+
+            bcrypt.hash(user.password, 8, function (err, hashedPassword) {
+                // bcryptjs error
+                if (err) {
+                    console.error("updateUser@models/users: bcryptjs: Error in hasing user's password: %s", err);
+                    return next('serverError');
+                }
+
+                user.password = hashedPassword;
+
+                next();
+            });
+        },
+        function (next) {
+            db.objectUpdateQuery('users', user, conditions, function (err, results) {
+                // MySQL error
+                if (err) {
+                    // There are duplicates in user's info
+                    if (err.code === 'ER_DUP_ENTRY')
+                       return next(db.listOfDuplicates(err));
+
+                    if (err.code === 'ER_NO_REFERENCED_ROW_2')
+                        return next('recommender_user_not_found');
+
+                    console.error("MySQL: Error happened in inserting new user: %s", err);
+                    return next('serverError');
+                }
+
+                next();
+            });
+        }
+    ], function (err) {
+        if (err) return callback(err);
+
+        callback();
+    });
 };
 
 

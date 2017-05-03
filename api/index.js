@@ -80,6 +80,8 @@ router.use(function (req, res, next) {
 
 
         if (ignorables !== undefined) {
+            if (ignorables === 'all')
+                ignorables = params;
             for (var i = 0; i < ignorables.length; i++) {
                 if (req.body[ignorables[i]] === undefined) {
                     delete newSchema[ignorables[i]];
