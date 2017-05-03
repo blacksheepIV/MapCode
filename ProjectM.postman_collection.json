@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "ProjectM",
-		"_postman_id": "4d78b391-f4f1-bb90-7a08-ea0f6f0a6384",
+		"_postman_id": "459b8e23-a8fa-a21b-3a72-b5c0c8882c24",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -108,7 +108,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -125,7 +128,35 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"url": "http://localhost:3000/api/users",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJDb2RlIjoiVm9sZWpSZWpObSIsImp0aSI6InBQV1d5In0.XDReTWWWvPWFpKzK12gznmJtsD7HhojXHHF1204-rWw",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"علیرضا\",\n\t\"melli_code\": \"1234567654\",\n\t\"email\": \"a.alireza@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"phone\": \"03155334946\",\n\t\"username\": \"ali_reza\",\n\t\"password\": \"654321\",\n\t\"address\": \"خیابان شهید بوقیان\",\n\t\"description\": \"یوزری بدبخت\"\n}"
+						},
 						"description": ""
 					},
 					"response": []
