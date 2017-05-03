@@ -13,7 +13,7 @@
             </div>
             <h5 >درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
                 <md-input-container class="md-block" flex="auto">
-                   <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5" name="verificationCode" ng-model="v_code"/>
+                   <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5" name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
                 </md-input-container>
             <div layout="row" layout-align="center center" layout-xs="column" md-theme="docs-dark">
                 <md-button class="md-raised md-warn md-hue-2"  ng-click="finSignUp()" >تایید</md-button>

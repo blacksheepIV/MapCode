@@ -11,6 +11,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         $scope.mobilePattern='09[1|2|3][0-9]{8}';
+        $scope.smsPattern='[0-9]+';
         $scope.levelPage(1);
         $scope.user = {
             name: '',
@@ -129,15 +130,15 @@ $scope.levelPage = function(level){
         if($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
             console.log("**"+userService.getUserTime());
-            var tDate = new Date(userService.getUserTime()/100).toUTCString();
-            console.log(tDate);
+            var momentDate= (moment(userService.getUserTime()).format()).split("T");
+            console.log(momentDate[0]);
             //console.log($rootScope.userClone.cDate);
             var myurl = window.apiHref + "signup/";
             var usrInfo = {
                 name: $rootScope.userClone.name,
                     melli_code: $rootScope.userClone.melli_code,
                     email: $rootScope.userClone.email,
-                    date: "1996-02-05",
+                    date: momentDate[0],
                     mobile_phone: $rootScope.userClone.mobile_phone,
                     username: $rootScope.userClone.username,
                     password: $rootScope.userClone.password,
@@ -195,7 +196,7 @@ $scope.levelPage = function(level){
                             name: $rootScope.userClone.name,
                             melli_code: $rootScope.userClone.melli_code,
                             email: $rootScope.userClone.email,
-                            date: "1996-02-05",
+                            date: momentDate[0],
                             mobile_phone: $rootScope.userClone.mobile_phone,
                             username: $rootScope.userClone.username,
                             password: $rootScope.userClone.password,
