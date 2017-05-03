@@ -133,8 +133,12 @@ module.exports.schema = {
  - not_enough_credit_bonus
  */
 module.exports.addPoint = function (point, callback) {
-    if (point.tags && Array.isArray(point.tags))
+    if (point.tags && Array.isArray(point.tags)) {
+        point.tags.map(function (tag) {
+            return tag.trim();
+        });
         point.tags = point.tags.join(' ');
+    }
 
     db.conn.query(
         "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
