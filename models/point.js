@@ -1,7 +1,3 @@
-var Hashids = require('hashids');
-var hashids = new Hashids(process.env.HASHIDS, 20);
-var asyncRetry = require('async/retry');
-
 var db = require('../db');
 
 
