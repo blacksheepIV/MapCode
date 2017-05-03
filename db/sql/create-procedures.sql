@@ -1,3 +1,44 @@
+DELIMITER ~
+CREATE PROCEDURE `addPointTags`
+  (
+    IN  `point_id`        INT UNSIGNED,
+    IN  `tags`            TEXT CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci
+  )
+    PROC: BEGIN
+
+    DECLARE tag VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    IF tags IS NULL OR tags = ''
+    THEN
+      LEAVE PROC;
+    END IF;
+
+    SET tags = LOWER(tags);
+
+    SET @i = 1;
+    SET @tags_count = LENGTH(tags) - LENGTH(REPLACE(tags, ' ', '')) + 1;
+    WHILE @i <= @tags_count
+    DO
+        SET tag = SPLIT_STR(tags, ' ', @i);
+
+        INSERT IGNORE INTO `tags` (`tag`) VALUE (tag);
+        SELECT `id` INTO @tag_id FROM `tags` WHERE `tags`.`tag` = tag;
+        INSERT IGNORE INTO `point_tags` (`point_id`, `tag_id`) VALUE (point_id, @tag_id);
+
+        SET @i = @i + 1;
+    END WHILE;
+
+  END~
+  DELIMITER ;
+
+
 /*
  err:
      0 : Success
@@ -14,22 +55,24 @@ CREATE PROCEDURE `addPoint`
     IN  `submission_date` TIMESTAMP,
     IN  `expiration_date` TIMESTAMP,
     IN  `name`            VARCHAR(30)
-                          CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
+                          CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
     IN  `phone`           VARCHAR(15),
     IN  `province`        VARCHAR(25)
-                          CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
+                          CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
     IN  `city`            VARCHAR(25)
-                          CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
-    IN  `address`         TEXT CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
+                          CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
+    IN  `address`         TEXT CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
     IN  `public`          BOOLEAN,
-    IN  `category`        VARCHAR(30) CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
-    IN  `description`     TEXT CHARACTER SET utf8
-                          COLLATE utf8_persian_ci,
+    IN  `category`        VARCHAR(30) CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
+    IN  `description`     TEXT CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
+    IN `tags`             TEXT CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_persian_ci,
 
     OUT `point_code`      VARCHAR(17),
     OUT `err`             TINYINT UNSIGNED
@@ -128,6 +171,7 @@ CREATE PROCEDURE `addPoint`
       description
     );
     SET point_code = @code;
+    SET @point_id = LAST_INSERT_ID();
 
     SET @column_name = 'credit';
     SET @column_value = credit;
@@ -144,9 +188,12 @@ CREATE PROCEDURE `addPoint`
     EXECUTE decrease_credit_bonus_statement
     USING @column_value, @owner;
     COMMIT;
+
+    CALL addPointTags(@point_id, tags);
+
     DEALLOCATE PREPARE decrease_credit_bonus_statement;
 
     -- Success
     SET err = 0;
   END~
-  delimiter ;
+  DELIMITER ;

@@ -2,13 +2,13 @@
 -- from http://blog.fedecarg.com/2009/02/22/mysql-split-string-function/
 
 CREATE FUNCTION SPLIT_STR(
-  x VARCHAR(255),
-  delim VARCHAR(12),
+  x TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
+  delim VARCHAR(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
   pos INT
 )
-RETURNS VARCHAR(255)
+RETURNS TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
-    LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
+    CHAR_LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
     delim, '');
 
 /*

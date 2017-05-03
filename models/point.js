@@ -16,7 +16,8 @@ module.exports.publicFields = [
     'rate',
     'popularity',
     'category',
-    'description'
+    'description',
+    'tags'
 ];
 
 
@@ -111,6 +112,11 @@ module.exports.schema = {
             options: {min: 1, max:30},
             errorMessage: 'length_not_1_to_30'
         }
+    },
+    'tags': {
+        isArray: {
+            errorMessage: 'not_array'
+        }
     }
 };
 
@@ -123,8 +129,11 @@ module.exports.schema = {
  - not_enough_credit_bonus
  */
 module.exports.addPoint = function (point, callback) {
+    if (point.tags && Array.isArray(point.tags))
+        point.tags = point.tags.join(' ');
+
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
         [
             point.owner,
             point.lat,
@@ -138,7 +147,8 @@ module.exports.addPoint = function (point, callback) {
             point.address,
             point.public,
             point.category,
-            point.description
+            point.description,
+            point.tags
         ],
         function (err, results) {
             if (err) {
