@@ -188,6 +188,7 @@ router.route('/point')
                 }
 
                 results.forEach(function (result) {
+                    // TODO: Retrieve real tags
                     result.tags = [];
                 });
 
