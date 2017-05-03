@@ -11,6 +11,8 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
          title:"drag me!"
          }); */
     $scope.initVar = function(){
+       /* var tDate = new Date(1001486723000).toUTCString();
+        console.log(new Date(1001486723000).getUTCMonth()); */
         $scope.U = {
             name: "کاربر مهمان",
             credit: 0,

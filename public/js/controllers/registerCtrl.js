@@ -12,7 +12,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.levelPage(1);
-        $rootScope.user = {
+        $scope.user = {
             name: '',
             melli_code: 0,
             email: '',
@@ -79,20 +79,20 @@ $scope.levelPage = function(level){
 };//end of function level page
     //******************************************************************************************************************
     $scope.submit = function(){
-       // $scope.ev = ;
-        if($rootScope.user.password!= $rootScope.user.passRepeat)
+        $rootScope.userClone= $scope.user;
+        userService.setUserTime($scope.user.cDate);
+        console.log($rootScope.userClone);
+        if($rootScope.userClone.password!= $rootScope.userClone.passRepeat)
         //console.log("پسوردها مشابه نیستند!!!");
            $scope.showAlert();
         else {
-            console.log($rootScope.user.cDate);
-            $rootScope.sth=$rootScope.user.cDate;
-            console.log($rootScope.sth);
+            console.log($rootScope.userClone.cDate);
             var cellNum = {
 
-                mobile_phone: $rootScope.user.mobile_phone
+                mobile_phone: $rootScope.userClone.mobile_phone
 
             };
-            console.log($rootScope.user.mobile_phone);
+            console.log($rootScope.userClone.mobile_phone);
             var mysmsUrl = window.apiHref+"sms/";
             $http({
                 url :mysmsUrl ,
@@ -126,36 +126,26 @@ $scope.levelPage = function(level){
      //*******************************************************************************************************************
     //********************************************************************************************************************
     $scope.finSignUp = function() {
-        if ($scope.v_code == $rootScope.obtainedCode) {
+        if($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
-            console.log($rootScope.user.cDate);
-            console.log($rootScope.sth);
-
+            console.log("**"+userService.getUserTime());
+            var tDate = new Date(userService.getUserTime()/100).toUTCString();
+            console.log(tDate);
+            //console.log($rootScope.userClone.cDate);
             var myurl = window.apiHref + "signup/";
             var usrInfo = {
-                name: $rootScope.user.name,
-                    melli_code: $rootScope.user.melli_code,
-                    email: $rootScope.user.email,
+                name: $rootScope.userClone.name,
+                    melli_code: $rootScope.userClone.melli_code,
+                    email: $rootScope.userClone.email,
                     date: "1996-02-05",
-                    mobile_phone: $rootScope.user.mobile_phone,
-                    username: $rootScope.user.username,
-                    password: $rootScope.user.password,
-                    type:$rootScope.user.type,
+                    mobile_phone: $rootScope.userClone.mobile_phone,
+                    username: $rootScope.userClone.username,
+                    password: $rootScope.userClone.password,
+                    type:$rootScope.userClone.type,
                     sms_code: String($scope.v_code)
             };
-            var spare={
-                name: "شریلو",
-                melli_code: "1260312616",
-                email: "shooryl@yahoo.com",
-                date: "1996-02-05",
-                mobile_phone: "09385200125",
-                username: "shooryl2010",
-                password: "123456",
-                type:"0",
-                sms_code: String($scope.v_code)
-            };
             console.log(usrInfo);
-            if ($rootScope.user.recommender_user === '') {
+            if ($rootScope.userClone.recommender_user === '') {
                 $http({
                         url: myurl,
                         method: "POST",
@@ -166,8 +156,8 @@ $scope.levelPage = function(level){
                         console.log("Successful registeration");
                         $scope.showSucces();
                         var registeredUser = {
-                            username: $rootScope.user.username,
-                            password: $rootScope.user.password
+                            username: $rootScope.userClone.username,
+                            password: $rootScope.userClone.password
                         };
                         //Gonna send the users data to signIn api to get the token
                         authentication.validateUser(registeredUser).then(
@@ -202,23 +192,23 @@ $scope.levelPage = function(level){
                         url: myurl,
                         method: "POST",
                         data: {
-                            name: $rootScope.user.name,
-                            melli_code: $rootScope.user.melli_code,
-                            email: $rootScope.user.email,
+                            name: $rootScope.userClone.name,
+                            melli_code: $rootScope.userClone.melli_code,
+                            email: $rootScope.userClone.email,
                             date: "1996-02-05",
-                            mobile_phone: $rootScope.user.mobile_phone,
-                            username: $rootScope.user.username,
-                            password: $rootScope.user.password,
-                            type: $rootScope.user.type,
+                            mobile_phone: $rootScope.userClone.mobile_phone,
+                            username: $rootScope.userClone.username,
+                            password: $rootScope.userClone.password,
+                            type: $rootScope.userClone.type,
                             sms_code: $scope.v_code,
-                            recommender_user: $rootScope.user.recommender_user
+                            recommender_user: $rootScope.userClone.recommender_user
                         }
                     }
                 ).then(function (response) {
                         $scope.showSucces();
                         var registeredUser = {
-                            username: $rootScope.user.username,
-                            password: $rootScope.user.password
+                            username: $rootScope.userClone.username,
+                            password: $rootScope.userClone.password
                         };
                         //Gonna send the users data to sinIn api to get the token
                         authentication.validateUser(registeredUser).then(
@@ -261,7 +251,7 @@ $scope.levelPage = function(level){
                 method: "POST",
                 data: {
 
-                    mobile_phone: $rootScope.user.mobile_phone
+                    mobile_phone: $rootScope.userClone.mobile_phone
                 }
             }).then(
                 function (response) {
@@ -280,7 +270,6 @@ $scope.levelPage = function(level){
         $("#Bdate").pDatepicker(
             {
                 altField: '#BdateALT',
-                altFormat: 'YYYY - MM - DD',
                 format: 'YYYY - MM - DD dddd',
                 viewMode: "year",
                 position: "auto",

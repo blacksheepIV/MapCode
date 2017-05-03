@@ -12,4 +12,13 @@ var userService = function(){
         return user;
     };//end of function get user info
 
+    var times=0;
+    this.setUserTime=function(t){
+        times = t;
+        console.log("-ST-"+times);
+    };
+    this.getUserTime=function(){
+        return times;
+    };
+
 }//end of regService function

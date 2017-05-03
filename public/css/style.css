@@ -10,9 +10,9 @@ body{
     border-bottom: 1px solid #0f0f0f;
     box-shadow: 0 2px 6px 2px #585858;
 }
-/*#BdateALT{
+#BdateALT{
     display: none;
-} */
+}
 #loginForm{
     width:500px; height:350px; margin: auto; margin-top: 5em;background: transparent;
 }
