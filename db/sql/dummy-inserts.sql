@@ -3,7 +3,7 @@ INSERT INTO `users` (`name`, `melli_code`, `email`, `date`, `mobile_phone`, `use
            ('وحید خرم', '9875412569', 'fdafa@gmaiulc.com', '1997-09-07', '06325478965', 'vahid1428', 'passssss', 1, 3, 'redfre34re');
 
 
-INSERT INTO `point_categories` (`id`, `code`, `name`, `parent`) VALUES
+/*INSERT INTO `point_categories` (`id`, `code`, `name`, `parent`) VALUES
         (1, 1, 'رستوران', NULL),
         (2, 1, 'رستوران ایتالیایی', 1),
         (3, 2, 'رستوران ژاپنی', 1),
@@ -11,4 +11,4 @@ INSERT INTO `point_categories` (`id`, `code`, `name`, `parent`) VALUES
 
         (5, 2, 'فروشگاه', NULL),
         (6, 1, 'فروشگاه لباس', 5),
-        (7, 2, 'فروشگاه کفش', 5);
+        (7, 2, 'فروشگاه کفش', 5);*/

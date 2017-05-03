@@ -83,8 +83,9 @@ CREATE TABLE IF NOT EXISTS `group_users` (
 CREATE TABLE IF NOT EXISTS `point_categories` (
     `id`     SMALLINT UNSIGNED NOT NULL PRIMARY KEY  AUTO_INCREMENT,
     `code`   SMALLINT UNSIGNED NOT NULL,
-    `name`   VARCHAR(30)   CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci UNIQUE NOT NULL ,
+    `name`   VARCHAR(100)   CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci UNIQUE NOT NULL,
     `parent` SMALLINT UNSIGNED,
+    `url`   VARCHAR(100),
 
     FOREIGN KEY (`parent`) REFERENCES `point_categories` (`id`)
         ON UPDATE CASCADE
