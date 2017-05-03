@@ -57,14 +57,14 @@ router.use(function (err, req, res, next) {
         next(err);
 });
 
-router.use(function (req, res, next) {
+/* router.use(function (req, res, next) {
     if (typeof req.body !== 'object' || Array.isArray(req.body))
         res.status(400).json({
             error: "Request's body must be JSON object"
         });
     else
         next();
-});
+}); */
 
 router.use(function (req, res, next) {
     req.validateBodyWithSchema = function (schema, params, callback, ignorables) {
