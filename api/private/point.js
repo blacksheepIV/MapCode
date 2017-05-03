@@ -85,6 +85,7 @@ router.route('/point')
  *
  * @apiError (400) tags:length_greater_than_21844
  * @apiError (400) tags:not_array
+ * @apiError (400) tags:tag_greater_than_40
  *
  *
  * @apiError (404) owner_not_found If this error got returned sign out the user.

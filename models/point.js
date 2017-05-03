@@ -116,6 +116,10 @@ module.exports.schema = {
     'tags': {
         isArray: {
             errorMessage: 'not_array'
+        },
+        strElemMaxLen: {
+            options: 40,
+            errorMessage: 'tag_greater_than_40'
         }
     }
 };

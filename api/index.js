@@ -41,6 +41,13 @@ router.use(expressValidator({
         },
         isArray: function(field) {
             return Array.isArray(field);
+        },
+        strElemMaxLen: function (array, len) {
+            for (var i = 0; i < array.length; i++)
+                if (String(array[i]).length > len)
+                    return false;
+
+            return true;
         }
     }
 }));
