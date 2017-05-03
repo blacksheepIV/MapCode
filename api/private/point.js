@@ -165,6 +165,11 @@ router.route('/point')
                     return console.log("MySQL: Error in getting token user's points: %s", err);
                 }
 
+                results.forEach(function (result) {
+                    result.tags = [];
+                    result.category = "";
+                });
+
                 res.send(results);
             }
         );
