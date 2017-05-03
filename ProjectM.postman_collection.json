@@ -112,6 +112,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Get points",
+					"request": {
+						"url": "http://localhost:3000/api/point",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJDb2RlIjoiVm9sZWpSZWpObSIsImp0aSI6InBQV1d5In0.XDReTWWWvPWFpKzK12gznmJtsD7HhojXHHF1204-rWw",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
