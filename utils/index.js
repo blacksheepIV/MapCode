@@ -28,14 +28,14 @@ module.exports.getDirJsFiles = function (baseDir, dir, callback) {
 
 module.exports.skipLimitChecker = function (req, res, next) {
     req.queryStart = parseInt(req.query.start) - 1;
-    if (isNaN(req.queryStart))
+    if (isNaN(req.queryStart) || req.queryStart < 0)
         req.queryStart = 0;
 
 
     req.queryLimit = parseInt(req.query.limit);
     if (isNaN(req.queryLimit))
         req.queryLimit = parseInt(process.env.QUERY_LIMIT_MAX);
-    if (!req.queryLimit)
+    if (!req.queryLimit || req.queryLimit < 1)
         req.queryLimit = 100;
 
     next();
