@@ -64,4 +64,15 @@ router.get('/point/categories/', function (req, res) {
 });
 
 
+router.get('/point/search/', function (req, res) {
+    db.conn.query(
+        "SELECT * FROM `points` WHERE `name` LIKE ?",
+        '%' + req.query.name + '%',
+        function (err, results) {
+            res.send(results);
+        }
+    );
+});
+
+
 module.exports = router;
