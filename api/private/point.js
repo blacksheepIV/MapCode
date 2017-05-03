@@ -132,6 +132,8 @@ router.route('/point')
      *     Request-Example:
      *         GET http://mapcode.ir/api/point/?private?start=1?limit=1
      *     Response:
+     *        HTTP/1.1 200 OK
+     *
      *        [
      *          {
      *            "lat": 24.32,
