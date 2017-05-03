@@ -1,8 +1,23 @@
 <div ng-controller="userCtrl">
     <!-- <div ng-include="'./templates/Panel/header.html'"></div> -->
-    <md-toolbar md-theme="docs-dark" class=" md-primary md-hue-2" dir="rtl" id="mainHeader">
-        <div class="md-toolbar-tools" layout="row" layout-align="center center">
-            <h1>پنل کاربر</h1>
+    <md-toolbar md-theme="NewTheme" class=" md-primary md-hue-2" dir="rtl" id="mainHeader">
+        <div layout="row" flex="100" layout-align="end center" class="md-accent">
+            <div flex="5"></div>
+            <h2 class="md-headline ">پنل کاربر</h2>
+            <div flex></div>
+            <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="go home" ng-click="takeMeHome()">
+                <md-icon md-font-icon="fa fa-home fa-2x"></md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="Usr" ng-click="openMenu($mdMenu,$event)">
+                <md-icon md-font-icon="fa fa fa-user-o fa-2x"></md-icon>
+            </md-button>
+           <!-- <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button >
+                       <span>Hello</span>
+                    </md-button>
+                </md-menu-item>
+               </md-menu-content> -->
         </div>
     </md-toolbar>
     <md-content class="md-padding">

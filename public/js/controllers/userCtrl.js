@@ -1,10 +1,10 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location){
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
-        $scope.myPoint = null;
+        $scope.myPoint = {};
         $scope.user = {
             name: '',
             melli_code: 0,
@@ -60,6 +60,16 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                         $scope.user.type = " ";
                         break;
                 }; //end of switchCase
+               /* var pointUrl = window.apiHref+"point/?public?start=1?limit=1";
+                $http({
+                    url : pointUrl ,
+                    method: "GET"
+                })
+                    .then(function(data){
+                        console.log(data);
+                    },function(data){
+                        console.log(data);
+                    }); */
 
             },function (Info) {
                 if(Info.status === 401) {
@@ -78,7 +88,8 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
            $scope.myPoint = localStorageService.get('point1');
             console.log($scope.myPoint);
         }
-        //u get user's type from database;store it in a variable and then the user's type gotta be equal to that value
+
+
     };
     $(document).ready(function () {
         $("#creationDate").pDatepicker(
@@ -93,7 +104,15 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             });
     });
 //**********************************************************************************************************************
-
+$scope.takeMeHome =  function(){
+    $location.path('/');
+};//end of function take me home
     //******************************************************************************************************************
+    var originatorEv;
 
+   /* this.openMenu = function($mdMenu, ev) {
+        originatorEv = ev;
+        $mdMenu.open(ev);
+    }; */
+//*************************************************************************************************************************
 }//end of userCtrl controller

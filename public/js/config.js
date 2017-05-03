@@ -10,6 +10,11 @@ mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider) {
         .accentPalette('yellow')
         .warnPalette('red')
         .dark();
+    $mdThemingProvider.theme('NewTheme', 'default')
+        .primaryPalette('blue-grey')
+        .accentPalette('cyan')
+        .warnPalette('orange')
+        .dark();
     //************************************************************************************
     localStorageServiceProvider
         .setNotify(true, true);//in case of setItem and removeItem the $rootScope wil be notified

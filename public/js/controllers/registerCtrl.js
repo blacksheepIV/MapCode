@@ -9,7 +9,8 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
     $scope.initvars = function (){
        // $scope.is2ndPage = false;
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
-        $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        //$scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        $scope.namePattern='[a-zA-Z]+';
         $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.smsPattern='[0-9]+';
         $scope.levelPage(1);

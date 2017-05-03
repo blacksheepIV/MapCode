@@ -2,7 +2,8 @@
  * Created by blackSheep on 03-Apr-17.
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
-
+  var temp= moment().format();
+    console.log(temp);
         //   $scope.map.setMapTypeId('Dark');
         /* var marker = new google.maps.Marker({
          position:{lat:33.9870993,lng:51.4405203},
