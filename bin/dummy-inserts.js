@@ -44,7 +44,8 @@ var dummyUsers = [
                 "city": "کاشان",
                 "address": "خیابان امیرکبیر",
                 "public": 1,
-                "category": "رستوران ایتالیایی"
+                "category": "رستوران ایتالیایی",
+                "description": "یک توضیح الکی!"
             },
             {
                 "lat": "32.32",

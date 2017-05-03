@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `points` (
   `rate`            TINYINT UNSIGNED   NOT NULL              DEFAULT 0,
   `popularity`      BIGINT UNSIGNED    NOT NULL              DEFAULT 0,
   `category`        SMALLINT UNSIGNED NOT NULL,
+  `description`      TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci,
 
   FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
     ON DELETE CASCADE

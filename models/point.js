@@ -18,7 +18,9 @@ module.exports.publicFields = [
     'address',
     'public',
     'rate',
-    'popularity'
+    'popularity',
+    'category',
+    'description'
 ];
 
 
@@ -90,6 +92,12 @@ module.exports.schema = {
             errorMessage: 'length_greater_than_21844'
         }
     },
+    'description': {
+        isLength: {
+            options: {max: 21844},
+            errorMessage: 'length_greater_than_21844'
+        }
+    },
     'public': {
         notEmpty: {
             errorMessage: 'empty'
@@ -120,7 +128,7 @@ module.exports.schema = {
  */
 module.exports.addPoint = function (point, callback) {
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
         [
             point.owner,
             point.lat,
@@ -133,11 +141,11 @@ module.exports.addPoint = function (point, callback) {
             point.city,
             point.address,
             point.public,
-            point.category
+            point.category,
+            point.description
         ],
         function (err, results) {
             if (err) {
-                console.log(point);
                 console.error("MySQL: Error happened in inserting new point: %s", err);
                 return callback('serverError');
             }

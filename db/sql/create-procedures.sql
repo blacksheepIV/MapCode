@@ -28,6 +28,8 @@ CREATE PROCEDURE `addPoint`
     IN  `public`          BOOLEAN,
     IN  `category`        VARCHAR(30) CHARACTER SET utf8
                           COLLATE utf8_persian_ci,
+    IN  `description`     TEXT CHARACTER SET utf8
+                          COLLATE utf8_persian_ci,
 
     OUT `point_code`      VARCHAR(17),
     OUT `err`             TINYINT UNSIGNED
@@ -107,7 +109,8 @@ CREATE PROCEDURE `addPoint`
       points.public,
       points.category,
       points.owner,
-      points.code
+      points.code,
+      points.description
     ) VALUES (
       lat,
       lng,
@@ -121,7 +124,8 @@ CREATE PROCEDURE `addPoint`
       public,
       category_id,
       owner,
-      @code
+      @code,
+      description
     );
     SET point_code = @code;
 
