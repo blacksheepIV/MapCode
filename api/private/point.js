@@ -154,14 +154,17 @@ router.route('/point')
      *            "address": "خیابان قسطنطنیه",
      *            "public": 0,
      *            "rate": 0,
-     *            "popularity": 0
+     *            "popularity": 0,
+     *            "category": "کبابی"
      *          }
      *        ]
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `name`, `phone`, `province`, `city`, `code`, `address`, `public`, `rate`, `popularity` " +
-            "FROM `points` WHERE `owner` = ? " +
+            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `points`.`name`, `phone`, `province`, `city`, `points`.`code`, `address`, `public`, `rate`, `popularity`, `point_categories`.`name` as `category` " +
+            "FROM `points` " +
+            "JOIN `point_categories` ON `points`.`category` = `point_categories`.`id` " +
+            "WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
             [req.user.userId, req.queryStart, req.queryLimit],
@@ -173,7 +176,6 @@ router.route('/point')
 
                 results.forEach(function (result) {
                     result.tags = [];
-                    result.category = "";
                 });
 
                 res.send(results);
