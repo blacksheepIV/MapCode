@@ -64,7 +64,7 @@ router.route('/signup')
      * @apiError (400) {email} length_not_1_to_100
      *
      * @apiError (400) {date} empty
-     * @apiError (400) {date} not_a_date Does not have the correct date format
+     * @apiError (400) {date} not_a_date Does not have the correct date format (uses Javascript Date.Parse function)
      *
      * @apiError (400) {mobile_phone} empty
      * @apiError (400) {mobile_phone} not_numeric
