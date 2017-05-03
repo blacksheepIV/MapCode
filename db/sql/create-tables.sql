@@ -138,14 +138,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `group_messages` (
   `sender`   MEDIUMINT UNSIGNED NOT NULL,
-  `group_id` INT UNSIGNED       NOT NULL,
+  `group` INT UNSIGNED       NOT NULL,
   `point`    INT UNSIGNED       NOT NULL,
   `message`  TEXT,
 
   FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
+  FOREIGN KEY (`group`) REFERENCES `groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (`point`) REFERENCES `points` (`id`)
