@@ -9,7 +9,7 @@ var smsModel = require('../../models/sms');
 
 router.route('/users/')
     /**
-     * @api {put| /users/ Update current user
+     * @api {put} /users/ Update current user
      * @apiVersion 0.1.0
      * @apiName updateUser
      * @apiGroup users
