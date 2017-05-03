@@ -80,6 +80,17 @@ CREATE TABLE IF NOT EXISTS `group_users` (
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `point_categories` (
+    `id`     SMALLINT UNSIGNED NOT NULL PRIMARY KEY  AUTO_INCREMENT,
+    `code`   SMALLINT UNSIGNED NOT NULL,
+    `name`   VARCHAR(30)   CHARACTER SET utf8 COLLATE utf8_persian_ci UNIQUE NOT NULL ,
+    `parent` SMALLINT UNSIGNED,
+
+    FOREIGN KEY (`parent`) REFERENCES `point_categories` (`id`)
+        ON UPDATE CASCADE
+)
+    ENGINE = INNODB;
+-- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `points` (
   `id`              INT UNSIGNED       NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `lat`             DECIMAL(10, 8)     NOT NULL,
@@ -90,15 +101,19 @@ CREATE TABLE IF NOT EXISTS `points` (
   `phone`           VARCHAR(15)        NOT NULL,
   `province`        VARCHAR(25) CHARACTER SET utf8 COLLATE utf8_persian_ci      NOT NULL,
   `city`            VARCHAR(25)  CHARACTER SET utf8 COLLATE utf8_persian_ci     NOT NULL,
-  `code`            VARCHAR(20)        UNIQUE,
+  `code`            VARCHAR(17)        UNIQUE,
   `address`         TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci  NOT NULL,
   `public`          BOOLEAN            NOT NULL,
   `owner`           MEDIUMINT UNSIGNED NOT NULL,
   `rate`            TINYINT UNSIGNED   NOT NULL              DEFAULT 0,
   `popularity`      BIGINT UNSIGNED    NOT NULL              DEFAULT 0,
+  `category`        SMALLINT UNSIGNED NOT NULL,
+  `description`      TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci,
 
   FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (`category`) REFERENCES `point_categories` (`id`)
     ON UPDATE CASCADE
 )
   ENGINE = INNODB;

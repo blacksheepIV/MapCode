@@ -26,6 +26,8 @@ router.route('/point')
  * @apiParam {String{1..25}} city Point's city
  * @apiParam {String{1..21844}} address Point's address
  * @apiParam {Number=0,1} public Point is public/private
+ * @apiParam {String{1..30}} category
+ * @apiParam {String{1..21844}} [description]
  *
  * @apiExample {json} Request-Example
  *     {
@@ -36,14 +38,16 @@ router.route('/point')
  *         "province": "اصفهان",
  *         "city": "کاشان",
  *         "address": "خیابان امیرکبیر",
- *         "public": "1"
+ *         "public": "1",
+ *         "category": "رستوران ایتالیایی",
+ *         "description": "یک توضیح"
  *     }
  *
  * @apiSuccessExample Success-Response
  *     HTTP/1.1 201 Created
  *
  *     {
- *         "code": "rgP8V4y1aKReQGw5WvzA"
+ *         "code": "mp001002000000345"
  *     }
  *
  *
@@ -72,8 +76,14 @@ router.route('/point')
  * @apiError (400) public:empty
  * @apiError (400) public:not_0_or_1
  *
+ * @apiError (400) category:empty
+ * @apiError (400) category:length_not_1_to_30
+ *
+ * @apiError (400) description:length_greater_than_21844
+ *
  *
  * @apiError (404) owner_not_found If this error got returned sign out the user.
+ * @apiError (404) category_not_found
  *
  * @apiError (400) not_enough_credit_bonus
  *
@@ -111,7 +121,8 @@ router.route('/point')
                         });
                     }
                 });
-            }
+            },
+            ['description']
         );
     })
     /**
@@ -148,14 +159,18 @@ router.route('/point')
      *            "address": "خیابان قسطنطنیه",
      *            "public": 0,
      *            "rate": 0,
-     *            "popularity": 0
+     *            "popularity": 0,
+     *            "category": "کبابی",
+     *            "description": "یک توضیح!"
      *          }
      *        ]
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `name`, `phone`, `province`, `city`, `code`, `address`, `public`, `rate`, `popularity` " +
-            "FROM `points` WHERE `owner` = ? " +
+            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `points`.`name`, `phone`, `province`, `city`, `points`.`code`, `address`, `public`, `rate`, `popularity`, `point_categories`.`name` as `category`, `description` " +
+            "FROM `points` " +
+            "JOIN `point_categories` ON `points`.`category` = `point_categories`.`id` " +
+            "WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
             [req.user.userId, req.queryStart, req.queryLimit],
@@ -167,7 +182,6 @@ router.route('/point')
 
                 results.forEach(function (result) {
                     result.tags = [];
-                    result.category = "";
                 });
 
                 res.send(results);
