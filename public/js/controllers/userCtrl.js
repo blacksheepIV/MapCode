@@ -60,16 +60,17 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                         $scope.user.type = " ";
                         break;
                 }; //end of switchCase
-               /* var pointUrl = window.apiHref+"point/?public?start=1?limit=1";
+                var pointUrl = window.apiHref+"point/";
                 $http({
                     url : pointUrl ,
                     method: "GET"
                 })
-                    .then(function(data){
-                        console.log(data);
+                    .then(function(response){
+                        console.log(response);
+                        $scope.myPoint=response.data[0];
                     },function(data){
                         console.log(data);
-                    }); */
+                    });
 
             },function (Info) {
                 if(Info.status === 401) {
@@ -84,10 +85,10 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             }
         );
         //****************************************************************************************
-        if(localStorageService.isSupported) {
+       /* if(localStorageService.isSupported) {
            $scope.myPoint = localStorageService.get('point1');
             console.log($scope.myPoint);
-        }
+        } */
 
 
     };
