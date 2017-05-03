@@ -1,5 +1,4 @@
 var router = require('express').Router();
-var lodashObject = require('lodash/object');
 
 var db = require('../../db');
 var pointModel = require('../../models/point');
@@ -153,7 +152,8 @@ router.route('/point')
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT * FROM `points` WHERE `owner` = ? " +
+            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `name`, `phone`, `province`, `city`, `code`, `address`, `public`, `rate`, `popularity` " +
+            "FROM `points` WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
             [req.user.userId, req.queryStart, req.queryLimit],
@@ -162,10 +162,8 @@ router.route('/point')
                     res.status(500).end();
                     return console.log("MySQL: Error in getting token user's points: %s", err);
                 }
-                // Only pick public fields from results
-                res.send(results.map(function (result) {
-                    return lodashObject.pick(result, pointModel.publicFields);
-                }));
+
+                res.send(results);
             }
         );
 
