@@ -1,5 +1,7 @@
 public/components/
 
+public/application/
+
 node_modules/
 
 .env
