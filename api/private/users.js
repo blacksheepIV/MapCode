@@ -137,7 +137,6 @@ router.route('/users/')
                                 return next(err);
                             }
 
-                            res.status(200).end();
                             next();
                         }
                     );
