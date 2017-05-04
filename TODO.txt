@@ -18,3 +18,11 @@
 -                   email
 -                   melli_code
 -                   recommender_user
+
+- Point Search by these fields
+    * code
+    * name
+    * tag
+    * city
+    * owner
+    * category
