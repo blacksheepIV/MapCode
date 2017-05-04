@@ -12,3 +12,9 @@
 - User's name can be english
 
 - Remove unused tags from DB (with trigger or sth)
+
+- API for duplicate username check
+-                   mobile_phone
+-                   email
+-                   melli_code
+-                   recommender_user
