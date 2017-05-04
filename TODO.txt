@@ -10,3 +10,5 @@
 - Change dynamic query generators to static query strings for speed optimization
 
 - User's name can be english
+
+- Remove unused tags from DB (with trigger or sth)
