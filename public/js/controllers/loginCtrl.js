@@ -29,8 +29,10 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
                 // console.log(res.status);
                  if(res.status == 400)
                      console.log("نام کاربری با الگوی غیر معتبر!");
-                     else if(res.status == 404)
-                         console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                     else if(res.status == 404) {
+                     console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                     $scope.showAlert();
+                 }
              }//failure
            );
 
@@ -41,6 +43,17 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
     $scope.register = function(){
         $location.path('/registration'); //sets the path to registrationPage
     }//end of registration function
-
+    $scope.showAlert = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('خطا!')
+                .textContent('نام کاربری یا رمز عبور صحیح نمی باشد!!!')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+            // .targetEvent(ev)
+        );
+    };
 
 }//end of loginCtrl

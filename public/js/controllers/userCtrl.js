@@ -1,11 +1,14 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken){
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.myPoint = {};
+        $scope.newPass = "";
+        $scope.newPassConfirm = "";
+        $scope.claimedPass = "";
         $scope.user = {
             name: '',
             melli_code: 0,
@@ -41,7 +44,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                     mobile_phone: Info.data.mobile_phone,
                     phone: Info.data.phone,
                     username:Info.data.username,
-                    password: '',
+                    password: Info.data.password,
                     passRepeat:'',
                     address: Info.data.address,
                     description:Info.data.description,
@@ -174,5 +177,74 @@ $scope.takeMeHome =  function(){
                 console.log(response);
             });
     };//end of updateInfo
+//**************************************** pass Change *******************************************************************************
+    $scope.submitPass = function(){
+        console.log($scope.user.password);
+        if($scope.claimedPass !== $scope.user.password)
+            $scope.showAlert3();
+          if($scope.newPass !== $scope.newPassConfirm)
+              $scope.showAlert();
+        if($scope.newPass === $scope.claimedPass)
+            $scope.showAlert2();
+        else if($scope.newPass === $scope.newPassConfirm) {
+            var alteredPass = {
+                password: $scope.newPass,
+            };
+            RegisteredUsr.updateUsrInfo(alteredPass).then(
+                function (response) {
+                    console.log(response);
+                    $scope.logOut(); //password was changed user's gotta be dumped
+                },
+                function (response) {
+                    console.log(response);
+                });
+        }
+    };//end of submit
+    $scope.logOut=function(){
+        console.log("user just logged out.");
+        //TODO:sth needed to distroy user's session/token,whatever
+        authenticationToken.removeToken();
+        $rootScope.isUser = false;
+        $location.path("/");
+    };
 
+    $scope.showAlert = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('خطا!')
+                .textContent('رمز عبور و تکرار رمز عبور مشابه نیستند!!!')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+            // .targetEvent(ev)
+        );
+    };
+    //*******************************************************************************************************************
+    $scope.showAlert2 = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('خطا!')
+                .textContent('رمز عبور جدید و  قدیم نمی توانند مشابه باشند!!!')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+            // .targetEvent(ev)
+        );
+    };
+
+    $scope.showAlert3 = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('عدم مطابقت!')
+                .textContent('رمز عبور فعلی به درستی وارد نشده !!!')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+            // .targetEvent(ev)
+        );
+    };
+    // **************************************** pass Change *******************************************************************************
 }//end of userCtrl controller

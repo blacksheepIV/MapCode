@@ -63,9 +63,22 @@ function PanelCodeVerfication($scope,userService,$mdDialog,RegisteredUsr,$timeou
         RegisteredUsr.updateUsrInfo(alteredData).then(
             function (response) {
                 console.log(response);
+                $mdDialog.hide();
+                $scope.showSucces();
             },
             function (response) {
                 console.log(response);
             });
+    };
+    $scope.showSucces = function() {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('تبریک')
+                .textContent('اطلاعات با موفقیت بروز شد!')
+                .ariaLabel('successDialog')
+                .ok('مرسی')
+        );
     };
 };//end of ctrl
