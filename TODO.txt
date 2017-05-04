@@ -1,8 +1,6 @@
 - Rate limiting
     - Specially for SMS API
 
-- Header check X-Requested-With == XMLHttpRequest
-
 - SMS service API
 
 - Auto minimize front-end sources
@@ -11,8 +9,4 @@
 
 - Change dynamic query generators to static query strings for speed optimization
 
-- User's name can be persian
-
-- Remove DB `point_categories`(`url`) and instead use `id` for image showing
-
-- Add point tag and description
+- User's name can be english
