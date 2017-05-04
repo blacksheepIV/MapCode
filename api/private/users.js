@@ -18,7 +18,7 @@ router.route('/users/')
      * @apiDescription Update current user's information.
      *
      * @apiParam {string{1..40}} [name]
-     * @apiParam {Number{10}} [melli_code]
+     * @apiParam {Number{5..10}} [melli_code]
      * @apiParam {Email{1..100}} [email]
      * @apiParam {Date} [date]
      * @apiParam {Number{11}} [mobile_phone]
@@ -55,7 +55,7 @@ router.route('/users/')
      *
      * @apiError (400) melli_code:empty
      * @apiError (400) melli_code:not_numeric
-     * @apiError (400) melli_code:length_not_10
+     * @apiError (400) melli_code:length_5_not_10
      *
      * @apiError (400) email:empty
      * @apiError (400) email:invalid_email Does not have the correct email format

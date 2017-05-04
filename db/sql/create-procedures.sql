@@ -24,9 +24,14 @@ CREATE PROCEDURE `addPointTags`
 
     SET @i = 1;
     SET @tags_count = LENGTH(tags) - LENGTH(REPLACE(tags, ' ', '')) + 1;
-    WHILE @i <= @tags_count
+    TAG_LOOP: WHILE @i <= @tags_count
     DO
-        SET tag = SPLIT_STR(tags, ' ', @i);
+        SET tag = TRIM(SPLIT_STR(tags, ' ', @i));
+
+        IF tag = ''
+        THEN
+
+        END IF:
 
         INSERT IGNORE INTO `tags` (`tag`) VALUE (tag);
         SELECT `id` INTO @tag_id FROM `tags` WHERE `tags`.`tag` = tag;
