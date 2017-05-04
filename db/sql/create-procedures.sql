@@ -1,19 +1,26 @@
 DELIMITER ~
 CREATE PROCEDURE `addPointTags`
   (
-    IN  `point_id`        INT UNSIGNED,
-    IN  `tags`            TEXT CHARACTER SET utf8mb4
-                          COLLATE utf8mb4_persian_ci
+    IN `point_id` INT UNSIGNED,
+    IN `tags`     TEXT CHARACTER SET utf8mb4
+                  COLLATE utf8mb4_persian_ci
   )
     PROC: BEGIN
 
-    DECLARE tag VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci;
+    DECLARE tag VARCHAR(40)
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_persian_ci;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       ROLLBACK;
       RESIGNAL;
     END;
+
+    SET tags = REPLACE(tags, '\n', '');
+    SET tags = REPLACE(tags, '\t', '');
+    SET tags = REPLACE(tags, '‌', ''); -- Persian semi-space
+    SET tags = TRIM(tags);
 
     IF tags IS NULL OR tags = ''
     THEN
@@ -24,20 +31,28 @@ CREATE PROCEDURE `addPointTags`
 
     SET @i = 1;
     SET @tags_count = LENGTH(tags) - LENGTH(REPLACE(tags, ' ', '')) + 1;
-    WHILE @i <= @tags_count
+    TAG_LOOP: WHILE @i <= @tags_count
     DO
-        SET tag = SPLIT_STR(tags, ' ', @i);
+      SET tag = TRIM(SPLIT_STR(tags, ' ', @i));
 
-        INSERT IGNORE INTO `tags` (`tag`) VALUE (tag);
-        SELECT `id` INTO @tag_id FROM `tags` WHERE `tags`.`tag` = tag;
-        INSERT IGNORE INTO `point_tags` (`point_id`, `tag_id`) VALUE (point_id, @tag_id);
-
+      IF tag = ''
+      THEN
         SET @i = @i + 1;
+        ITERATE TAG_LOOP;
+      END IF;
+
+      INSERT IGNORE INTO `tags` (`tag`) VALUE (tag);
+      SELECT `id`
+      INTO @tag_id
+      FROM `tags`
+      WHERE `tags`.`tag` = tag;
+      INSERT IGNORE INTO `point_tags` (`point_id`, `tag_id`) VALUE (point_id, @tag_id);
+
+      SET @i = @i + 1;
     END WHILE;
 
   END~
-  DELIMITER ;
-
+DELIMITER ;
 
 /*
  err:

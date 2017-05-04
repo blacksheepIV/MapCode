@@ -18,7 +18,7 @@ router.route('/signup')
      * a new SMS verification code, then within 120 seconds, a request should be sent to /signup/.
      *
      * @apiParam {string{1..40}} name Person's first name and last name or company's name
-     * @apiParam {Number{10}} melli_code Person's melli code or company's code
+     * @apiParam {Number{5..10}} melli_code Person's melli code or company's code
      * @apiParam {Email{1..100}} email Person or company's email
      * @apiParam {Date} date Person or company's birthdate
      * @apiParam {Number{11}} mobile_phone Person or company's mobile phone number
@@ -57,7 +57,7 @@ router.route('/signup')
      *
      * @apiError (400) {melli_code} empty
      * @apiError (400) {melli_code} not_numeric
-     * @apiError (400) {melli_code} length_to_10
+     * @apiError (400) {melli_code} length_5_to_10
      *
      * @apiError (400) {email} empty
      * @apiError (400) {email} invalid_email Does not have the correct email format

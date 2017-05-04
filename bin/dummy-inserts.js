@@ -44,7 +44,7 @@ var dummyUsers = [
                 "city": "کاشان",
                 "address": "خیابان امیرکبیر",
                 "public": 1,
-                "category": "رستوران ایتالیایی",
+                "category": "فرهنگسرا",
                 "description": "یک توضیح الکی!",
                 "tags": ["food", "رستوران"]
             },
@@ -58,7 +58,7 @@ var dummyUsers = [
                 /* jshint -W100 */
                 "address": "خیابان کریم‌خان",
                 "public": 1,
-                "category": "فروشگاه لباس",
+                "category": "کتابخانه",
                 "tags": ["فروشگاه", "لباس"]
             },
             {
@@ -70,7 +70,7 @@ var dummyUsers = [
                 "city": "کرمان",
                 "address": "خیابان قسطنطنیه",
                 "public": 0,
-                "category": "کبابی",
+                "category": "شرکت ساختماني",
                 "tags": ["سیخ", "رستوران"]
             }
         ]

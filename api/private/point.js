@@ -111,20 +111,22 @@ router.route('/point')
                 point.expiration_date.setFullYear(date.getFullYear() + 1);
 
                 pointModel.addPoint(point, function (err, pointCode) {
-                    if (!err) {
-                        res.status(201).json({
-                            code: pointCode
-                        });
-                    }
-                    else if (err === 'serverError') {
-                        res.status(500).end();
+                    if (err) {
+                        if (err === 'serverError') {
+                            res.status(500).end();
+                        }
+                        else {
+                            var statusCode = 404;
+                            if (err === 'not_enough_credit_bonus')
+                                statusCode = 400;
+                            res.status(statusCode).json({
+                                errors: [err]
+                            });
+                        }
                     }
                     else {
-                        var statusCode = 404;
-                        if (err === 'not_enough_credit_bonus')
-                            statusCode = 400;
-                        res.status(statusCode).json({
-                            errors: [err]
+                        res.status(201).json({
+                            code: pointCode
                         });
                     }
                 });

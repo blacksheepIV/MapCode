@@ -30,6 +30,8 @@ var db = require('../../db');
          }
  *
  */
+// TODO: Cache system for /point/categories
+// TODO: Async calculation
 router.get('/point/categories/', function (req, res) {
     db.conn.query(
         "SELECT * FROM `point_categories`",
@@ -53,7 +55,7 @@ router.get('/point/categories/', function (req, res) {
                 if (result.parent !== null) {
                     categories[mapParentIdName[result.parent]].push({
                         name: result.name,
-                        url: result.url
+                        id: result.id
                     });
                 }
             });
@@ -64,6 +66,7 @@ router.get('/point/categories/', function (req, res) {
 });
 
 
+// TODO: Real search
 router.get('/point/search/', function (req, res) {
     db.conn.query(
         "SELECT * FROM `points` WHERE `name` LIKE ?",

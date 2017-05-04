@@ -179,8 +179,10 @@ module.exports.addPoint = function (point, callback) {
                     callback('not_enough_credit_bonus');
                 }
             }
-            // Procedure has been successful
-            callback(null, pointCode);
+            else {
+                // Procedure has been successful
+                callback(null, pointCode);
+            }
         }
     );
 };

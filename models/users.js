@@ -77,8 +77,8 @@ module.exports.schema = {
             errorMessage: 'not_numeric'
         },
         isLength: {
-            options: {max: 10, min: 10},
-            errorMessage: 'length_not_10'
+            options: {max: 10, min: 5},
+            errorMessage: 'length_5_not_10'
         }
     },
     'email': {
