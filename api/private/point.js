@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var asyncEach = require('async/each');
 
 var db = require('../../db');
 var pointModel = require('../../models/point');
@@ -177,25 +178,28 @@ router.route('/point')
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT `lat`, `lng`, `submission_date`, `expiration_date`, `points`.`name`, `phone`, `province`, `city`, `points`.`code`, `address`, `public`, `rate`, `popularity`, `point_categories`.`name` as `category`, `description` " +
-            "FROM `points` " +
-            "JOIN `point_categories` ON `points`.`category` = `point_categories`.`id` " +
+            "SELECT * FROM `points_beautified` " +
             "WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
-            [req.user.userId, req.queryStart, req.queryLimit],
+            [req.user.userCode, req.queryStart, req.queryLimit],
             function (err, results) {
                 if (err) {
                     res.status(500).end();
                     return console.log("MySQL: Error in getting token user's points: %s", err);
                 }
 
-                results.forEach(function (result) {
-                    // TODO: Retrieve real tags
-                    result.tags = [];
-                });
+                asyncEach(results, function (result, done) {
+                    result.tags = result.tags.split(' ');
+                    done();
+                }, function (err) {
+                    if (err) {
+                        res.status(500).end();
+                        return console.log("{GET}/point/ @ api/private/point.js: Line 197: async.each on user's points: %s", err);
+                    }
 
-                res.send(results);
+                    res.json(results);
+                });
             }
         );
 
