@@ -64,6 +64,7 @@ router.get('/point/categories/', function (req, res) {
 });
 
 
+// TODO: Real search
 router.get('/point/search/', function (req, res) {
     db.conn.query(
         "SELECT * FROM `points` WHERE `name` LIKE ?",
