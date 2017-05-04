@@ -19,7 +19,6 @@ CREATE PROCEDURE `addPointTags`
 
     SET tags = REPLACE(tags, '\n', '');
     SET tags = REPLACE(tags, '\t', '');
-    SET tags = REPLACE(tags, '‌', ''); -- Persian semi-space
     SET tags = TRIM(tags);
 
     IF tags IS NULL OR tags = ''

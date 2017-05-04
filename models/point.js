@@ -13,6 +13,7 @@ module.exports.publicFields = [
     'code',
     'address',
     'public',
+    'owner',
     'rate',
     'popularity',
     'category',
