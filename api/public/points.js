@@ -53,7 +53,7 @@ router.get('/point/categories/', function (req, res) {
                 if (result.parent !== null) {
                     categories[mapParentIdName[result.parent]].push({
                         name: result.name,
-                        url: result.url
+                        id: result.id
                     });
                 }
             });

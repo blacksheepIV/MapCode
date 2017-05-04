@@ -51,11 +51,11 @@
     For the first time, if you have created the database just
     execute the first command, otherwise execute the second one.
 
-    `npm run mkdb -- dummy-inserts`
-        Insert some raw dummy rows into database tables.
-
     Note: Use `npm run mkdb` for MySQL version < 5.6
           and `npm run mkdb-new` for MySQL version >= 5.6
+
+    `(DBCONFIG=$(./bin/printDBNameUsernamePassword.js)) && (echo $DBCONFIG \\nY | npm run mkdb -- remake) && (npm run dummy-inserts);`
+        Recreates the database and inserts dummy data and does not ask for db configs!
 
 * [Optional] Run `npm run dummy-inserts`
              to insert some dummy data into database using API.

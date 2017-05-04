@@ -33,12 +33,6 @@ SOURCE="${BASH_SOURCE[0]}";
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )";
 SQLDIR=$DIR"/../db/sql/";
 
-if [ "$1" = "dummy-inserts" ]; then
-    echo "> Inserting dummy rows...";
-    execute_sql_file $SQLDIR"dummy-inserts.sql";
-
-    exit 0;
-fi
 
 echo "> Executing SQL files...";
 
@@ -49,6 +43,8 @@ execute_sql_file $SQLDIR"create-functions.sql";
 execute_sql_file $SQLDIR"create-views.sql";
 
 execute_sql_file $SQLDIR"create-procedures.sql";
+
+execute_sql_file $SQLDIR"dummy-inserts.sql";
 
 
 exit 0;

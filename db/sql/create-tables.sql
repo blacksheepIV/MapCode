@@ -85,7 +85,6 @@ CREATE TABLE IF NOT EXISTS `point_categories` (
     `code`   SMALLINT UNSIGNED NOT NULL,
     `name`   VARCHAR(100)   CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci UNIQUE NOT NULL,
     `parent` SMALLINT UNSIGNED,
-    `url`   VARCHAR(100),
 
     FOREIGN KEY (`parent`) REFERENCES `point_categories` (`id`)
         ON UPDATE CASCADE
