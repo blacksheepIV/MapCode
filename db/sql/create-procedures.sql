@@ -53,6 +53,7 @@ CREATE PROCEDURE `addPointTags`
   END~
 DELIMITER ;
 
+
 /*
  err:
      0 : Success
@@ -81,11 +82,12 @@ CREATE PROCEDURE `addPoint`
     IN  `address`         TEXT CHARACTER SET utf8mb4
                           COLLATE utf8mb4_persian_ci,
     IN  `public`          BOOLEAN,
-    IN  `category`        VARCHAR(30) CHARACTER SET utf8mb4
+    IN  `category`        VARCHAR(30)
+                          CHARACTER SET utf8mb4
                           COLLATE utf8mb4_persian_ci,
     IN  `description`     TEXT CHARACTER SET utf8mb4
                           COLLATE utf8mb4_persian_ci,
-    IN `tags`             TEXT CHARACTER SET utf8mb4
+    IN  `tags`            TEXT CHARACTER SET utf8mb4
                           COLLATE utf8mb4_persian_ci,
 
     OUT `point_code`      VARCHAR(17),
@@ -93,7 +95,7 @@ CREATE PROCEDURE `addPoint`
   )
     PROC: BEGIN
     DECLARE credit, bonus SMALLINT UNSIGNED;
-    DECLARE first_code, second_code, category_id SMALLINT UNSIGNED;
+    DECLARE category_id SMALLINT UNSIGNED;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
@@ -128,19 +130,21 @@ CREATE PROCEDURE `addPoint`
     END IF;
 
     SELECT SQL_CALC_FOUND_ROWS
-        U.`id`, T.`code`, U.`code`
-    INTO category_id, first_code, second_code
+      U.`id`,
+      T.`code`,
+      U.`code`
+    INTO category_id, @first_code, @second_code
     FROM point_categories AS U
-    JOIN point_categories AS T ON U.parent = T.id
+      JOIN point_categories AS T ON U.parent = T.id
     WHERE U.name = category
           AND U.`parent` IS NOT NULL;
 
     IF FOUND_ROWS() != 1
     THEN
-        -- category not found
-        SET err = 4;
-        ROLLBACK;
-        LEAVE PROC;
+      -- category not found
+      SET err = 4;
+      ROLLBACK;
+      LEAVE PROC;
     END IF;
 
     SELECT COUNT(*)
@@ -149,9 +153,16 @@ CREATE PROCEDURE `addPoint`
     WHERE points.category = category_id;
 
     SET @cat_count = @cat_count + 1;
+    SET @cat_count = CAST(@cat_count AS CHAR(10));
+    SET @cat_count = CONCAT(REPEAT('0', 9 - CHAR_LENGTH(@cat_count)), @cat_count);
 
-    -- TODO: Remove '-' from point code
-    SET @code = CONCAT('mp', CAST(first_code AS CHAR(10)), CAST(second_code AS CHAR(10)), CAST(@cat_count AS CHAR(10)));
+    SET @first_code = CAST(@first_code AS CHAR(10));
+    SET @first_code = CONCAT(REPEAT('0', 3 - CHAR_LENGTH(@first_code)), @first_code);
+
+    SET @second_code = CAST(@second_code AS CHAR(10));
+    SET @second_code = CONCAT(REPEAT('0', 3 - CHAR_LENGTH(@second_code)), @second_code);
+
+    SET @code = CONCAT('mp', @first_code, @second_code, @cat_count);
 
     INSERT INTO points (
       points.lat,
@@ -210,4 +221,4 @@ CREATE PROCEDURE `addPoint`
     -- Success
     SET err = 0;
   END~
-  DELIMITER ;
+DELIMITER ;
