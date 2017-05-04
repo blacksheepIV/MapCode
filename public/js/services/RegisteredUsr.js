@@ -5,6 +5,7 @@ function RegisteredUsr ($http,$location,$rootScope,authenticationToken){
     var registeredUsr ={
         Info : null,
         response:null,
+        alteredData: null,
         getUSrInfo:function(){
            return $http.get(window.apiHref+"users/")
                .success(function(data){
@@ -25,7 +26,13 @@ function RegisteredUsr ($http,$location,$rootScope,authenticationToken){
         authenticationToken.removeToken();
         $rootScope.isUser = false;
         $location.path("/login");
-    }
+    },
+        setAlteredData : function(altdData){
+            registeredUsr.alteredData = altdData;
+        },
+        getAlteredData : function(){
+        return registeredUsr.alteredData;
+        }
     };
     return registeredUsr;
 };//end of service

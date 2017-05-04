@@ -9,6 +9,7 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
     $scope.initvars = function (){
         console.log(moment().format());
        // $scope.is2ndPage = false;
+        //TODO:name constraint outta be changed from persion to english;date should support unixTimeStamp
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
        // $scope.namePattern='[a-zA-Z]+';
@@ -144,7 +145,7 @@ $scope.levelPage = function(level){
                 name: $rootScope.userClone.name,
                     melli_code: $rootScope.userClone.melli_code,
                     email: $rootScope.userClone.email,
-                    date: userService.getUserTime(),
+                    date: "1993-11-25",
                     mobile_phone: $rootScope.userClone.mobile_phone,
                     username: $rootScope.userClone.username,
                     password: $rootScope.userClone.password,

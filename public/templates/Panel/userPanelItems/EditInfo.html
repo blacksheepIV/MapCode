@@ -12,11 +12,19 @@
             <md-input-container flex="25" flex-xs="70" class="md-block">
                 <label for="fullName" ng-show="user.type != 'legalPerson'">نام کامل:</label>
                 <input type="text" id="fullName" name="fullName" ng-model="user.name" ng-disabled="false" ng-maxlength="40" /> <!--REGEX -->
+                <div ng-messages="userForm.fullName.$error" ng-if="userForm.fullName.$touched">
+                    <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                    <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                </div>
             </md-input-container>
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>نام کاربری:</label>
-                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15" />
+                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15" ng-disabled="true"/> <!--TODO: ask;technically username should ont be editable-->
+                    <div ng-messages="userForm.username.$error" ng-if="userForm.username.$touched">
+                        <div ng-message="minlength">نام کاربری حداقل 5 کاراکتر است.</div>
+                        <div ng-message="maxlength">نام کاربری طولانی تر از حد مجاز است.</div>
+                    </div>
                 </md-input-container>
                 </div>
             <!-- first row -->
@@ -25,6 +33,10 @@
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>ایمیل:</label>
                     <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern"/>
+                    <div ng-messages="userForm.mail.$error" ng-if="userForm.mail.$touched">
+                        <div ng-message="pattern">قالب ابمبل نامعتبر!!!</div>
+                        <div ng-message="maxlength">رایانامه فوق طولانی!!</div>
+                    </div>
                 </md-input-container>
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -36,6 +48,10 @@
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>کدملی:</label>
                     <input type="text" name="nationalcode" ng-model="user.melli_code"  ng-maxlength="10" ng-minlength="10" md-maxlength="10"/>
+                    <div ng-messages="userForm.nationalCode.$error" ng-if="userForm.nationalCode.$touched">
+                        <div ng-message="maxlength">کدملی طولانی تر از 10 رقم است.</div>
+                        <div ng-message="minlength">کدملی کم تر از 10 رقم است.</div>
+                    </div>
                     <!--input validation -->
                 </md-input-container>
             </div>
@@ -45,11 +61,20 @@
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>شماره موبایل:</label>
                     <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11" ng-maxlength="11" />
+                    <div ng-messages="userForm.cellNumber.$error" ng-if="userForm.cellNumber.$touched">
+                        <div ng-message="maxlength">شماره همراه طولانی تر از 11 رقم است.</div>
+                        <div ng-message="minlength">شماره همراه نامعتبر!</div>
+                        <div ng-message="pattern">عدم همخوانی با شماره های اپراتورهای ایران!</div>
+                    </div>
                 </md-input-container>
                 <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>تلفن ثابت:</label>
-                    <input type="tel" name="phoneNum" ng-model="user.phone"  ng-minlength="11" ng-maxlength="11"/> <!-- ?phone number instead -->
+                    <input type="tel" name="phoneNum" ng-model="user.phone"  ng-minlength="11" ng-maxlength="11"/>
+                    <div ng-messages="userForm.phoneNum.$error" ng-if="userForm.phoneNum.$touched">
+                        <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
+                        <div ng-message="minlength">شماره تلفن نامعتبر!</div>
+                        </div>
                 </md-input-container>
                 <div flex="5"></div>
                <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -71,7 +96,7 @@
                 <div flex="5"></div>
                 <md-input-container flex="20" flex-xs="70" class="md-block">
                     <label>کدثبت:</label>
-                    <input type="text" name="code" ng-model="user.code" />
+                    <input type="text" name="code" ng-model="user.code" ng-disabled="true" /> <!--TODO:ask for it's pattern-->
                 </md-input-container>
                 <div flex="5"></div>
                 <div flex="25" flex-xs="70">
@@ -87,7 +112,7 @@
             <!-- 5th row -->
             <div layout="row" layout-xs="column" layout-align="center center">
                 <md-input-container flex="70" class="md-block">
-                    <textarea ng-model="user.description" columns="8" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAres"></textarea>
+                    <textarea ng-model="user.description" name="description" columns="8" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAres"></textarea>
                 </md-input-container>
             </div>
             <!-- 5th row -->

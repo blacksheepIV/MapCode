@@ -49,17 +49,7 @@ function PanelCodeVerfication($scope,userService,$mdDialog,RegisteredUsr,$timeou
     };
     $scope.submit = function(){
       //  userService.setVerificationCode($scope.v_code);
-       var  alteredData = {
-            name: $scope.usr.name,
-            melli_code: $scope.usr.melli_code,
-            email: $scope.usr.email,
-            mobile_phone: $scope.usr.mobile_phone,
-            phone: $scope.usr.phone,
-            username: $scope.usr.username,
-            description: $scope.usr.description,
-            address: $scope.usr.description,
-            sms_code: String($scope.v_code)
-        };
+        var alteredData = RegisteredUsr.getAlteredData();
         RegisteredUsr.updateUsrInfo(alteredData).then(
             function (response) {
                 console.log(response);

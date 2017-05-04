@@ -70,23 +70,41 @@
                   </md-input-container>
                </div>
            <div layout="row" layout-xs="column">
-               <md-input-container flex="70" flex-xs="70" class="md-block">
-                   <label>آدرس</label>
+               <md-input-container flex="60" flex-xs="70" class="md-block">
                    <!-- <textarea columns="8" rows="2" ng-model="point.address" placeholder="آدرس" ng-maxlength="21844" required></textarea> -->
-                   <input type="text" name="address"  ng-model="point.address" ng-maxlength="21844" required />
+                   <textarea type="text" name="address"  ng-model="point.address" columns="8" rows="2" ng-maxlength="21844" placeholder="آدرس" required ></textarea>
                    <div ng-messages="addPoint.address.$error" ng-if="addPoint.address.$touched">
                        <div ng-message="required">آدرس بدید لطفا!</div>
                        <div ng-message="maxlength">آدرس خیلی طولانی شدا!</div>
                    </div>
                    </md-input-container>
                <div flex="5"></div>
-               <div flex="90" flex-xs="70">
-                   <label flex="35">این مکان :</label>
-                   <label>یک مکان عمومی است.</label>
-                  <md-checkbox flex="50" ng-model="point.public" class="md-warn md-hue-4 " ng-true-value="'1'"
-                               ng-false-value="'0'" aria-label="IsPublic"></md-checkbox>
+               <div flex="60" flex-xs="70" class="md-block">
+                  <md-input-container flex="70" class="md-block">
+                      <textarea name="description" ng-model="point.description" columns="8" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas" required></textarea>
+                   </md-input-container>
                </div>
            </div>
+            <div layout="row" layout-xs="column">
+                <div layout="row">
+                <label>تگ ها:</label>
+                    <md-chips name="tags" ng-model="point.tags" readonly="false" md-removable="true"
+                              md-max-chips="5"  md-enable-chip-edit="true" placeholder="تگ ها را با کلید enter از هم جدا کنید" required></md-chips>
+                    <div class="errors" ng-messages="addPoint.tags.$error">
+                        <div ng-message="md-max-chips">حداکثر تعداد تگ وارد شده است.</div>
+                    </div>
+                    </div>
+            </div>
+            <br>
+            <div layout="row" layout-xs="column" layout-align="center center">
+                <div flex="90" flex-xs="70">
+                    <label flex="35">این مکان :</label>
+                    <label>یک مکان عمومی است.</label>
+                    <md-checkbox flex="50" ng-model="point.public" class="md-warn md-hue-4 " ng-true-value="'1'"
+                                 ng-false-value="'0'" aria-label="IsPublic"></md-checkbox>
+                </div>
+
+            </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">

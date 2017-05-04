@@ -9,6 +9,10 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
         $scope.newPass = "";
         $scope.newPassConfirm = "";
         $scope.claimedPass = "";
+        $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
+        $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        // $scope.namePattern='[a-zA-Z]+';
+        $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.user = {
             name: '',
             melli_code: 0,
@@ -44,7 +48,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                     mobile_phone: Info.data.mobile_phone,
                     phone: Info.data.phone,
                     username:Info.data.username,
-                    password: Info.data.password,
+                    password:'', // TODO:gotta get this password thing
                     passRepeat:'',
                     address: Info.data.address,
                     description:Info.data.description,
@@ -135,7 +139,51 @@ $scope.takeMeHome =  function(){
     };
     $scope.edit = function(){
         console.log($scope.userForm.cellNumber.$pristine);
-        if($scope.userForm.cellNumber.$pristine) {
+        if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                email: $scope.user.email,
+                username: $scope.user.username,
+            };
+            $scope.updateInfo();
+        }
+        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                email: $scope.user.email,
+                username: $scope.user.username,
+                address: $scope.user.address
+            };
+            $scope.updateInfo();
+        }
+        else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                email: $scope.user.email,
+                phone: $scope.user.phone,
+                username: $scope.user.username
+            };
+            $scope.updateInfo();
+        }
+       else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                email: $scope.user.email,
+                username: $scope.user.username,
+                description: $scope.user.description
+            };
+            $scope.updateInfo();
+        }
+
+        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -143,8 +191,44 @@ $scope.takeMeHome =  function(){
                 email: $scope.user.email,
                 phone: $scope.user.phone,
                 username: $scope.user.username,
-                description: $scope.user.description,
-                address: $scope.user.description
+                address: $scope.user.address,
+                description: $scope.user.description
+            };
+            $scope.updateInfo();
+        }
+        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                phone: $scope.user.phone,
+                email: $scope.user.email,
+                username: $scope.user.username,
+                address: $scope.user.address
+            };
+            $scope.updateInfo();
+        }
+        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                email: $scope.user.email,
+                username: $scope.user.username,
+                address: $scope.user.address,
+                description: $scope.user.description
+            };
+            $scope.updateInfo();
+        }
+        else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+            console.log("phone number was not changed!");
+            alteredData = {
+                name: $scope.user.name,
+                melli_code: $scope.user.melli_code,
+                phone: $scope.user.phone,
+                email: $scope.user.email,
+                username: $scope.user.username,
+                description: $scope.user.description
             };
             $scope.updateInfo();
         }
@@ -160,6 +244,88 @@ $scope.takeMeHome =  function(){
                 function(response) {
                     userService.setUserInfo($scope.user);
                     console.log(response.data.sms_code);
+                    if($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            username: $scope.user.username
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if(!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            username: $scope.user.username,
+                            address: $scope.user.address
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            phone: $scope.user.phone,
+                            username: $scope.user.username
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            username: $scope.user.username,
+                            description: $scope.user.description
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if(!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            phone: $scope.user.phone,
+                            username: $scope.user.username,
+                            address: $scope.user.address,
+                            description: $scope.user.description
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if(!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            phone: $scope.user.phone,
+                            username: $scope.user.username
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            phone: $scope.user.phone,
+                            username: $scope.user.username,
+                            description: $scope.user.description
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
+                    else if(!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                        alteredData = {
+                            name: $scope.user.name,
+                            melli_code: $scope.user.melli_code,
+                            email: $scope.user.email,
+                            username: $scope.user.username,
+                            description: $scope.user.description
+                        };
+                        RegisteredUsr.setAlteredData(alteredData);
+                    }
                     $scope.showDlg();
 
                 },function(response){
@@ -180,15 +346,15 @@ $scope.takeMeHome =  function(){
 //**************************************** pass Change *******************************************************************************
     $scope.submitPass = function(){
         console.log($scope.user.password);
-        if($scope.claimedPass !== $scope.user.password)
+        if($scope.claimedPass !== $scope.user.password) //TODO:pass is not obtained from database query so obviously it's not working
             $scope.showAlert3();
           if($scope.newPass !== $scope.newPassConfirm)
               $scope.showAlert();
         if($scope.newPass === $scope.claimedPass)
             $scope.showAlert2();
-        else if($scope.newPass === $scope.newPassConfirm) {
+        else if($scope.newPass === $scope.newPassConfirm && $scope.claimedPass === $scope.user.password ) {
             var alteredPass = {
-                password: $scope.newPass,
+                password: $scope.newPass
             };
             RegisteredUsr.updateUsrInfo(alteredPass).then(
                 function (response) {
