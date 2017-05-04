@@ -28,6 +28,7 @@ router.route('/point')
  * @apiParam {Number=0,1} public Point is public/private
  * @apiParam {String{1..30}} category
  * @apiParam {String{1..21844}} [description]
+ * @apiParam {Array} [tags] Length + Sum(element.length) - 1 Should be lower than 21844
  *
  * @apiExample {json} Request-Example
  *     {
@@ -40,7 +41,8 @@ router.route('/point')
  *         "address": "خیابان امیرکبیر",
  *         "public": "1",
  *         "category": "رستوران ایتالیایی",
- *         "description": "یک توضیح"
+ *         "description": "یک توضیح",
+ *         "tags": ["رستوران", "food"]
  *     }
  *
  * @apiSuccessExample Success-Response
@@ -81,9 +83,14 @@ router.route('/point')
  *
  * @apiError (400) description:length_greater_than_21844
  *
+ * @apiError (400) tags:length_greater_than_21844
+ * @apiError (400) tags:not_array
+ * @apiError (400) tags:tag_greater_than_40
+ *
  *
  * @apiError (404) owner_not_found If this error got returned sign out the user.
  * @apiError (404) category_not_found
+ *
  *
  * @apiError (400) not_enough_credit_bonus
  *
@@ -122,7 +129,7 @@ router.route('/point')
                     }
                 });
             },
-            ['description']
+            ['description', 'tags']
         );
     })
     /**
@@ -161,7 +168,8 @@ router.route('/point')
      *            "rate": 0,
      *            "popularity": 0,
      *            "category": "کبابی",
-     *            "description": "یک توضیح!"
+     *            "description": "یک توضیح!",
+     *            "tags": ["رستوران", "food"]
      *          }
      *        ]
      */
@@ -181,6 +189,7 @@ router.route('/point')
                 }
 
                 results.forEach(function (result) {
+                    // TODO: Retrieve real tags
                     result.tags = [];
                 });
 

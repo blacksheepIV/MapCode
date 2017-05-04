@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `users` (
   `id`               MEDIUMINT UNSIGNED NOT NULL PRIMARY KEY  AUTO_INCREMENT,
-  `name`             VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_persian_ci       NOT NULL,
+  `name`             VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci       NOT NULL,
   `melli_code`       VARCHAR(10)        NOT NULL UNIQUE,
   `email`            VARCHAR(100)       NOT NULL UNIQUE,
   `date`             TIMESTAMP          NOT NULL,
@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone`            VARCHAR(11),
   `username`         VARCHAR(15)        NOT NULL UNIQUE,
   `password`         VARCHAR(60)        NOT NULL,
-  `address`          TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci,
-  `description`      TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci,
+  `address`          TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
+  `description`      TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
   `recommender_user` MEDIUMINT UNSIGNED,
   `type`             TINYINT UNSIGNED   NOT NULL              DEFAULT 0,
   `code`             VARCHAR(10)                 UNIQUE,
@@ -83,8 +83,9 @@ CREATE TABLE IF NOT EXISTS `group_users` (
 CREATE TABLE IF NOT EXISTS `point_categories` (
     `id`     SMALLINT UNSIGNED NOT NULL PRIMARY KEY  AUTO_INCREMENT,
     `code`   SMALLINT UNSIGNED NOT NULL,
-    `name`   VARCHAR(30)   CHARACTER SET utf8 COLLATE utf8_persian_ci UNIQUE NOT NULL ,
+    `name`   VARCHAR(100)   CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci UNIQUE NOT NULL,
     `parent` SMALLINT UNSIGNED,
+    `url`   VARCHAR(100),
 
     FOREIGN KEY (`parent`) REFERENCES `point_categories` (`id`)
         ON UPDATE CASCADE
@@ -97,18 +98,18 @@ CREATE TABLE IF NOT EXISTS `points` (
   `lng`             DECIMAL(11, 8)     NOT NULL,
   `submission_date` TIMESTAMP NULL,
   `expiration_date` TIMESTAMP NULL,
-  `name`            VARCHAR(30)   CHARACTER SET utf8 COLLATE utf8_persian_ci    NOT NULL,
+  `name`            VARCHAR(30)   CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci    NOT NULL,
   `phone`           VARCHAR(15)        NOT NULL,
-  `province`        VARCHAR(25) CHARACTER SET utf8 COLLATE utf8_persian_ci      NOT NULL,
-  `city`            VARCHAR(25)  CHARACTER SET utf8 COLLATE utf8_persian_ci     NOT NULL,
+  `province`        VARCHAR(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci      NOT NULL,
+  `city`            VARCHAR(25)  CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci     NOT NULL,
   `code`            VARCHAR(17)        UNIQUE,
-  `address`         TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci  NOT NULL,
+  `address`         TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci  NOT NULL,
   `public`          BOOLEAN            NOT NULL,
   `owner`           MEDIUMINT UNSIGNED NOT NULL,
   `rate`            TINYINT UNSIGNED   NOT NULL              DEFAULT 0,
   `popularity`      BIGINT UNSIGNED    NOT NULL              DEFAULT 0,
   `category`        SMALLINT UNSIGNED NOT NULL,
-  `description`      TEXT CHARACTER SET utf8 COLLATE utf8_persian_ci,
+  `description`      TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
 
   FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
@@ -138,14 +139,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `group_messages` (
   `sender`   MEDIUMINT UNSIGNED NOT NULL,
-  `group_id` INT UNSIGNED       NOT NULL,
+  `group` INT UNSIGNED       NOT NULL,
   `point`    INT UNSIGNED       NOT NULL,
   `message`  TEXT,
 
   FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
+  FOREIGN KEY (`group`) REFERENCES `groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (`point`) REFERENCES `points` (`id`)
@@ -156,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `group_messages` (
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tags` (
   `id`  INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `tag` VARCHAR(20)  NOT NULL UNIQUE
+  `tag` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci NOT NULL UNIQUE
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------

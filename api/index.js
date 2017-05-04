@@ -38,6 +38,16 @@ router.use(expressValidator({
             var re = new RegExp('^-?[0-9]{1,' + (M - D) + '}(.[0-9]{1,' + D + '})?$');
 
             return re.test(str);
+        },
+        isArray: function(field) {
+            return Array.isArray(field);
+        },
+        strElemMaxLen: function (array, len) {
+            for (var i = 0; i < array.length; i++)
+                if (String(array[i]).length > len)
+                    return false;
+
+            return true;
         }
     }
 }));

@@ -51,11 +51,25 @@ router.get('/point/categories/', function (req, res) {
 
             results.forEach(function (result) {
                 if (result.parent !== null) {
-                    categories[mapParentIdName[result.parent]].push(result.name);
+                    categories[mapParentIdName[result.parent]].push({
+                        name: result.name,
+                        url: result.url
+                    });
                 }
             });
 
             res.json(categories);
+        }
+    );
+});
+
+
+router.get('/point/search/', function (req, res) {
+    db.conn.query(
+        "SELECT * FROM `points` WHERE `name` LIKE ?",
+        '%' + req.query.name + '%',
+        function (err, results) {
+            res.send(results);
         }
     );
 });

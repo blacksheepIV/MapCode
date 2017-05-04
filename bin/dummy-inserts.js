@@ -45,7 +45,8 @@ var dummyUsers = [
                 "address": "خیابان امیرکبیر",
                 "public": 1,
                 "category": "رستوران ایتالیایی",
-                "description": "یک توضیح الکی!"
+                "description": "یک توضیح الکی!",
+                "tags": ["food", "رستوران"]
             },
             {
                 "lat": "32.32",
@@ -57,7 +58,8 @@ var dummyUsers = [
                 /* jshint -W100 */
                 "address": "خیابان کریم‌خان",
                 "public": 1,
-                "category": "فروشگاه لباس"
+                "category": "فروشگاه لباس",
+                "tags": ["فروشگاه", "لباس"]
             },
             {
                 "lat": "24.32",
@@ -68,7 +70,8 @@ var dummyUsers = [
                 "city": "کرمان",
                 "address": "خیابان قسطنطنیه",
                 "public": 0,
-                "category": "کبابی"
+                "category": "کبابی",
+                "tags": ["سیخ", "رستوران"]
             }
         ]
     }

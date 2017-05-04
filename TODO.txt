@@ -13,5 +13,6 @@
 
 - User's name can be persian
 
+- Remove DB `point_categories`(`url`) and instead use `id` for image showing
 
 - Add point tag and description
