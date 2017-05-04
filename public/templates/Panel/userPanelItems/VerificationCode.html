@@ -1,0 +1,30 @@
+<md-dialog aria-label="verifyNewNumber" ng-controller="PanelCodeVerfication" ng-init="initUserInfo()" >
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">پیامک هاتو چک کن!</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form name="addPoint" class="form" dir="rtl" flex="100" ng-submit="addPoint.$valid && submit()" novalidate>
+        <md-dialog-content layout="row">
+            <div layout="column" layout-align="center center" flex="100">
+                <div layout="row" layout-align="start center">
+                    <md-icon md-font-icon="fa fa-mobile fa-3x"></md-icon>
+                    <span flex="5"></span>
+                    <p style="display: inline-block;color:darkcyan;">یک پیام متن حاوی کد فعالسازی شما به شماره {{usr.mobile_phone}} ارسال شد</p>
+                </div>
+                <h5 >درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
+                <md-input-container class="md-block" flex="auto">
+                    <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5" name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions md-theme="NewTheme" layout="row" layout-align="center center">
+            <md-button class="md-raised md-warn md-hue-2"  type="submit" >تایید</md-button>
+            <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend" ng-click="resendCode()">ارسال مجدد</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

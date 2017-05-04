@@ -7,6 +7,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('mainCtrl',mainCtrl)
         .controller('userCtrl',userCtrl)
         .controller('pointCtrl',pointCtrl)
+        .controller('PanelCodeVerfication',PanelCodeVerfication)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)

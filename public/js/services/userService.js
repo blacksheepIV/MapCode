@@ -3,12 +3,13 @@
  */
 var userService = function(){
     var user = {}; //empty object literal
+    var verCode = -1;
     this.setUserInfo = function(userData){
         user = userData;
-        console.log(user);
+      //  console.log(user);
     };//end of function set user info
     this.getUserInfo = function(){
-        console.log(user);
+       // console.log(user);
         return user;
     };//end of function get user info
 
@@ -20,5 +21,6 @@ var userService = function(){
     this.getUserTime=function(){
         return times;
     };
+    //****************************************************************************************************************
 
 }//end of regService function

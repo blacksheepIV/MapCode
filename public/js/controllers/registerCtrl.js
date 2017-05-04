@@ -7,10 +7,11 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
     $scope.v_code= 0;
     $scope.holding = [];
     $scope.initvars = function (){
+        console.log(moment().format());
        // $scope.is2ndPage = false;
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
-        //$scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
-        $scope.namePattern='[a-zA-Z]+';
+        $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+       // $scope.namePattern='[a-zA-Z]+';
         $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.smsPattern='[0-9]+';
         $scope.levelPage(1);
@@ -131,7 +132,11 @@ $scope.levelPage = function(level){
         if($scope.v_code == $rootScope.obtainedCode) {
             console.log("SuccessFull codeMatch");
             console.log("**"+userService.getUserTime());
-            var momentDate= (moment(userService.getUserTime()).format()).split("T");
+            var t = userService.getUserTime();
+            console.log(t);
+            console.log(moment().unix(t));
+            console.log(moment().format());
+            var momentDate = (moment(t).format()).split("T");
             console.log(momentDate[0]);
             //console.log($rootScope.userClone.cDate);
             var myurl = window.apiHref + "signup/";
@@ -139,7 +144,7 @@ $scope.levelPage = function(level){
                 name: $rootScope.userClone.name,
                     melli_code: $rootScope.userClone.melli_code,
                     email: $rootScope.userClone.email,
-                    date: momentDate[0],
+                    date: userService.getUserTime(),
                     mobile_phone: $rootScope.userClone.mobile_phone,
                     username: $rootScope.userClone.username,
                     password: $rootScope.userClone.password,

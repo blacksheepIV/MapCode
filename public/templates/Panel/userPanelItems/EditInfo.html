@@ -22,7 +22,6 @@
             <!-- first row -->
             <!-- 2nd row -->
             <div layout="row" layout-xs="column">
-                <div flex="5"></div>
                 <md-input-container flex="25" flex-xs="70" class="md-block">
                     <label>ایمیل:</label>
                     <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern"/>
@@ -85,11 +84,18 @@
                 </div>
             </div>
             <!-- 4th row -->
+            <!-- 5th row -->
+            <div layout="row" layout-xs="column" layout-align="center center">
+                <md-input-container flex="70" class="md-block">
+                    <textarea ng-model="user.description" columns="8" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAres"></textarea>
+                </md-input-container>
+            </div>
+            <!-- 5th row -->
             <div md-theme="NewTheme"  layout="row" layout-xs="row" layout-align="center center">
-                <md-button class="md-raised md-accent md-hue-2" >
+                <md-button class="md-raised md-accent md-hue-2" ng-click="edit()" >
                    اعمال تغییرات
                 </md-button>
-                <md-button class="md-raised md-warn md-hue-2" >
+                <md-button class="md-raised md-warn md-hue-2" ng-click="takeMeHome()" >
                     انصراف
                 </md-button>
             </div>
