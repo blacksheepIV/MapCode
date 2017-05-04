@@ -160,6 +160,17 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Get point categories",
+					"request": {
+						"url": "http://localhost:3000/api/point/categories",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
