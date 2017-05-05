@@ -28,3 +28,5 @@
     * category
 
 - CSP HTTP Header (http://scottksmith.com/blog/2015/06/22/secure-node-apps-against-owasp-top-10-cross-site-scripting/)
+
+- Add sqlmap tests
