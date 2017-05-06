@@ -26,3 +26,14 @@
     * city
     * owner
     * category
+
+- CSP HTTP Header (http://scottksmith.com/blog/2015/06/22/secure-node-apps-against-owasp-top-10-cross-site-scripting/)
+
+- Add sqlmap tests
+
+- Add load test with these tools:
+    * https://artillery.io/
+    * http://locust.io/
+    * http://jmeter.apache.org/
+    * https://github.com/tsenart/vegeta
+    * https://github.com/alexfernandez/loadtest

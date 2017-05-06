@@ -14,7 +14,7 @@
     "mkdb": "./bin/mkdb",
     "mkdb-new": "./bin/mkdb-new",
     "dummy-inserts": "./bin/dummy-inserts.js",
-    "dball": "(DBCONFIG=$(./bin/printDBNameUsernamePassword.js)) && (echo $DBCONFIG \\nY | npm run mkdb -- remake) && (npm run dummy-inserts);"
+    "dball": "DBCONFIG=$(./bin/printDBNameUsernamePassword.js) && (echo -e \"$DBCONFIG\" \"\nY\n\" | npm run mkdb -- remake) && (npm run dummy-inserts)"
   },
   "apidoc": {
     "name": "ProjectM",

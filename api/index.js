@@ -18,7 +18,10 @@ router.use(expressValidator({
                 .test(str);
         },
         isDate: function (str) {
-            return moment(str).isValid();
+            if (typeof str === 'string')
+                return moment(str).isValid();
+            else
+                return moment(parseInt(str)).isValid();
         },
         isUsername: function (str) {
             return /^[a-zA-Z]([a-zA-Z-0-9]|_)*$/.test(str);

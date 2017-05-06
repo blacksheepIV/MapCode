@@ -4,6 +4,7 @@ var hashids = new Hashids(process.env.HASHIDS, 10);
 var asyncRetry = require('async/retry');
 var asyncSeries = require('async/series');
 var asyncSetImmediate = require('async/setImmediate');
+var moment = require('moment');
 
 var db = require('../db');
 
@@ -220,6 +221,9 @@ module.exports.updateUser = function (user, conditions, callback) {
             });
         },
         function (next) {
+            if (user.date)
+                user.date = moment(user.date).format('YYYY-MM-DD');
+
             db.objectUpdateQuery('users', user, conditions, function (err, results) {
                 // MySQL error
                 if (err) {
@@ -266,6 +270,7 @@ module.exports.createNewUser = function (user, callback) {
             }
 
             user.password = hashedPassword;
+            user.date = moment(user.date).format('YYYY-MM-DD');
 
             // Insert user into database
             db.objectInsertQuery('users', user, function (err, results, fields) {

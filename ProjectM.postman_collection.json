@@ -79,7 +79,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJDb2RlIjoiT3BuZWw1YUtCeiIsImp0aSI6IlFleElaIn0.oBOatDvE6GEBQtsq5mBfFuTqaMBXZ_fkk0FOwJzL9sU",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJDb2RlIjoiVm9sZWpSZWpObSIsImp0aSI6IjRVdHplIn0.A0df-149Qvat80I2IcZJ9yfGtaZyjQ1npNSCuRKkDjU",
 								"description": ""
 							},
 							{
@@ -90,7 +90,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"lat\": \"21.323\",\n\t\"lng\": \"32.3343\",\n\t\"name\": \"پیتزا آرشین\",\n\t\"phone\": \"03155447658\",\n\t\"province\": \"اصفهان\",\n\t\"city\": \"کاشان\",\n\t\"address\": \"خیابان امیرکبیر\",\n\t\"public\": \"1\",\n\t\"category\": \"کبابی\",\n\t\"tags\": [\"سیخ\", \"رستوران\"],\n\t\"__OPTIONAL__description\": \"توضیحات\"\n}"
+							"raw": "{\n\t\"lat\": \"21.323\",\n\t\"lng\": \"32.3343\",\n\t\"name\": \"پیتزا آرشین\",\n\t\"phone\": \"03155447658\",\n\t\"province\": \"اصفهان\",\n\t\"city\": \"کاشان\",\n\t\"address\": \"خیابان امیرکبیر\",\n\t\"public\": \"1\",\n\t\"category\": \"کتابخانه\",\n\t\"tags\": [\"سیخ\", \"رستوران\"],\n\t\"__OPTIONAL__description\": \"توضیحات\"\n}"
 						},
 						"description": ""
 					},
@@ -157,6 +157,17 @@
 							"mode": "raw",
 							"raw": "{\n\t\"name\": \"علیرضا\",\n\t\"melli_code\": \"1234567654\",\n\t\"email\": \"a.alireza@gmail.com\",\n\t\"date\": \"1996-02-05\",\n\t\"phone\": \"03155334946\",\n\t\"username\": \"ali_reza\",\n\t\"password\": \"654321\",\n\t\"address\": \"خیابان شهید بوقیان\",\n\t\"description\": null\n}"
 						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get point categories",
+					"request": {
+						"url": "http://localhost:3000/api/point/categories",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
 					},
 					"response": []
