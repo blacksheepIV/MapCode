@@ -1,4 +1,4 @@
-CREATE VIEW users_public AS
+CREATE ALGORITHM = MERGE VIEW users_public AS
   SELECT
     `users`.`name`,
     `users`.`melli_code`,
@@ -20,14 +20,36 @@ CREATE VIEW users_public AS
 
 CREATE VIEW point_tags_concated AS
   SELECT
-    `point_id`,
+    `point_id` AS `id`,
     GROUP_CONCAT(`tags`.`tag` SEPARATOR ' ') as `tags`
   FROM `point_tags`
     JOIN `tags` ON `tags`.`id` = `point_tags`.`tag_id`
   GROUP BY `point_id`;
 
 
-CREATE VIEW points_beautified AS
+CREATE ALGORITHM = MERGE VIEW points_detailed AS
+  SELECT
+    `lat`,
+    `lng`,
+    `submission_date`,
+    `expiration_date`,
+    `points`.`name`,
+    `points`.`phone`,
+    `province`,
+    `city`,
+    `points`.`code`,
+    `points`.`address`,
+    `public`,
+    `users`.`code`            AS `owner`,
+    `rate`,
+    `popularity`,
+    `point_categories`.`name` AS `category`,
+    `points`.`description`
+  FROM `points`
+    JOIN `users` ON `users`.`id` = `points`.`owner`
+    JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`;
+
+CREATE VIEW points_detailed_with_tags AS
   SELECT
     `lat`,
     `lng`,
@@ -49,4 +71,4 @@ CREATE VIEW points_beautified AS
   FROM `points`
     JOIN `users` ON `users`.`id` = `points`.`owner`
     JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`
-    JOIN `point_tags_concated` ON `point_tags_concated`.`point_id` = `points`.`id`;
+    JOIN `point_tags_concated` ON `point_tags_concated`.`id` = `points`.`id`;
