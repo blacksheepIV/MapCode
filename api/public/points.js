@@ -1,13 +1,14 @@
 var router = require('express').Router();
 var lodashFilter = require('lodash/filter');
 var mysqlFormat = require('mysql').format;
+var lodashIntersection = require('lodash/intersection');
+var lodashTrim = require('lodash/trim');
 
 var db = require('../../db');
 var jwt = require('../../utils/jwt');
 var escapeRegExp = require('../../utils').escapeRegExp;
+var pointModel = require('../../models/point');
 
-
-router.use(require('../../utils').startLimitChecker);
 
 /**
  * @api {get} /point/categories/ Get point categories
@@ -82,10 +83,55 @@ router.use('/point/search/',
     jwt.JWTErrorIgnore
 );
 
+router.use('/point/search',
+    require('../../utils').startLimitChecker
+);
 
+/**
+ * @api {get} /point/search Search through points
+ * @apiVersion 0.1.0
+ * @apiName pointSearch
+ * @apiGroup point
+ * @apiPermission public
+ *
+ * @apiDescription if user is not logged in search is getting done only in public points but
+ * if the use is logged in search is getting done in public points and user's own private points
+ * and user's friends private points.
+ *
+ * @apiParam {String} code Point's code
+ * @apiParam {String} name Point's name
+ * @apiParam {String[]} tags Points' tags. Should be separated with space(' ').
+ * @apiParam {String} city Points' city
+ * @apiParam {String} owner Point's owner username
+ * @apiPAram {String} category Point's category
+ *
+ * @apiParam {Number{1..}} [start=1] Send points from start-th point!
+ * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
+ *
+ * @apiParam {String[]} fields Can be composition on these (separated with comma(',')): lat, lng, submission_date, expiration_date, name, phone, provincem city, code, address, public, owner, rate, popularity, category, description, tags
+ *
+ * @apiExample Request-Example:
+ *     GET http://mapcode.ir/api/point/search?name=آر&tags=food restaurant
+ *
+ * @apiExample Request-Example
+ *     GET http://mapcode.ir/api/point/search?code=mp001002&start=10&limit=20
+ *
+ *
+ * @apiError (404) No results found.
+ */
 router.get('/point/search/', function (req, res) {
+    var fields = pointModel.publicFields;
+    // If request just wants specific fields
+    if (req.query.fields) {
+        fields = lodashIntersection(
+            req.query.fields.split(',').map(lodashTrim),
+            pointModel.publicFields
+        );
+        fields = fields.map(db.conn.escapeId);
+    }
+
     var hasCond = false;
-    var query = "SELECT * FROM `points_detailed_owner_id`";
+    var query = "SELECT " + fields.join(', ') + " FROM `points_detailed_with_owner_id`";
 
     function checkQueryParam(subQuery, field, value) {
         if (req.query[field]) {
@@ -119,14 +165,13 @@ router.get('/point/search/', function (req, res) {
     }
     // If request is authenticated search in public points + user's and his/her friends private points
     else {
-        var cond = "(public = TRUE  OR exists ( select * from friends where (first_user = ? and second_user = owner) or (second_user = ? and first_user = owner)))";
+        var cond = "(public = TRUE  OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
         query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.userId, req.user.userId]);
     }
 
 
     db.conn.query(
-        query += " LIMIT ?, ?",
-        [req.queryStart, req.queryLimit],
+        query += " LIMIT " + db.conn.escape(req.queryStart) + ", " + db.conn.escape(req.queryLimit),
         function (err, results) {
             if (err) {
                 console.log("Error happened in point search with query: \"%s\"\nError: %s", query, err);

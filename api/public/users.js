@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var moment = require('moment');
-var _array = require('lodash/array');
+var lodashIntersection = require('lodash/intersection');
 
 var jwt = require('../../utils/jwt');
 var db = require('../../db');
@@ -88,7 +88,7 @@ router.route('/users/')
             });
         }
 
-        var fields = _array.intersection(
+        var fields = lodashIntersection(
             Object.keys(req.query),
             usersModel.publicFields
         );

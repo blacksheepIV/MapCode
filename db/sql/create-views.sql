@@ -27,7 +27,7 @@ CREATE VIEW point_tags_concated AS
   GROUP BY `point_id`;
 
 
-CREATE VIEW points_detailed_owner_id AS
+CREATE VIEW points_detailed_with_owner_id AS
   SELECT
     `lat`,
     `lng`,
@@ -40,7 +40,8 @@ CREATE VIEW points_detailed_owner_id AS
     `points`.`code`,
     `points`.`address`,
     `public`,
-    `users`.`id`            AS `owner`,
+    `users`.`id`            AS `owner_id`,
+    `users`.`username`            AS `owner`,
     `rate`,
     `popularity`,
     `point_categories`.`name` AS `category`,
