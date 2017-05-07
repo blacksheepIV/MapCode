@@ -88,7 +88,7 @@ router.use('/point/search',
 );
 
 /**
- * @api {get} /point/search Search through points
+ * @api {get} /point/search Search points
  * @apiVersion 0.1.0
  * @apiName pointSearch
  * @apiGroup point
@@ -98,23 +98,26 @@ router.use('/point/search',
  * if the use is logged in search is getting done in public points and user's own private points
  * and user's friends private points.
  *
- * @apiParam {String} code Point's code
- * @apiParam {String} name Point's name
- * @apiParam {String[]} tags Points' tags. Should be separated with space(' ').
- * @apiParam {String} city Points' city
- * @apiParam {String} owner Point's owner username
- * @apiPAram {String} category Point's category
+ * @apiParam {String} [code] Point's code
+ * @apiParam {String} [name] Point's name
+ * @apiParam {String[]} [tags] Points' tags. Should be separated with space(' ').
+ * @apiParam {String} [city] Points' city
+ * @apiParam {String} [owner] Point's owner username
+ * @apiPAram {String} [category] Point's category
  *
  * @apiParam {Number{1..}} [start=1] Send points from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
  *
  * @apiParam {String[]} fields Can be composition on these (separated with comma(',')): lat, lng, submission_date, expiration_date, name, phone, provincem city, code, address, public, owner, rate, popularity, category, description, tags
  *
- * @apiExample Request-Example:
+ * @apiExample Request-Example
  *     GET http://mapcode.ir/api/point/search?name=آر&tags=food restaurant
  *
  * @apiExample Request-Example
  *     GET http://mapcode.ir/api/point/search?code=mp001002&start=10&limit=20
+ *
+ * @apiExample Request-Example
+ *     GET http://mapcode.ir/api/point/search?city=kashan&fields=lat,lng
  *
  *
  * @apiError (404) No results found.
