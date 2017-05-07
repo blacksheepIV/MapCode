@@ -2,6 +2,8 @@ public/components/
 
 public/application/
 
+public/img/category-images/
+
 node_modules/
 
 .env
