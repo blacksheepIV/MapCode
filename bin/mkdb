@@ -44,6 +44,8 @@ execute_sql_file $SQLDIR"create-views.sql";
 
 execute_sql_file $SQLDIR"create-procedures.sql";
 
+execute_sql_file $SQLDIR"create-triggers.sql";
+
 execute_sql_file $SQLDIR"dummy-inserts.sql";
 
 

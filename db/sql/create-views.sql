@@ -27,7 +27,7 @@ CREATE VIEW point_tags_concated AS
   GROUP BY `point_id`;
 
 
-CREATE ALGORITHM = MERGE VIEW points_detailed AS
+CREATE VIEW points_detailed_owner_id AS
   SELECT
     `lat`,
     `lng`,
@@ -40,16 +40,18 @@ CREATE ALGORITHM = MERGE VIEW points_detailed AS
     `points`.`code`,
     `points`.`address`,
     `public`,
-    `users`.`code`            AS `owner`,
+    `users`.`id`            AS `owner`,
     `rate`,
     `popularity`,
     `point_categories`.`name` AS `category`,
-    `points`.`description`
+    `points`.`description`,
+    `point_tags_concated`.`tags`
   FROM `points`
     JOIN `users` ON `users`.`id` = `points`.`owner`
-    JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`;
+    JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`
+    JOIN `point_tags_concated` ON `point_tags_concated`.`id` = `points`.`id`;
 
-CREATE VIEW points_detailed_with_tags AS
+CREATE VIEW points_detailed AS
   SELECT
     `lat`,
     `lng`,
@@ -62,7 +64,7 @@ CREATE VIEW points_detailed_with_tags AS
     `points`.`code`,
     `points`.`address`,
     `public`,
-    `users`.`code`            AS `owner`,
+    `users`.`username`            AS `owner`,
     `rate`,
     `popularity`,
     `point_categories`.`name` AS `category`,

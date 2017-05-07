@@ -5,7 +5,7 @@ var db = require('../../db');
 var pointModel = require('../../models/point');
 
 
-router.use(require('../../utils').skipLimitChecker);
+router.use(require('../../utils').startLimitChecker);
 
 
 router.route('/point')
@@ -178,7 +178,7 @@ router.route('/point')
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT * FROM `points_detailed_with_tags` " +
+            "SELECT * FROM `points_detailed` " +
             "WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
