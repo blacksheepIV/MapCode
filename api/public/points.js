@@ -120,7 +120,7 @@ router.use('/point/search',
  *     GET http://mapcode.ir/api/point/search?city=kashan&fields=lat,lng
  *
  *
- * @apiError (404) No results found.
+ * @apiError (404) no_results_found
  */
 router.get('/point/search/', function (req, res) {
     var fields = pointModel.publicFields;
@@ -183,7 +183,7 @@ router.get('/point/search/', function (req, res) {
 
             // If no record found, return 404 HTTP status code
             if (results.length === 0)
-                return res.status(404).end();
+                return res.status(404).json({errors: ['no_results_found']});
 
             res.json(results);
         }
