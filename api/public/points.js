@@ -169,7 +169,7 @@ router.get('/point/search/', function (req, res) {
     // If request is authenticated search in public points + user's and his/her friends private points
     else {
         var cond = "(public = TRUE  OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
-        query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.userId, req.user.userId]);
+        query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id]);
     }
 
 

@@ -104,7 +104,7 @@ router.route('/point')
             function () {
                 var point = Object.assign({}, req.body);
 
-                point.owner = req.user.userId;
+                point.owner = req.user.id;
 
                 var date = new Date();
                 point.submission_date = date;
@@ -182,7 +182,7 @@ router.route('/point')
             "WHERE `owner` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
-            [req.user.userCode, req.queryStart, req.queryLimit],
+            [req.user.username, req.queryStart, req.queryLimit],
             function (err, results) {
                 if (err) {
                     res.status(500).end();
