@@ -171,6 +171,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Point search",
+					"request": {
+						"url": "http://mapcode.ir/api/point/search",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJDb2RlIjoiVm9sZWpSZWpObSIsImp0aSI6IlRObDRSIn0.Hcgrtg3VW1VxJ6HJEu3jgsH_BvZnCmeCtn0rOYhEvMA",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

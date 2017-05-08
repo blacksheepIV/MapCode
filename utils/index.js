@@ -26,11 +26,10 @@ module.exports.getDirJsFiles = function (baseDir, dir, callback) {
 };
 
 
-module.exports.skipLimitChecker = function (req, res, next) {
+module.exports.startLimitChecker = function (req, res, next) {
     req.queryStart = parseInt(req.query.start) - 1;
     if (isNaN(req.queryStart) || req.queryStart < 0)
         req.queryStart = 0;
-
 
     req.queryLimit = parseInt(req.query.limit);
     if (isNaN(req.queryLimit))
@@ -39,4 +38,9 @@ module.exports.skipLimitChecker = function (req, res, next) {
         req.queryLimit = 100;
 
     next();
+};
+
+
+module.exports.escapeRegExp = function(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 };

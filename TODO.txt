@@ -19,14 +19,6 @@
 -                   melli_code
 -                   recommender_user
 
-- Point Search by these fields
-    * code
-    * name
-    * tag
-    * city
-    * owner
-    * category
-
 - CSP HTTP Header (http://scottksmith.com/blog/2015/06/22/secure-node-apps-against-owasp-top-10-cross-site-scripting/)
 
 - Add sqlmap tests

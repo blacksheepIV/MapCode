@@ -78,7 +78,7 @@ router.use(function (err, req, res, next) {
 }); */
 
 router.use(function (req, res, next) {
-    req.validateBodyWithSchema = function (schema, params, callback, ignorables) {
+    req.validateBodyWithSchema = function (schema, params, callback, ignorables, checkFunction) {
         var newSchema = {};
 
         if (params === 'all') {
@@ -100,7 +100,11 @@ router.use(function (req, res, next) {
             }
         }
 
-        req.checkBody(newSchema);
+        if (checkFunction === undefined)
+            checkFunction = 'checkBody';
+
+        req[checkFunction](newSchema);
+
 
         req.getValidationResult().then(function (result) {
             // Parameters are not valid

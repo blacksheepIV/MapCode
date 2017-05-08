@@ -39,6 +39,8 @@ mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-views.
 
 mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-procedures.sql";
 
+mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"create-triggers.sql";
+
 mysql --login-path=$npm_package_name --verbose $database < $SQLDIR"dummy-inserts.sql";
 
 

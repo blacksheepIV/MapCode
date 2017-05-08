@@ -21,6 +21,8 @@ if (process.argv.includes('--update-existing'))
     updateExisting = true;
 
 
+var usersCodes = {};
+
 var dummyUsers = [
     {
         "info": {
@@ -74,11 +76,39 @@ var dummyUsers = [
                 "tags": ["سیخ", "رستوران"]
             }
         ]
+    },
+    {
+        "info": {
+            "name": "محمد",
+            "melli_code": "9876543212",
+            "email": "mohammad@gmail.com",
+            "date": "1994-02-05",
+            "mobile_phone": "09376547366",
+            "username": "mohammad",
+            "password": "123456",
+            "type": "0",
+            "recommender_user": "alireza"
+        },
+        "points": [
+            {
+                "lat": "10.32",
+                "lng": "11.32",
+                "name": "لبنیاتی حاج ممد",
+                "phone": "03166887654",
+                "province": "کهکیلویه و بویر احمد",
+                "city": "کاشان!",
+                "address": "خیابان ممدیان",
+                "public": 0,
+                "category": "فرهنگسرا",
+                "description": "لبنیاتی هستم!",
+                "tags": ["لبنیاتی", "شیر", "پنیر", "ماست"]
+            }
+        ]
     }
 ];
 
 
-async.forEach(
+async.eachSeries(
     dummyUsers,
     function (user, done) {
         async.waterfall([
@@ -125,6 +155,11 @@ async.forEach(
             // Create the user
             function (sms_code, next) {
                 user.info.sms_code = sms_code;
+
+                if (user.info.recommender_user) {
+                    user.info.recommender_user = usersCodes[user.info.recommender_user];
+                }
+
                 request.post({
                     url: process.env.API_HREF + 'signup/',
                     json: user.info
@@ -144,11 +179,13 @@ async.forEach(
                             return next(errMsg);
                     }
 
-                   next(null, 200);
+                    usersCodes[user.info.username] = res.body.code;
+
+                    next(null, 201);
                 });
             },
             function (statusCode, next) {
-                if (!(statusCode === 200 || updateExisting))
+                if (!(statusCode === 201 || updateExisting))
                     return async.setImmediate(next);
 
                 db.conn.query(
