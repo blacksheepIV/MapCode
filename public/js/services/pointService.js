@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 23-Apr-17.
  */
-function pointService(){
+function pointService($http){
     var pointService = {
         coordination: null,
         categories:null,
@@ -17,9 +17,12 @@ function pointService(){
         getLocation: function () {
             return coordination;
         },
-        requestForCategory : function ($http) {
+        requestForCategory : function () {
             var CatURL = window.apiHref + "point/categories";
-            return $http.get(CatURL).success(function (data) {
+            return $http({
+                url: CatURL,
+                method: "GET"
+            }).success(function (data) {
                 pointService.categories = data;
             });
         },

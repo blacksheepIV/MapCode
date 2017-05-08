@@ -1,4 +1,4 @@
-<md-dialog aria-label="AddNewPoint" ng-controller="pointCtrl" ng-init="initPoint()">
+<md-dialog  flex="60" aria-label="AddNewPoint" ng-controller="pointCtrl" ng-init="initPoint()">
     <md-toolbar md-theme="docs-dark" class="md-warn md-hue-2">
         <div dir="rtl" class="md-toolbar-tools" layout="row">
             <h2 class="md-display-2">نقطه جدید اضافه می کنیم(:</h2>
@@ -16,8 +16,8 @@
                          <label>نام نقطه</label>
                          <input type="text"name="PointName" ng-model="point.name" ng-minlength="1" ng-maxlength="30" ng-pattern="namePattern" required/>
                          <div ng-messages="addPoint.PointName.$error" ng-if="addPoint.PointName.$touched">
-                             <div ng-message="required"> نام نقطه ضروری است.</div>
-                             <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                             <div ng-message="required"> نام نقطه ضروریه.</div>
+                             <div ng-message="maxlength">نام  طولانی تر از حد مجازه!</div>
                              <div ng-message="pattern">لطفا نام فارسی وارد کنید!</div>
                          </div>
                      </md-input-container>
@@ -26,7 +26,7 @@
                          <label>طول جغرافیایی</label>
                          <input type="text"name="latitude" ng-model="point.lat" required ng-disabled="true"/>
                          <div ng-messages="addPoint.latitude.$error" ng-if="addPoint.latitude.$touched">
-                             <div ng-message="required"> پربودن این قسمت ضروری است.</div>
+                             <div ng-message="required"> پربودن این قسمت ضروریه.</div>
                          </div>
                       </md-input-container>
                       <div flex="5"></div>
@@ -34,7 +34,7 @@
                         <label>عرض جغرافیایی</label>
                         <input type="text"name="langitude" ng-model="point.lng" ng-disabled="true" required/>
                          <div ng-messages="addPoint.langitude.$error" ng-if="addPoint.langitude.$touched">
-                             <div ng-message="required"> پربودن این قسمت ضروری است.</div>
+                             <div ng-message="required"> پربودن این قسمت ضروریه.</div>
                          </div>
                      </md-input-container>
                  </div>
@@ -45,18 +45,18 @@
                              <md-option ng-value="pro" ng-repeat="pro in provinces">{{pro.name}}</md-option>
                          </md-select>
                          <div ng-messages="addPoint.province.$error" ng-if="addPoint.province.$touched">
-                             <div ng-message="required">انتخاب استان ضروری است.</div>
+                             <div ng-message="required">انتخاب استان ضروریه.</div>
 
                          </div>
                      </md-input-container>
                  <div flex="5"></div>
                      <md-input-container flex="35" flex-xs="70" class="md-block">
                          <label>شهر</label>
-                         <md-select name="city" ng-model="point.city"  required>
-                            <md-option ng-value="c" ng-repeat="c in cities | filter:{prov : 'اصفهان'}">{{c.name}}</md-option>
+                         <md-select name="city" ng-if="point.province" ng-model="point.city" required>
+                            <md-option ng-value="c" ng-repeat="c in PresentableCities">{{c}}</md-option>
                          </md-select>
                          <div ng-messages="addPoint.city.$error" ng-if="addPoint.city.$touched">
-                             <div ng-message="required">انتخاب شهر ضروری است.</div>
+                             <div ng-message="required">انتخاب شهر ضروریه.</div>
                          </div>
                      </md-input-container>
                  <div flex="5"></div>
@@ -64,15 +64,15 @@
                      <label>شماره تماس</label>
                      <input name="PhoneNumber" type="text" ng-model="point.phone" ng-minlength="11" ng-maxlength="11" required/>
                      <div ng-messages="addPoint.PhoneNumber.$error" ng-if="addPoint.PhoneNumber.$touched">
-                         <div ng-message="required">شماره تماس ضروری است.</div>
+                         <div ng-message="required">وارد کردن شماره تماس ضروریه.</div>
                          <div ng-message="maxlength">شماره تماس طولانی!</div>
                      </div>
                   </md-input-container>
                </div>
            <div layout="row" layout-xs="column">
-               <md-input-container flex="60" flex-xs="70" class="md-block">
+               <md-input-container flex="40" flex-xs="70" class="md-block">
                    <!-- <textarea columns="8" rows="2" ng-model="point.address" placeholder="آدرس" ng-maxlength="21844" required></textarea> -->
-                   <textarea type="text" name="address"  ng-model="point.address" columns="8" rows="2" ng-maxlength="21844" placeholder="آدرس" required ></textarea>
+                   <textarea type="text" name="address"  ng-model="point.address" columns="8" rows="2" ng-maxlength="21844" md-maxlength="21844" placeholder="آدرس" required ></textarea>
                    <div ng-messages="addPoint.address.$error" ng-if="addPoint.address.$touched">
                        <div ng-message="required">آدرس بدید لطفا!</div>
                        <div ng-message="maxlength">آدرس خیلی طولانی شدا!</div>
@@ -81,29 +81,44 @@
                <div flex="5"></div>
                <div flex="60" flex-xs="70" class="md-block">
                   <md-input-container flex="70" class="md-block">
-                      <textarea name="description" ng-model="point.description" columns="8" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas" required></textarea>
+                      <textarea name="description" ng-model="point.description" columns="8" ng-maxlength="21844" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas" ></textarea>
                    </md-input-container>
                </div>
            </div>
             <div layout="row" layout-xs="column">
-                <div layout="row">
+                <div layout="row" flex="95">
                 <label>تگ ها:</label>
-                    <md-chips name="tags" ng-model="point.tags" readonly="false" md-removable="true"
-                              md-max-chips="5"  md-enable-chip-edit="true" placeholder="تگ ها را با کلید enter از هم جدا کنید" required></md-chips>
+                    <md-chips name="tags" flex="90" ng-model="point.tags" readonly="false" md-removable="true"
+                              md-max-chips="5"  md-enable-chip-edit="true" placeholder="تگ ها را با enter از هم جدا کنید" required></md-chips>
                     <div class="errors" ng-messages="addPoint.tags.$error">
                         <div ng-message="md-max-chips">حداکثر تعداد تگ وارد شده است.</div>
                     </div>
                     </div>
-            </div>
-            <br>
-            <div layout="row" layout-xs="column" layout-align="center center">
+                <div flex="5"></div>
                 <div flex="90" flex-xs="70">
                     <label flex="35">این مکان :</label>
                     <label>یک مکان عمومی است.</label>
                     <md-checkbox flex="50" ng-model="point.public" class="md-warn md-hue-4 " ng-true-value="'1'"
                                  ng-false-value="'0'" aria-label="IsPublic"></md-checkbox>
                 </div>
-
+            </div>
+            <div layout="row" layout-xs="column" layout-align="center center">
+                <md-input-container flex="35" flex-xs="70" class="md-block">
+                        <label>انتخاب سردسته:</label>
+                       <md-select name="HeadCat" ng-model="HeadCat" >
+                           <md-option ng-value="key" ng-repeat="(key,value) in cats">{{key}}</md-option>
+                       </md-select>
+                 </md-input-container>
+                <div flex="5"></div>
+                <md-input-container flex="35" flex-xs="70" class="md-block">
+                        <label>انتخاب دسته:</label>
+                        <md-select name="category" ng-if="HeadCat" ng-model="point.category"  md-on-open="showCats()" required>
+                            <md-option ng-value="subcat" ng-repeat="subcat in subcats">{{subcat}}</md-option>
+                         </md-select>
+                    <div ng-messages="addPoint.category.$error" ng-if="addPoint.category.$touched">
+                        <div ng-message="required">انتخاب دسته ضروریه.</div>
+                    </div>
+                 </md-input-container>
             </div>
         </div>
     </md-dialog-content>
