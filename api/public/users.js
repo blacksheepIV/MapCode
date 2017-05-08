@@ -98,7 +98,7 @@ router.route('/users/')
         db.getFromBy(
             fields,
             'users_public',
-            {code: req.user.userCode},
+            {username: req.user.username},
             function (err, results) {
                 if (err) {
                     console.error("MySQL: Error in getting token user's info: %s", err);
