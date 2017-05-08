@@ -35,6 +35,15 @@ function pointService($http){
             }).success(function(data){
                pointService.res=data;
            });
+        },
+        getPointInfos : function () {
+            var pointUrl = window.apiHref+"point/";
+            return $http({
+                url : pointUrl ,
+                method: "GET"
+            }).success(function(data){
+                pointService.res = data;
+            });
         }
     };
     return pointService;

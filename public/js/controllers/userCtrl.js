@@ -1,11 +1,11 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService){
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
-        $scope.myPoint = {};
+        $scope.myPoints = [];
         $scope.newPass = "";
         $scope.newPassConfirm = "";
         $scope.claimedPass = "";
@@ -72,18 +72,13 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                         $scope.user.type = " ";
                         break;
                 }; //end of switchCase
-             /*   var pointUrl = window.apiHref+"point/";
-                $http({
-                    url : pointUrl ,
-                    method: "GET"
-                })
-                    .then(function(response){
-                        console.log(response);
-                        $scope.myPoint=response.data[0];
-                    },function(data){
-                        console.log(data);
-                    }); */
 
+                pointService.getPointInfos().then(function(res){
+                   // console.log(res);
+                    $scope.myPoints=res.data;
+                },function(res){
+                    console.log(res);
+                });
             },function (Info) {
                 if(Info.status === 401) {
                     console.log("نقض قوانین!کاربر احراز هویت نشده!");

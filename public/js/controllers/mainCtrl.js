@@ -3,6 +3,7 @@
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
     $scope.initVar = function(){
+        $rootScope.isUser = false;
         $scope.U = {
             name: "کاربر مهمان",
             credit: 0,
@@ -10,6 +11,7 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
         };
         if(authenticationToken.getToken()) {
             $rootScope.isUser = true;
+            console.log(authenticationToken.getToken());
             RegisteredUsr.getUSrInfo().then(
                 function(Info) {
                     $scope.U.name = Info.data.name;

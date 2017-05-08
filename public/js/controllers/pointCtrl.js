@@ -21,12 +21,12 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             {prov: 'اصفهان', name: 'فولادشهر'},
             {prov: 'اصفهان', name: 'کاشان'},
             {prov: 'اصفهان', name: 'آران و بیدگل'},
-            {prov: 'اصفهان', name: 'آبعلی'},
-            {prov: 'اصفهان', name: 'تهران'},
-            {prov: 'اصفهان', name: 'دماوند'},
-            {prov: 'اصفهان', name: 'شمیرانات'},
-            {prov: 'اصفهان', name: 'فشم'},
-            {prov: 'اصفهان', name: 'ورامین'}
+            {prov: 'تهران', name: 'آبعلی'},
+            {prov: 'تهران', name: 'تهران'},
+            {prov: 'تهران', name: 'دماوند'},
+            {prov: 'تهران', name: 'شمیرانات'},
+            {prov: 'تهران', name: 'فشم'},
+            {prov: 'تهران', name: 'ورامین'}
         ];
         var coord = pointService.getLocation();
         console.log(coord);
@@ -55,6 +55,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
     }; //end initPoint
     //******************************************************************************************************************
     $scope.$watch('point.province',function (newValue, oldValue, scope) {
+        $scope.PresentableCities = [];// to fix appending issue on parameter;s value change
         angular.forEach($scope.cities ,function(value,key){
             if(value.prov === newValue.name){
                 $scope.PresentableCities.push(value.name);
@@ -63,6 +64,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
     },false);
     //******************************************************************************************************************
     $scope.$watch('HeadCat',function (newValue, oldValue, scope) {
+            $scope.subcats = []; // to fix appending issue on parameter;s value change
             angular.forEach($scope.cats, function(value, key) {
                 if(key === newValue ) {
                     angular.forEach(value, function (value2, key2) {
@@ -88,21 +90,64 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
     $scope.submit = function () {
         console.log('data Was sent');
         var latitude = String($scope.point.lat).substr(0, 10);
-        console.log(latitude);
         var langitude = String($scope.point.lng).substr(0, 11);
-        console.log(langitude);
-        var pointInfo = {
-            lat: latitude,
-            lng: langitude,
-            name: $scope.point.name,
-            phone: $scope.point.phone,
-            province: $scope.point.province.name,
-            city: $scope.point.city,
-            address: $scope.point.address,
-            public: parseInt($scope.point.public),
-            category : $scope.point.category
-        }; // data to be sent
-        pointService.sendPointInfos(pointInfo).then(function(res){
+        if($scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
+            var pointInfo = {
+                lat: latitude,
+                lng: langitude,
+                name: $scope.point.name,
+                phone: $scope.point.phone,
+                province: $scope.point.province.name,
+                city: $scope.point.city,
+                address: $scope.point.address,
+                public: parseInt($scope.point.public),
+                category: $scope.point.category
+            }; // data to be sent
+        }
+        else if(!$scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
+            var pointInfo = {
+                lat: latitude,
+                lng: langitude,
+                name: $scope.point.name,
+                phone: $scope.point.phone,
+                province: $scope.point.province.name,
+                city: $scope.point.city,
+                address: $scope.point.address,
+                public: parseInt($scope.point.public),
+                category: $scope.point.category,
+                description : $scope.point.description
+            }; // data to be sent
+        }
+        else if($scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
+            var pointInfo = {
+                lat: latitude,
+                lng: langitude,
+                name: $scope.point.name,
+                phone: $scope.point.phone,
+                province: $scope.point.province.name,
+                city: $scope.point.city,
+                address: $scope.point.address,
+                public: parseInt($scope.point.public),
+                category: $scope.point.category,
+                tags : $scope.point.tags
+            }; // data to be sent
+        }
+        else if(!$scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
+            var pointInfo = {
+                lat: latitude,
+                lng: langitude,
+                name: $scope.point.name,
+                phone: $scope.point.phone,
+                province: $scope.point.province.name,
+                city: $scope.point.city,
+                address: $scope.point.address,
+                public: parseInt($scope.point.public),
+                category: $scope.point.category,
+                description : $scope.point.description,
+                tags : $scope.point.tags
+            }; // data to be sent
+        }
+            pointService.sendPointInfos(pointInfo).then(function(res){
             console.log(res);
             $mdDialog.hide();
             $scope.showSucces();
