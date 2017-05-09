@@ -13,7 +13,7 @@ module.exports.JWTCheck = jwt({
         return null;
     },
     isRevoked: function (req, payload, done) {
-        redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userId + ':wtoken',
+        redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':wtoken',
             function (err, reply) {
                 if (err) {
                     done(err);
@@ -25,7 +25,7 @@ module.exports.JWTCheck = jwt({
                         return;
                     }
                 }
-                redis.get(process.env.REDIS_PREFIX + 'user:' + payload.userId + ':mtoken',
+                redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':mtoken',
                     function (err, reply) {
                         if (err) {
                             done(err);
@@ -79,7 +79,7 @@ module.exports.generateToken = function (userId, username, isMobile, callback) {
     var jti = randomstring.generate({length: 5});
 
     jsonwebtoken.sign({
-        userId: userId,
+        id: userId,
         username: username,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
