@@ -6,6 +6,7 @@ function pointService($http){
         coordination: null,
         categories:null,
         res:null,
+        obtainedDetailedInfo : {},
         setLocation: function (lat, lang) {
             console.log(lat);
             console.log(lang);
@@ -44,6 +45,12 @@ function pointService($http){
             }).success(function(data){
                 pointService.res = data;
             });
+        },
+        setDetailedInfo : function(detailedInfo){
+            pointService.obtainedDetailedInfo = detailedInfo;
+        },
+        getDetailedInfo: function(){
+            return pointService.obtainedDetailedInfo;
         }
     };
     return pointService;

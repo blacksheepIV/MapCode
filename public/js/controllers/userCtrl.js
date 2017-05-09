@@ -132,6 +132,7 @@ $scope.takeMeHome =  function(){
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         });
     };
+    /*  ######################################################Edit User Info ################################################################# */
     $scope.edit = function(){
         console.log($scope.userForm.cellNumber.$pristine);
         if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
@@ -142,7 +143,7 @@ $scope.takeMeHome =  function(){
                 email: $scope.user.email,
                 username: $scope.user.username,
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -153,7 +154,7 @@ $scope.takeMeHome =  function(){
                 username: $scope.user.username,
                 address: $scope.user.address
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -164,7 +165,7 @@ $scope.takeMeHome =  function(){
                 phone: $scope.user.phone,
                 username: $scope.user.username
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
        else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -175,7 +176,7 @@ $scope.takeMeHome =  function(){
                 username: $scope.user.username,
                 description: $scope.user.description
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
 
         else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
@@ -189,7 +190,7 @@ $scope.takeMeHome =  function(){
                 address: $scope.user.address,
                 description: $scope.user.description
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -201,7 +202,7 @@ $scope.takeMeHome =  function(){
                 username: $scope.user.username,
                 address: $scope.user.address
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -213,7 +214,7 @@ $scope.takeMeHome =  function(){
                 address: $scope.user.address,
                 description: $scope.user.description
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
             console.log("phone number was not changed!");
@@ -225,7 +226,7 @@ $scope.takeMeHome =  function(){
                 username: $scope.user.username,
                 description: $scope.user.description
             };
-            $scope.updateInfo();
+            $scope.updateInfo(alteredData);
         }
         else if(!$scope.userForm.cellNumber.$pristine){
             var mysmsUrl = window.apiHref+"sms/";
@@ -328,7 +329,7 @@ $scope.takeMeHome =  function(){
                 });
         }
     };//end of edit
-   $scope.updateInfo =function()
+   $scope.updateInfo =function(alteredData)
     {
         RegisteredUsr.updateUsrInfo(alteredData).then(
             function (response) {
@@ -338,6 +339,7 @@ $scope.takeMeHome =  function(){
                 console.log(response);
             });
     };//end of updateInfo
+    /*  ######################################################Edit User Info ################################################################# */
 //**************************************** pass Change *******************************************************************************
     $scope.submitPass = function(){
         console.log($scope.user.password);
@@ -408,4 +410,17 @@ $scope.takeMeHome =  function(){
         );
     };
     // **************************************** pass Change *******************************************************************************
+    /* **************************************** Point Details **************************************************************************** */
+    $scope.showPointDetails = function(point, ev) {
+        pointService.setDetailedInfo(point);
+        $mdDialog.show({
+            controller: pointInfoCtrl,
+            templateUrl: 'templates/Panel/userPanelItems/pointDetailedInfo.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            });
+    };
+    /* **************************************** Point Details **************************************************************************** */
 }//end of userCtrl controller

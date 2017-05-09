@@ -1,6 +1,6 @@
 <div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
     <md-content layout="row" flex="100">
-        <form name="userForm" class="form" ng-submit="submit()" dir="rtl" flex="100" novalidate>
+        <form name="userForm" class="form" ng-submit="edit()" dir="rtl" flex="100" novalidate>
             <!-- first row -->
             <div layout="row" layout-xs="column">
            <md-input-container flex="25" flex-xs="70" class="md-block">
@@ -117,7 +117,7 @@
             </div>
             <!-- 5th row -->
             <div md-theme="NewTheme"  layout="row" layout-xs="row" layout-align="center center">
-                <md-button class="md-raised md-accent md-hue-2" ng-click="edit()" >
+                <md-button class="md-raised md-accent md-hue-2" type="submit" >
                    اعمال تغییرات
                 </md-button>
                 <md-button class="md-raised md-warn md-hue-2" ng-click="takeMeHome()" >
