@@ -277,12 +277,12 @@ DELIMITER ;
 
 /*
   Errors (sqlstate = 45000):
-    - YOUR_NOT_REQUESTER
+    - YOUR_NOT_REQUESTEE
     - NO_PENDING_REQUEST
     - USERNAME_NOT_FOUND
  */
 DELIMITER ~
-CREATE PROCEDURE `cancelFriendRequest`
+CREATE PROCEDURE `acceptFriendRequest`
   (
     IN first_user           MEDIUMINT UNSIGNED,
     IN second_user_username VARCHAR(15)
@@ -317,11 +317,11 @@ CREATE PROCEDURE `cancelFriendRequest`
     END IF;
 
     SET @requester = getFriendRequester(first_user, second_user);
-    -- Check if the requester is the first_user
-    IF first_user != @requester
+    -- Check if the first_user is the requestee
+    IF first_user = @requester
     THEN
       SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTER';
+      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTEE';
     END IF;
 
     IF second_user < first_user
@@ -334,5 +334,7 @@ CREATE PROCEDURE `cancelFriendRequest`
     DELETE FROM `friend_requests`
     WHERE `friend_requests`.`first_user` = first_user AND
           `friend_requests`.`second_user` = second_user;
+
+    INSERT INTO `friends` (`first_user`, `second_user`) VALUES (first_user, second_user);
   END ~
 DELIMITER ;
