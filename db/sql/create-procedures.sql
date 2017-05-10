@@ -280,12 +280,15 @@ DELIMITER ;
     - YOUR_NOT_REQUESTEE
     - NO_PENDING_REQUEST
     - USERNAME_NOT_FOUND
+    - REQUESTEE_MAX_FRIENDS
+    - REQUESTER_MAX_FRIENDS
  */
 DELIMITER ~
 CREATE PROCEDURE `acceptFriendRequest`
   (
     IN first_user           MEDIUMINT UNSIGNED,
-    IN second_user_username VARCHAR(15)
+    IN second_user_username VARCHAR(15),
+    IN MAX_FRIENDS          SMALLINT UNSIGNED
   )
     PROC: BEGIN
 
@@ -322,6 +325,19 @@ CREATE PROCEDURE `acceptFriendRequest`
     THEN
       SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTEE';
+    END IF;
+
+    -- Check if requestee has not reached max friends limit
+    IF friendsCount(first_user) >= MAX_FRIENDS
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'REQUESTEE_MAX_FRIENDS';
+    END IF;
+    -- Check if requester has not reached max friends limit
+    IF friendsCount(second_user) >= MAX_FRIENDS
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'REQUESTER_MAX_FRIENDS';
     END IF;
 
     IF second_user < first_user
