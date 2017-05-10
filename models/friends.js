@@ -97,7 +97,8 @@ module.exports.acceptRequest = function (id, username, callback) {
  Cancel the request sent from user(id) to user(username)
 
  Errors:
- -
+ - no_pending_requests
+ - username_not_found
 
  - serverError
  */
