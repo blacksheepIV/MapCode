@@ -99,7 +99,7 @@ router.route('/users/')
             allFields
         );
         if (fields.length === 0)
-            fields = allFields
+            fields = allFields;
 
         db.getFromBy(
             fields,
