@@ -1,27 +1,19 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
-    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" dir="ltr" layout="row" layout-padding >
-        <div class="md-toolbar-tools" >
-            <div layout="row" layout-padding layout-align="center center" flex="100">
-                <br>
-               <md-card id="Myusercard" class="image-no-fill">
-                   <md-card-header layout="row">
-                     <md-card-avatart>
-                            <md-icon class="fa fa-user-circle-o fa-3x"></md-icon>
-                       </md-card-avatart>
-                       <md-card-header-text>
-                           <span class="md-title">{{U.name}}</span>
-                       </md-card-header-text>
-                       </md-card-header>
-                   <md-card-title-text layout-alignment="start start">
-                       <span class="md-subhead description ">اعتبار:{{U.credit}}</span>
-                       <span class="md-subhead description">امتیاز:{{U.bonus}}</span>
-                   </md-card-title-text>
-                   <md-card-title-media layout="row" layout-align="center center">
-                      <md-card-actions layout="row" layout-align="center center">
-                          <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
-                      </md-card-actions>
-                   </md-card-title-media>
-            </md-card>
+    <md-toolbar md-theme="docs-dark" class="md-tall md-warn md-hue-2" >
+        <div class="md-toolbar-tools" layout="column" layout-fill layout-align="center" >
+            <div layout="row" layout-align="center" flex="100">
+               <div lsyout="column"  flex="100">
+                   <div layout="row">
+                       <span class="md-headline">{{U.name}}</span>
+                       <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
+                   </div>
+                   <span class="md-subhead description ">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
+                   <div layout="row">
+                       <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
+                   </div>
+
+
+            </div>
             </div>
         </div>
     </md-toolbar>
