@@ -115,3 +115,27 @@ CREATE FUNCTION `getFriendRequester`
 
   END ~
 DELIMITER ;
+
+
+/*
+  Returns user's friends count.
+
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `friendsCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `friends`
+      WHERE first_user = user_id OR
+            second_user = user_id
+    );
+
+  END ~
+DELIMITER ;
