@@ -177,7 +177,7 @@ router.get('/point/search/', function (req, res) {
         query += " LIMIT " + db.conn.escape(req.queryStart) + ", " + db.conn.escape(req.queryLimit),
         function (err, results) {
             if (err) {
-                console.log("Error happened in point search with query: \"%s\"\nError: %s", query, err);
+                console.error("Error happened in point search with query: \"%s\"\nError: %s", query, err);
                 return res.status(500).end();
             }
 
