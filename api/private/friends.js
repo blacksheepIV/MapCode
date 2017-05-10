@@ -3,6 +3,17 @@ var router = require('express').Router();
 var friendsModel = require('../../models/friends');
 
 
+/**
+ * @api {post} /friends/:username Send friend request
+ * @apiVersion 0.1.0
+ * @apiName sendFriendRequest
+ * @apiGroup friends
+ * @apiPermission private
+ *
+ * @apiDescription Send a friend request to user with given username
+ *
+ * @apiParam {
+ */
 router.post('/friends/:username', function (req, res) {
     friendsModel.sendRequest(
         req.user.id,

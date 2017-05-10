@@ -94,7 +94,7 @@ router.route('/users/')
      * @apiError (409) duplicate_username
      */
     .put(function (req, res) {
-        req.validateBodyWithSchema(usersModel.schema, usersModel.updatableFields, function () {
+        req.validateWithSchema(usersModel.schema, usersModel.updatableFields, function () {
 
 
             asyncSeries([

@@ -59,7 +59,7 @@ router.route('/sms')
      *     }
      */
     .post(function (req, res) {
-        req.validateBodyWithSchema(smsModel.schema, 'all', function () {
+        req.validateWithSchema(smsModel.schema, 'all', function () {
             var redis_key = smsModel.phoneNumberKey(req.body.mobile_phone);
 
             var smsVerificationCode = randomstring.generate({

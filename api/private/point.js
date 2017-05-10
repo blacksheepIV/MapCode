@@ -98,7 +98,7 @@ router.route('/point')
  *
  */
     .post(function (req, res) {
-        req.validateBodyWithSchema(
+        req.validateWithSchema(
             pointModel.schema,
             'all',
             function () {

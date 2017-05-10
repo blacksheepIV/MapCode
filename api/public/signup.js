@@ -96,7 +96,7 @@ router.route('/signup')
      * @apiError (409) duplicate_username
      */
     .post(function(req, res) {
-        req.validateBodyWithSchema(usersModel.schema, usersModel.signUpFields, function () {
+        req.validateWithSchema(usersModel.schema, usersModel.signUpFields, function () {
             // Check if sms verification code is correct
             redis.get(smsModel.phoneNumberKey(req.body.mobile_phone), function (err, reply) {
                 if (err) {
