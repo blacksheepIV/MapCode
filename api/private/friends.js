@@ -3,11 +3,6 @@ var router = require('express').Router();
 var friendsModel = require('../../models/friends');
 
 
-    // TODO: Get friend requests count
-
-    // TODO: Get friends count
-
-
 router.post('/friends/:username', function (req, res) {
     friendsModel.sendRequest(
         req.user.id,
