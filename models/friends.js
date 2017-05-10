@@ -186,7 +186,6 @@ module.exports.getFriends = function (id, callback) {
         "FROM `friends` " +
         "JOIN `users` ON IF(first_user = " + id + ", second_user, first_user) = `users`.`id` " +
         "WHERE (first_user = " + id + " OR second_user = " + id + ")",
-        [id, id, id],
         function (err, results) {
             if (err) {
                 console.log("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
