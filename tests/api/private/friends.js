@@ -10,3 +10,6 @@ describe("{POST}/friends/cancel/:username ", function () {
     it("Should have tests!");
 });
 
+describe("{GET}/friends/requests ", function () {
+    it("Should have tests!");
+});

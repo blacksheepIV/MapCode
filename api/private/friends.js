@@ -3,7 +3,6 @@ var router = require('express').Router();
 var friendsModel = require('../../models/friends');
 
 
-// TODO: Get friend requests
     // TODO: Get friend requests count
 // TODO: Get friends
     // TODO: Get friends count
@@ -67,6 +66,19 @@ router.post('/friends/cancel/:username', function (req, res) {
 
             // Request successfully accepted. They are friends now!
             res.status(200).end();
+        }
+    );
+});
+
+
+router.get('/friends/requests', function (req, res) {
+    friendsModel.getFriendRequests(
+        req.user.id,
+        function (err, friendRequests) {
+            if (err)
+                return res.status(500).end();
+
+            return res.json(friendRequests);
         }
     );
 });

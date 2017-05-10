@@ -104,6 +104,19 @@ var dummyUsers = [
                 "tags": ["لبنیاتی", "شیر", "پنیر", "ماست"]
             }
         ]
+    },
+    {
+        "info": {
+            "name": "وحید",
+            "melli_code": "1236543456",
+            "email": "vahid@gmail.com",
+            "date": "1997-02-05",
+            "mobile_phone": "09126547388",
+            "username": "vahid",
+            "password": "123456",
+            "type": "0",
+            "recommender_user": "mohammad"
+        }
     }
 ];
 
