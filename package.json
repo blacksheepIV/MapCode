@@ -14,7 +14,7 @@
     "mkdb": "./bin/mkdb",
     "mkdb-new": "./bin/mkdb-new",
     "dummy-inserts": "./bin/dummy-inserts.js",
-    "dball": "DBCONFIG=$(./bin/printDBNameUsernamePassword.js) && (echo -e \"$DBCONFIG\" \"\nY\n\" | npm run mkdb -- remake | (grep Error || exit 0)) && (npm run dummy-inserts)"
+    "dball": "DBCONFIG=$(./bin/printDBNameUsernamePassword.js) && (echo -e \"$DBCONFIG\" \"\nY\n\" | npm run mkdb -- remake | (grep Error || exit 0)) && (npm run dummy-inserts) && (redis-cli flushall)"
   },
   "apidoc": {
     "name": "ProjectM",
