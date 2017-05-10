@@ -76,8 +76,8 @@ CREATE FUNCTION `pendingFriendRequest`
     SELECT EXISTS(
         SELECT *
         FROM `friend_requests`
-        WHERE `friend_requests`.`requester` = first_user
-              and `friend_requests`.`requestee` = second_user
+        WHERE `friend_requests`.`first_user` = first_user
+              and `friend_requests`.`second_user` = second_user
     ) INTO @ret_val;
 
     RETURN @ret_val;

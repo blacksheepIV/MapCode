@@ -38,15 +38,19 @@ CREATE TABLE IF NOT EXISTS `friends` (
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `friend_requests` (
-  `requester` MEDIUMINT UNSIGNED NOT NULL,
-  `requestee` MEDIUMINT UNSIGNED NOT NULL,
+  `first_user` MEDIUMINT UNSIGNED NOT NULL,
+  `second_user` MEDIUMINT UNSIGNED NOT NULL,
+  `requester` MEDIUMINT UNSIGNED NOT NULL
 
-  PRIMARY KEY (`requester`, `requestee`),
+  PRIMARY KEY (`first_user`, `second_user`),
 
-  FOREIGN KEY (`requester`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`first_user`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`requestee`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`second_user`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+  FOREIGN KEY (`requester`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )

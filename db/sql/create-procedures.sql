@@ -270,6 +270,6 @@ CREATE PROCEDURE `friendRequest`
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ALREADY_REQUEST_PENDING';
     END IF;
 
-    INSERT INTO `friend_requests` (`requester`, `requestee`) VALUE (first_user, second_user);
+    INSERT INTO `friend_requests` (`first_user`, `second_user`) VALUE (first_user, second_user, first_user);
   END ~
 DELIMITER ;
