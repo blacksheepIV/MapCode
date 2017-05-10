@@ -354,3 +354,65 @@ CREATE PROCEDURE `acceptFriendRequest`
     INSERT INTO `friends` (`first_user`, `second_user`) VALUES (first_user, second_user);
   END ~
 DELIMITER ;
+
+/*
+  Errors (sqlstate = 45000):
+    - YOUR_NOT_REQUESTER
+    - NO_PENDING_REQUEST
+    - USERNAME_NOT_FOUND
+ */
+DELIMITER ~
+CREATE PROCEDURE `cancelFriendRequest`
+  (
+    IN first_user           MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    -- Fetch user's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'USERNAME_NOT_FOUND';
+    END IF;
+
+    -- Check if there is a pending friend request for these users
+    IF NOT pendingFriendRequest(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'NO_PENDING_REQUEST';
+    END IF;
+
+    SET @requester = getFriendRequester(first_user, second_user);
+    -- Check if the requester is the first_user
+    IF first_user != @requester
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTER';
+    END IF;
+
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    DELETE FROM `friend_requests`
+    WHERE `friend_requests`.`first_user` = first_user AND
+          `friend_requests`.`second_user` = second_user;
+  END ~
+DELIMITER ;
