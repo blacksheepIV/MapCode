@@ -143,3 +143,27 @@ CREATE FUNCTION `friendsCount_ForUpdate`
 
   END ~
 DELIMITER ;
+
+/*
+  Returns user's friend requests count.
+
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `friendRequestsCount_ForUpdate`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `friend_requests`
+      WHERE first_user = user_id OR
+            second_user = user_id
+      FOR UPDATE
+    );
+
+  END ~
+DELIMITER ;

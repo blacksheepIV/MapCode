@@ -37,6 +37,8 @@ router.route('/users/')
      * @apiParam {Boolean} credit
      * @apiParam {Boolean} bonus
      * @apiParam {Boolean} recommender_user
+     * @apiParam {Boolean} friend_requests_count
+     * @apiParam {Boolean} friends_count
      *
      *
      * @apiSuccessExample
@@ -72,7 +74,9 @@ router.route('/users/')
      *             "code": "Opnel5aKBz",
      *             "credit": 3,
      *             "bonus": 0,
-     *             "recommender_user": "wMvbmOeYAl"
+     *             "recommender_user": "wMvbmOeYAl",
+     *             "friend_requests_count": 3,
+     *             "friends_count": 50
      *         }
      *
      * @apiError (401) auth_failure
@@ -88,16 +92,18 @@ router.route('/users/')
             });
         }
 
+        var allFields = usersModel.publicFields.concat(['friend_requests_count', 'friends_count']);
+
         var fields = lodashIntersection(
             Object.keys(req.query),
-            usersModel.publicFields
+            allFields
         );
         if (fields.length === 0)
-            fields = usersModel.publicFields;
+            fields = allFields
 
         db.getFromBy(
             fields,
-            'users_public',
+            'users_detailed',
             {username: req.user.username},
             function (err, results) {
                 if (err) {
