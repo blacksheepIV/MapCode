@@ -64,7 +64,7 @@ CREATE FUNCTION `pendingFriendRequest`
     first_user MEDIUMINT UNSIGNED,
     second_user MEDIUMINT UNSIGNED
   )
-  RETURNS INTEGER
+  RETURNS BOOLEAN
   BEGIN
     IF second_user < first_user
     THEN
@@ -79,6 +79,37 @@ CREATE FUNCTION `pendingFriendRequest`
         WHERE `friend_requests`.`first_user` = first_user
               and `friend_requests`.`second_user` = second_user
     ) INTO @ret_val;
+
+    RETURN @ret_val;
+
+  END ~
+DELIMITER ;
+
+/*
+  Returns the requester's id from a pending friend request.
+
+  Returns NULL if there is no such a pending request.
+ */
+DELIMITER ~
+CREATE FUNCTION `getFriendRequester`
+  (
+    first_user MEDIUMINT UNSIGNED,
+    second_user MEDIUMINT UNSIGNED
+  )
+  RETURNS MEDIUMINT UNSIGNED
+  BEGIN
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    SELECT `friend_requests`.`requester`
+    INTO @ret_val
+    FROM `friend_requests`
+    WHERE `friend_requests`.`first_user` = first_user
+          and `friend_requests`.`second_user` = second_user;
 
     RETURN @ret_val;
 
