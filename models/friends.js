@@ -21,7 +21,7 @@ module.exports.sendRequest = function (id, username, callback) {
         [id, username],
         function (err) {
             if (err) {
-                // Application error has happened
+                // Procedure error has happened
                 if (err.sqlState === '45000') {
                     if (lodashIncludes(err.message, "ARE_ALREADY_FRIENDS"))
                         return callback('are_already_friends');
@@ -59,13 +59,13 @@ module.exports.sendRequest = function (id, username, callback) {
         - serverError
  */
 module.exports.acceptRequest = function (id, username, callback) {
-    // Call friendRequest DB procedure
+    // Call acceptFriendRequest DB procedure
     db.conn.query(
         "CALL acceptFriendRequest(?, ?, ?);",
         [id, username, process.env.MAX_FRIENDS],
         function (err) {
             if (err) {
-                // Application error has happened
+                // Procedure error has happened
                 if (err.sqlState === '45000') {
                     if (lodashIncludes(err.message, "YOUR_NOT_REQUESTEE"))
                         return callback('your_not_requestee');
@@ -83,7 +83,44 @@ module.exports.acceptRequest = function (id, username, callback) {
                         return callback('requester_max_friends');
                 }
 
-                console.error("acceptRequest@models/friends: Error in calling acceptRequest DB procedure: query: %, error: %s", err.sql, err);
+                console.error("acceptRequest@models/friends: Error in calling acceptFriendRequest DB procedure: query: %, error: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            callback();
+        }
+    );
+};
+
+
+/*
+ Cancel the request sent from user(id) to user(username)
+
+ Errors:
+ -
+
+ - serverError
+ */
+module.exports.cancelRequest = function (id, username, callback) {
+    // Call cancelFriendRequest DB procedure
+    db.conn.query(
+        "CALL cancelFriendRequest(?, ?);",
+        [id, username, process.env.MAX_FRIENDS],
+        function (err) {
+            if (err) {
+                // Procedure error has happened
+                if (err.sqlState === '45000') {
+                    if (lodashIncludes(err.message, "YOUR_NOT_REQUESTER"))
+                        return callback('your_not_requester');
+
+                    if (lodashIncludes(err.message, "NO_PENDING_REQUEST"))
+                        return callback('no_pending_request');
+
+                    if (lodashIncludes(err.message, "USERNAME_NOT_FOUND"))
+                        return callback('username_not_found');
+                }
+
+                console.error("cancelRequest@models/friends: Error in calling cancelFriendRequest DB procedure: query: %, error: %s", err.sql, err);
                 return callback('serverError');
             }
 

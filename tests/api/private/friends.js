@@ -5,3 +5,8 @@ describe("{POST}/friends/:username ", function () {
 describe("{POST}/friends/accept/:username ", function () {
     it("Should have tests!");
 });
+
+describe("{POST}/friends/cancel/:username ", function () {
+    it("Should have tests!");
+});
+

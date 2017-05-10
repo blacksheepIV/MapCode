@@ -52,4 +52,25 @@ router.post('/friends/accept/:username', function (req, res) {
 });
 
 
+router.post('/friends/cancel/:username', function (req, res) {
+    friendsModel.cancelRequest(
+        req.user.id,
+        req.params.username,
+        function (err) {
+            if (err) {
+                switch (err) {
+                    case 'serverError':
+                        return res.status(500).end();
+                    default:
+                        return res.status(400).json({errors: [err]});
+                }
+            }
+
+            // Request successfully accepted. They are friends now!
+            res.status(200).end();
+        }
+    );
+});
+
+
 module.exports = router;
