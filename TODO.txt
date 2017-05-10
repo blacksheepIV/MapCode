@@ -32,3 +32,9 @@
 
 - Generate point's code based on MAX(code)
     It solves the problem of deleting a point
+
+- Personal points
+    * lat
+    * lng
+    * name
+    * description
