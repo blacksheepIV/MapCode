@@ -19,6 +19,9 @@ mapCodeApp.config(function ($routeProvider, $locationProvider,$httpProvider) {
         .when('/panel',{
             templateUrl:"./templates/Panel/userPanel.html"
         })
+        .when('/advancedSearch',{
+            templateUrl:"./templates/Panel/advancedSearch.html"
+        })
         .otherwise({
             redirectTo:"/"
         });

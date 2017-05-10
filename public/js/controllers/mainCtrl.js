@@ -3,6 +3,13 @@
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
     $scope.initVar = function(){
+        pointService.showSearchResult().then(
+            function(searchResult) {
+                console.log(searchResult);
+            }
+            ,function(searchResult){
+                console.log(searchResult);
+            });
         $rootScope.isUser = false;
         $scope.U = {
             name: "کاربر مهمان",
@@ -26,11 +33,13 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
         console.log( $rootScope.isUser );
         $scope.customFullscreen = false;
         $scope.SearchTopics =[
-            {id:1 , name:'کد نقطه'},
-            {id:2 , name:'نام نقطه'},
-            {id:3 , name:'نام کاربر ثبت کننده نقطه'},
-            {id:4 , name:'تگ ها'},
-            {id:5 , name:'نام کاربری'}
+            {id:1 , name:'کد نقطه', value:'code'},
+            {id:2 , name:'نام نقطه',value:'name'},
+            {id:3 , name:'نام کاربر ثبت کننده نقطه',value:'owner'},
+            {id:4 , name:'تگ ها',value:'tags'},
+            {id:5 , name:'شهر',value:'city'},
+            {id:6 , name:'دسته بندی',value:'category'},
+            {id:5 , name:'نام کاربری',value:'username'}
         ] ;
         $scope.map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 33.9870993, lng: 51.4405203},
@@ -147,4 +156,7 @@ $scope.addPoint = function(){
         }
     }//end if condition
 }//end of addPoint
+$scope.searchPage = function(){
+    $location.path('/advancedSearch');
+}
 }//end of main controller

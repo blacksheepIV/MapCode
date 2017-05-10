@@ -1,4 +1,4 @@
-<md-toolbar md-theme="docs-dark" class=" md-primary md-hue-2" dir="rtl" id="mainHeader">
+<md-toolbar md-theme="Khaz" class=" md-primary md-hue-2" dir="rtl" class="mainHeader">
     <div class="md-toolbar-tools" layout="row">
         <div layout="row" flex="300">
            <!-- <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" > -->
@@ -18,16 +18,17 @@
             <!--<a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
             <div flex="5"></div>
             <md-select placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
-                <md-option ng-value="Stopic" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
+                <md-option ng-value="Stopic.value" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
             </md-select>
-            <md-button class="md-icon-button " aria-label="searchBtn">
+            <md-button class = "md-icon-button" aria-label = "searchBtn" ng-click = "searchPage()">
                 <md-icon md-font-icon="fa fa-search fa-2x"  class="md-48"></md-icon>
             </md-button>
+            <a href="/advancedSearch">جستجوی پیشرفته</a>
         </div>
         <div flex="10"></div>
         <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="!isUser">
             <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
-            <md-button class="md-raised md-warn md-hue-2" ng-click="register()">ثبت نام</md-button>
+            <md-button class="md-raised md-warn " ng-click="register()">ثبت نام</md-button>
         </div>
        <!-- <h2 class="md-display-4">صفحه اصلی</h2> -->
     </div>

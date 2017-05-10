@@ -7,6 +7,7 @@ function pointService($http){
         categories:null,
         res:null,
         obtainedDetailedInfo : {},
+        searchResult : {},
         setLocation: function (lat, lang) {
             console.log(lat);
             console.log(lang);
@@ -51,6 +52,16 @@ function pointService($http){
         },
         getDetailedInfo: function(){
             return pointService.obtainedDetailedInfo;
+        },
+        showSearchResult : function(searchParams){
+            var searchUrl = window.apiHref+"/point/search";
+            var myConfig = {};
+            myConfig.params = searchParams;
+            console.log(myConfig);
+           return $http({url:searchUrl,method:"GET",config:myConfig})
+                .success(function(data){
+                    pointService.searchResult = data;
+                });
         }
     };
     return pointService;
