@@ -90,7 +90,7 @@ router.use(function (req, res, next) {
         });
 
 
-        if (ignorables !== undefined) {
+        if (ignorables) {
             if (ignorables === 'all')
                 ignorables = params;
             for (var i = 0; i < ignorables.length; i++) {
