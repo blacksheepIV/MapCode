@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `points` (
   `phone`           VARCHAR(15)        NOT NULL,
   `province`        VARCHAR(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci      NOT NULL,
   `city`            VARCHAR(25)  CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci     NOT NULL,
-  `code`            VARCHAR(17)        UNIQUE,
+  `code`            CHAR(17)        UNIQUE,
   `address`         TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci  NOT NULL,
   `public`          BOOLEAN            NOT NULL,
   `owner`           MEDIUMINT UNSIGNED NOT NULL,
