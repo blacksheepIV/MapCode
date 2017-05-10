@@ -222,3 +222,54 @@ CREATE PROCEDURE `addPoint`
     SET err = 0;
   END~
 DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - ARE_ALREADY_FRIENDS
+    - ALREADY_REQUEST_PENDING
+    - SELF_REQUEST
+    - USERNAME_NOT_FOUND
+ */
+DELIMITER ~
+CREATE PROCEDURE `friendRequest`
+  (
+    IN first_user  MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    -- Fetch user's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS
+      `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'USERNAME_NOT_FOUND';
+    END IF;
+
+    -- Check if these users are already friends
+    IF areFriends(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ARE_ALREADY_FRIENDS';
+    END IF;
+    -- Check if there is already a pending friend request for these users
+    IF pendingFriendRequest(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ALREADY_REQUEST_PENDING';
+    END IF;
+
+    INSERT INTO `friend_requests` (`requester`, `requestee`) VALUE (first_user, second_user);
+  END ~
+DELIMITER ;
