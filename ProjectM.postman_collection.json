@@ -188,6 +188,57 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Send friend request",
+					"request": {
+						"url": "http://localhost:3000/api/friends/mohammad",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6Imt4aDIzIn0.SjqN0_4clxVhaovHIdAAhvI88DzLriPZsbyOgZmdDt0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel friend request",
+					"request": {
+						"url": "http://localhost:3000/api/friends/cancel/mohammad",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6Imt4aDIzIn0.SjqN0_4clxVhaovHIdAAhvI88DzLriPZsbyOgZmdDt0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Accept friend request",
+					"request": {
+						"url": "http://localhost:3000/api/friends/accept/alireza",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6Imt4aDIzIn0.SjqN0_4clxVhaovHIdAAhvI88DzLriPZsbyOgZmdDt0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
