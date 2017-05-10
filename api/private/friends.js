@@ -3,7 +3,6 @@ var router = require('express').Router();
 var friendsModel = require('../../models/friends');
 
 
-// TODO: Cancel friend request
 // TODO: Get friend requests
     // TODO: Get friend requests count
 // TODO: Get friends
