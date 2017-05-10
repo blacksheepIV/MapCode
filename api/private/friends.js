@@ -4,7 +4,7 @@ var friendsModel = require('../../models/friends');
 
 
     // TODO: Get friend requests count
-// TODO: Get friends
+
     // TODO: Get friends count
 
 
@@ -79,6 +79,19 @@ router.get('/friends/requests', function (req, res) {
                 return res.status(500).end();
 
             return res.json(friendRequests);
+        }
+    );
+});
+
+
+router.get('/friends/', function (req, res) {
+    friendsModel.getFriends(
+        req.user.id,
+        function (err, friends) {
+            if (err)
+                return res.status(500).end();
+
+            return res.json(friends);
         }
     );
 });

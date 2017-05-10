@@ -148,8 +148,8 @@ module.exports.getFriendRequests = function (id, callback) {
         "FROM `friend_requests` " +
         "JOIN `users` ON " +
             "IF(first_user = requester, first_user, second_user) = `users`.`id` " +
-        "WHERE `requester` != 5 AND (first_user = 5 OR second_user = 5);",
-        id,
+        "WHERE `requester` != ? AND (first_user = ? OR second_user = ?);",
+        [id, id, id, id],
         function (err, results) {
             if (err) {
                 console.log("MySQL: Error in getting user's friend requests. query: %s\nError: %s", err.sql, err);
@@ -168,6 +168,35 @@ module.exports.getFriendRequests = function (id, callback) {
             };
 
             callback(null, friendRequests);
+        }
+    );
+};
+
+
+/*
+ Get the list of friends
+
+ Errors:
+ - serverError
+ */
+module.exports.getFriends = function (id, callback) {
+    db.conn.query(
+        "SELECT `users`.`username` " +
+        "FROM `friends` " +
+        "JOIN `users` ON IF(first_user = ?, second_user, first_user) = `users`.`id` " +
+        "WHERE (first_user = ? OR second_user = ?)",
+        [id, id, id],
+        function (err, results) {
+            if (err) {
+                console.log("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            callback(null,
+                results.map(function (result) {
+                    return result.username;
+                })
+            );
         }
     );
 };

@@ -256,6 +256,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "List of friends",
+					"request": {
+						"url": "http://localhost:3000/api/friends",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ2YWhpZCIsImp0aSI6InVwWTNrIn0._Zdpm4olD9L7olv-1preIsOtB527q_mQJ5Brw_EIyb4",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
