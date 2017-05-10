@@ -240,12 +240,15 @@ $scope.takeMeHome =  function(){
                 function(response) {
                     userService.setUserInfo($scope.user);
                     console.log(response.data.sms_code);
+                    $scope.sCode =response.data.sms_code;
                     if($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
-                            username: $scope.user.username
+                            mobile_phone: $scope.user.mobile_phone,
+                            username: $scope.user.username,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -254,8 +257,10 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             username: $scope.user.username,
-                            address: $scope.user.address
+                            address: $scope.user.address,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -264,8 +269,10 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
-                            username: $scope.user.username
+                            username: $scope.user.username,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -274,8 +281,10 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             username: $scope.user.username,
-                            description: $scope.user.description
+                            description: $scope.user.description,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -284,10 +293,12 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
                             username: $scope.user.username,
                             address: $scope.user.address,
-                            description: $scope.user.description
+                            description: $scope.user.description,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -296,8 +307,10 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
-                            username: $scope.user.username
+                            username: $scope.user.username,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -306,9 +319,11 @@ $scope.takeMeHome =  function(){
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
+                            mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
                             username: $scope.user.username,
-                            description: $scope.user.description
+                            description: $scope.user.description,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
@@ -316,9 +331,11 @@ $scope.takeMeHome =  function(){
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
+                            mobile_phone: $scope.user.mobile_phone,
                             email: $scope.user.email,
                             username: $scope.user.username,
-                            description: $scope.user.description
+                            description: $scope.user.description,
+                            sms_code:$scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }

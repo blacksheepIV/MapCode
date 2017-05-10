@@ -37,6 +37,9 @@ function PanelCodeVerfication($scope,userService,$mdDialog,RegisteredUsr,$timeou
             function (response) {
                 console.log(response);
                 console.log(response.data.sms_code);
+                var alteredData = RegisteredUsr.getAlteredData();
+                alteredData.sms_code = response.data.sms_code;
+                RegisteredUsr.setAlteredData(alteredData);
             },
             function (response) {
                 console.log(response); // failure
@@ -50,6 +53,7 @@ function PanelCodeVerfication($scope,userService,$mdDialog,RegisteredUsr,$timeou
     $scope.submit = function(){
       //  userService.setVerificationCode($scope.v_code);
         var alteredData = RegisteredUsr.getAlteredData();
+        console.log(alteredData);
         RegisteredUsr.updateUsrInfo(alteredData).then(
             function (response) {
                 console.log(response);
