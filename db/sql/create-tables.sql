@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `friends` (
 CREATE TABLE IF NOT EXISTS `friend_requests` (
   `first_user` MEDIUMINT UNSIGNED NOT NULL,
   `second_user` MEDIUMINT UNSIGNED NOT NULL,
-  `requester` MEDIUMINT UNSIGNED NOT NULL
+  `requester` MEDIUMINT UNSIGNED NOT NULL,
 
   PRIMARY KEY (`first_user`, `second_user`),
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `friend_requests` (
     ON UPDATE CASCADE,
   FOREIGN KEY (`second_user`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
   FOREIGN KEY (`requester`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
