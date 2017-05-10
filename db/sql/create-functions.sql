@@ -27,7 +27,7 @@ SELECT SPLIT_STR('a|bb|ccc|dd', '|', 3) as third;
     (Returns FALSE if first_user = second_user)
  */
 DELIMITER ~
-CREATE FUNCTION `areFriends`
+CREATE FUNCTION `areFriends_ForUpdate`
   (
     first_user MEDIUMINT UNSIGNED,
     second_user MEDIUMINT UNSIGNED
@@ -46,6 +46,7 @@ CREATE FUNCTION `areFriends`
         FROM `friends`
         WHERE `friends`.`first_user` = first_user
               and `friends`.`second_user` = second_user
+        FOR UPDATE
     ) INTO @ret_val;
 
     RETURN @ret_val;
@@ -59,7 +60,7 @@ DELIMITER ;
     (Returns FALSE if first_user = second_user)
  */
 DELIMITER ~
-CREATE FUNCTION `pendingFriendRequest`
+CREATE FUNCTION `pendingFriendRequest_ForUpdate`
   (
     first_user MEDIUMINT UNSIGNED,
     second_user MEDIUMINT UNSIGNED
@@ -78,6 +79,7 @@ CREATE FUNCTION `pendingFriendRequest`
         FROM `friend_requests`
         WHERE `friend_requests`.`first_user` = first_user
               and `friend_requests`.`second_user` = second_user
+        FOR UPDATE
     ) INTO @ret_val;
 
     RETURN @ret_val;
@@ -91,7 +93,7 @@ DELIMITER ;
   Returns NULL if there is no such a pending request.
  */
 DELIMITER ~
-CREATE FUNCTION `getFriendRequester`
+CREATE FUNCTION `getFriendRequester_ForUpdate`
   (
     first_user MEDIUMINT UNSIGNED,
     second_user MEDIUMINT UNSIGNED
@@ -109,7 +111,8 @@ CREATE FUNCTION `getFriendRequester`
     INTO @ret_val
     FROM `friend_requests`
     WHERE `friend_requests`.`first_user` = first_user
-          and `friend_requests`.`second_user` = second_user;
+          and `friend_requests`.`second_user` = second_user
+    FOR UPDATE;
 
     RETURN @ret_val;
 
@@ -123,7 +126,7 @@ DELIMITER ;
   Returns 0 if user does not exists.
  */
 DELIMITER ~
-CREATE FUNCTION `friendsCount`
+CREATE FUNCTION `friendsCount_ForUpdate`
   (
     user_id MEDIUMINT UNSIGNED
   )
@@ -135,6 +138,7 @@ CREATE FUNCTION `friendsCount`
       FROM `friends`
       WHERE first_user = user_id OR
             second_user = user_id
+      FOR UPDATE
     );
 
   END ~
