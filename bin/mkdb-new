@@ -16,7 +16,7 @@ if [ "$1" = "remake" ]; then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         echo "> Droping and recreating database $database...";
-        mysql --login-path=$npm_package_name --verbose -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database" || exit 1;
+        mysql --login-path=$npm_package_name --verbose -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci" || exit 1;
         echo;
     else
         exit 0;

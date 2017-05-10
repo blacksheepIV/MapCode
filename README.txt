@@ -33,6 +33,8 @@
       # Max number that can be passed to MySQL queries with LIMIT
       # Default = 100
       QUERY_LIMIT_MAX = 50
+      # Max friends number
+      MAX_FRIENDS = 100
   `
 
 * Create database

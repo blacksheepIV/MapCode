@@ -137,7 +137,8 @@ CREATE PROCEDURE `addPoint`
     FROM point_categories AS U
       JOIN point_categories AS T ON U.parent = T.id
     WHERE U.name = category
-          AND U.`parent` IS NOT NULL;
+          AND U.`parent` IS NOT NULL
+    LOCK IN SHARE MODE;
 
     IF FOUND_ROWS() != 1
     THEN
@@ -150,7 +151,8 @@ CREATE PROCEDURE `addPoint`
     SELECT COUNT(*)
     INTO @cat_count
     FROM points
-    WHERE points.category = category_id;
+    WHERE points.category = category_id
+    FOR UPDATE;
 
     SET @cat_count = @cat_count + 1;
     SET @cat_count = CAST(@cat_count AS CHAR(10));
@@ -221,4 +223,213 @@ CREATE PROCEDURE `addPoint`
     -- Success
     SET err = 0;
   END~
+DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - ARE_ALREADY_FRIENDS
+    - ALREADY_REQUEST_PENDING
+    - SELF_REQUEST
+    - USERNAME_NOT_FOUND
+ */
+DELIMITER ~
+CREATE PROCEDURE `friendRequest`
+  (
+    IN first_user  MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch user's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS
+      `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'USERNAME_NOT_FOUND';
+    END IF;
+
+    -- Check if these users are already friends
+    IF areFriends_ForUpdate(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ARE_ALREADY_FRIENDS';
+    END IF;
+    -- Check if there is already a pending friend request for these users
+    IF pendingFriendRequest_ForUpdate(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ALREADY_REQUEST_PENDING';
+    END IF;
+
+    INSERT INTO `friend_requests` (`first_user`, `second_user`, `requester`) VALUE (first_user, second_user, first_user);
+
+    COMMIT;
+  END ~
+DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - YOUR_NOT_REQUESTEE
+    - NO_PENDING_REQUEST
+    - USERNAME_NOT_FOUND
+    - REQUESTEE_MAX_FRIENDS
+    - REQUESTER_MAX_FRIENDS
+ */
+DELIMITER ~
+CREATE PROCEDURE `acceptFriendRequest`
+  (
+    IN first_user           MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15),
+    IN MAX_FRIENDS          SMALLINT UNSIGNED
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch user's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'USERNAME_NOT_FOUND';
+    END IF;
+
+    -- Check if there is a pending friend request for these users
+    IF NOT pendingFriendRequest_ForUpdate(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'NO_PENDING_REQUEST';
+    END IF;
+
+    SET @requester = getFriendRequester_ForUpdate(first_user, second_user);
+    -- Check if the first_user is the requestee
+    IF first_user = @requester
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTEE';
+    END IF;
+
+    -- Check if requestee has not reached max friends limit
+    IF friendsCount_ForUpdate(first_user) >= MAX_FRIENDS
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'REQUESTEE_MAX_FRIENDS';
+    END IF;
+    -- Check if requester has not reached max friends limit
+    IF friendsCount_ForUpdate(second_user) >= MAX_FRIENDS
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'REQUESTER_MAX_FRIENDS';
+    END IF;
+
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    DELETE FROM `friend_requests`
+    WHERE `friend_requests`.`first_user` = first_user AND
+          `friend_requests`.`second_user` = second_user;
+
+    INSERT INTO `friends` (`first_user`, `second_user`) VALUES (first_user, second_user);
+
+    COMMIT;
+  END ~
+DELIMITER ;
+
+/*
+  Errors (sqlstate = 45000):
+    - YOUR_NOT_REQUESTER
+    - NO_PENDING_REQUEST
+    - USERNAME_NOT_FOUND
+ */
+DELIMITER ~
+CREATE PROCEDURE `cancelFriendRequest`
+  (
+    IN first_user           MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch user's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'USERNAME_NOT_FOUND';
+    END IF;
+
+    -- Check if there is a pending friend request for these users
+    IF NOT pendingFriendRequest_ForUpdate(first_user, second_user)
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'NO_PENDING_REQUEST';
+    END IF;
+
+    SET @requester = getFriendRequester_ForUpdate(first_user, second_user);
+    -- Check if the requester is the first_user
+    IF first_user != @requester
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTER';
+    END IF;
+
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    DELETE FROM `friend_requests`
+    WHERE `friend_requests`.`first_user` = first_user AND
+          `friend_requests`.`second_user` = second_user;
+
+    COMMIT;
+  END ~
 DELIMITER ;

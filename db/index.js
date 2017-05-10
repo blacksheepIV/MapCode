@@ -8,7 +8,8 @@ var conn = mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     supportBigNumbers: true,
-    multipleStatements: true
+    multipleStatements: true,
+    charset: 'utf8mb4_persian_ci'
 });
 
 module.exports.conn = conn;

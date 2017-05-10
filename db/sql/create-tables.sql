@@ -38,15 +38,19 @@ CREATE TABLE IF NOT EXISTS `friends` (
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `friend_requests` (
+  `first_user` MEDIUMINT UNSIGNED NOT NULL,
+  `second_user` MEDIUMINT UNSIGNED NOT NULL,
   `requester` MEDIUMINT UNSIGNED NOT NULL,
-  `requestee` MEDIUMINT UNSIGNED NOT NULL,
 
-  PRIMARY KEY (`requester`, `requestee`),
+  PRIMARY KEY (`first_user`, `second_user`),
 
-  FOREIGN KEY (`requester`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`first_user`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`requestee`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`second_user`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (`requester`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
@@ -101,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `points` (
   `phone`           VARCHAR(15)        NOT NULL,
   `province`        VARCHAR(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci      NOT NULL,
   `city`            VARCHAR(25)  CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci     NOT NULL,
-  `code`            VARCHAR(17)        UNIQUE,
+  `code`            CHAR(17)        UNIQUE,
   `address`         TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci  NOT NULL,
   `public`          BOOLEAN            NOT NULL,
   `owner`           MEDIUMINT UNSIGNED NOT NULL,
