@@ -1,6 +1,7 @@
 var router = require('express').Router();
 
 var personalPointsModel = require('../../models/personal-points');
+var startLimitChecker = require('../../utils').startLimitChecker;
 
 
 /**
@@ -113,6 +114,56 @@ router.delete('/personal_points/:code', function (req, res) {
         'checkParams'
     );
 });
+
+
+/**
+ * @api {get} /personal_points/ Get list of personal points for a user
+ * @apiVersion 0.1.0
+ * @apiName personalPointGet
+ * @apiGroup personal_points
+ * @apiPermission private
+ *
+ * @apiParam {Number{1..}} [start=1] Send points from start-th point!
+ * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/api/personal_points
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        [
+ *          {
+ *            "lat": 24.32,
+ *            "lng": 113.32,
+ *            "name": "قصابی اصغرآفا و پسران",
+ *            "description": "یک توضیح!"
+ *          },
+ *          {
+ *            "lat": 42.12,
+ *            "lng": 21.32,
+ *            "name": "نقطه ی من",
+ *            "description": "یک توضیح!"
+ *          }
+ *        ]
+ */
+router.get('/personal_points',
+    startLimitChecker,
+    function (req, res) {
+        personalPointsModel.getForUser(
+            req.user.id,
+            req.queryStart,
+            req.queryLimit,
+            function (err, points) {
+                // serverError
+                if (err)
+                    return res.status(500).end();
+
+                return res.json(points);
+            }
+        );
+    }
+);
 
 
 module.exports = router;
