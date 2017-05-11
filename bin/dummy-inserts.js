@@ -11,7 +11,6 @@ var db = require('../db');
 var smsModel = require('../models/sms');
 
 
-
 var fallThrough = false;
 if (process.argv.includes('--fall-through'))
     fallThrough = true;
@@ -74,6 +73,19 @@ var dummyUsers = [
                 "public": 0,
                 "category": "شرکت ساختماني",
                 "tags": ["سیخ", "رستوران"]
+            }
+        ],
+        "personal_points": [
+            {
+                "lat": "24.32",
+                "lng": "113.32",
+                "name": "نقطه شخصی ۱"
+            },
+            {
+                "lat": "26.32",
+                "lng": "11.32",
+                "name": "نقطه شخصی ۲",
+                "description": "توضیحات نقطه‌ي شخصی ۲"
             }
         ]
     },
@@ -183,8 +195,8 @@ async.eachSeries(
 
                     if (res.statusCode !== 201) {
                         var errMsg = 'signup/ statusCode = ' + res.statusCode +
-                                    "' for user '" + user.info.username +
-                                    "' response =\n\t" + JSON.stringify(res.body) + '\n';
+                            "' for user '" + user.info.username +
+                            "' response =\n\t" + JSON.stringify(res.body) + '\n';
                         if (fallThrough) {
                             console.log(errMsg + 'Falling through...\n');
                             return next(null, res.statusCode);
@@ -207,7 +219,7 @@ async.eachSeries(
                     function (err) {
                         if (err) {
                             var errMsg = "Error in updating the credit of user with username = " + user.info.username +
-                                         "err =\n\t" + err + '\n';
+                                "err =\n\t" + err + '\n';
                             if (fallThrough) {
                                 console.log(errMsg + "\nFalling through...\n");
                                 next();
@@ -232,8 +244,8 @@ async.eachSeries(
 
                     if (res.statusCode !== 200)
                         return next("signin/ statusCode = " + res.statusCode +
-                                    "' for user '" + user.info.username +
-                                    "' response =\n\t" + JSON.stringify(res.body) + '\n');
+                            "' for user '" + user.info.username +
+                            "' response =\n\t" + JSON.stringify(res.body) + '\n');
 
                     next(null, body.token);
                 });
@@ -249,7 +261,7 @@ async.eachSeries(
                                 "Authorization": "Bearer " + token
                             },
                             json: point
-                        }, function (err, res, body) {
+                        }, function (err, res) {
                             if (err) return point_done(err);
 
                             if (res.statusCode !== 201) {
@@ -265,6 +277,43 @@ async.eachSeries(
 
                             point_done();
                         });
+                    },
+                    function (err) {
+                        if (err)
+                            return next(err);
+
+                        next(null, token);
+                    }
+                );
+            },
+            // Submit user's personal points
+            function (token, next) {
+                async.forEach(
+                    user.personal_points,
+                    function (personalPoint, personalPointDone) {
+                        request.post({
+                                url: process.env.API_HREF + 'personal_points/',
+                                headers: {
+                                    "Authorization": "Bearer " + token
+                                },
+                                json: personalPoint
+                            },
+                            function (err, res) {
+                                if (err) return personalPointDone(err);
+
+                                if (res.statusCode !== 201) {
+                                    var errMsg = "personal_points/ statusCode = " + res.statusCode +
+                                        "' for personal point'" + personalPoint.name +
+                                        "' response =\n\t" + JSON.stringify(res.body) + '\n';
+                                    if (fallThrough) {
+                                        console.log(errMsg + "Falling through...\n");
+                                        return personalPointDone();
+                                    } else
+                                        return personalPointDone(errMsg);
+                                }
+
+                                personalPointDone();
+                            });
                     },
                     function (err) {
                         if (err)
