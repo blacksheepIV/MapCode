@@ -273,6 +273,31 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Submit personal point",
+					"request": {
+						"url": "http://localhost:3000/api/personal_points/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"lat\": 32.32,\n\t\"lng\": 210.32,\n\t\"name\": \"oops\",\n\t\"description\": \"ooops points!\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
