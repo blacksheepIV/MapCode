@@ -315,6 +315,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User's personal points",
+					"request": {
+						"url": "http://localhost:3000/api/personal_points",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
