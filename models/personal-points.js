@@ -57,3 +57,22 @@ module.exports.submit = function (personalPoint, callback) {
         }
     );
 };
+
+
+/*
+    Delete a personal point where owner=user and id=code
+ */
+module.exports.delete = function (user, code, callback) {
+    db.conn.query(
+        "DELETE FROM `personal_points` WHERE `owner` = ? AND `id` = ?",
+        [user, code],
+        function (err) {
+            if (err) {
+                console.error("delete@models/personal-points: MySQL error in deleting personal point\nQuery: %s\nError: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            return callback();
+        }
+    );
+};
