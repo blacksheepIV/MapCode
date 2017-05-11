@@ -76,3 +76,26 @@ module.exports.delete = function (user, code, callback) {
         }
     );
 };
+
+
+/*
+    Get list of personal points for a user.
+ */
+module.exports.getForUser = function (userId, start, limit, callback) {
+    db.conn.query(
+        "SELECT `id` as `code`, `lat`, `lng`, `name`, `description` " +
+        "FROM `personal_points` " +
+        "WHERE owner = ? " +
+        "LIMIT ?, ?",
+        [userId, start, limit],
+        function (err, results) {
+            // MySQL error
+            if (err) {
+                console.error("getForUser@models/personal-points: MySQL error in getting personal points for a user\nQuery: %s\nError: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            callback(null, results);
+        }
+    );
+};
