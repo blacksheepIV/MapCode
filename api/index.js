@@ -78,7 +78,7 @@ router.use(function (err, req, res, next) {
 }); */
 
 router.use(function (req, res, next) {
-    req.validateBodyWithSchema = function (schema, params, callback, ignorables, checkFunction) {
+    req.validateWithSchema = function (schema, params, callback, ignorables, checkFunction) {
         var newSchema = {};
 
         if (params === 'all') {
@@ -90,7 +90,7 @@ router.use(function (req, res, next) {
         });
 
 
-        if (ignorables !== undefined) {
+        if (ignorables) {
             if (ignorables === 'all')
                 ignorables = params;
             for (var i = 0; i < ignorables.length; i++) {

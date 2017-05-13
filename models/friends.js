@@ -97,7 +97,8 @@ module.exports.acceptRequest = function (id, username, callback) {
  Cancel the request sent from user(id) to user(username)
 
  Errors:
- -
+ - no_pending_requests
+ - username_not_found
 
  - serverError
  */
@@ -125,6 +126,77 @@ module.exports.cancelRequest = function (id, username, callback) {
             }
 
             callback();
+        }
+    );
+};
+
+
+/*
+    Get the list of friend requests for a user
+
+    Errors:
+        - serverError
+ */
+module.exports.getFriendRequests = function (id, callback) {
+    id = db.conn.escape(id);
+    db.conn.query(
+        "SELECT `users`.`username` " +
+        "FROM `friend_requests` " +
+        "JOIN `users` ON " +
+            "IF(first_user != requester, first_user, second_user) = `users`.`id` " +
+        "WHERE `requester` = " + id +";" +
+        "SELECT `users`.`username` " +
+        "FROM `friend_requests` " +
+        "JOIN `users` ON " +
+            "IF(first_user = requester, first_user, second_user) = `users`.`id` " +
+        "WHERE `requester` != " + id + " AND (first_user = " + id + " OR second_user = " + id + ");",
+        function (err, results) {
+            if (err) {
+                console.log("MySQL: Error in getting user's friend requests. query: %s\nError: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            var friendRequests = {
+                // Requests that has been sent from me
+                fromMe: results[0].map(function (result) {
+                    return result.username;
+                }),
+                // Requests that has been sent to me
+                toMe: results[1].map(function (result) {
+                    return result.username;
+                })
+            };
+
+            callback(null, friendRequests);
+        }
+    );
+};
+
+
+/*
+ Get the list of friends
+
+ Errors:
+ - serverError
+ */
+module.exports.getFriends = function (id, callback) {
+    id = db.conn.escape(id);
+    db.conn.query(
+        "SELECT `users`.`username` " +
+        "FROM `friends` " +
+        "JOIN `users` ON IF(first_user = " + id + ", second_user, first_user) = `users`.`id` " +
+        "WHERE (first_user = " + id + " OR second_user = " + id + ")",
+        function (err, results) {
+            if (err) {
+                console.log("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
+                return callback('serverError');
+            }
+
+            callback(null,
+                results.map(function (result) {
+                    return result.username;
+                })
+            );
         }
     );
 };

@@ -239,6 +239,99 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Get list of friend requests",
+					"request": {
+						"url": "http://localhost:3000/api/friends/requests",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ2YWhpZCIsImp0aSI6InVwWTNrIn0._Zdpm4olD9L7olv-1preIsOtB527q_mQJ5Brw_EIyb4",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List of friends",
+					"request": {
+						"url": "http://localhost:3000/api/friends",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ2YWhpZCIsImp0aSI6InVwWTNrIn0._Zdpm4olD9L7olv-1preIsOtB527q_mQJ5Brw_EIyb4",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Submit personal point",
+					"request": {
+						"url": "http://localhost:3000/api/personal_points/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"lat\": 32.32,\n\t\"lng\": 210.32,\n\t\"name\": \"oops\",\n\t\"description\": \"ooops points!\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Personal points",
+					"request": {
+						"url": "http://localhost:3000/api/personal_points/4",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's personal points",
+					"request": {
+						"url": "http://localhost:3000/api/personal_points",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

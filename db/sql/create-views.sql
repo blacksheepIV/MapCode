@@ -18,6 +18,28 @@ CREATE ALGORITHM = MERGE VIEW users_public AS
     LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
 
 
+CREATE ALGORITHM = MERGE VIEW users_detailed AS
+  SELECT
+    `users`.`name`,
+    `users`.`melli_code`,
+    `users`.`email`,
+    `users`.`date`,
+    `users`.`mobile_phone`,
+    `users`.`phone`,
+    `users`.`username`,
+    `users`.`address`,
+    `users`.`description`,
+    `users`.`type`,
+    `users`.`code`,
+    `users`.`credit`,
+    `users`.`bonus`,
+    `T`.`code` AS `recommender_user`,
+    friendsCount_ForUpdate(`users`.`id`) AS `friends_count`,
+    friendRequestsCount_ForUpdate(`users`.`id`) AS `friend_requests_count`
+  FROM `users`
+    LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
+
+
 CREATE VIEW point_tags_concated AS
   SELECT
     `point_id` AS `id`,

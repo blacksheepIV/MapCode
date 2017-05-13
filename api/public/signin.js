@@ -43,7 +43,7 @@ router.route('/signin')
      * @apiError (404) username_or_password_is_wrong
      */
     .post(function (req, res) {
-        req.validateBodyWithSchema(usersModel.schema,
+        req.validateWithSchema(usersModel.schema,
             ['username', 'password'],
             function () {
                 usersModel.signIn(req.body.username, req.body.password, function (err, userId) {

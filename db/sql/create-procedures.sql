@@ -369,7 +369,6 @@ DELIMITER ;
 
 /*
   Errors (sqlstate = 45000):
-    - YOUR_NOT_REQUESTER
     - NO_PENDING_REQUEST
     - USERNAME_NOT_FOUND
  */
@@ -409,14 +408,6 @@ CREATE PROCEDURE `cancelFriendRequest`
     THEN
       SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'NO_PENDING_REQUEST';
-    END IF;
-
-    SET @requester = getFriendRequester_ForUpdate(first_user, second_user);
-    -- Check if the requester is the first_user
-    IF first_user != @requester
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'YOUR_NOT_REQUESTER';
     END IF;
 
     IF second_user < first_user

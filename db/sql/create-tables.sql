@@ -22,6 +22,23 @@ CREATE TABLE IF NOT EXISTS `users` (
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `personal_points` (
+  `id`          BIGINT UNSIGNED            NOT NULL  PRIMARY KEY AUTO_INCREMENT,
+  `lat`         DECIMAL(10, 8)             NOT NULL,
+  `lng`         DECIMAL(11, 8)             NOT NULL,
+  `name`        VARCHAR(30)
+                CHARACTER SET utf8mb4
+                COLLATE utf8mb4_persian_ci NOT NULL,
+  `owner`       MEDIUMINT UNSIGNED         NOT NULL,
+  `description` TEXT CHARACTER SET utf8mb4
+                COLLATE utf8mb4_persian_ci,
+
+  FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+  ENGINE = INNODB;
+-- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `friends` (
   `first_user`  MEDIUMINT UNSIGNED NOT NULL,
   `second_user` MEDIUMINT UNSIGNED NOT NULL,
