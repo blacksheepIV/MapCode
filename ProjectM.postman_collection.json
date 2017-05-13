@@ -54,7 +54,7 @@
 				{
 					"name": "Signin",
 					"request": {
-						"url": "http://localhost:3000/api/signin?m",
+						"url": "http://mapcode.ir/api/signin?m",
 						"method": "POST",
 						"header": [
 							{
@@ -329,6 +329,31 @@
 							}
 						],
 						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Send message",
+					"request": {
+						"url": "http://localhost:3000/api/messages",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWnhjdG8ifQ.yk1bu5L5G7IEJCz0Kz1L_m7uKxKk8isohDmdYKcebOY",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"receiver\": \"alireza\",\n\t\"point\": \"mp005001000000001\"\n}"
+						},
 						"description": ""
 					},
 					"response": []

@@ -36,19 +36,30 @@ DELIMITER ;
   Errors (sqlstate = 45000):
     - NO_POINT
     - BOTH_POINTS
+    - SELF_MESSAGE
  */
 DELIMITER ~
-CREATE TRIGGER enforce_message_point_or_personal_point BEFORE INSERT ON messages
-  FOR EACH ROW BEGIN
+CREATE TRIGGER enforce_message_point_or_personal_point
+BEFORE INSERT ON messages
+FOR EACH ROW
+  BEGIN
     -- At least one point must be defined
     IF NEW.point IS NULL AND NEW.personal_point IS NULL
     THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NO_POINT';
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'NO_POINT';
     END IF;
     -- Both points can't be defined
     IF NEW.point IS NOT NULL AND NEW.personal_point IS NOT NULL
     THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'BOTH_POINTS';
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'BOTH_POINTS';
+    END IF;
+    -- Check if sender and receiver are same
+    IF NEW.sender = NEW.receiver
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'SELF_MESSAGE';
     END IF;
   END;
 ~

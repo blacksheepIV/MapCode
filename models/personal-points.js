@@ -27,7 +27,7 @@ module.exports.schema = {
         },
         isLength: {
             options: {min: 1, max: 30},
-            errorMessagE: 'length_not_1_to_30'
+            errorMessage: 'length_not_1_to_30'
         }
     },
     'description': {
