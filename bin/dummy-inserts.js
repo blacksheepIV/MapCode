@@ -129,6 +129,21 @@ var dummyUsers = [
             "type": "0",
             "recommender_user": "mohammad"
         }
+    },
+    {
+        "info": {
+            "name": "حمید",
+            "melli_code": "8796548251",
+            "email": "hamid@gmail.com",
+            "date": "1996-02-05",
+            "mobile_phone": "09368749566",
+            "username": "hamid",
+            "password": "123456",
+            "type": "0",
+            "recommender_user": "vahid",
+            "credit": 50,
+            "bonus": 10
+        }
     }
 ];
 
@@ -214,8 +229,12 @@ async.eachSeries(
                     return async.setImmediate(next);
 
                 db.conn.query(
-                    "UPDATE `users` SET `credit` = 100 WHERE `username` = ?",
-                    user.info.username,
+                    "UPDATE `users` SET `credit` = ?, `bonus` = ? WHERE `username` = ?",
+                    [
+                        user.info.credit || 100,
+                        user.info.bonus || 50,
+                        user.info.username
+                    ],
                     function (err) {
                         if (err) {
                             var errMsg = "Error in updating the credit of user with username = " + user.info.username +
