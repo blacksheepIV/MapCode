@@ -424,3 +424,86 @@ CREATE PROCEDURE `cancelFriendRequest`
     COMMIT;
   END ~
 DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - SENDER_NOT_FOUND
+    - RECEIVER_NOT_FOUND
+    - POINT_NOT_FOUND
+    - PERSONAL_POINT_NOT_FOUND
+
+    (Caused by `enforce_message_point_or_personal_point`)
+    - NO_POINT
+    - BOTH_POINTS
+ */
+DELIMITER ~
+CREATE PROCEDURE `sendMessage`
+  (
+    IN sender           MEDIUMINT UNSIGNED,
+    IN receiver_username VARCHAR(15),
+    IN point  INT UNSIGNED,
+    IN personal_point BIGINT UNSIGNED,
+    IN sent_time TIMESTAMP,
+    IN message TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci
+  )
+    PROC: BEGIN
+
+    DECLARE receiver MEDIUMINT UNSIGNED;
+
+    -- If point or personal_point does not exists
+    DECLARE EXIT HANDLER FOR 1452
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1 @msg = MESSAGE_TEXT;
+
+        IF @msg LIKE '%`sender`%'
+        THEN
+          SET @err = 'SENDER';
+        ELSEIF @msg LIKE '%`point`%'
+        THEN
+            SET @err = 'POINT';
+        ELSE
+            SET @err = 'PERSONAL_POINT';
+        END IF;
+
+        SET @err = CONCAT(@err, '_NOT_FOUND');
+
+        ROLLBACK;
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = @err;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch receiver's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS `users`.`id`
+    INTO receiver
+    FROM `users`
+    WHERE `users`.`username` = receiver_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'RECEIVER_NOT_FOUND';
+    END IF;
+
+    INSERT INTO `messages` (messages.sender,
+                            messages.receiver,
+                            messages.point,
+                            messages.personal_point,
+                            messages.sent_time,
+                            messages.message) VALUES (
+      sender, receiver, point, personal_point, sent_time, message
+    );
+
+    COMMIT;
+  END ~
+DELIMITER ;
