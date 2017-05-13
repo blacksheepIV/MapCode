@@ -446,7 +446,8 @@ CREATE PROCEDURE `sendMessage`
     IN point_code  CHAR(17),
     IN personal_point BIGINT UNSIGNED,
     IN sent_time TIMESTAMP,
-    IN message TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci
+    IN message TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
+    OUT message_id BIGINT UNSIGNED
   )
     PROC: BEGIN
 
@@ -528,6 +529,8 @@ CREATE PROCEDURE `sendMessage`
                             messages.message) VALUES (
       sender, receiver, point, personal_point, sent_time, message
     );
+
+    SET message_id = LAST_INSERT_ID();
 
     COMMIT;
   END ~

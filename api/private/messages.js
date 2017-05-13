@@ -78,7 +78,7 @@ router.post('/messages',
             req.body.point,
             req.body.personal_point,
             req.body.message,
-            function (err) {
+            function (err, message_code) {
                 if (err) {
                     switch (err) {
                         case 'serverError':
@@ -89,10 +89,61 @@ router.post('/messages',
                 }
 
                 // Hooray! message successfully sent.
-                res.status(200).end();
+                res.status(200).json({code: message_code});
             }
         );
     });
+
+
+/**
+ * @api {delete} /messages/:code Delete a message with given code.
+ * @apiVersion 0.1.0
+ * @apiName deleteMessage
+ * @apiGroup messages
+ * @apiPermission private
+ *
+ * @apiDescription Deletes a message (with given code) for user with given token.
+ * If given message does not belong to user, nothing will happen and 200 status code will get returned.
+ *
+ * @apiParam {Number} code Message's code
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         DELETE http://mapcode.ir/api/messages/10
+ *     Response:
+ *         HTTP/1.1 200 OK
+ *
+ *
+ * @apiError (400) code:not_numeric
+ */
+router.delete('/messages/:code', function (req, res) {
+    req.validateWithSchema(
+        {
+            'code': {
+                isInt: {
+                    errorMessage: 'not_numeric'
+                }
+            }
+        },
+        'all',
+        // In case of successful validation
+        function () {
+            messagesModel.delete(
+                req.user.id,
+                req.params.code,
+                function (err) {
+                    // serverError
+                    if (err)
+                        return res.status(500).end();
+
+                    res.status(200).end();
+                }
+            );
+        },
+        null, // Don't ignore any fields
+        'checkParams'
+    );
+});
 
 
 module.exports = router;

@@ -65,9 +65,9 @@ module.exports.send = function (sender,
                                 callback) {
     var sent_time = moment().format('YYYY-MM-DD HH:mm:ss');
     db.conn.query(
-        "CALL `sendMessage`(?, ?, ?, ?, ?, ?);",
+        "CALL `sendMessage`(?, ?, ?, ?, ?, ?, @message_id); SELECT @message_id as `message_id`;",
         [sender, receiverUsername, point, personal_point, sent_time, message],
-        function (err) {
+        function (err, results) {
             // MySQL error has happened
             if (err) {
                 if (err.sqlState === '45000') {
@@ -94,12 +94,34 @@ module.exports.send = function (sender,
                 }
 
                 // Unexpected MySQL error has happened
-                console.error("send@models/messages: Error in calling sendMessage DB procedure: %\nQuery:\n\t%s", err, err.sql);
+                console.error("send@models/messages: Error in calling sendMessage DB procedure: %s\nQuery:\n\t%s", err, err.sql);
                 return callback('serverError');
             }
 
             // Hooray! Message successfully sent!
-            callback();
+            callback(null, results[1][0].message_id);
+        }
+    );
+};
+
+
+/*
+    Deletes a message with given id and sender
+
+    Errors:
+        - serverError
+ */
+module.exports.delete = function (sender, msgId, callback) {
+    db.conn.query(
+        "DELETE FROM `messages` WHERE `sender` = ? AND `id` = ?",
+        [sender, msgId],
+        function (err) {
+            if (err) {
+                console.error("delete@models/messages: MySQL error in deleting message: %s\nQuery:\n\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            return callback();
         }
     );
 };

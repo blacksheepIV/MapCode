@@ -61,6 +61,9 @@ module.exports.submit = function (personalPoint, callback) {
 
 /*
     Delete a personal point where owner=user and id=code
+
+    Errors:
+        - serverError
  */
 module.exports.delete = function (user, code, callback) {
     db.conn.query(

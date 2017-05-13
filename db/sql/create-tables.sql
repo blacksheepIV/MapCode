@@ -140,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `points` (
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `messages` (
+  `id`          BIGINT UNSIGNED            NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `sender`   MEDIUMINT UNSIGNED NOT NULL,
   `receiver` MEDIUMINT UNSIGNED NOT NULL,
   `point`    INT UNSIGNED,

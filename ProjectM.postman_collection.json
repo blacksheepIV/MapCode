@@ -357,6 +357,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"url": "http://localhost:3000/api/messages/2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQURZMkwifQ.-slPIvQk_GUOK3wCd7pvN592_L9Th2Q1f4VWVqf8Lnk",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
