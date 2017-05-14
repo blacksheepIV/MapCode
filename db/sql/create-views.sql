@@ -97,3 +97,21 @@ CREATE VIEW points_detailed AS
     JOIN `users` ON `users`.`id` = `points`.`owner`
     JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`
     JOIN `point_tags_concated` ON `point_tags_concated`.`id` = `points`.`id`;
+
+
+CREATE ALGORITHM = MERGE VIEW `messages_detailed` AS
+  SELECT
+    `messages`.`id` as `code`,
+    `U1`.`username` AS `sender`,
+    `U2`.`username` AS `receiver`,
+    IF (`messages`.`point` IS NULL, `personal_points`.`lat`, `points`.`lat`) AS `lat`,
+    IF (`messages`.`point` IS NULL, `personal_points`.`lng`, `points`.`lng`) AS `lng`,
+    IF (`messages`.`point` IS NULL, FALSE, TRUE) AS `non_personal`,
+    IF (`messages`.`point` IS NULL, `personal_points`.`id`, `points`.`code`) AS `point_code`,
+    `messages`.`message`,
+    `messages`.`sent_time`
+  FROM `messages`
+  JOIN `users` AS U1 ON `U1`.`id` = `messages`.`sender`
+  JOIN `users` AS U2 ON `U2`.`id` = `messages`.`receiver`
+  LEFT OUTER JOIN `points` ON `points`.`id` = `messages`.`point`
+  LEFT OUTER JOIN `personal_points` ON `personal_points`.`id` = `messages`.`personal_point`;

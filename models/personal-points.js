@@ -27,7 +27,7 @@ module.exports.schema = {
         },
         isLength: {
             options: {min: 1, max: 30},
-            errorMessagE: 'length_not_1_to_30'
+            errorMessage: 'length_not_1_to_30'
         }
     },
     'description': {
@@ -61,6 +61,9 @@ module.exports.submit = function (personalPoint, callback) {
 
 /*
     Delete a personal point where owner=user and id=code
+
+    Errors:
+        - serverError
  */
 module.exports.delete = function (user, code, callback) {
     db.conn.query(

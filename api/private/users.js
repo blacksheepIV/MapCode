@@ -46,7 +46,7 @@ router.route('/users/')
      *     }
      *
      * @apiSuccessExample Success-Response
-     *     HTTP/1.1 200 Created
+     *     HTTP/1.1 200 OK
      *
      *
      * @apiError (400) name:empty

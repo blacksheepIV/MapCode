@@ -140,10 +140,13 @@ CREATE TABLE IF NOT EXISTS `points` (
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `messages` (
+  `id`          BIGINT UNSIGNED            NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `sender`   MEDIUMINT UNSIGNED NOT NULL,
   `receiver` MEDIUMINT UNSIGNED NOT NULL,
-  `point`    INT UNSIGNED       NOT NULL,
-  `message`  TEXT,
+  `point`    INT UNSIGNED,
+  `personal_point`    BIGINT UNSIGNED,
+  `message`  TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
+  `sent_time` TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
@@ -152,6 +155,9 @@ CREATE TABLE IF NOT EXISTS `messages` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (`point`) REFERENCES `points` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (`personal_point`) REFERENCES `personal_points` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )

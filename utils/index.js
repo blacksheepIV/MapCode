@@ -1,5 +1,9 @@
 var path = require('path');
 var fs = require('fs');
+var lodashIntersection = require('lodash/intersection');
+var lodashTrim = require('lodash/trim');
+
+var db = require('../db');
 
 /*
  Returns absolute path of all files in the directory
@@ -43,4 +47,25 @@ module.exports.startLimitChecker = function (req, res, next) {
 
 module.exports.escapeRegExp = function(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+};
+
+
+module.exports.customFielder = function (type, name, fields, sep) {
+    sep = sep || ',';
+
+    return function (req, res, next) {
+        var param = req[type][name];
+
+        if (param) {
+            req.queryFields = lodashIntersection(
+                param.split(sep).map(lodashTrim),
+                fields
+            );
+        }
+        else {
+            req.queryFields = '*';
+        }
+
+        next();
+    };
 };

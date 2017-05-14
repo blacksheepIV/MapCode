@@ -51,6 +51,12 @@ router.use(expressValidator({
                     return false;
 
             return true;
+        },
+        isPointCode: function (code) {
+            return /^((m|M)(p|P))[0-9]{15}$/.test(code);
+        },
+        isBigIntBetween: function (str, min, max) {
+            return str >= min && str <= max;
         }
     }
 }));

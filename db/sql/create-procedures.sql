@@ -424,3 +424,114 @@ CREATE PROCEDURE `cancelFriendRequest`
     COMMIT;
   END ~
 DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - SENDER_NOT_FOUND
+    - RECEIVER_NOT_FOUND
+    - POINT_NOT_FOUND
+    - PERSONAL_POINT_NOT_FOUND
+
+    (Caused by `enforce_message_point_or_personal_point`)
+    - NO_POINT
+    - BOTH_POINTS
+    - SELF_MESSAGE
+ */
+DELIMITER ~
+CREATE PROCEDURE `sendMessage`
+  (
+    IN sender           MEDIUMINT UNSIGNED,
+    IN receiver_username VARCHAR(15),
+    IN point_code  CHAR(17),
+    IN personal_point BIGINT UNSIGNED,
+    IN sent_time TIMESTAMP,
+    IN message TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
+    OUT message_id BIGINT UNSIGNED
+  )
+    PROC: BEGIN
+
+    DECLARE receiver MEDIUMINT UNSIGNED;
+    DECLARE point INT UNSIGNED;
+
+    -- If sender does not exists
+    DECLARE EXIT HANDLER FOR 1452
+    BEGIN
+        ROLLBACK;
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'SENDER_NOT_FOUND';
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch receiver's id from it's username
+    SELECT SQL_CALC_FOUND_ROWS `users`.`id`
+    INTO receiver
+    FROM `users`
+    WHERE `users`.`username` = receiver_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'RECEIVER_NOT_FOUND';
+    END IF;
+
+    -- If user wants to send a main point
+    IF point_code IS NOT NULL
+    THEN
+        -- Fetch points's id from it's code
+        -- The point is either public or is owned by sender
+        SELECT SQL_CALC_FOUND_ROWS `points`.`id`
+        INTO point
+        FROM `points`
+        WHERE `points`.`code` = LOWER(point_code) AND
+              (`points`.`owner` = sender OR `points`.public = TRUE)
+        LOCK IN SHARE MODE;
+        -- Check if there is any point with given code
+        IF found_rows() != 1
+        THEN
+          SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'POINT_NOT_FOUND';
+        END IF;
+    END IF;
+
+    -- If user wants to send a personal point
+    IF personal_point IS NOT NULL
+    THEN
+        -- Fetch personal points's owner from it's id
+        SELECT SQL_CALC_FOUND_ROWS `personal_points`.`owner`
+        INTO @personal_point_owner
+        FROM `personal_points`
+        WHERE `personal_points`.`id` = personal_point
+        LOCK IN SHARE MODE;
+        -- Check if there is any personal point with given id
+        --     and if the the owner is the sender
+        IF found_rows() != 1 OR @personal_point_owner != sender
+        THEN
+          SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'PERSONAL_POINT_NOT_FOUND';
+        END IF;
+    END IF;
+
+    INSERT INTO `messages` (messages.sender,
+                            messages.receiver,
+                            messages.point,
+                            messages.personal_point,
+                            messages.sent_time,
+                            messages.message) VALUES (
+      sender, receiver, point, personal_point, sent_time, message
+    );
+
+    SET message_id = LAST_INSERT_ID();
+
+    COMMIT;
+  END ~
+DELIMITER ;

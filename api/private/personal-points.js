@@ -7,7 +7,7 @@ var startLimitChecker = require('../../utils').startLimitChecker;
 /**
  * @api {post} /personal_points/ Create a new personal point
  * @apiVersion 0.1.0
- * @apiName personalPointSubmit
+ * @apiName submitPersonalPoint
  * @apiGroup personal_points
  * @apiPermission private
  *
@@ -68,7 +68,7 @@ router.post('/personal_points', function (req, res) {
 /**
  * @api {delete} /personal_points/:code Delete a personal point with given code.
  * @apiVersion 0.1.0
- * @apiName personalPointDelete
+ * @apiName deletePersonalPoint
  * @apiGroup personal_points
  * @apiPermission private
  *
@@ -119,7 +119,7 @@ router.delete('/personal_points/:code', function (req, res) {
 /**
  * @api {get} /personal_points/ Get list of personal points for a user
  * @apiVersion 0.1.0
- * @apiName personalPointGet
+ * @apiName getPersonalPoints
  * @apiGroup personal_points
  * @apiPermission private
  *
@@ -134,12 +134,14 @@ router.delete('/personal_points/:code', function (req, res) {
  *
  *        [
  *          {
+ *            "code": 1,
  *            "lat": 24.32,
  *            "lng": 113.32,
  *            "name": "قصابی اصغرآفا و پسران",
  *            "description": "یک توضیح!"
  *          },
  *          {
+ *            "code": 20,
  *            "lat": 42.12,
  *            "lng": 21.32,
  *            "name": "نقطه ی من",

@@ -324,7 +324,100 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiUGFwbG0ifQ.B4U5SOADd45_JL0kY79i56b98ehVaexxC0B8r6be6H0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Send message",
+					"request": {
+						"url": "http://localhost:3000/api/messages",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWnhjdG8ifQ.yk1bu5L5G7IEJCz0Kz1L_m7uKxKk8isohDmdYKcebOY",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"receiver\": \"alireza\",\n\t\"point\": \"mp005001000000001\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"url": "http://localhost:3000/api/messages/2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQURZMkwifQ.-slPIvQk_GUOK3wCd7pvN592_L9Th2Q1f4VWVqf8Lnk",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"url": "http://localhost:3000/api/messages/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQURZMkwifQ.-slPIvQk_GUOK3wCd7pvN592_L9Th2Q1f4VWVqf8Lnk",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's inbox messages",
+					"request": {
+						"url": "http://localhost:3000/api/messages/?limit=1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6ImlITWM5In0.o7hRX7yv0-ywhaUDOj6FJ7R1_5YVMHjbs6oPeM-lttI",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's outbox messages",
+					"request": {
+						"url": "http://localhost:3000/api/messages/sent",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiNWh4aFoifQ.3qQCxDPJ36UJB5std1TywwCc5esu86BWbFARsT3M98Y",
 								"description": ""
 							}
 						],
