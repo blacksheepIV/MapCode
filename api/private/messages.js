@@ -1,6 +1,8 @@
 var router = require('express').Router();
 
 var messagesModel = require('../../models/messages');
+var db = require('../../db');
+var customFielder = require('../../utils').customFielder;
 
 
 /**
@@ -144,6 +146,83 @@ router.delete('/messages/:code', function (req, res) {
         'checkParams'
     );
 });
+
+
+/**
+ * @api {get} /messages/:code Get a message's content
+ * @apiVersion 0.1.0
+ * @apiName getMessage
+ * @apiGroup messages
+ * @apiPermission private
+ *
+ * @apiParam {Number} code Message's code
+ *
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): id, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/messages/1010
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        {
+ *            "id": "1010",
+ *            "sender": "alireza",
+ *            "receiver": "mohammad",
+ *            "lat": "21.32",
+ *            "lng": "25.43",
+ *            "non_personal": "1",
+ *            "point_code": "mp005001000000001",
+ *            "sent_time": "2017-05-13 19:45:15"
+ *        }
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/messages/1011?fields=lat,lng
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        {
+ *            "lat": "21.32",
+ *            "lng": "25.43",
+ *        }
+ */
+router.get('/messages/:code',
+    function (req, res, next) {
+        req.validateWithSchema(
+            {
+                'code': {
+                    isInt: {
+                        errorMessage: 'not_numeric'
+                    }
+                }
+            },
+            'all',
+            // In case of successful validation
+            next,
+            null, // Don't ignore any fields
+            'checkParams'
+        );
+    },
+    customFielder('query', 'fields', messagesModel.publicFields),
+    function (req, res) {
+        db.getFromBy(
+            req.queryFields,
+            'messages_detailed',
+            {
+                sender: req.user.username,
+                id: req.params.code
+            },
+            function (err, results) {
+                if (results.length !== 0)
+                    return res.json(results);
+
+                // No point found!
+                res.status(404).end();
+            }
+        );
+    }
+);
 
 
 module.exports = router;

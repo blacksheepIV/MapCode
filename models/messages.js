@@ -4,6 +4,19 @@ var moment = require('moment');
 var db = require('../db');
 
 
+module.exports.publicFields = [
+    'id',
+    'sender',
+    'receiver',
+    'lat',
+    'lng',
+    'non_personal',
+    'point_code',
+    'message',
+    'sent_time'
+];
+
+
 // Verification schema
 module.exports.schema = {
     'receiver': {
