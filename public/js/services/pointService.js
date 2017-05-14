@@ -8,6 +8,7 @@ function pointService($http){
         res:null,
         obtainedDetailedInfo : {},
         searchResult : {},
+        searchedFor : null,
         setLocation: function (lat, lang) {
             console.log(lat);
             console.log(lang);
@@ -56,12 +57,19 @@ function pointService($http){
         showSearchResult : function(searchParams){
             var searchUrl = window.apiHref+"/point/search";
             var myConfig = {};
-            myConfig.params = searchParams;
+            myConfig= searchParams;
             console.log(myConfig);
-           return $http({url:searchUrl,method:"GET",config:myConfig})
+           return $http({url:searchUrl,method:"GET",params :myConfig})
                 .success(function(data){
                     pointService.searchResult = data;
                 });
+        },
+        setSearchedValue : function(val){
+            pointService.searchedFor = val;
+            console.log(pointService.searchedFor);
+        },
+        getSearchedValue : function(){
+            return pointService.searchedFor;
         }
     };
     return pointService;

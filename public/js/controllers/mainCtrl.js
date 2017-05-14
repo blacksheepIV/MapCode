@@ -3,13 +3,15 @@
  */
 var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
     $scope.initVar = function(){
-        pointService.showSearchResult().then(
+      /*  pointService.showSearchResult().then(
             function(searchResult) {
                 console.log(searchResult);
             }
             ,function(searchResult){
                 console.log(searchResult);
-            });
+            }); */
+      $scope.searchBox = "";
+        $scope.searchTopic = "";
         $rootScope.isUser = false;
         $scope.U = {
             name: "کاربر مهمان",
@@ -157,6 +159,8 @@ $scope.addPoint = function(){
     }//end if condition
 }//end of addPoint
 $scope.searchPage = function(){
+    var searchPrams = { key:$scope.searchTopic,value:$scope.searchBox};
+    pointService.setSearchedValue(searchPrams);
     $location.path('/advancedSearch');
 }
 }//end of main controller
