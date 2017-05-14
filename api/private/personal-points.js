@@ -166,4 +166,7 @@ router.get('/personal_points',
 );
 
 
+// TODO: Get a single personal point
+
+
 module.exports = router;
