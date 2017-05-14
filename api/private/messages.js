@@ -215,7 +215,7 @@ router.get('/messages/:code',
             },
             function (err, results) {
                 if (results.length !== 0)
-                    return res.json(results);
+                    return res.json(results[0]);
 
                 // No point found!
                 res.status(404).end();
