@@ -101,7 +101,7 @@ CREATE VIEW points_detailed AS
 
 CREATE ALGORITHM = MERGE VIEW `messages_detailed` AS
   SELECT
-    `messages`.`id`,
+    `messages`.`id` as `code`,
     `U1`.`username` AS `sender`,
     `U2`.`username` AS `receiver`,
     IF (`messages`.`point` IS NULL, `personal_points`.`lat`, `points`.`lat`) AS `lat`,
