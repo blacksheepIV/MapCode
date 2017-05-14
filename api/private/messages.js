@@ -3,6 +3,7 @@ var router = require('express').Router();
 var messagesModel = require('../../models/messages');
 var db = require('../../db');
 var customFielder = require('../../utils').customFielder;
+var startLimitChecker = require('../../utils').startLimitChecker;
 
 
 /**
@@ -148,6 +149,133 @@ router.delete('/messages/:code', function (req, res) {
 });
 
 
+
+/**
+ * @api {get} /messages/ Get user's message inbox (messages to user)
+ * @apiVersion 0.1.0
+ * @apiName getUserMessages
+ * @apiGroup messages
+ * @apiPermission private
+ *
+ * @apiParam {Number{1..}} [start=1] Send messages from start-th point!
+ * @apiParam {Number{1..100}} [limit=100] Number of messages to receive.
+ *
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/messages
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        [
+ *           {
+ *             "id": "1010",
+ *             "sender": "mohammad",
+ *             "receiver": "alireza",
+ *             "lat": "21.32",
+ *             "lng": "25.43",
+ *             "non_personal": "1",
+ *             "point_code": "mp005001000000001",
+ *             "sent_time": "2017-05-13 19:45:15"
+ *          },
+ *          {
+ *             "id": "10",
+ *             "sender": "mohammad",
+ *             "receiver": "alireza",
+ *             "lat": "61.32",
+ *             "lng": "110.43",
+ *             "non_personal": "0",
+ *             "point_code": "mp005001000000002",
+ *             "sent_time": "2016-05-13 19:45:15"
+ *          }
+ *        ]
+ */
+router.get('/messages',
+    startLimitChecker,
+    customFielder('query', 'fields', messagesModel.publicFields),
+    function (req, res) {
+        messagesModel.getUserMessages(
+            'receiver',
+            req.user.username,
+            req.queryFields,
+            req.queryStart,
+            req.queryLimit,
+            function (err, messages) {
+                // serverError
+                if (err)
+                    return res.status(500).end();
+
+                return res.json(messages);
+            }
+        );
+    }
+);
+
+
+/**
+ * @api {get} /messages/outbox Get user's sent messages
+ * @apiVersion 0.1.0
+ * @apiName getUserSentMessages
+ * @apiGroup messages
+ * @apiPermission private
+ *
+ * @apiParam {Number{1..}} [start=1] Send messages from start-th point!
+ * @apiParam {Number{1..100}} [limit=100] Number of messages to receive.
+ *
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/messages/outbox
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        [
+ *           {
+ *             "id": "1010",
+ *             "sender": "mohammad",
+ *             "receiver": "alireza",
+ *             "lat": "21.32",
+ *             "lng": "25.43",
+ *             "non_personal": "1",
+ *             "point_code": "mp005001000000001",
+ *             "sent_time": "2017-05-13 19:45:15"
+ *          },
+ *          {
+ *             "id": "10",
+ *             "sender": "mohammad",
+ *             "receiver": "alireza",
+ *             "lat": "61.32",
+ *             "lng": "110.43",
+ *             "non_personal": "0",
+ *             "point_code": "mp005001000000002",
+ *             "sent_time": "2016-05-13 19:45:15"
+ *          }
+ *        ]
+ */
+router.get('/messages/outbox',
+    startLimitChecker,
+    customFielder('query', 'fields', messagesModel.publicFields),
+    function (req, res) {
+        messagesModel.getUserMessages(
+            'sender',
+            req.user.username,
+            req.queryFields,
+            req.queryStart,
+            req.queryLimit,
+            function (err, messages) {
+                // serverError
+                if (err)
+                    return res.status(500).end();
+
+                return res.json(messages);
+            }
+        );
+    }
+);
+
+
 /**
  * @api {get} /messages/:code Get a message's content
  * @apiVersion 0.1.0
@@ -157,7 +285,7 @@ router.delete('/messages/:code', function (req, res) {
  *
  * @apiParam {Number} code Message's code
  *
- * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): id, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
  *
  * @apiSuccessExample
  *     Request-Example:
@@ -211,10 +339,15 @@ router.get('/messages/:code',
             'messages_detailed',
             {
                 sender: req.user.username,
-                id: req.params.code
+                code: req.params.code
             },
             function (err, results) {
-                if (results.length !== 0)
+                if (err) {
+                    console.log("{GET}/messages/:code/: Error in getting messages's info:\n\t\t%s\n\tQuery:\n\t\t", err, err.sql);
+                    return res.status(500).end();
+                }
+
+                if (results && results.length !== 0)
                     return res.json(results[0]);
 
                 // No point found!

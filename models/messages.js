@@ -5,7 +5,7 @@ var db = require('../db');
 
 
 module.exports.publicFields = [
-    'id',
+    'code',
     'sender',
     'receiver',
     'lat',
@@ -135,6 +135,29 @@ module.exports.delete = function (sender, msgId, callback) {
             }
 
             return callback();
+        }
+    );
+};
+
+
+/*
+    Get list of user's messages
+ */
+module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
+    db.conn.query(
+        "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
+        "FROM `messages_detailed` " +
+        "WHERE ?? = ? " +
+        "LIMIT ?, ?",
+        [receiverOrSender, username, start, limit],
+        function (err, results) {
+            // MySQL error
+            if (err) {
+                console.error("getUserInbox@models/messages: MySQL error in getting user's inbox messages:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            callback(null, results);
         }
     );
 };
