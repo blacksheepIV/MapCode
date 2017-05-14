@@ -54,7 +54,7 @@
 				{
 					"name": "Signin",
 					"request": {
-						"url": "http://mapcode.ir/api/signin?m",
+						"url": "http://localhost:3000/api/signin?m",
 						"method": "POST",
 						"header": [
 							{
@@ -324,7 +324,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibXlDZjAifQ.t5wMhQQda0TyHxv98p-nw8ZqCnuBEvciFyryioFOeRw",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiUGFwbG0ifQ.B4U5SOADd45_JL0kY79i56b98ehVaexxC0B8r6be6H0",
 								"description": ""
 							}
 						],
@@ -367,6 +367,57 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQURZMkwifQ.-slPIvQk_GUOK3wCd7pvN592_L9Th2Q1f4VWVqf8Lnk",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"url": "http://localhost:3000/api/messages/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQURZMkwifQ.-slPIvQk_GUOK3wCd7pvN592_L9Th2Q1f4VWVqf8Lnk",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's inbox messages",
+					"request": {
+						"url": "http://localhost:3000/api/messages/?limit=1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6ImlITWM5In0.o7hRX7yv0-ywhaUDOj6FJ7R1_5YVMHjbs6oPeM-lttI",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's outbox messages",
+					"request": {
+						"url": "http://localhost:3000/api/messages/sent",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiNWh4aFoifQ.3qQCxDPJ36UJB5std1TywwCc5esu86BWbFARsT3M98Y",
 								"description": ""
 							}
 						],
