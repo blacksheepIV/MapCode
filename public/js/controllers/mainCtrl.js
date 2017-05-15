@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr){
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr,$window){
     $scope.initVar = function(){
       /*  pointService.showSearchResult().then(
             function(searchResult) {
@@ -43,16 +43,10 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
             {id:6 , name:'دسته بندی',value:'category'},
             {id:5 , name:'نام کاربری',value:'username'}
         ] ;
-        $scope.map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 33.9870993, lng: 51.4405203},
-            zoom: 10
-            /* mapTypeIds: ['roadmap', 'satellite',
-             'Dark'] */
-        });
-        // google.maps.event.addDomListener(window, 'load', initialize);
-        google.maps.event.trigger(map, 'resize');
-
     }//end of initVar
+    //################################################################################################################################################################################
+
+    //################################################################################################################################################################################
     $scope.toggleRight= buildToggler('right');
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
@@ -129,17 +123,27 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         });
     };
+    /* ########################################################################################################################## */
+    $scope.addPersonalPointDlg = function(){
+        $mdDialog.show({
+            controller: pointCtrl,
+            templateUrl: 'templates/Panel/addPersonalPoint.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
     //******************************************************************************************************************
 $scope.addPoint = function(){
     $scope.toggleRight();
-    if($scope.map.getZoom() < 17) {
+    if($scope.map.getZoom() < 15) {
         showSimpleToast();
         $scope.map.addListener('zoom_changed', function () {
             console.log("user just zoomed the map in.");
             console.log($scope.map.getZoom());
         });
     } //end if condition
-    if($scope.map.getZoom()>=17){
+    if($scope.map.getZoom()>=15){
         google.maps.event.addListener($scope.map, 'click', function(event) {
             placeMarker(event.latLng,$scope.showAdvanced);
         });
@@ -150,7 +154,7 @@ $scope.addPoint = function(){
                 position: location,
                 map: $scope.map
             });
-           // callback(location);
+            // callback(location);
             var lat = location.lat();
             var lang = location.lng();
             pointService.setLocation(lat,lang);
@@ -158,6 +162,36 @@ $scope.addPoint = function(){
         }
     }//end if condition
 }//end of addPoint
+    //######################################################################################################################################
+    $scope.addPersonalPoint = function(){
+        $scope.toggleRight();
+        if($scope.map.getZoom() < 15) {
+            showSimpleToast();
+            $scope.map.addListener('zoom_changed', function () {
+                console.log("user just zoomed the map in.");
+                console.log($scope.map.getZoom());
+            });
+        } //end if condition
+        if($scope.map.getZoom()>=15){
+            google.maps.event.addListener($scope.map, 'click', function(event) {
+                placeMarker(event.latLng,$scope.addPersonalPointDlg);
+            });
+
+            function placeMarker(location,callback) {
+                var marker = new google.maps.Marker({
+                    icon:'../img/Icons/map-marker.png',
+                    position: location,
+                    map: $scope.map
+                });
+                // callback(location);
+                var lat = location.lat();
+                var lang = location.lng();
+                pointService.setLocation(lat,lang);
+                callback();
+            }
+        }//end if condition
+    }//end of addPersonalPoint
+    //######################################################################################################################################
 $scope.searchPage = function(){
     var searchPrams = { key:$scope.searchTopic,value:$scope.searchBox};
     pointService.setSearchedValue(searchPrams);

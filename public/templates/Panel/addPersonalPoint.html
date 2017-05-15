@@ -1,0 +1,39 @@
+<md-dialog  flex="60" aria-label="AddNewPoint" ng-controller="pointCtrl" ng-init="initPoint()">
+    <md-toolbar md-theme="Khaz" class="md-warn md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">نقطه شخصی اضافه کن(:</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form name="addPersonalPoint" class="form" dir="rtl" flex="100" ng-submit="addPersonalPoint.$valid && addPpoint()" novalidate>
+        <md-dialog-content layout="row">
+           <div layout="row" layout-xs="column">
+               <md-input-container flex="30" flex-xs="70" class="md-block">
+                   <label>طول جغرافیایی</label>
+                   <input type="text" name="latitude" ng.model="pPoint.lat" required/>
+               </md-input-container>
+               <div flex="5"></div>
+               <md-input-container flex="30" flex-xs="70" class="md-block">
+                   <label>عرض جغرافیایی</label>
+                   <input type="text" name="longitude" ng.model="pPoint.lng" required/>
+               </md-input-container>
+               <div flex="5"></div>
+               <md-input-container flex="30" flex-xs="70" class="md-block">
+                   <lable>نام:</lable>
+                   <input type="text" name="pPointName" ng.model="pPoint.name"/>
+               </md-input-container>
+           </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex="70" class="md-block">
+                    <textarea name="description" ng-model="pPoint.description" columns="8" ng-maxlength="21844" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas" ></textarea>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit"> نقطه رو ثبت کن</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

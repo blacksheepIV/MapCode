@@ -1,4 +1,5 @@
-<md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;">
+<div ng-controller="mainCtrl" ng-init="initVar()" style="height:100%;"  layout-fill>
+<md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" style="height:100%;" >
     <md-toolbar md-theme="Khaz" class="md-tall md-primary md-hue-2" >
         <div class="md-toolbar-tools" layout="column" layout-fill layout-align="center" >
             <div layout="row" layout-align="center" flex="100">
@@ -21,17 +22,21 @@
         <div id="mySidenav" class="sidenav" ng-show="isUser" layout-align="center center">
             <div class="SNav_items">
                 <span class="fa fa-address-card fa-lg"></span>
-                 <a href="/panel" >حساب کاربری من</a>
+                 <a href="/panel" class="menuItems" >حساب کاربری من</a>
                 </div>
             <div class="SNav_items">
                 <span class="fa fa-heart fa-lg"></span>
-                 <a href="#">مکان های منتخب من</a>
+                 <a href="#" class="menuItems"> مکان های منتخب من</a>
             </div>
             <div class="SNav_items">
                 <span class="fa fa-map-marker fa-lg"></span>
-                 <a ng-click="addPoint()">ثبت یک مکان جدید</a>
+                 <a ng-click="addPoint()" class="menuItems" > ثبت یک مکان جدید </a>
             </div>
-
+            <div class="SNav_items">
+                <span class="fa fa-map-marker fa-lg"></span>
+                <a ng-click="addPersonalPoint()" class="menuItems"> ثبت یک مکان خصوصی </a>
+            </div>
         </div>
     </md-content>
 </md-sidenav>
+    </div>

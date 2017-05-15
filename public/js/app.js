@@ -4,8 +4,8 @@
 var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource','ngMessages','lr.upload','LocalStorageModule']);
     mapCodeApp.controller('loginCtrl',loginCtrl)
         .controller('registerCtrl',registerCtrl)
-        .controller('mainCtrl',mainCtrl)
         .controller('mapCtrl',mapCtrl)
+        .controller('mainCtrl',mainCtrl)
         .controller('userCtrl',userCtrl)
         .controller('pointCtrl',pointCtrl)
         .controller('PanelCodeVerfication',PanelCodeVerfication)

@@ -10,8 +10,8 @@ function pointService($http){
         searchResult : {},
         searchedFor : null,
         setLocation: function (lat, lang) {
-            console.log(lat);
-            console.log(lang);
+          //  console.log(lat);
+         //   console.log(lang);
             coordination = {
                 lat: lat,
                 lng: lang
@@ -59,7 +59,7 @@ function pointService($http){
             var myConfig = {};
             myConfig= searchParams;
             console.log(myConfig);
-           return $http({url:searchUrl,method:"GET",params :myConfig})
+           return $http({url:searchUrl,method:"GET",params : myConfig})
                 .success(function(data){
                     pointService.searchResult = data;
                 });

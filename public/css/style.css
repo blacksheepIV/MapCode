@@ -231,3 +231,6 @@ md-checkbox .md-label {
     margin-left: 0px; //was 18px
 padding-left: 28px; //was null
 }
+.menuItems{
+    cursor: pointer;
+}

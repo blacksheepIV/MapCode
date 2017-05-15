@@ -27,7 +27,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             {prov: 'تهران', name: 'شمیرانات'},
             {prov: 'تهران', name: 'فشم'},
             {prov: 'تهران', name: 'ورامین'}
-        ];
+        ]; //TODO:change it to input
         var coord = pointService.getLocation();
         console.log(coord);
         $scope.point = {

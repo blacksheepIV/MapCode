@@ -82,6 +82,7 @@ function searchCtrl($scope,pointService,$location,$log) {
                 console.log(searchResult);
             });
     };//end of search result
+    //##################################################################################################################################################################################
     $scope.takeMeHome = function(){
         $location.path('/');
     };//end of function takeMeHome

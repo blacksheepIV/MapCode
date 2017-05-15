@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <base href="/">
+    <script src="./components/moment/min/moment.min.js"></script>
+    <!-- datePicker requirements -->
+    <script src="./components/jquery/dist/jquery.js"></script>
+    <!-- including the Google Map API -->
+    <script src="https://maps.googleapis.com/maps/api/js?language=fa&key=AIzaSyCWUMQC2ox0-El_m6tIqr9gevQ8LDt6W7c"></script>
+    <!-- including the Google Map API -->
+    <script src="./components/persian-date/dist/0.1.8/persian-date-0.1.8.js"></script>
+    <script src="./components/persian-datepicker/dist/js/persian-datepicker-0.4.5.js"></script>
+    <!-- datePicker requirements -->
     <!-- styling files -->
     <link rel="stylesheet" href="./components/angular-material/angular-material.min.css"/>
     <link rel="stylesheet" href="./components/font-awesome/css/font-awesome.min.css"/>
@@ -13,12 +22,6 @@
     <script>
         window.apiHref = '{{{ apiHref }}}';
     </script>
-    <script src="./components/moment/min/moment.min.js"></script>
-    <!-- datePicker requirements -->
-    <script src="./components/jquery/dist/jquery.js"></script>
-    <script src="./components/persian-date/dist/0.1.8/persian-date-0.1.8.js"></script>
-    <script src="./components/persian-datepicker/dist/js/persian-datepicker-0.4.5.js"></script>
-    <!-- datePicker requirements -->
     <!-- AngularJS compos-->
     <script src="./components/angular/angular.min.js"></script>
     <script src="./components/angular-animate/angular-animate.min.js"></script>
@@ -37,10 +40,7 @@
 
 </head>
 <body ng-app="mapCodeApp" dir="rtl">
-    <ng-view></ng-view>
-    <!-- including the Google Map API -->
-    <script src="https://maps.googleapis.com/maps/api/js?language=fa&key=AIzaSyCWUMQC2ox0-El_m6tIqr9gevQ8LDt6W7c"></script>
-    <!-- including the Google Map API -->
+    <ng-view ></ng-view>
     <!-- including the module,controllers,directives,services,.. -->
     <script src="./js/services/RegisteredUsr.js"></script>
     <script src="./js/services/authInterceptor.js"></script>
