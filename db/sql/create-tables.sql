@@ -165,24 +165,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `group_messages` (
-  `sender`   MEDIUMINT UNSIGNED NOT NULL,
-  `group` INT UNSIGNED       NOT NULL,
-  `point`    INT UNSIGNED       NOT NULL,
-  `message`  TEXT,
-
-  FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (`group`) REFERENCES `groups` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (`point`) REFERENCES `points` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-)
-  ENGINE = INNODB;
--- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tags` (
   `id`  INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `tag` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci NOT NULL UNIQUE
