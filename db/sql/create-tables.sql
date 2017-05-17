@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `friend_requests` (
 CREATE TABLE IF NOT EXISTS `groups` (
   `id`    INT UNSIGNED       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `owner` MEDIUMINT UNSIGNED NOT NULL,
-  `name`  VARCHAR(25)        NOT NULL
+  `name`  VARCHAR(25)
                 CHARACTER SET utf8mb4
                 COLLATE utf8mb4_persian_ci NOT NULL,
 
@@ -88,16 +88,16 @@ CREATE TABLE IF NOT EXISTS `groups` (
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `group_users` (
+CREATE TABLE IF NOT EXISTS `group_members` (
   `group_id` INT UNSIGNED       NOT NULL,
-  `user_id`  MEDIUMINT UNSIGNED NOT NULL,
+  `member_id`  MEDIUMINT UNSIGNED NOT NULL,
 
-  PRIMARY KEY (`group_id`, `user_id`),
+  PRIMARY KEY (`group_id`, `member_id`),
 
   FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`member_id`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
