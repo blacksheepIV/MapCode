@@ -22,7 +22,7 @@
       # Every redis key will have this string as it's prefix
       REDIS_PREFIX = 'projectm:'
       # Only set this if Redis server is configured with a password
-      REDIS_PASSWORD = 'myRedisPassword!!'
+      REDIS_PASSWORD = myRedisPassword!!
       # Database configurations
       DB_USER = projectm
       DB_PASS = projectm123456
@@ -35,6 +35,12 @@
       # Max friends number
       MAX_FRIENDS = 100
   `
+  Note: If you want to use `npm run dball` these variables
+  should not be inside quotations (Like above .env file example):
+      - DB_USER
+      - DB_PASS
+      - DB_NAME
+      - REDIS_PASSWORD
 
 * Create database
     You should have a MySQL username and password that at least have full
