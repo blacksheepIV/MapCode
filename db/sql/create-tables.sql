@@ -76,7 +76,9 @@ CREATE TABLE IF NOT EXISTS `friend_requests` (
 CREATE TABLE IF NOT EXISTS `groups` (
   `id`    INT UNSIGNED       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `owner` MEDIUMINT UNSIGNED NOT NULL,
-  `name`  VARCHAR(25)        NOT NULL,
+  `name`  VARCHAR(25)        NOT NULL
+                CHARACTER SET utf8mb4
+                COLLATE utf8mb4_persian_ci NOT NULL,
 
   FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
