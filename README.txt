@@ -24,7 +24,6 @@
       # Only set this if Redis server is configured with a password
       REDIS_PASSWORD = 'myRedisPassword!!'
       # Database configurations
-      DB_HOST = 'localhost'
       DB_USER = 'projectm'
       DB_PASS = 'projectm123456'
       DB_NAME = 'projectmdb'
