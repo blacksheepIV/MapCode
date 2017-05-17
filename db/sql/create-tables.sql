@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
 
-  UNIQUE (`id`, `name`)
+  UNIQUE (`owner`, `name`)
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
