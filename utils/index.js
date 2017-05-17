@@ -3,7 +3,6 @@ var fs = require('fs');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
 
-var db = require('../db');
 
 /*
  Returns absolute path of all files in the directory
