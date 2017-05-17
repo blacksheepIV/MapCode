@@ -24,9 +24,9 @@
       # Only set this if Redis server is configured with a password
       REDIS_PASSWORD = 'myRedisPassword!!'
       # Database configurations
-      DB_USER = 'projectm'
-      DB_PASS = 'projectm123456'
-      DB_NAME = 'projectmdb'
+      DB_USER = projectm
+      DB_PASS = projectm123456
+      DB_NAME = projectmdb
       # Hashids unique key (In order to generate unique hashids)
       HASHIDS_KEY = 'r5309rfadfn'
       # Max number that can be passed to MySQL queries with LIMIT
