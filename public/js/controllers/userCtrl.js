@@ -6,6 +6,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.myPoints = [];
+        $scope.myPpoints = [];
         $scope.newPass = "";
         $scope.newPassConfirm = "";
         $scope.claimedPass = "";
@@ -72,7 +73,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                         $scope.user.type = " ";
                         break;
                 }; //end of switchCase
-
+//#######################################################################################################################################################
                 pointService.getPointInfos().then(function(res){
                    // console.log(res);
                     $scope.myPoints=res.data;
@@ -91,14 +92,22 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
 
             }
         );
-        //****************************************************************************************
+        //***********************************************************************************************************************************************
        /* if(localStorageService.isSupported) {
            $scope.myPoint = localStorageService.get('point1');
             console.log($scope.myPoint);
         } */
-
-
-    };
+        pointService.getPpointInfo().then (function(pPointResult){
+            console.log(pPointResult);
+            $scope.myPpoints = pPointResult.data;
+        },function(pPointResult){
+            console.log(pPointResult);
+            if(pPointResult.status = 401){
+                console.log("نقض قوانین!کاربر احراز هویت نشده!");
+                RegisteredUsr.goodriddance();
+            }
+        });
+    }; //end of initVars func
     $(document).ready(function () {
         $("#creationDate").pDatepicker(
             {
@@ -440,4 +449,19 @@ $scope.takeMeHome =  function(){
             });
     };
     /* **************************************** Point Details **************************************************************************** */
+    /* **************************************** Personal Point Detail ********************************************************************  */
+    $scope.pPointDetails = function(pPoint,ev){
+        pointService.setPpointDetailedInfo(pPoint);
+        var templateUrl = 'templates/Panel/userPanelItems/pPointDetailedInfo.html';
+            $mdDialog.show({
+                controller: pPointInfo,
+                templateUrl: templateUrl,
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            });
+        
+    };
+    /* **************************************** Personal Point Detail ********************************************************************  */
 }//end of userCtrl controller

@@ -9,6 +9,8 @@ function pointService($http){
         obtainedDetailedInfo : {},
         searchResult : {},
         searchedFor : null,
+        pPointResult : {},
+        pPointDetailedInfo : {},
         setLocation: function (lat, lang) {
           //  console.log(lat);
          //   console.log(lang);
@@ -70,7 +72,28 @@ function pointService($http){
         },
         getSearchedValue : function(){
             return pointService.searchedFor;
+        },
+        sendPpointInfo : function (pPoint) {
+            var pPointUrl = window.apiHref+'personal_points';
+            return $http({url:pPointUrl,method:"POST",data:pPoint})
+                .success(function(data){
+                    pointService.pPointResult  = data;
+                });
+        },
+        getPpointInfo : function(){
+            var pPointGet = window.apiHref + 'personal_points' ;
+            return $http({url:pPointGet,method:"GET"}).success(
+                function(data){
+                    pointService.pPointResult = data;
+                }
+            );
+        },
+        setPpointDetailedInfo : function(pPoint){
+            pointService.pPointDetailedInfo = pPoint;
+        },
+        getPpointDetailedInfo : function(){
+          return  pointService.pPointDetailedInfo;
         }
     };
     return pointService;
-}//end of service
+};//end of service

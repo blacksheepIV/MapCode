@@ -3,7 +3,7 @@
  */
 function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,localStorageService) {
     $scope.initPoint = function () {
-        $scope.pointNames = ['point1', 'point2', 'point3', 'point4', 'point5', 'point6', 'point7', 'point8', 'point9', 'point10'];
+       // $scope.pointNames = ['point1', 'point2', 'point3', 'point4', 'point5', 'point6', 'point7', 'point8', 'point9', 'point10'];
         $scope.index = 0;
         $scope.HeadCat = "";
         $scope.subcats = [];
@@ -12,7 +12,6 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             {id: 1, name: 'اصفهان'},
             {id: 2, name: 'تهران'}
         ];
-        //TODO:in logOut clear users point from localStorage
         $scope.PresentableCities = [];
         $scope.cities = [
             {prov: 'اصفهان', name: 'اصفهان'},
@@ -90,11 +89,11 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
     $scope.submit = function () {
         console.log('data Was sent');
         var latitude = String($scope.point.lat).substr(0, 10);
-        var langitude = String($scope.point.lng).substr(0, 11);
+        var longitude = String($scope.point.lng).substr(0, 11);
         if($scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
             var pointInfo = {
                 lat: latitude,
-                lng: langitude,
+                lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
                 province: $scope.point.province.name,

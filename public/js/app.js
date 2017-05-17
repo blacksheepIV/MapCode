@@ -11,10 +11,13 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('PanelCodeVerfication',PanelCodeVerfication)
         .controller('pointInfoCtrl',pointInfoCtrl)
         .controller('searchCtrl',searchCtrl)
+        .controller('pPointCtrl',pPointCtrl)
+        .controller('pPointInfo',pPointInfo)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)
         .service('authInterceptor',authInterceptor)
         .service('pointService',pointService)
+        .factory('sysMessagesService',sysMessagesService)
         .factory('RegisteredUsr',RegisteredUsr);
 
