@@ -14,7 +14,7 @@
     "mkdb": "./bin/mkdb",
     "mkdb-new": "./bin/mkdb-new",
     "dummy-inserts": "./bin/dummy-inserts.js",
-    "dball": "(mysqldump -u $(echo $(cat .env | grep DB_USER | cut -d'=' -f2)) -p$(echo $(cat .env | grep DB_PASS | cut -d'=' -f2)) $(echo $(cat .env | grep DB_NAME | cut -d'=' -f2)) points > .points.sql) && DBCONFIG=$(./bin/printDBNameUsernamePassword.js) && (echo -e \"$DBCONFIG\" \"\nY\n\" | npm run mkdb -- remake | (grep Error || exit 0)) && (npm run dummy-inserts) && (redis-cli -a $(echo $(cat .env | grep REDIS_PASSWORD | cut -d'=' -f2)) --raw flushall) && (mysql -u $(echo $(cat .env | grep DB_USER | cut -d'=' -f2)) -p$(echo $(cat .env | grep DB_PASS | cut -d'=' -f2)) $(echo $(cat .env | grep DB_NAME | cut -d'=' -f2)) < .points.sql) && (rm .points.sql);"
+    "dball": "(mysqldump -u $(echo $(cat .env | grep DB_USER | cut -d'=' -f2)) -p$(echo $(cat .env | grep DB_PASS | cut -d'=' -f2)) $(echo $(cat .env | grep DB_NAME | cut -d'=' -f2)) points --no-create-info --insert-ignore > .points.sql); DBCONFIG=$(./bin/printDBNameUsernamePassword.js) && (echo -e \"$DBCONFIG\" \"\nY\n\" | npm run mkdb -- remake | (grep Error || exit 0)) && (npm run dummy-inserts) && (redis-cli -a $(echo $(cat .env | grep REDIS_PASSWORD | cut -d'=' -f2)) --raw flushall) && (mysql -u $(echo $(cat .env | grep DB_USER | cut -d'=' -f2)) -p$(echo $(cat .env | grep DB_PASS | cut -d'=' -f2)) $(echo $(cat .env | grep DB_NAME | cut -d'=' -f2)) < .points.sql) && (rm .points.sql);"
   },
   "apidoc": {
     "name": "ProjectM",
@@ -39,7 +39,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "dotenv": "^4.0.0",
-    "express": "~4.15.2",
+    "express": "^4.15.2",
     "express-jwt": "^5.1.0",
     "express-validator": "^3.1.3",
     "hashids": "^1.1.1",

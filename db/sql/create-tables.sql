@@ -76,26 +76,28 @@ CREATE TABLE IF NOT EXISTS `friend_requests` (
 CREATE TABLE IF NOT EXISTS `groups` (
   `id`    INT UNSIGNED       NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `owner` MEDIUMINT UNSIGNED NOT NULL,
-  `name`  VARCHAR(25)        NOT NULL,
+  `name`  VARCHAR(25)
+                CHARACTER SET utf8mb4
+                COLLATE utf8mb4_persian_ci NOT NULL,
 
   FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
 
-  UNIQUE (`id`, `name`)
+  CONSTRAINT `owner_name_unique` UNIQUE (`owner`, `name`)
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `group_users` (
+CREATE TABLE IF NOT EXISTS `group_members` (
   `group_id` INT UNSIGNED       NOT NULL,
-  `user_id`  MEDIUMINT UNSIGNED NOT NULL,
+  `member_id`  MEDIUMINT UNSIGNED NOT NULL,
 
-  PRIMARY KEY (`group_id`, `user_id`),
+  PRIMARY KEY (`group_id`, `member_id`),
 
   FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`member_id`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
@@ -158,24 +160,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (`personal_point`) REFERENCES `personal_points` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-)
-  ENGINE = INNODB;
--- ------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `group_messages` (
-  `sender`   MEDIUMINT UNSIGNED NOT NULL,
-  `group` INT UNSIGNED       NOT NULL,
-  `point`    INT UNSIGNED       NOT NULL,
-  `message`  TEXT,
-
-  FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (`group`) REFERENCES `groups` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (`point`) REFERENCES `points` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )

@@ -535,3 +535,116 @@ CREATE PROCEDURE `sendMessage`
     COMMIT;
   END ~
 DELIMITER ;
+
+
+/*
+    Errors (sqlstate = 45000):
+      - LESS_THAN_TWO_MEMBERS
+      - GROUP_ALREADY_EXISTS
+      - USERNAME_%S_NOT_FOUND (%S will replace with the username)
+ */
+DELIMITER ~
+CREATE PROCEDURE `addGroup`
+  (
+    IN `owner`   INT UNSIGNED,
+    IN `name`    VARCHAR(25)
+                 CHARACTER SET utf8mb4
+                 COLLATE utf8mb4_persian_ci,
+    IN `members` TEXT
+  )
+    PROC: BEGIN
+
+    DECLARE member VARCHAR(15);
+    DECLARE member_id MEDIUMINT UNSIGNED;
+    DECLARE group_id INT UNSIGNED;
+
+    -- If the group is duplicate
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @msg = MESSAGE_TEXT;
+
+      ROLLBACK;
+
+      IF @msg LIKE '%owner_name_unique%'
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'GROUP_ALREAD_EXISTS';
+      ELSE
+        RESIGNAL;
+      END IF;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Create the group
+    INSERT INTO `groups` (`groups`.`owner`, `groups`.`name`) VALUES (owner, name);
+
+    SET group_id = LAST_INSERT_ID();
+
+    /*
+        Check if there is more than two members
+     */
+
+    SET members = TRIM(members);
+
+    IF members IS NULL OR members = ''
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
+    END IF;
+
+    SET @i = 1;
+    SET @members_count = LENGTH(members) - LENGTH(REPLACE(members, ' ', '')) + 1;
+
+    IF @members_count < 2
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
+    END IF;
+
+    /*
+        Add members to the group
+     */
+
+    MEMBER_LOOP: WHILE @i <= @members_count
+    DO
+      SET member = TRIM(SPLIT_STR(members, ' ', @i));
+
+      IF member = ''
+      THEN
+        SET @i = @i + 1;
+        ITERATE MEMBER_LOOP;
+      END IF;
+
+      SELECT `users`.`id`
+      INTO member_id
+      FROM `users`
+      WHERE `users`.`username` = member
+      LOCK IN SHARE MODE;
+
+      -- If no user with this username found
+      IF FOUND_ROWS() = 0
+      THEN
+        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FOUND');
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = @errmsg;
+      END IF;
+
+      INSERT IGNORE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
+      VALUES (group_id, member_id);
+
+      SET @i = @i + 1;
+    END WHILE;
+
+    COMMIT;
+
+  END~
+DELIMITER ;
