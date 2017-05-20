@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService,authenticationToken){
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
@@ -39,7 +39,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                 console.log(Info);
                 var temp = persianDate(new Date(Info.data.date)).format();
                 var usrDate = temp.split(" ");
-                console.log(usrDate);
+              //  console.log(usrDate);
 
                 $scope.user = {
                     name: Info.data.name,
@@ -127,10 +127,11 @@ $scope.takeMeHome =  function(){
     //******************************************************************************************************************
     var originatorEv;
 
-   /* this.openMenu = function($mdMenu, ev) {
+    $scope.openMenu = function($mdOpenMenu, ev) {
         originatorEv = ev;
-        $mdMenu.open(ev);
-    }; */
+        $mdOpenMenu(ev);
+
+    };
 //*************************************************************************************************************************
     $scope.showDlg = function() {
         $mdDialog.show({
@@ -464,4 +465,10 @@ $scope.takeMeHome =  function(){
         
     };
     /* **************************************** Personal Point Detail ********************************************************************  */
+    $scope.logOut=function(){
+        //TODO:sth needed to distroy user's session/token,whatever
+        authenticationToken.removeToken();
+        $rootScope.isUser = false;
+        $location.path("/");
+    }
 }//end of userCtrl controller

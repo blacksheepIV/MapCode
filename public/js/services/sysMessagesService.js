@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 16-May-17.
  */
-function sysMessagesService ($mdDialog,$scope){
+function sysMessagesService ($mdDialog){
     var sysMessagesService = {
         showMsg : function (MsgTitle,MsgContent,OkTxt) {
         $mdDialog.show(

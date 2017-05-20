@@ -8,16 +8,24 @@
             <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="go home" ng-click="takeMeHome()">
                 <md-icon md-font-icon="fa fa-home fa-2x"></md-icon>
             </md-button>
-            <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="Usr" ng-click="openMenu($mdMenu,$event)">
-                <md-icon md-font-icon="fa fa fa-user-o fa-2x"></md-icon>
-            </md-button>
-           <!-- <md-menu-content width="4">
-                <md-menu-item>
-                    <md-button >
-                       <span>Hello</span>
+            <md-menu style="font-family: Koodak;">
+               <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="Usr" ng-click="openMenu($mdOpenMenu,$event)">
+                   <md-icon md-font-icon="fa fa fa-user-o fa-2x"></md-icon>
+               </md-button>
+               <md-menu-content width="3">
+                  <md-menu-item>
+                    <md-button>
+                       <md-icon md-font-icon="fa fa-usd fa-lg"> افزایش اعتبار</md-icon>
                     </md-button>
-                </md-menu-item>
-               </md-menu-content> -->
+                   </md-menu-item>
+                   <md-menu-divider></md-menu-divider>
+                   <md-menu-item>
+                       <md-button ng-click="logOut()">
+                           <md-icon md-font-icon="fa fa-sign-out fa-lg"> خروج</md-icon>
+                       </md-button>
+                   </md-menu-item>
+               </md-menu-content>
+            </md-menu>
         </div>
     </md-toolbar>
     <md-content class="md-padding">
