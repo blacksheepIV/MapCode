@@ -64,5 +64,41 @@ router.route('/groups')
         }
     );
 
+/**
+ * @api {delete} /groups/:name Delete user's group
+ * @apiVersion 0.1.0
+ * @apiName deleteGroup
+ * @apiGroup groups
+ * @apiPermission private
+ *
+ * @apiDescription Delete user's group with given name
+ *
+ * @apiParam {String{1..25}} name Group's name
+ *
+ * @apiExample Request-Example
+ *     DELETE http://mapcode.ir/api/groups/فامیل
+ *
+ * @apiError (400) name:empty
+ * @apiError (400) name:length_not_1_to_25
+ */
+router.route('/groups/:name')
+    .delete(
+        // Input validation
+        validateWithSchema(groupsModel.schema, ['name'], null, 'checkParams'),
+        function (req, res) {
+            groupsModel.delete(
+                req.user.id,
+                req.params.name,
+                function (err) {
+                    if (err) {
+                        return res.status(500).end();
+                    }
+
+                    // Hooray! Group has delete.
+                    res.status(200).end();
+                }
+            );
+        }
+    );
 
 module.exports = router;

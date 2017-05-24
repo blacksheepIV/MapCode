@@ -64,3 +64,26 @@ module.exports.add = function (userId, gpName, gpMembers, callback) {
         }
     );
 };
+
+
+/*
+    Errors:
+        - serverError
+ */
+module.exports.delete = function (userId, gpName, callback) {
+    db.conn.query(
+        "DELETE FROM `groups` WHERE `owner` = ? AND `name` = ?",
+        [userId, gpName],
+        function (err) {
+            // MySQL error happened
+            if (err) {
+                console.log("MySQL: Error in deleting user's group:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+
+            // Group has deleted
+            callback();
+        }
+    );
+};
