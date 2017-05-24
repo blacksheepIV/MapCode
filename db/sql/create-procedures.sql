@@ -659,7 +659,7 @@ CREATE PROCEDURE `addGroup`
       IF @msg LIKE '%owner_name_unique%'
       THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'GROUP_ALREAD_EXISTS';
+        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
       ELSE
         RESIGNAL;
       END IF;

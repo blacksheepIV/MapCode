@@ -71,31 +71,32 @@ module.exports.customFielder = function (type, name, fields, sep) {
 
 
 module.exports.validateWithSchema = function (schema, params, ignorables, checkFunction) {
-    var newSchema = {};
+    return function (req, res, next) {
+        var newSchema = {};
 
-    if (params === 'all') {
-        params = Object.keys(schema);
-    }
+        if (params === 'all') {
+            params = Object.keys(schema);
+        }
 
-    params.forEach(function (param) {
-        newSchema[param] = schema[param];
-    });
+        params.forEach(function (param) {
+            newSchema[param] = schema[param];
+        });
 
+        if (checkFunction === undefined)
+            checkFunction = 'checkBody';
 
-    if (ignorables) {
-        if (ignorables === 'all')
-            ignorables = params;
-        for (var i = 0; i < ignorables.length; i++) {
-            if (req.body[ignorables[i]] === undefined) {
-                delete newSchema[ignorables[i]];
+        var checkField = checkFunction.substr(5).toLowerCase();
+
+        if (ignorables) {
+            if (ignorables === 'all')
+                ignorables = params;
+            for (var i = 0; i < ignorables.length; i++) {
+                if (req[checkField][ignorables[i]] === undefined) {
+                    delete newSchema[ignorables[i]];
+                }
             }
         }
-    }
 
-    if (checkFunction === undefined)
-        checkFunction = 'checkBody';
-
-    return function (req, res, next) {
         req[checkFunction](newSchema);
 
         req.getValidationResult().then(function (result) {
@@ -114,9 +115,9 @@ module.exports.validateWithSchema = function (schema, params, ignorables, checkF
                 });
             }
             else {
-                for (var param in req.body) {
+                for (var param in req[checkField]) {
                     if (newSchema[param] === undefined)
-                        delete req.body[param];
+                        delete req[checkField][param];
                 }
 
                 next();
