@@ -1,5 +1,4 @@
 <div ng-controller="userCtrl">
-    <!-- <div ng-include="'./templates/Panel/header.html'"></div> -->
     <md-toolbar md-theme="NewTheme" class=" md-primary md-hue-2" dir="rtl" class="mainHeader">
         <div layout="row" flex="100" layout-align="end center" class="md-accent">
             <div flex="5"></div>
@@ -30,34 +29,56 @@
     </md-toolbar>
     <md-content class="md-padding">
         <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="ویرایش اطلاعات">
+            <md-tab label="ویرایش اطلاعات" >
                 <md-content class="md-padding">
-                    <div ng-include="'./templates/Panel/userPanelItems/EditInfo.html'"></div>
-                </md-content>
+                      <div ng-include="'./templates/Panel/userPanelItems/EditInfo.html'"></div>
+                 </md-content>
             </md-tab>
-            <md-tab label="تغییر رمز عبور">
-                <md-content class="md-padding">
-                    <div ng-include="'./templates/Panel/userPanelItems/passChange.html'"></div>
-                </md-content>
+            <md-tab label="تغییر رمز عبور" >
+                 <md-content class="md-padding" >
+                     <div ng-include="'./templates/Panel/userPanelItems/passChange.html'"></div>
+                 </md-content>
             </md-tab>
-            <md-tab label=" نقاط من">
-                <md-content class="md-padding">
-                   <div ng-include="'./templates/Panel/userPanelItems/UsrPoints.html'"></div>
-                </md-content>
+            <md-tab label=" نقاط من" >
+                 <md-content class="md-padding" >
+                    <div ng-include="'./templates/Panel/userPanelItems/UsrPoints.html'"></div>
+                 </md-content>
             </md-tab>
             <md-tab label=" نقاط شخصی من">
-                <md-content class="md-padding">
-                    <div ng-include="'./templates/Panel/userPanelItems/usrPersonalPoints.html'"></div>
-                </md-content>
+                  <md-content class="md-padding">
+                      <div ng-include="'./templates/Panel/userPanelItems/usrPersonalPoints.html'"></div>
+                  </md-content>
             </md-tab>
-            <md-tab label="لیست دوستان و گروه ها">
+            <md-tab label="لیست دوستان و گروه ها" >
                 <md-content class="md-padding">
-                    <div ng-include="'./templates/Panel/userPanelItems/FriendsGroups.html'"></div>
+                    <!-- <div ng-include="'./templates/Panel/userPanelItems/FriendsGroups.html'"></div> -->
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="لیست دوستان" >
+                            <md-content class="md-padding">
+                                <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/friendsList.html'"></div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label=" درخواست های در حال بررسی" >
+                            <md-content class="md-padding">
+                                <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/pendingReqs.html'"></div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label=" درخواست های ارسالی" >
+                            <md-content class="md-padding">
+                                <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/sentReqs.html'"></div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label=" لیست گروه ها" >
+                            <md-content class="md-padding">
+                               <h5>این ویژگی فعلا در دسترس نیست.</h5>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
                 </md-content>
             </md-tab>
             <md-tab label="پیغام های شخصی">
                 <md-content class="md-padding">
-                   <p>My Messages</p>
+                    <p>My Messages</p>
                 </md-content>
             </md-tab>
         </md-tabs>

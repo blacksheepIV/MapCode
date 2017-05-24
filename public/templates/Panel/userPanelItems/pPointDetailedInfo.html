@@ -1,4 +1,4 @@
-<md-dialog aria-label="reviewPointInfo" ng-controller="pPointInfo" ng-init="initPpoint()">
+<md-dialog aria-label="reviewPointInfo" ng-controller="pPointInfo" ng-init="initPpoint()" flex="80" style="height: 100%;width:100%;">
         <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
             <div dir="rtl" class="md-toolbar-tools" layout="row">
               <h2 class="md-display-2">{{pPoint.name}}</h2>
@@ -8,8 +8,8 @@
               </md-button>
              </div>
          </md-toolbar>
-         <md-dialog-content layout-fill layout="column"  layout-align="center"> <!--  change layout to row no need to center -->
-             <div layout="row" layout-align="center" flex="50">
+         <md-dialog-content layout-fill layout="column" flex="100"> <!--  change layout to row no need to center -->
+            <div layout="column"  flex="50">
                  <md-card flex="50">
                      <img src="../img/BGs/card-imgs/1 (1).jpg" class="md-card-image" alt="{{pPoint.description}}">
                      <md-card-title>
@@ -38,8 +38,8 @@
                  </md-card>
              </div>
 
-            <!-- <div layout="column" layout-fill> -->
-                 <!--  <div id="myMap" style="height: 100%;" ></div> -->
-           <!--   </div> -->
+             <div layout="column" layout-fill flex="50">
+                  <div id="myMap" style="height: 100%;" ></div>
+            </div>
     </md-dialog-content>
 </md-dialog>

@@ -17,13 +17,18 @@
     <link rel="stylesheet" href="./components/font-awesome/css/font-awesome.min.css"/>
     <link type="text/css" rel="stylesheet" href="./components/persian-datepicker/dist/css/theme/persian-datepicker-dark.css"/>
     <link rel="stylesheet" href="./css/style.css"/>
-    <link type="text/css" rel="stylesheet" href="./components/acute-select/acute/acute.select/acute.select.css" />
+    <!-- sideMenu -->
+    <link rel="stylesheet" href="./components/angular-material-sidemenu/dest/angular-material-sidemenu.css">
+    <!-- sideMenu -->
     <!-- EO styling Files -->
     <script>
         window.apiHref = '{{{ apiHref }}}';
     </script>
     <!-- AngularJS compos-->
     <script src="./components/angular/angular.min.js"></script>
+    <script type="text/javascript">
+        angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
+    </script>
     <script src="./components/angular-animate/angular-animate.min.js"></script>
     <script src="./components/angular-aria/angular-aria.min.js"></script>
     <script src="./components/angular-route/angular-route.min.js"></script>
@@ -35,9 +40,11 @@
     <script src="./components/angular-local-storage/dist/angular-local-storage.min.js"></script>
     <!-- AngularJS compos -->
     <script src="./components/angular-upload/angular-upload.min.js"></script>
+    <!-- sideMenu -->
+    <script src="./components/angular-material-sidemenu/dest/angular-material-sidemenu.js"></script>
+    <!-- sideMenu -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
     <title>ProjectM</title>
-
 </head>
 <body ng-app="mapCodeApp" dir="rtl">
     <ng-view ></ng-view>
@@ -49,6 +56,8 @@
     <script src="./js/services/authentication.js"></script>
     <script src="./js/services/pointService.js"></script>
     <script src="./js/services/userService.js"></script>
+    <script src="./js/services/friendService.js"></script>
+    <script type="text/javascript" src="./js/controllers/friendsCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/pPointInfo.js"></script>
     <script type="text/javascript" src="./js/controllers/pointInfoCtrl.js"></script>
     <script src="./js/controllers/PanelCodeVerfication.js"></script>

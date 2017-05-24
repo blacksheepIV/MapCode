@@ -466,9 +466,25 @@ $scope.takeMeHome =  function(){
     };
     /* **************************************** Personal Point Detail ********************************************************************  */
     $scope.logOut=function(){
-        //TODO:sth needed to distroy user's session/token,whatever
         authenticationToken.removeToken();
         $rootScope.isUser = false;
         $location.path("/");
     }
+    /* ************************************************ tab routnig ************************************************************* */
+    $scope.tabEditInfo = function(){
+        $location.path("/EditInfo");
+    };
+    $scope.passChange = function(){
+        $location.path("/passChange");
+    };
+    $scope.userPoints =function(){
+        $location.path("/userPoints");
+    };
+    $scope.personalPoints = function(){
+        $location.path("/personalPoints");
+    };
+    $scope.FriendsGroups = function(){
+        $location.path("/FriendsGroups");
+    };
+    /* ************************************************ tab routnig ************************************************************* */
 }//end of userCtrl controller

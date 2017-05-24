@@ -1,0 +1,8 @@
+<md-content layout="row" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
+    <!-- <p class="md-headline">لسیت دوستان :</p> -->
+    <div class="chip" ng-repeat="friend in myFriends">
+        <img src="../img/Avatar/img_avatar3.png" alt="Person" width="96" height="96">
+       {{friend}}
+        <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+</md-content>

@@ -1,0 +1,12 @@
+<md-content layout="row" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
+    <div class="animate-switch-container" ng-switch on="noPendingReq">
+        <div class="animate-switch" ng-switch-when="true">هیچ درخواست دوستی وجود نداره</div>
+        <div class="animate-switch" ng-switch-when="false">
+    <div class="chip" ng-repeat="pendingRequest in pendingReqs">
+        <img src="../img/Avatar/img_avatar3.png" alt="Person" width="96" height="96">
+        {{pendingRequest}}
+        <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+            </div>
+        </div>
+</md-content>

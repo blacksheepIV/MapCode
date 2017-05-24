@@ -13,11 +13,13 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('searchCtrl',searchCtrl)
         .controller('pPointCtrl',pPointCtrl)
         .controller('pPointInfo',pPointInfo)
+        .controller('friendsCtrl',friendsCtrl)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)
         .service('authInterceptor',authInterceptor)
         .service('pointService',pointService)
         .factory('sysMessagesService',sysMessagesService)
-        .factory('RegisteredUsr',RegisteredUsr);
+        .factory('RegisteredUsr',RegisteredUsr)
+        .factory('friendService',friendService);
 
