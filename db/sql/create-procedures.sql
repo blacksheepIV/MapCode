@@ -541,7 +541,11 @@ DELIMITER ;
     Errors (sqlstate = 45000):
       - LESS_THAN_TWO_MEMBERS
       - GROUP_ALREADY_EXISTS
-      - USERNAME_%S_NOT_FOUND (%S will replace with the username)
+      - USERNAME_%S_NOT_FRIEND
+          (%S will replace with the username)
+          (If username is the owner's username)
+          (If username does not exists)
+          (If username is not owner's friend)
  */
 DELIMITER ~
 CREATE PROCEDURE `addGroup`
@@ -632,13 +636,22 @@ CREATE PROCEDURE `addGroup`
       -- If no user with this username found
       IF FOUND_ROWS() = 0
       THEN
-        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FOUND');
+        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
 
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = @errmsg;
       END IF;
 
-      INSERT IGNORE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
+      -- If member and owner are not friends
+      IF areFriends_LockInShareMode(owner, member_id) = False
+      THEN
+        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = @errmsg;
+      END IF;
+
+      REPLACE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
       VALUES (group_id, member_id);
 
       SET @i = @i + 1;
