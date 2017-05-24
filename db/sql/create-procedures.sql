@@ -737,3 +737,113 @@ CREATE PROCEDURE `addGroup`
 
   END~
 DELIMITER ;
+
+
+/*
+    Errors (sqlstate = 45000):
+      - GROUP_NOT_EXISTS
+      - GROUP_ALREADY_EXISTS
+
+      (Caused by `addGroupMembers`)
+      - LESS_THAN_TWO_MEMBERS
+      - USERNAME_%S_NOT_FRIEND
+          (%S will replace with the username)
+          (If username is the owner's username)
+          (If username does not exists)
+          (If username is not owner's friend)
+ */
+DELIMITER ~
+CREATE PROCEDURE `updateGroup`
+  (
+    IN `owner`    INT UNSIGNED,
+    IN `old_name` VARCHAR(25)
+                  CHARACTER SET utf8mb4
+                  COLLATE utf8mb4_persian_ci,
+    IN `name`     VARCHAR(25)
+                  CHARACTER SET utf8mb4
+                  COLLATE utf8mb4_persian_ci,
+    IN `members`  TEXT
+  )
+    PROC: BEGIN
+
+    DECLARE group_id INT UNSIGNED;
+
+    -- If the group is duplicate
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @msg = MESSAGE_TEXT;
+
+      ROLLBACK;
+
+      IF @msg LIKE '%owner_name_unique%'
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
+      ELSE
+        RESIGNAL;
+      END IF;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    -- If neither name nor members are gonna get updated
+    IF name IS NULL AND members IS NULL
+    THEN
+      LEAVE PROC;
+    END IF;
+
+    START TRANSACTION;
+
+    SELECT `groups`.`id`
+    INTO group_id
+    FROM `groups`
+    WHERE `groups`.`name` = old_name
+          AND `groups`.`owner` = owner
+    FOR UPDATE;
+    -- If group does not exists
+    IF FOUND_ROWS() = 0
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_NOT_EXISTS';
+    END IF;
+
+    -- If name must get updated
+    IF name IS NOT NULL
+    THEN
+      UPDATE `groups`
+        SET `groups`.`name` = name
+      WHERE `groups`.`id` = group_id;
+    END IF;
+
+    IF members IS NULL
+    THEN
+      COMMIT;
+      LEAVE PROC;
+    END IF;
+
+    -- Delete existing user's from group
+    DELETE FROM `group_members` WHERE `group_members`.`group_id` = group_id;
+
+    /*
+        Check if there is more than two members
+     */
+
+    SET members = TRIM(members);
+
+    IF members IS NULL OR members = ''
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
+    END IF;
+
+    CALL addGroupMembers(owner, group_id, members);
+
+    COMMIT;
+
+  END~
+DELIMITER ;
