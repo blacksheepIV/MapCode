@@ -1,0 +1,66 @@
+var lodashIncludes = require('lodash/includes');
+
+var db = require('../db');
+
+
+// Verification schema
+module.exports.schema = {
+    'name': {
+        notEmpty: {
+            errorMessage: 'empty'
+        },
+        isLength: {
+            options: {min: 1, max: 25},
+            errorMessage: 'length_not_1_to_25'
+        }
+    },
+    'members': {
+        notEmpty: {
+            errorMessage: 'empty'
+        }
+    }
+};
+
+
+/*
+    Errors:
+        - less_than_two_members
+        - group_already_exists
+        - username_%s_not_friend
+            (%s will replace with the username)
+            (If username is the owner's username)
+            (If username does not exists)
+            (If username is not owner's friend)
+
+        - serverError
+ */
+module.exports.add = function (userId, gpName, gpMembers, callback) {
+    // Call addGroup DB procedure
+    db.conn.query(
+        "CALL `addGroup` (?, ?, ?)",
+        [userId, gpName, gpMembers],
+        function (err) {
+            // DB error has happened
+            if (err) {
+                // Procedure error has happened
+                if (err.sqlState === '45000') {
+                    if (lodashIncludes(err.message, 'LESS_THAN_TWO_MEMBERS'))
+                        return callback('less_than_two_members');
+
+                    if (lodashIncludes(err.message, 'GROUP_ALREADY_EXISTS'))
+                        return callback('group_already_exists');
+
+                    var notFriendUsernameError = /USERNAME_(.*)_NOT_FRIEND/.exec(err.message);
+                    if (notFriendUsernameError)
+                        return callback(notFriendUsernameError[0].toLowerCase());
+                }
+
+                console.error("add@models/groups: Error in calling addGroup DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // Group successfully added!
+            callback();
+        }
+    );
+};
