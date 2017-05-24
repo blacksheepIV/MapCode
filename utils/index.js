@@ -68,3 +68,59 @@ module.exports.customFielder = function (type, name, fields, sep) {
         next();
     };
 };
+
+
+module.exports.validateWithSchema = function (schema, params, ignorables, checkFunction) {
+    var newSchema = {};
+
+    if (params === 'all') {
+        params = Object.keys(schema);
+    }
+
+    params.forEach(function (param) {
+        newSchema[param] = schema[param];
+    });
+
+
+    if (ignorables) {
+        if (ignorables === 'all')
+            ignorables = params;
+        for (var i = 0; i < ignorables.length; i++) {
+            if (req.body[ignorables[i]] === undefined) {
+                delete newSchema[ignorables[i]];
+            }
+        }
+    }
+
+    if (checkFunction === undefined)
+        checkFunction = 'checkBody';
+
+    return function (req, res, next) {
+        req[checkFunction](newSchema);
+
+        req.getValidationResult().then(function (result) {
+            // Parameters are not valid
+            if (!result.isEmpty()) {
+                var errorMessages = {};
+                var resultArray = result.array();
+                for (var i = 0; i < resultArray.length; i++) {
+                    if (typeof errorMessages[resultArray[i].param] === 'undefined')
+                        errorMessages[resultArray[i].param] = [];
+                    errorMessages[resultArray[i].param].push(resultArray[i].msg);
+                }
+
+                res.status(400).json({
+                    errors: errorMessages
+                });
+            }
+            else {
+                for (var param in req.body) {
+                    if (newSchema[param] === undefined)
+                        delete req.body[param];
+                }
+
+                next();
+            }
+        });
+    };
+};
