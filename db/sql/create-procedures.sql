@@ -557,6 +557,14 @@ CREATE PROCEDURE `addGroupMembers`
     DECLARE member VARCHAR(15);
     DECLARE member_id MEDIUMINT UNSIGNED;
 
+    SET members = TRIM(members);
+
+    IF members IS NULL OR members = ''
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
+    END IF;
+
     SET @i = 1;
     SET @members_count = LENGTH(members) - LENGTH(REPLACE(members, ' ', '')) + 1;
 
@@ -615,8 +623,10 @@ DELIMITER ;
 
 /*
     Errors (sqlstate = 45000):
-      - LESS_THAN_TWO_MEMBERS
       - GROUP_ALREADY_EXISTS
+
+      (Caused by `addGroupMembers`)
+      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -668,70 +678,7 @@ CREATE PROCEDURE `addGroup`
 
     SET group_id = LAST_INSERT_ID();
 
-    /*
-        Check if there is more than two members
-     */
-
-    SET members = TRIM(members);
-
-    IF members IS NULL OR members = ''
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
-
-    SET @i = 1;
-    SET @members_count = LENGTH(members) - LENGTH(REPLACE(members, ' ', '')) + 1;
-
-    IF @members_count < 2
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
-
-    /*
-        Add members to the group
-     */
-
-    MEMBER_LOOP: WHILE @i <= @members_count
-    DO
-      SET member = TRIM(SPLIT_STR(members, ' ', @i));
-
-      IF member = ''
-      THEN
-        SET @i = @i + 1;
-        ITERATE MEMBER_LOOP;
-      END IF;
-
-      SELECT `users`.`id`
-      INTO member_id
-      FROM `users`
-      WHERE `users`.`username` = member
-      LOCK IN SHARE MODE;
-
-      -- If no user with this username found
-      IF FOUND_ROWS() = 0
-      THEN
-        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
-
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = @errmsg;
-      END IF;
-
-      -- If member and owner are not friends
-      IF areFriends_LockInShareMode(owner, member_id) = False
-      THEN
-        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
-
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = @errmsg;
-      END IF;
-
-      REPLACE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
-      VALUES (group_id, member_id);
-
-      SET @i = @i + 1;
-    END WHILE;
+    CALL addGroupMembers(owner, group_id, members);
 
     COMMIT;
 
@@ -828,18 +775,6 @@ CREATE PROCEDURE `updateGroup`
 
     -- Delete existing user's from group
     DELETE FROM `group_members` WHERE `group_members`.`group_id` = group_id;
-
-    /*
-        Check if there is more than two members
-     */
-
-    SET members = TRIM(members);
-
-    IF members IS NULL OR members = ''
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
 
     CALL addGroupMembers(owner, group_id, members);
 
