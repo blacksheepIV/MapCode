@@ -49,7 +49,7 @@ module.exports.escapeRegExp = function(string) {
 };
 
 
-module.exports.customFielder = function (type, name, fields, sep) {
+module.exports.customFielder = function (type, name, fields, fieldsOnly, sep) {
     sep = sep || ',';
 
     return function (req, res, next) {
@@ -60,9 +60,19 @@ module.exports.customFielder = function (type, name, fields, sep) {
                 param.split(sep).map(lodashTrim),
                 fields
             );
+
+            if (req.queryFields.length === 0) {
+                if (fieldsOnly)
+                    req.queryFields = fields;
+                else
+                    req.queryFields = '*';
+            }
         }
         else {
-            req.queryFields = '*';
+            if (fieldsOnly)
+                req.queryFields = fields;
+            else
+                req.queryFields = '*';
         }
 
         next();

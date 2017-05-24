@@ -146,7 +146,7 @@ module.exports.delete = function (sender, msgId, callback) {
 module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
     db.conn.query(
         "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
-        "FROM `messages_detailed` " +
+        " FROM `messages_detailed` " +
         "WHERE ?? = ? " +
         "LIMIT ?, ?",
         [receiverOrSender, username, start, limit],

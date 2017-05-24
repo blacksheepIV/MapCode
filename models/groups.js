@@ -3,6 +3,9 @@ var lodashIncludes = require('lodash/includes');
 var db = require('../db');
 
 
+module.exports.publicFields = ['name', 'members'];
+
+
 // Verification schema
 module.exports.schema = {
     'name': {
@@ -156,6 +159,31 @@ module.exports.update = function (userId, gpName, newName, members, callback) {
 
             // Group successfully added!
             callback();
+        }
+    );
+};
+
+
+/*
+    Errors:
+        - serverError
+ */
+module.exports.getGroup = function (userId, groupName, fields, callback) {
+    db.conn.query(
+        "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
+        " FROM `groups_detailed`" +
+        " WHERE `owner` = ? AND `name` = ?",
+        [userId, groupName],
+        function (err, results) {
+            if (err) {
+                console.log("getGroup@models/groups.js: MySQL: Error in getting group's info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            if (results[0] && results[0].members)
+                    results[0].members = results[0].members.split(' ');
+
+            callback(null, results[0]);
         }
     );
 };

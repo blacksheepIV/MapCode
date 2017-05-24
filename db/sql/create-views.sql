@@ -115,3 +115,14 @@ CREATE ALGORITHM = MERGE VIEW `messages_detailed` AS
   JOIN `users` AS U2 ON `U2`.`id` = `messages`.`receiver`
   LEFT OUTER JOIN `points` ON `points`.`id` = `messages`.`point`
   LEFT OUTER JOIN `personal_points` ON `personal_points`.`id` = `messages`.`personal_point`;
+
+
+CREATE VIEW `groups_detailed` AS
+  SELECT
+    `groups`.`owner`                               AS `owner`,
+    `groups`.`name`                                AS `name`,
+    GROUP_CONCAT(`users`.`username` SEPARATOR ' ') AS `members`
+  FROM `group_members`
+    JOIN `groups` ON `groups`.`id` = `group_members`.`group_id`
+    JOIN `users` ON `users`.`id` = `group_members`.`member_id`
+  GROUP BY `group_members`.`group_id`;

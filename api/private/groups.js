@@ -2,7 +2,7 @@ var router = require('express').Router();
 
 var groupsModel = require('../../models/groups');
 var validateWithSchema = require('../../utils').validateWithSchema;
-
+var customFielder = require('../../utils').customFielder;
 
 router.route('/groups')
     /**
@@ -66,24 +66,68 @@ router.route('/groups')
         }
     );
 
-/**
- * @api {delete} /groups/:name Delete user's group
- * @apiVersion 0.1.0
- * @apiName deleteGroup
- * @apiGroup groups
- * @apiPermission private
- *
- * @apiDescription Delete user's group with given name
- *
- * @apiParam {String{1..25}} name Group's name
- *
- * @apiExample Request-Example
- *     DELETE http://mapcode.ir/api/groups/فامیل
- *
- * @apiError (400) name:empty
- * @apiError (400) name:length_not_1_to_25
- */
 router.route('/groups/:name')
+    /**
+     * @api {get} /groups/:name Get a group's info
+     * @apiVersion 0.1.0
+     * @apiName getGroup
+     * @apiGroup groups
+     * @apiPermission private
+     *
+     * @apiDescription Get a user's group's info.
+     *
+     * @apiParam {String{1..25}} name Group's name
+     *
+     * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): name, members
+     *
+     * @apiError (400) name:empty
+     * @apiError (400) name:length_not_1_to_25
+     *
+     * @apiError (404) not_found
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/api/groups/mygp?fields=members
+     *     Response:
+     *         HTTP/1.1 200 OK
+     *         {
+     *             members: ["ali", "ahmad"]
+     *         }
+     */
+    .get(
+        customFielder('query', 'fields', groupsModel.publicFields, true),
+        function (req, res) {
+            groupsModel.getGroup(
+                req.user.id,
+                req.params.name,
+                req.queryFields,
+                function (err, gp) {
+                    if (err) return res.status(500).end();
+
+                    if (!gp) return res.status(404).end();
+
+                    res.send(gp);
+                }
+            );
+        }
+    )
+    /**
+     * @api {delete} /groups/:name Delete user's group
+     * @apiVersion 0.1.0
+     * @apiName deleteGroup
+     * @apiGroup groups
+     * @apiPermission private
+     *
+     * @apiDescription Delete user's group with given name
+     *
+     * @apiParam {String{1..25}} name Group's name
+     *
+     * @apiExample Request-Example
+     *     DELETE http://mapcode.ir/api/groups/فامیل
+     *
+     * @apiError (400) name:empty
+     * @apiError (400) name:length_not_1_to_25
+     */
     .delete(
         // Input validation
         validateWithSchema(groupsModel.schema, ['name'], null, 'checkParams'),
