@@ -1,4 +1,5 @@
 var lodashIncludes = require('lodash/includes');
+var asyncForEach = require('async/each');
 
 var db = require('../db');
 
@@ -184,6 +185,51 @@ module.exports.getGroup = function (userId, groupName, fields, callback) {
                     results[0].members = results[0].members.split(' ');
 
             callback(null, results[0]);
+        }
+    );
+};
+
+
+/*
+    Get list of user's groups
+
+    Errors:
+        - serverError
+ */
+module.exports.getUserGroups = function (userId, fields, start, limit, callback) {
+    db.conn.query(
+        " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
+        " FROM `groups_detailed`" +
+        " WHERE `owner` = ?" +
+        " LIMIT ?, ?",
+        [userId, start, limit],
+        function (err, results) {
+            if (err) {
+                console.log("getUserGroups@models/groups.js: Error in getting user's groups:\n\n\t%s" +
+                    "\n\tQuery:\n\n\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // If `members` field is requested, split the field by ' ' and make it a array
+            if (fields.includes('members')) {
+                asyncForEach(
+                    results,
+                    function (result, done) {
+                        result.members = result.members.split(' ');
+                        done();
+                    },
+                    function (err) {
+                        if (err) {
+                            console.log("getUserGroups@models/groups.js: Error in splitting results members field:\n\n\t%s" + err);
+                            return callback('serverError');
+                        }
+
+                        callback(null, results);
+                    }
+                );
+            }
+            else
+                callback(null, results);
         }
     );
 };

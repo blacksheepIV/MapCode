@@ -3,8 +3,41 @@ var router = require('express').Router();
 var groupsModel = require('../../models/groups');
 var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
+var startLimitChecker = require('../../utils').startLimitChecker;
+
 
 router.route('/groups')
+    /**
+     * @api {get} /groups Get user's groups list
+     * @apiVersion 0.1.0
+     * @apiName getUserGroups
+     * @apiGroup groups
+     * @apiPermission private
+     *
+     * @apiDescription Get list of user's groups.
+     *
+     * @apiParam {Number{1..}} [start=1] Get groups from start-th point!
+     * @apiParam {Number{1..100}} [limit=100] Number of groups to receive.
+     *
+     * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): name, members
+     */
+    .get(
+        startLimitChecker,
+        customFielder('query', 'fields', groupsModel.publicFields, true),
+        function (req, res) {
+            groupsModel.getUserGroups(
+                req.user.id,
+                req.queryFields,
+                req.queryStart,
+                req.queryLimit,
+                function (err, groups) {
+                    if (err) return res.status(500).end();
+
+                    res.send(groups);
+                }
+            );
+        }
+    )
     /**
      * @api {post} /groups Add a new group
      * @apiVersion 0.1.0
@@ -65,6 +98,7 @@ router.route('/groups')
             );
         }
     );
+
 
 router.route('/groups/:name')
     /**
@@ -234,5 +268,6 @@ router.route('/groups/:name')
             );
         }
     );
+
 
 module.exports = router;
