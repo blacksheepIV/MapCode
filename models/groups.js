@@ -1,5 +1,6 @@
 var lodashIncludes = require('lodash/includes');
 var asyncForEach = require('async/each');
+var moment = require('moment');
 
 var db = require('../db');
 
@@ -230,6 +231,60 @@ module.exports.getUserGroups = function (userId, fields, start, limit, callback)
             }
             else
                 callback(null, results);
+        }
+    );
+};
+
+
+/*
+    Sends a message to group members
+
+     Errors:
+         - sender_not_found
+         - receiver_not_found
+         - point_not_found
+         - personal_point_not_found
+         - no_point
+         - both_points
+         - self_message
+
+         - serverError
+ */
+module.exports.sendMessage = function (sender, gpName, point, personal_point, message, callback) {
+    var sent_time = moment().format('YYYY-MM-DD HH:mm:ss');
+    db.conn.query(
+        "CALL `sendGroupMessage` (?, ?, ?, ?, ?, ?)",
+        [sender, gpName, point, personal_point, sent_time, message],
+        // MySQL error has happened
+        function (err) {
+            if (err) {
+                if (err.sqlState === '45000') {
+                    if (lodashIncludes(err.message, "PERSONAL_POINT_NOT_FOUND"))
+                        return callback('personal_point_not_found');
+
+                    if (lodashIncludes(err.message, "SENDER_NOT_FOUND"))
+                        return callback('sender_not_found');
+
+                    if (lodashIncludes(err.message, "GROUP_NOT_FOUND"))
+                        return callback('group_not_found');
+
+                    if (lodashIncludes(err.message, "POINT_NOT_FOUND"))
+                        return callback('point_not_found');
+
+                    if (lodashIncludes(err.message, "NO_POINT"))
+                        return callback('no_point');
+
+                    if (lodashIncludes(err.message, "BOTH_POINTS"))
+                        return callback('both_points');
+                }
+
+                // Unexpected MySQL error has happened
+                console.error("sendMessage@models/groups: Error in calling sendGroupMessage DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // Message successfully sent to all group members
+            callback();
         }
     );
 };

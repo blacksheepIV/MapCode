@@ -782,3 +782,135 @@ CREATE PROCEDURE `updateGroup`
 
   END~
 DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - SENDER_NOT_FOUND
+    - POINT_NOT_FOUND
+    - PERSONAL_POINT_NOT_FOUND
+    - GROUP_NOT_FOUND
+
+    (Caused by `enforce_message_point_or_personal_point`)
+    - NO_POINT
+    - BOTH_POINTS
+ */
+DELIMITER ~
+CREATE PROCEDURE `sendGroupMessage`
+  (
+    IN sender         MEDIUMINT UNSIGNED,
+    IN group_name     VARCHAR(25)
+                      CHARACTER SET utf8mb4
+                      COLLATE utf8mb4_persian_ci,
+    IN point_code     CHAR(17),
+    IN personal_point BIGINT UNSIGNED,
+    IN sent_time      TIMESTAMP,
+    IN message        TEXT CHARACTER SET utf8mb4
+                      COLLATE utf8mb4_persian_ci
+  )
+    PROC: BEGIN
+
+    DECLARE point INT UNSIGNED;
+    DECLARE done BOOLEAN DEFAULT FALSE;
+    DECLARE group_id INT UNSIGNED;
+    DECLARE member_id MEDIUMINT UNSIGNED;
+
+    DECLARE cur CURSOR FOR
+      SELECT `group_members`.`member_id`
+      FROM `group_members`
+      WHERE `group_members`.`group_id` = group_id
+    LOCK IN SHARE MODE;
+
+    -- If sender does not exists
+    DECLARE EXIT HANDLER FOR 1452
+    BEGIN
+      ROLLBACK;
+
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'SENDER_NOT_FOUND';
+    END;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    SELECT `groups`.`id`
+    INTO group_id
+    FROM `groups`
+    WHERE `groups`.`owner` = sender AND
+          `groups`.`name` = group_name
+    LOCK IN SHARE MODE;
+    -- If group not found
+    IF FOUND_ROWS() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_NOT_FOUND';
+    END IF;
+
+    -- If user wants to send a main point
+    IF point_code IS NOT NULL
+    THEN
+      -- Fetch points's id from it's code
+      -- The point is either public or is owned by sender
+      SELECT `points`.`id`
+      INTO point
+      FROM `points`
+      WHERE `points`.`code` = LOWER(point_code) AND
+            (`points`.`owner` = sender OR `points`.public = TRUE)
+      LOCK IN SHARE MODE;
+      -- Check if there is any point with given code
+      IF found_rows() != 1
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'POINT_NOT_FOUND';
+      END IF;
+    END IF;
+
+    -- If user wants to send a personal point
+    IF personal_point IS NOT NULL
+    THEN
+      -- Fetch personal points's owner from it's id
+      SELECT `personal_points`.`owner`
+      INTO @personal_point_owner
+      FROM `personal_points`
+      WHERE `personal_points`.`id` = personal_point
+      LOCK IN SHARE MODE;
+      -- Check if there is any personal point with given id
+      --     and if the the owner is the sender
+      IF found_rows() != 1 OR @personal_point_owner != sender
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'PERSONAL_POINT_NOT_FOUND';
+      END IF;
+    END IF;
+
+    OPEN cur;
+    CUR_LOOP: LOOP
+      FETCH cur
+      INTO member_id;
+
+      IF done
+      THEN
+        LEAVE CUR_LOOP;
+      END IF;
+
+      INSERT INTO `messages` (messages.sender,
+                              messages.receiver,
+                              messages.point,
+                              messages.personal_point,
+                              messages.sent_time,
+                              messages.message) VALUES (
+        sender, member_id, point, personal_point, sent_time, message
+      );
+    END LOOP;
+    CLOSE cur;
+
+    COMMIT;
+  END ~
+DELIMITER ;

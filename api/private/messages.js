@@ -47,8 +47,6 @@ var startLimitChecker = require('../../utils').startLimitChecker;
  * @apiError (400) personal_point:empty A personal point should not be defined or it can't be empty
  * @apiError (400) personal_point:numeric
  *
- * @apiError (400) description:length_greater_than_21844
- *
  * @apiError (400) personal_point_not_found Either there is no personal point with is id or it's now owned by user
  * @apiError (400) sender_not_found !!! If you got this log out the user
  * @apiError (400) receiver_not_found There is no user with given username

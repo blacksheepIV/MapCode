@@ -57,18 +57,18 @@ module.exports.schema = {
 
 
 /*
- Sends a message
+    Sends a message
 
- Errors:
- - sender_not_found
- - receiver_not_found
- - point_not_found
- - personal_point_not_found
- - no_point
- - both_points
- - self_message
+    Errors:
+        - sender_not_found
+        - receiver_not_found
+        - point_not_found
+        - personal_point_not_found
+        - no_point
+        - both_points
+        - self_message
 
- - serverError
+        - serverError
  */
 module.exports.send = function (sender,
                                 receiverUsername,
