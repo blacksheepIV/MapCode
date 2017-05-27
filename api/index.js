@@ -95,19 +95,20 @@ router.use(function (req, res, next) {
             newSchema[param] = schema[param];
         });
 
+        if (checkFunction === undefined)
+            checkFunction = 'checkBody';
+
+        var checkField = checkFunction.substr(5).toLowerCase();
 
         if (ignorables) {
             if (ignorables === 'all')
                 ignorables = params;
             for (var i = 0; i < ignorables.length; i++) {
-                if (req.body[ignorables[i]] === undefined) {
+                if (req[checkField][ignorables[i]] === undefined) {
                     delete newSchema[ignorables[i]];
                 }
             }
         }
-
-        if (checkFunction === undefined)
-            checkFunction = 'checkBody';
 
         req[checkFunction](newSchema);
 
@@ -128,9 +129,9 @@ router.use(function (req, res, next) {
                 });
             }
             else {
-                for (var param in req.body) {
+                for (var param in req[checkField]) {
                     if (newSchema[param] === undefined)
-                        delete req.body[param];
+                        delete req[checkField][param];
                 }
 
                 callback();

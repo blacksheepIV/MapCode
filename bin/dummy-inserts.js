@@ -154,13 +154,13 @@ var dummyFriends = [
     ['hamid', 'mohammad'],
     ['vahid', 'mohammad'],
     ['vahid', 'alireza'],
-    ['mohammad', 'alireza']
+    ['mohammad', 'alireza'],
+    ['alireza', 'hamid']
 ];
 
 
 var dummyFriendRequests = [
-    ['vahid', 'hamid'],
-    ['alireza', 'hamid']
+    ['vahid', 'hamid']
 ];
 
 

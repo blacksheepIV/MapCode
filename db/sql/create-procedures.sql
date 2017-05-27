@@ -540,57 +540,22 @@ DELIMITER ;
 /*
     Errors (sqlstate = 45000):
       - LESS_THAN_TWO_MEMBERS
-      - GROUP_ALREADY_EXISTS
-      - USERNAME_%S_NOT_FOUND (%S will replace with the username)
+      - USERNAME_%S_NOT_FRIEND
+          (%S will replace with the username)
+          (If username is the owner's username)
+          (If username does not exists)
+          (If username is not owner's friend)
  */
 DELIMITER ~
-CREATE PROCEDURE `addGroup`
+CREATE PROCEDURE `addGroupMembers`
   (
-    IN `owner`   INT UNSIGNED,
-    IN `name`    VARCHAR(25)
-                 CHARACTER SET utf8mb4
-                 COLLATE utf8mb4_persian_ci,
-    IN `members` TEXT
+    IN `owner`    INT UNSIGNED,
+    IN `group_id` INT UNSIGNED,
+    IN `members`  TEXT
   )
-    PROC: BEGIN
-
+  PROC: BEGIN
     DECLARE member VARCHAR(15);
     DECLARE member_id MEDIUMINT UNSIGNED;
-    DECLARE group_id INT UNSIGNED;
-
-    -- If the group is duplicate
-    DECLARE EXIT HANDLER FOR 1062
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @msg = MESSAGE_TEXT;
-
-      ROLLBACK;
-
-      IF @msg LIKE '%owner_name_unique%'
-      THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'GROUP_ALREAD_EXISTS';
-      ELSE
-        RESIGNAL;
-      END IF;
-    END;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      ROLLBACK;
-      RESIGNAL;
-    END;
-
-    START TRANSACTION;
-
-    -- Create the group
-    INSERT INTO `groups` (`groups`.`owner`, `groups`.`name`) VALUES (owner, name);
-
-    SET group_id = LAST_INSERT_ID();
-
-    /*
-        Check if there is more than two members
-     */
 
     SET members = TRIM(members);
 
@@ -632,19 +597,320 @@ CREATE PROCEDURE `addGroup`
       -- If no user with this username found
       IF FOUND_ROWS() = 0
       THEN
-        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FOUND');
+        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
 
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = @errmsg;
       END IF;
 
-      INSERT IGNORE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
+      -- If member and owner are not friends
+      IF areFriends_LockInShareMode(owner, member_id) = FALSE
+      THEN
+        SET @errmsg = CONCAT('USERNAME_', member, '_NOT_FRIEND');
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = @errmsg;
+      END IF;
+
+      REPLACE INTO `group_members` (`group_members`.`group_id`, `group_members`.`member_id`)
       VALUES (group_id, member_id);
 
       SET @i = @i + 1;
     END WHILE;
+  END ~
+DELIMITER ;
+
+
+/*
+    Errors (sqlstate = 45000):
+      - GROUP_ALREADY_EXISTS
+
+      (Caused by `addGroupMembers`)
+      - LESS_THAN_TWO_MEMBERS
+      - USERNAME_%S_NOT_FRIEND
+          (%S will replace with the username)
+          (If username is the owner's username)
+          (If username does not exists)
+          (If username is not owner's friend)
+ */
+DELIMITER ~
+CREATE PROCEDURE `addGroup`
+  (
+    IN `owner`   INT UNSIGNED,
+    IN `name`    VARCHAR(25)
+                 CHARACTER SET utf8mb4
+                 COLLATE utf8mb4_persian_ci,
+    IN `members` TEXT
+  )
+    PROC: BEGIN
+
+    DECLARE member VARCHAR(15);
+    DECLARE member_id MEDIUMINT UNSIGNED;
+    DECLARE group_id INT UNSIGNED;
+
+    -- If the group is duplicate
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @msg = MESSAGE_TEXT;
+
+      ROLLBACK;
+
+      IF @msg LIKE '%owner_name_unique%'
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
+      ELSE
+        RESIGNAL;
+      END IF;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Create the group
+    INSERT INTO `groups` (`groups`.`owner`, `groups`.`name`) VALUES (owner, name);
+
+    SET group_id = LAST_INSERT_ID();
+
+    CALL addGroupMembers(owner, group_id, members);
 
     COMMIT;
 
   END~
+DELIMITER ;
+
+
+/*
+    Errors (sqlstate = 45000):
+      - GROUP_NOT_EXISTS
+      - GROUP_ALREADY_EXISTS
+
+      (Caused by `addGroupMembers`)
+      - LESS_THAN_TWO_MEMBERS
+      - USERNAME_%S_NOT_FRIEND
+          (%S will replace with the username)
+          (If username is the owner's username)
+          (If username does not exists)
+          (If username is not owner's friend)
+ */
+DELIMITER ~
+CREATE PROCEDURE `updateGroup`
+  (
+    IN `owner`    INT UNSIGNED,
+    IN `old_name` VARCHAR(25)
+                  CHARACTER SET utf8mb4
+                  COLLATE utf8mb4_persian_ci,
+    IN `name`     VARCHAR(25)
+                  CHARACTER SET utf8mb4
+                  COLLATE utf8mb4_persian_ci,
+    IN `members`  TEXT
+  )
+    PROC: BEGIN
+
+    DECLARE group_id INT UNSIGNED;
+
+    -- If the group is duplicate
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @msg = MESSAGE_TEXT;
+
+      ROLLBACK;
+
+      IF @msg LIKE '%owner_name_unique%'
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
+      ELSE
+        RESIGNAL;
+      END IF;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    -- If neither name nor members are gonna get updated
+    IF name IS NULL AND members IS NULL
+    THEN
+      LEAVE PROC;
+    END IF;
+
+    START TRANSACTION;
+
+    SELECT `groups`.`id`
+    INTO group_id
+    FROM `groups`
+    WHERE `groups`.`name` = old_name
+          AND `groups`.`owner` = owner
+    FOR UPDATE;
+    -- If group does not exists
+    IF FOUND_ROWS() = 0
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_NOT_EXISTS';
+    END IF;
+
+    -- If name must get updated
+    IF name IS NOT NULL
+    THEN
+      UPDATE `groups`
+        SET `groups`.`name` = name
+      WHERE `groups`.`id` = group_id;
+    END IF;
+
+    IF members IS NULL
+    THEN
+      COMMIT;
+      LEAVE PROC;
+    END IF;
+
+    -- Delete existing user's from group
+    DELETE FROM `group_members` WHERE `group_members`.`group_id` = group_id;
+
+    CALL addGroupMembers(owner, group_id, members);
+
+    COMMIT;
+
+  END~
+DELIMITER ;
+
+
+/*
+  Errors (sqlstate = 45000):
+    - SENDER_NOT_FOUND
+    - POINT_NOT_FOUND
+    - PERSONAL_POINT_NOT_FOUND
+    - GROUP_NOT_FOUND
+
+    (Caused by `enforce_message_point_or_personal_point`)
+    - NO_POINT
+    - BOTH_POINTS
+ */
+DELIMITER ~
+CREATE PROCEDURE `sendGroupMessage`
+  (
+    IN sender         MEDIUMINT UNSIGNED,
+    IN group_name     VARCHAR(25)
+                      CHARACTER SET utf8mb4
+                      COLLATE utf8mb4_persian_ci,
+    IN point_code     CHAR(17),
+    IN personal_point BIGINT UNSIGNED,
+    IN sent_time      TIMESTAMP,
+    IN message        TEXT CHARACTER SET utf8mb4
+                      COLLATE utf8mb4_persian_ci
+  )
+    PROC: BEGIN
+
+    DECLARE point INT UNSIGNED;
+    DECLARE done BOOLEAN DEFAULT FALSE;
+    DECLARE group_id INT UNSIGNED;
+    DECLARE member_id MEDIUMINT UNSIGNED;
+
+    DECLARE cur CURSOR FOR
+      SELECT `group_members`.`member_id`
+      FROM `group_members`
+      WHERE `group_members`.`group_id` = group_id
+    LOCK IN SHARE MODE;
+
+    -- If sender does not exists
+    DECLARE EXIT HANDLER FOR 1452
+    BEGIN
+      ROLLBACK;
+
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'SENDER_NOT_FOUND';
+    END;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    SELECT `groups`.`id`
+    INTO group_id
+    FROM `groups`
+    WHERE `groups`.`owner` = sender AND
+          `groups`.`name` = group_name
+    LOCK IN SHARE MODE;
+    -- If group not found
+    IF FOUND_ROWS() != 1
+    THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_NOT_FOUND';
+    END IF;
+
+    -- If user wants to send a main point
+    IF point_code IS NOT NULL
+    THEN
+      -- Fetch points's id from it's code
+      -- The point is either public or is owned by sender
+      SELECT `points`.`id`
+      INTO point
+      FROM `points`
+      WHERE `points`.`code` = LOWER(point_code) AND
+            (`points`.`owner` = sender OR `points`.public = TRUE)
+      LOCK IN SHARE MODE;
+      -- Check if there is any point with given code
+      IF found_rows() != 1
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'POINT_NOT_FOUND';
+      END IF;
+    END IF;
+
+    -- If user wants to send a personal point
+    IF personal_point IS NOT NULL
+    THEN
+      -- Fetch personal points's owner from it's id
+      SELECT `personal_points`.`owner`
+      INTO @personal_point_owner
+      FROM `personal_points`
+      WHERE `personal_points`.`id` = personal_point
+      LOCK IN SHARE MODE;
+      -- Check if there is any personal point with given id
+      --     and if the the owner is the sender
+      IF found_rows() != 1 OR @personal_point_owner != sender
+      THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'PERSONAL_POINT_NOT_FOUND';
+      END IF;
+    END IF;
+
+    OPEN cur;
+    CUR_LOOP: LOOP
+      FETCH cur
+      INTO member_id;
+
+      IF done
+      THEN
+        LEAVE CUR_LOOP;
+      END IF;
+
+      INSERT INTO `messages` (messages.sender,
+                              messages.receiver,
+                              messages.point,
+                              messages.personal_point,
+                              messages.sent_time,
+                              messages.message) VALUES (
+        sender, member_id, point, personal_point, sent_time, message
+      );
+    END LOOP;
+    CLOSE cur;
+
+    COMMIT;
+  END ~
 DELIMITER ;

@@ -57,18 +57,18 @@ module.exports.schema = {
 
 
 /*
- Sends a message
+    Sends a message
 
- Errors:
- - sender_not_found
- - receiver_not_found
- - point_not_found
- - personal_point_not_found
- - no_point
- - both_points
- - self_message
+    Errors:
+        - sender_not_found
+        - receiver_not_found
+        - point_not_found
+        - personal_point_not_found
+        - no_point
+        - both_points
+        - self_message
 
- - serverError
+        - serverError
  */
 module.exports.send = function (sender,
                                 receiverUsername,
@@ -146,7 +146,7 @@ module.exports.delete = function (sender, msgId, callback) {
 module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
     db.conn.query(
         "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
-        "FROM `messages_detailed` " +
+        " FROM `messages_detailed` " +
         "WHERE ?? = ? " +
         "LIMIT ?, ?",
         [receiverOrSender, username, start, limit],

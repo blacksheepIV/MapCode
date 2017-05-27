@@ -54,6 +54,38 @@ CREATE FUNCTION `areFriends_ForUpdate`
   END ~
 DELIMITER ;
 
+/*
+  Returns TRUE if two users are friends and FALSE otherwise.
+    (Returns FALSE if first_user = second_user)
+ */
+DELIMITER ~
+CREATE FUNCTION `areFriends_LockInShareMode`
+  (
+    first_user MEDIUMINT UNSIGNED,
+    second_user MEDIUMINT UNSIGNED
+  )
+  RETURNS INTEGER
+  BEGIN
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    SELECT EXISTS(
+        SELECT *
+        FROM `friends`
+        WHERE `friends`.`first_user` = first_user
+              and `friends`.`second_user` = second_user
+        LOCK IN SHARE MODE
+    ) INTO @ret_val;
+
+    RETURN @ret_val;
+
+  END ~
+DELIMITER ;
+
 
 /*
   Returns TRUE if two users have a pending friend request.
