@@ -30,15 +30,18 @@ var friendService = function ($http){
               });
       },
       acceptFriendReq : function(userName){
-          var acceptUrl = window.apiHref + 'friends/accept/';
-          return $http({url:acceptUrl,method:'POST',data:userName})
+          var acceptUrl = window.apiHref +'friends/accept/'+userName;
+          console.log(acceptUrl);
+          return $http({url:acceptUrl,method:'POST'})
               .success(function(data){
+                  console.log(data);
                   friendService.acceptResult = data;
               });
       },
       cancelFriendReq : function(userName){
-          var cancelUrl = window.apiHref + 'friends/cancel/';
-          return $http({url:cancelUrl,method:'POST', data:userName})
+          var cancelUrl = window.apiHref + 'friends/cancel/'+userName;
+          console.log(cancelUrl);
+          return $http({url:cancelUrl,method:'POST'})
               .success(function(data){
                   friendService.cancelResult = data;
               });

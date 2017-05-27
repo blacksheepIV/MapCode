@@ -1,0 +1,38 @@
+<md-dialog  flex="60" aria-label="composeMessage" ng-controller="sharePointCtrl" ng-init="initCompose()">
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">ارسال پیام</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form name="sendMsg" class="form" dir="rtl" flex="100" ng-submit="sendMsg.$valid && submit()" novalidate layout="column"  layout-align="center">
+        <md-dialog-content layout="row" layout-align="center" >
+            <div class="md-dialog-content" dir="rtl">
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <label>ارسال به:</label>
+                        <input type="text"name="receiver" ng-model="msg.receiver" ng-minlength="5" ng-maxlength="15" ng-pattern="namePattern" required/>
+                    </md-input-container>
+                    <!--TODO: let it search through user's friend -->
+                </div>
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <label>کد نقطه:</label>
+                        <input type="text"name="code" ng-model="msg.point" ng-disabled="true" required/>
+                    </md-input-container>
+                </div>
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <textarea name="message" ng-model="msg.message" columns="16" ng-maxlength="21844" md-maxlength="21844" rows="2" placeholder="پیامت رو اینجا بنویس..." id="textAreas" ></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit">  ارسال پیام  </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

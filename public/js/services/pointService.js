@@ -11,6 +11,7 @@ function pointService($http){
         searchedFor : null,
         pPointResult : {},
         pPointDetailedInfo : {},
+        sharedPoint : {},
         setLocation: function (lat, lang) {
           //  console.log(lat);
          //   console.log(lang);
@@ -93,6 +94,12 @@ function pointService($http){
         },
         getPpointDetailedInfo : function(){
           return  pointService.pPointDetailedInfo;
+        },
+        sharePoint : function(point){
+            pointService.sharedPoint = point;
+        },
+        getSharedPoint : function(){
+            return pointService.sharedPoint;
         }
     };
     return pointService;

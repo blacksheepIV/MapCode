@@ -1,12 +1,22 @@
-<md-content layout="row" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
+<md-content layout="column" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
     <div class="animate-switch-container" ng-switch on="noPendingReq">
         <div class="animate-switch" ng-switch-when="true">هیچ درخواست دوستی وجود نداره</div>
         <div class="animate-switch" ng-switch-when="false">
-    <div class="chip" ng-repeat="pendingRequest in pendingReqs">
+    <!-- <div class="chip" ng-repeat="pendingRequest in pendingReqs">
         <img src="../img/Avatar/img_avatar3.png" alt="Person" width="96" height="96">
         {{pendingRequest}}
         <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
     </div>
+            </div>
+        </div> -->
+            <md-list class="md-dense" flex>
+                <md-list-item ng-repeat="pendingRequest in pendingReqs"  class="noleft">
+                    <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
+                    <p>{{pendingRequest}}</p>
+                    <md-icon class="md-secondary" ng-click="acceptReq(pendingRequest)" aria-label="accept"  md-font-icon="fa fa-check"></md-icon>
+                    <md-icon class="md-secondary" ng-click="abortSentReq(pendingRequest)" aria-label="reject" md-font-icon="fa fa-times"></md-icon>
+                 </md-list-item>
+            </md-list>
             </div>
         </div>
 </md-content>

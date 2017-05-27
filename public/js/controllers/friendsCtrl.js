@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 21-May-17.
  */
-function friendsCtrl ($scope,friendService){
+function friendsCtrl ($scope,friendService,$mdDialog){
     var getFriend =  window.apiHref + 'friends';
     $scope.initFriends = function(){
      /*   $scope.availableFeatures=
@@ -12,9 +12,12 @@ function friendsCtrl ($scope,friendService){
         $scope.noSentReq = false;
         $scope.pendingReqs = [];
         $scope.noPendingReq = false;
+        $scope.noFriends = false;
         friendService.getFriends().then(
             function(friendsList){
                 console.log(friendsList);
+                if(friendsList.data === 0)
+                    $scope.noFriends = true;
                 $scope.myFriends = friendsList.data;
             },
             function(friendsList){
@@ -35,4 +38,34 @@ function friendsCtrl ($scope,friendService){
                 console.log(requestList);
             });
     };//end of initFriends func
+    $scope.abortSentReq = function (username){
+        friendService.cancelFriendReq(username).then(
+            function(cancelResult){
+                console.log(cancelResult);
+             //   this.parentElement.style.display='none';
+            },
+            function(cancelResult){
+                console.log(cancelResult);
+            });
+    };//end of acceptFriendReq func
+    $scope.acceptReq = function(username){
+        console.log(username);
+        friendService.acceptFriendReq(username).then(
+            function(acceptResult){
+                console.log(acceptResult);
+            },
+            function(acceptResult){
+                console.log(acceptResult);
+            });
+};//end of acceptReq func
+    $scope.shareIt = function (){
+        //console.log("hello");
+            $mdDialog.show({
+                controller: friendsCtrl,
+                templateUrl: 'templates/Panel/userPanelItems/composeAmsg.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose:true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            });
+    };//end of shareIt func
 };//end of friendsCtrl

@@ -58,7 +58,7 @@
                                 <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/friendsList.html'"></div>
                             </md-content>
                         </md-tab>
-                        <md-tab label=" درخواست های در حال بررسی" >
+                        <md-tab label=" درخواست های در انتظار" >
                             <md-content class="md-padding">
                                 <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/pendingReqs.html'"></div>
                             </md-content>
@@ -78,7 +78,7 @@
             </md-tab>
             <md-tab label="پیغام های شخصی">
                 <md-content class="md-padding">
-                    <p>My Messages</p>
+                    <div ng-include="'./templates/Panel/userPanelItems/msgInbox.html'"></div>
                 </md-content>
             </md-tab>
         </md-tabs>
