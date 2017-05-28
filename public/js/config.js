@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider) {
+mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider,toastrConfig) {
 
     // Configure a dark theme with primary foreground grey
 
@@ -23,4 +23,16 @@ mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider) {
     //************************************************************************************
     localStorageServiceProvider
         .setNotify(true, true);//in case of setItem and removeItem the $rootScope wil be notified
+    /* ############################################################################################## */
+    angular.extend(toastrConfig, {
+        autoDismiss: false,
+        containerId: 'toast-container',
+        maxOpened: 0,
+        newestOnTop: true,
+        positionClass: 'toast-bottom-left',
+        preventDuplicates: false,
+        preventOpenDuplicates: false,
+        target: 'body'
+    });
+
 });
