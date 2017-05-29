@@ -425,6 +425,115 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Add group",
+					"request": {
+						"url": "http://localhost:3000/api/groups",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiZUZ2SmEifQ.CB4htoyRLJEidQGuQ3vCQSs1j102NJq1ApnlnTGQJ_w",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"testGroup\",\n\t\"members\": \"vahid mohammad\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Group",
+					"request": {
+						"url": "http://localhost:3000/api/groups/testGroup",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoia0xhb28ifQ.YmUuNq1pENdlS4PhtThdTuWYIppw6N_9aQ3aRe533HM",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update group",
+					"request": {
+						"url": "http://localhost:3000/api/groups/helloo",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiZUZ2SmEifQ.CB4htoyRLJEidQGuQ3vCQSs1j102NJq1ApnlnTGQJ_w",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"newgp\",\n\t\"members\": \"vahid mohammad\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User's groups",
+					"request": {
+						"url": "http://localhost:3000/api/groups?fields=name",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiZUZ2SmEifQ.CB4htoyRLJEidQGuQ3vCQSs1j102NJq1ApnlnTGQJ_w",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Send group message",
+					"request": {
+						"url": "http://localhost:3000/api/groups/newgp",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiZUZ2SmEifQ.CB4htoyRLJEidQGuQ3vCQSs1j102NJq1ApnlnTGQJ_w",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"personal_point\": \"1\",\n\t\"message\": \"Hello my fucking group!\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
