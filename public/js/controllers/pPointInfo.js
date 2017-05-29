@@ -25,4 +25,16 @@ var pPointInfo = function ($scope,pointService, $mdDialog,$window,$document,$tim
     $scope.cancel=function () {
         $mdDialog.cancel();
     };
+    //##################################################################################################################
+    $scope.shareIt = function (point){
+      //  console.log(point);
+        pointService.sharePoint (point,true);
+        $mdDialog.show({
+            controller: sharePointCtrl,
+            templateUrl: 'templates/Panel/userPanelItems/composeAmsg.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false// Only for -xs, -sm breakpoints.
+        });
+    };//end of shareIt func
 };

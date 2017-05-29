@@ -11,7 +11,7 @@ function pointInfoCtrl ($scope,pointService,$mdDialog){
     };
     $scope.shareIt = function(point){
        // $scope.cancel();
-        pointService.sharePoint (point);
+        pointService.sharePoint (point,false);
             $mdDialog.show({
                 controller: sharePointCtrl,
                 templateUrl: 'templates/Panel/userPanelItems/composeAmsg.html',
@@ -19,6 +19,5 @@ function pointInfoCtrl ($scope,pointService,$mdDialog){
                 clickOutsideToClose:true,
                 fullscreen: false// Only for -xs, -sm breakpoints.
             });
-
     };//end of shareIt func
 };

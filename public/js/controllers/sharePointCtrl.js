@@ -3,12 +3,21 @@
  */
 function sharePointCtrl ($scope,pointService,$mdDialog,msgService,toastr){
     $scope.initCompose = function (){
-        var point = pointService.getSharedPoint();
+        $scope.isPersonal = false;
         $scope.msg = {
             receiver :"",
-            point:  point.code ,
+            point : "",
+            personal_point :  0 ,
             message : ""
         };
+        var sharedPoint = pointService.getSharedPoint();
+        if(sharedPoint.isPersonal) {
+            $scope.msg.personal_point = pointService.sharedPoint.pointInfo.code;
+            $scope.isPersonal = true;
+        }
+        if(!sharedPoint.isPersonal)
+            $scope.msg.point =  pointService.sharedPoint.pointInfo.code ;
+
     };//end of initCompose
     /* ########################################################################################################################## */
     $scope.cancel=function () {
@@ -53,7 +62,20 @@ function sharePointCtrl ($scope,pointService,$mdDialog,msgService,toastr){
     }; */
     /* ######################################################################################################################### */
     $scope.submit = function (){
-        msgService.sendMsg($scope.msg)
+        var msgTemplate = {};
+        if($scope.isPersonal)
+            msgTemplate = {
+                receiver: $scope.msg.receiver,
+                personal_point: pointService.sharedPoint.pointInfo.code,
+                message: $scope.msg.message
+            };
+            else if (!$scope.isPersonal)
+            msgTemplate = {
+                receiver :$scope.msg.receiver,
+                point :  pointService.sharedPoint.pointInfo.code ,
+                message : $scope.msg.message
+            };
+        msgService.sendMsg(msgTemplate)
             .then(
                 function(sentResult){
                     console.log(sentResult);

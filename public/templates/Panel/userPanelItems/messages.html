@@ -7,8 +7,8 @@
 
             <div class="animate-switch" ng-switch-when="صندوق خروجی">
                 <div class="animate-switch-container" ng-switch on="noSentMsgs">
-                    <div class="animate-switch" ng-switch-when="true">صندوق پیام های ارسالی، خالی است.</div>
-                    <div class="animate-switch" ng-switch-when="false">
+                    <div class="animate-switch" ng-switch-when="true" ng-init="msgInit()">صندوق پیام های ارسالی، خالی است.</div>
+                    <div class="animate-switch" ng-switch-when="false" ng-init="msgInit()">
                         <md-list class="md-dense" flex>
                             <md-list-item ng-repeat="sentMsg in outboxMsgs"  class="noleft">
                                 <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
@@ -16,6 +16,7 @@
                                 <p>{{sentMsg.point_code}}</p>
                                 <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-envelope" ng-click="showMsgContent(sentMsg.code,$event)"></md-icon>
                                 <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-trash"></md-icon>
+                                <md-checkbox class="md-secondary" ng-model="something.else"></md-checkbox>
                                 <p>{{sentMsg.sent_time | date : "h:mma"}}</p>
                                 <md-divider></md-divider>
                             </md-list-item>

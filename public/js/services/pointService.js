@@ -95,8 +95,12 @@ function pointService($http){
         getPpointDetailedInfo : function(){
           return  pointService.pPointDetailedInfo;
         },
-        sharePoint : function(point){
-            pointService.sharedPoint = point;
+        sharePoint : function(point,isPersonal){
+            pointService.sharedPoint = {
+                pointInfo:point,
+                isPersonal : isPersonal
+            };
+            console.log(pointService.sharedPoint);
         },
         getSharedPoint : function(){
             return pointService.sharedPoint;

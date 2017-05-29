@@ -18,10 +18,16 @@
                     </md-input-container>
                     <!--TODO: let it search through user's friend ;got the API ;need to implement-->
                 </div>
-                <div layout="column" layout-xs="column">
+                <div layout="column" layout-xs="column" ng-show="!isPersonal">
                     <md-input-container flex="100" flex-xs="100">
                         <label>کد نقطه:</label>
-                        <input type="text"name="code" ng-model="msg.point" ng-disabled="true" required/>
+                        <input type="text" name="code" ng-model="msg.point" ng-disabled="true" ng-required="!isPersonal"/>
+                    </md-input-container>
+                </div>
+                <div layout="column" layout-xs="column" ng-show="isPersonal">
+                    <md-input-container flex="100" flex-xs="100">
+                        <label>کد نقطه شخصی:</label>
+                        <input type="text" name="code" ng-model="msg.personal_point" ng-disabled="true" ng-required="isPersonal"/>
                     </md-input-container>
                 </div>
                 <div layout="column" layout-xs="column">
