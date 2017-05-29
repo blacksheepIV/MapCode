@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-May-17.
  */
-function sharePointCtrl ($scope,pointService,$mdDialog,msgService,$mdToast){
+function sharePointCtrl ($scope,pointService,$mdDialog,msgService,toastr){
     $scope.initCompose = function (){
         var point = pointService.getSharedPoint();
         $scope.msg = {
@@ -15,7 +15,7 @@ function sharePointCtrl ($scope,pointService,$mdDialog,msgService,$mdToast){
         $mdDialog.cancel();
     };
     /* ######################################################################################################################### */
-    var last = {
+  /*  var last = {
         bottom: true,
         top: false,
         left: true,
@@ -50,14 +50,17 @@ function sharePointCtrl ($scope,pointService,$mdDialog,msgService,$mdToast){
                 .position(pinTo )
                 .hideDelay(5000)
         );
-    };
+    }; */
     /* ######################################################################################################################### */
     $scope.submit = function (){
         msgService.sendMsg($scope.msg)
             .then(
                 function(sentResult){
                     console.log(sentResult);
-                    showSimpleToast();
+                   // showSimpleToast();
+                    toastr.info( 'پیغام ارسال شد.', {
+                        closeButton: true
+                    });
                     $scope.cancel();
                 },function(sentResult){
                     console.log(sentResult);

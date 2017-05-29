@@ -106,7 +106,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
         else if(!$scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
             var pointInfo = {
                 lat: latitude,
-                lng: langitude,
+                lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
                 province: $scope.point.province.name,
@@ -120,7 +120,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
         else if($scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
             var pointInfo = {
                 lat: latitude,
-                lng: langitude,
+                lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
                 province: $scope.point.province.name,
@@ -134,7 +134,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
         else if(!$scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
             var pointInfo = {
                 lat: latitude,
-                lng: langitude,
+                lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
                 province: $scope.point.province.name,
