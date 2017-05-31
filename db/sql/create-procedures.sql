@@ -651,18 +651,10 @@ CREATE PROCEDURE `addGroup`
     -- If the group is duplicate
     DECLARE EXIT HANDLER FOR 1062
     BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @msg = MESSAGE_TEXT;
-
       ROLLBACK;
 
-      IF @msg LIKE '%owner_name_unique%'
-      THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
-      ELSE
-        RESIGNAL;
-      END IF;
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
     END;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -718,18 +710,10 @@ CREATE PROCEDURE `updateGroup`
     -- If the group is duplicate
     DECLARE EXIT HANDLER FOR 1062
     BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @msg = MESSAGE_TEXT;
-
       ROLLBACK;
 
-      IF @msg LIKE '%owner_name_unique%'
-      THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
-      ELSE
-        RESIGNAL;
-      END IF;
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'GROUP_ALREADY_EXISTS';
     END;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
