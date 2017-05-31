@@ -142,6 +142,9 @@ module.exports.delete = function (senderOrReceiver, msgId, callback) {
 
 /*
     Get list of user's messages
+
+    Errors:
+        - serverError
  */
 module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
     db.conn.query(
@@ -158,6 +161,32 @@ module.exports.getUserMessages = function (receiverOrSender, username, fields, s
             }
 
             callback(null, results);
+        }
+    );
+};
+
+
+/*
+    Get message's content
+
+    Errors:
+        - serverError
+ */
+module.exports.get = function (username, msgCode, fields, callback) {
+    db.conn.query(
+        " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
+        " FROM `messages_detailed` "+
+        " WHERE (`sender` = ? OR `receiver` = ?)" +
+        "       AND `code` = ?",
+        [username, username, msgCode],
+        function (err, results) {
+            // MySQL error
+            if (err) {
+                console.error("get@models/messages: MySQL error in getting message's content:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            callback(null, results[0]);
         }
     );
 };

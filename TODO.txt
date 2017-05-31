@@ -38,5 +38,3 @@
 - Use new utils.validateWithSchema
 
 - Delete friendship
-
-- Receiver get message content

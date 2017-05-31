@@ -321,21 +321,15 @@ router.get('/messages/:code',
     },
     customFielder('query', 'fields', messagesModel.publicFields),
     function (req, res) {
-        db.getFromBy(
+        messagesModel.get(
+            req.user.username,
+            req.params.code,
             req.queryFields,
-            'messages_detailed',
-            {
-                sender: req.user.username,
-                code: req.params.code
-            },
-            function (err, results) {
-                if (err) {
-                    console.log("{GET}/messages/:code/: Error in getting messages's info:\n\t\t%s\n\tQuery:\n\t\t", err, err.sql);
-                    return res.status(500).end();
-                }
+            function (err, msg) {
+                if (err) return res.status(500).end();
 
-                if (results && results.length !== 0)
-                    return res.json(results[0]);
+                if (msg)
+                    return res.json(msg);
 
                 // No point found!
                 res.status(404).end();
