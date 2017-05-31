@@ -119,15 +119,15 @@ module.exports.send = function (sender,
 
 
 /*
-    Deletes a message with given id and sender
+    Deletes a message with given id and it's sender or receiver
 
     Errors:
         - serverError
  */
-module.exports.delete = function (sender, msgId, callback) {
+module.exports.delete = function (senderOrReceiver, msgId, callback) {
     db.conn.query(
-        "DELETE FROM `messages` WHERE `sender` = ? AND `id` = ?",
-        [sender, msgId],
+        "DELETE FROM `messages` WHERE (`sender` = ? OR `receiver` = ?) AND `id` = ?",
+        [senderOrReceiver, senderOrReceiver, msgId],
         function (err) {
             if (err) {
                 console.error("delete@models/messages: MySQL error in deleting message: %s\nQuery:\n\t%s", err, err.sql);
