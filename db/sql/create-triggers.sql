@@ -64,3 +64,52 @@ FOR EACH ROW
   END;
 ~
 DELIMITER ;
+
+
+/*
+    When a friendship gets deleted, all the messages
+    between those friends gets deleted and also
+    they get removed from their mutual groups
+ */
+DELIMITER ~
+CREATE TRIGGER `friend_ship_delete_trigger`
+AFTER DELETE ON `friends`
+FOR EACH ROW
+  BEGIN
+    -- Delete all their messages
+    DELETE FROM `messages`
+    WHERE (
+            `messages`.`sender` = OLD.first_user
+            AND
+            `messages`.`receiver` = OLD.second_user
+          )
+          OR
+          (
+            `messages`.`sender` = OLD.second_user
+            AND
+            `messages`.`receiver` = OLD.first_user
+          );
+    -- Remove them from their mutual groups
+    DELETE FROM `group_members`
+    WHERE (
+            `group_members`.`member_id` = OLD.first_user
+            AND
+            `group_members`.`group_id` IN (
+              SELECT `groups`.`id`
+              FROM `groups`
+              WHERE `groups`.`owner` = OLD.second_user
+            )
+          )
+          OR
+          (
+            `group_members`.`member_id` = OLD.second_user
+            AND
+            `group_members`.`group_id` IN (
+              SELECT `groups`.`id`
+              FROM `groups`
+              WHERE `groups`.`owner` = OLD.first_user
+            )
+          );
+  END;
+~
+DELIMITER ;

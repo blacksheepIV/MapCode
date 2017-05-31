@@ -883,3 +883,50 @@ CREATE PROCEDURE `sendGroupMessage`
     COMMIT;
   END ~
 DELIMITER ;
+
+
+DELIMITER ~
+CREATE PROCEDURE `unfriend`
+  (
+    IN first_user           MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch user's id from it's username
+    SELECT `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      ROLLBACK;
+      LEAVE PROC;
+    END IF;
+
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    DELETE FROM `friends`
+    WHERE `friends`.`first_user` = first_user
+          AND `friends`.`second_user` = second_user;
+
+    COMMIT;
+  END ~
+DELIMITER ;

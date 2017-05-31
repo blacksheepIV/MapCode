@@ -47,6 +47,30 @@ module.exports.sendRequest = function (id, username, callback) {
 
 
 /*
+    Unfriend two users.
+    If those two users are not friend, nothing will happen.
+
+    Errors:
+        - serverError
+ */
+module.exports.unfriend = function (first_user_id, second_user_username, callback) {
+    // Call acceptFriendRequest DB procedure
+    db.conn.query(
+        "CALL unfriend(?, ?)",
+        [first_user_id, second_user_username],
+        function (err) {
+            if (err) {
+                console.error("unfriend@models/friends: Error in calling `unfiend` DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            callback();
+        }
+    );
+};
+
+
+/*
     Accepts the request sent from user(username) to user(id)
 
     Errors:

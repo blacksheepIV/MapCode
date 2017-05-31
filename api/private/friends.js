@@ -2,6 +2,7 @@ var router = require('express').Router();
 
 var friendsModel = require('../../models/friends');
 var usersModel = require('../../models/users');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 /**
@@ -216,6 +217,46 @@ router.get('/friends/', function (req, res) {
         }
     );
 });
+
+
+/**
+ * @api {delete} /friends/:username Delete friend
+ * @apiVersion 0.1.0
+ * @apiName deleteFriend
+ * @apiGroup friends
+ * @apiPermission private
+ *
+ * @apiDescription Delete friendship between user and a friend. All their messages will get deleted.
+ * They will get removed from their mutual groups.<br />If username does not exist or is not user's friend
+ * nothing will happen and 200 status ok will get returned
+ *
+ * @apiParam {String{5..15}} username
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         DELETE http://mapcode.ir/api/friends/alireza
+ *     Response:
+ *         HTTP/1.1 200 OK
+ *
+ * @apiError (400) username:empty
+ * @apiError (400) username:not_valid_username Can only start with english letters and then have letters, underscores, or numbers
+ * @apiError (400) username:length_not_5_to_15
+ */
+router.delete('/friends/:username',
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+    function (req, res) {
+        friendsModel.unfriend(
+            req.user.id,
+            req.params.username,
+            function (err) {
+                if (err) return res.status(500).end();
+
+                // User successfully unfriended his friend!
+                res.status(200).end();
+            }
+        );
+    }
+);
 
 
 module.exports = router;

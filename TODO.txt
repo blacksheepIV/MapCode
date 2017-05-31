@@ -36,5 +36,3 @@
 - Verbosify and Beautify all logs
 
 - Use new utils.validateWithSchema
-
-- Delete friendship
