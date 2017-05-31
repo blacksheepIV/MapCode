@@ -539,7 +539,6 @@ DELIMITER ;
 
 /*
     Errors (sqlstate = 45000):
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -559,20 +558,8 @@ CREATE PROCEDURE `addGroupMembers`
 
     SET members = TRIM(members);
 
-    IF members IS NULL OR members = ''
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
-
     SET @i = 1;
     SET @members_count = LENGTH(members) - LENGTH(REPLACE(members, ' ', '')) + 1;
-
-    IF @members_count < 2
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
 
     /*
         Add members to the group
@@ -626,7 +613,6 @@ DELIMITER ;
       - GROUP_ALREADY_EXISTS
 
       (Caused by `addGroupMembers`)
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -684,7 +670,6 @@ DELIMITER ;
       - GROUP_ALREADY_EXISTS
 
       (Caused by `addGroupMembers`)
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -894,6 +879,53 @@ CREATE PROCEDURE `sendGroupMessage`
       );
     END LOOP;
     CLOSE cur;
+
+    COMMIT;
+  END ~
+DELIMITER ;
+
+
+DELIMITER ~
+CREATE PROCEDURE `unfriend`
+  (
+    IN first_user           MEDIUMINT UNSIGNED,
+    IN second_user_username VARCHAR(15)
+  )
+    PROC: BEGIN
+
+    DECLARE second_user MEDIUMINT UNSIGNED;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      ROLLBACK;
+      RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch user's id from it's username
+    SELECT `users`.`id`
+    INTO second_user
+    FROM `users`
+    WHERE `users`.`username` = second_user_username
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      ROLLBACK;
+      LEAVE PROC;
+    END IF;
+
+    IF second_user < first_user
+    THEN
+      SET @tmp = first_user;
+      SET first_user = second_user;
+      SET second_user = @tmp;
+    END IF;
+
+    DELETE FROM `friends`
+    WHERE `friends`.`first_user` = first_user
+          AND `friends`.`second_user` = second_user;
 
     COMMIT;
   END ~

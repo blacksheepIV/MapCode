@@ -1,0 +1,10 @@
+1-SOLVED
+   For now, a message from a sender(S) to a receiver(R)
+   is in one DB table(`messages`). As a result, when one of
+   S or R deletes a message, the message gets deleted for
+   another one too.
+   ********************************************************
+   Do we want a design that sent messages are separated
+   from received messages?
+   --------------------------------------------------------
+   Current design is fine.

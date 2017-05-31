@@ -54,7 +54,6 @@ module.exports.updateSchema = {
 
 /*
     Errors:
-        - less_than_two_members
         - group_already_exists
         - username_%s_not_friend
             (%s will replace with the username)
@@ -74,9 +73,6 @@ module.exports.add = function (userId, gpName, gpMembers, callback) {
             if (err) {
                 // Procedure error has happened
                 if (err.sqlState === '45000') {
-                    if (lodashIncludes(err.message, 'LESS_THAN_TWO_MEMBERS'))
-                        return callback('less_than_two_members');
-
                     if (lodashIncludes(err.message, 'GROUP_ALREADY_EXISTS'))
                         return callback('group_already_exists');
 
@@ -122,7 +118,6 @@ module.exports.delete = function (userId, gpName, callback) {
 /*
  Errors:
     - group_not_exists
-    - less_than_two_members
     - group_already_exists
     - username_%s_not_friend
         (%s will replace with the username)
@@ -141,9 +136,6 @@ module.exports.update = function (userId, gpName, newName, members, callback) {
             if (err) {
                 // Procedure error has happened
                 if (err.sqlState === '45000') {
-                    if (lodashIncludes(err.message, 'LESS_THAN_TWO_MEMBERS'))
-                        return callback('less_than_two_members');
-
                     if (lodashIncludes(err.message, 'GROUP_ALREADY_EXISTS'))
                         return callback('group_already_exists');
 

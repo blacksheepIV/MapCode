@@ -2,6 +2,7 @@ var router = require('express').Router();
 
 var messagesModel = require('../../models/messages');
 var db = require('../../db');
+var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
 var startLimitChecker = require('../../utils').startLimitChecker;
 
@@ -104,7 +105,7 @@ router.post('/messages',
  * @apiPermission private
  *
  * @apiDescription Deletes a message (with given code) for user with given token.
- * If given message does not belong to user, nothing will happen and 200 status code will get returned.
+ * If user is not sender or receiver, nothing will happen and 200 status code will get returned.
  *
  * @apiParam {Number} code Message's code
  *
@@ -117,34 +118,22 @@ router.post('/messages',
  *
  * @apiError (400) code:not_numeric
  */
-router.delete('/messages/:code', function (req, res) {
-    req.validateWithSchema(
-        {
-            'code': {
-                isInt: {
-                    errorMessage: 'not_numeric'
-                }
-            }
-        },
-        'all',
-        // In case of successful validation
-        function () {
-            messagesModel.delete(
-                req.user.id,
-                req.params.code,
-                function (err) {
-                    // serverError
-                    if (err)
-                        return res.status(500).end();
+router.delete('/messages/:code',
+    validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
+    function (req, res) {
+        messagesModel.delete(
+            req.user.id,
+            req.params.code,
+            function (err) {
+                // serverError
+                if (err)
+                    return res.status(500).end();
 
-                    res.status(200).end();
-                }
-            );
-        },
-        null, // Don't ignore any fields
-        'checkParams'
-    );
-});
+                res.status(200).end();
+            }
+        );
+    }
+);
 
 
 
@@ -332,21 +321,15 @@ router.get('/messages/:code',
     },
     customFielder('query', 'fields', messagesModel.publicFields),
     function (req, res) {
-        db.getFromBy(
+        messagesModel.get(
+            req.user.username,
+            req.params.code,
             req.queryFields,
-            'messages_detailed',
-            {
-                sender: req.user.username,
-                code: req.params.code
-            },
-            function (err, results) {
-                if (err) {
-                    console.log("{GET}/messages/:code/: Error in getting messages's info:\n\t\t%s\n\tQuery:\n\t\t", err, err.sql);
-                    return res.status(500).end();
-                }
+            function (err, msg) {
+                if (err) return res.status(500).end();
 
-                if (results && results.length !== 0)
-                    return res.json(results[0]);
+                if (msg)
+                    return res.json(msg);
 
                 // No point found!
                 res.status(404).end();

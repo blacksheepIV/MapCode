@@ -36,9 +36,3 @@
 - Verbosify and Beautify all logs
 
 - Use new utils.validateWithSchema
-
-- Receiver can delete messages
-
-- Delete friendship
-
-- Receiver get message content
