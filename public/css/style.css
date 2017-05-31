@@ -234,3 +234,6 @@ padding-left: 28px; //was null
 .menuItems{
     cursor: pointer;
 }
+.menuItem{
+    font-family: Koodak;
+}

@@ -53,11 +53,24 @@ function friendsCtrl ($scope,friendService,$mdDialog){
         friendService.acceptFriendReq(username).then(
             function(acceptResult){
                 console.log(acceptResult);
+                rem();
             },
             function(acceptResult){
                 console.log(acceptResult);
             });
 };//end of acceptReq func
+    /* #################################################################################################################### */
+    function rem(){
+        var list = document.getElementById('pendingRequests'),
+            items = Array.prototype.slice.call(list.childNodes),
+            item;
+        while (item = items.pop()) {
+            if (item.firstChild && item.firstChild.checked) {
+                list.removeChild(item);
+            }
+        }
+    };//end of rem func
+    /* #################################################################################################################### */
     $scope.shareIt = function (){
         //console.log("hello");
             $mdDialog.show({
