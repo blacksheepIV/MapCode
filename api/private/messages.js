@@ -1,7 +1,6 @@
 var router = require('express').Router();
 
 var messagesModel = require('../../models/messages');
-var db = require('../../db');
 var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
 var startLimitChecker = require('../../utils').startLimitChecker;
