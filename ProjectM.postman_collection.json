@@ -534,6 +534,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Friend",
+					"request": {
+						"url": "http://localhost:3000/api/friends/hamid",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiUlpSaVQifQ.9PDjc2_ivLDNF8EEitlxyYBxnWDuh1vEpP2WceNFUGA",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
