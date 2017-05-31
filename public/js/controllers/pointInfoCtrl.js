@@ -20,4 +20,16 @@ function pointInfoCtrl ($scope,pointService,$mdDialog){
                 fullscreen: false// Only for -xs, -sm breakpoints.
             });
     };//end of shareIt func
+    /* ################################################################################################################# */
+    $scope.showThePath = function(point){
+        pointService.sharePoint (point,true);
+        $scope.cancel();
+        $mdDialog.show({
+            controller: mapCtrl,
+            templateUrl: 'templates/Panel/userPanelItems/map.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false// Only for -xs, -sm breakpoints.
+        });
+    };//end of showThePath func
 };

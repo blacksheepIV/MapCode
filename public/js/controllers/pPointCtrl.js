@@ -14,22 +14,22 @@ function pPointCtrl ($scope , pointService ,sysMessagesService) {
        };
    };//end of initPpoint
     $scope.addPpoint = function (){
-        var pPoint = {};
-       var latitude= String($scope.pPoint.lat).substr(0, 10);
+        var personalPoint = {};
+        var latitude= String($scope.pPoint.lat).substr(0, 10);
         var longitude = String($scope.pPoint.lng).substr(0, 11);
-        pPoint ={
+        personalPoint ={
             lat:latitude ,
             lng : longitude,
             name : $scope.pPoint.name
         };
         if(!$scope.addPersonalPoint.description.$pristine)
-            pPoint ={
-                lat: $scope.pPoint.lat,
-                lng : $scope.pPoint.lng,
+            personalPoint ={
+                lat: latitude,
+                lng : longitude,
                 name : $scope.pPoint.name,
                 description: $scope.pPoint.description
             };
-        pointService.sendPpointInfo(pPoint).then(
+        pointService.sendPpointInfo(personalPoint).then(
             function(pPointResult){
             console.log(pPointResult);
                 sysMessagesService.showMsg("عرض تبریک","نقطه شخصی با موفقیت ثبت شد!","تشکر");

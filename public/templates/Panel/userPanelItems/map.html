@@ -1,0 +1,16 @@
+<md-dialog  flex="60" aria-label="composeMessage" ng-controller="mapCtrl" ng-init="initStuff()" flex="40" style="width:100%;height:100%;">
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">مسیریابی</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-align="center" flex="100">
+       <div layout="column" layout-fill flex="50">
+           <div id="myMap" style="height: 100%;z-index:1000;" ></div>
+       </div>
+    </md-dialog-content>
+</md-dialog>

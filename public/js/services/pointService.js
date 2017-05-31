@@ -100,7 +100,7 @@ function pointService($http){
                 pointInfo:point,
                 isPersonal : isPersonal
             };
-            console.log(pointService.sharedPoint);
+          //  console.log(pointService.sharedPoint);
         },
         getSharedPoint : function(){
             return pointService.sharedPoint;

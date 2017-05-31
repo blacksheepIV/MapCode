@@ -1,7 +1,17 @@
 <div ng-controller="msgCTRL" ng-init="msgInit()">
-    <md-select placeholder="چک کردن" class="md-no-underline" ng-model="selectedType">
+    <div layout="row" flex="100" layout-align='start center'>
+        <span>نمایش محتوای:</span>
+        <div flex="5"></div>
+    <md-select placeholder="چک کردن" class="md-no-underline" ng-model="selectedType" >
         <md-option ng-value="checkType" ng-repeat="checkType in checkTypes">{{checkType}}</md-option>
     </md-select>
+        <div flex="60"></div>
+
+            <md-icon class="md-secondary"  aria-label="refresh"  md-font-icon="fa fa-refresh fa-lg" ng-show="selectedType"></md-icon>
+            <md-checkbox  aria-label="selectAll" class="md-secondary" ng-checked="isChecked()"  md-indeterminate="isIndeterminate()" ng-click="toggleAll()" ng-show="selectedType"></md-checkbox>
+            <!-- TODO: they don't align well -->
+
+    </div>
     <md-content layout="column">
         <div class="animate-switch-container" ng-switch on="selectedType">
 
@@ -16,7 +26,7 @@
                                 <p>{{sentMsg.point_code}}</p>
                                 <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-envelope" ng-click="showMsgContent(sentMsg.code,$event)"></md-icon>
                                 <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-trash"></md-icon>
-                                <md-checkbox class="md-secondary" ng-model="something.else"></md-checkbox>
+                                <md-checkbox class="md-secondary" ng-checked="exists(item, selected)" ng-click="toggle(item, selected)" ng-model="chkBox"></md-checkbox>
                                 <p>{{sentMsg.sent_time | date : "h:mma"}}</p>
                                 <md-divider></md-divider>
                             </md-list-item>
