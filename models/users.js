@@ -190,12 +190,13 @@ module.exports.schema = {
 
 
 /*
- Updates a user in database
+     Updates a user in database
 
- Errors:
- - serverError
- - recommender_user_not_found
- - Array of duplicate rows. e.g. ['duplicate_email']
+     Errors:
+        - recommender_user_not_found
+        - Array of duplicate rows. e.g. ['duplicate_email']
+
+        - serverError
  */
 module.exports.updateUser = function (user, conditions, callback) {
     asyncSeries([
@@ -224,7 +225,7 @@ module.exports.updateUser = function (user, conditions, callback) {
             if (user.date)
                 user.date = moment(user.date).format('YYYY-MM-DD');
 
-            db.objectUpdateQuery('users', user, conditions, function (err, results) {
+            db.runUpdateQuery({table: 'users', fields: user, conditions: conditions}, function (err) {
                 // MySQL error
                 if (err) {
                     // There are duplicates in user's info
