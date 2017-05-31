@@ -28,20 +28,28 @@ module.exports.objectInsertQuery = function (tableName, obj, callback) {
     });
 };
 
-module.exports.objectUpdateQuery = function (tableName, obj, conditions, callback) {
-    var values = [tableName];
-    var query = "UPDATE ?? SET ";
-    Object.keys(obj).forEach(function (key) {
-        query += ' ?? = ?, ';
-        values.push(key, obj[key]);
-    });
-    query = query.substr(0, query.length - 2) + ' ';
 
-    query += "WHERE ";
-    var keys = Object.keys(conditions);
-    for (var i = 0; i < keys.length; i++) {
-        query += '?? = ?' + (i !== keys.length - 1 ? 'AND ' : ';');
-        values.push(keys[i], conditions[keys[i]]);
+module.exports.runUpdateQuery = function (options, callback) {
+    var fields = Object.keys(options.fields);
+    // If there is no field to update
+    if (!fields.length)
+        return callback();
+
+    var values = [options.table];
+    var query = "UPDATE ?? SET ";
+    fields.forEach(function (field, index) {
+        query += '?? = ?' + (index !== fields.length - 1 ? ', ' : ' ');
+        values.push(field, options.fields[field]);
+    });
+
+    var conditions = Object.keys(options.conditions);
+    // If there is any condition
+    if (conditions.length) {
+        query += "WHERE ";
+        conditions.forEach(function (cond, index) {
+            query += '?? = ?' + (index !== conditions.length - 1 ? 'AND ' : ';');
+            values.push(cond, options.conditions[cond]);
+        });
     }
 
     conn.query(query, values, function (err, results, fields) {
