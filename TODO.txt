@@ -34,5 +34,3 @@
     It solves the problem of deleting a point
 
 - Verbosify and Beautify all logs
-
-- Use new utils.validateWithSchema
