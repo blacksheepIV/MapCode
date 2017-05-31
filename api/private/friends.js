@@ -99,7 +99,7 @@ router.post('/friends/accept/:username', function (req, res) {
                 res.status(200).end();
             }
         );
-    });
+    }, null, 'checkParams');
 });
 
 
