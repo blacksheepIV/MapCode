@@ -412,12 +412,12 @@
 				{
 					"name": "User's outbox messages",
 					"request": {
-						"url": "http://localhost:3000/api/messages/sent",
+						"url": "http://localhost:3000/api/messages/outbox",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiNWh4aFoifQ.3qQCxDPJ36UJB5std1TywwCc5esu86BWbFARsT3M98Y",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6Ik8xeWxXIn0.Jx4O6JDHD1DHn1rdL1N7QnYvwJXDcNyV_UrXGscNU8k",
 								"description": ""
 							}
 						],
