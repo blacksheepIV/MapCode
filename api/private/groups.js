@@ -145,8 +145,8 @@ router.route('/groups/:name')
         // Validate group name
         validateWithSchema(groupsModel.schema, ['name'], null, 'checkParams'),
         // Validate inputs for sending message
+        validateWithSchema(messagesModel.schema, ['point', 'personal_point', 'message'], 'all'),
         function (req, res, next) {
-            req.validateWithSchema(messagesModel.schema, ['point', 'personal_point', 'message'], function () {
                 // Check if no point or personal point is given
                 if (!req.body.point && !req.body.personal_point)
                     return res.status(400).json({errors: ['no_point']});
@@ -157,7 +157,6 @@ router.route('/groups/:name')
 
                 // Inputs are fine, continue.
                 next();
-            }, 'all');
         },
         function (req, res) {
             groupsModel.sendMessage(

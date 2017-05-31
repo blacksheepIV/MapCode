@@ -31,8 +31,10 @@ var validateWithSchema = require('../../utils').validateWithSchema;
  * @apiError (400) self_request User can't send a friend request for (him/her)self!
  * @apiError (400) username_not_found There is no user with given username
  */
-router.post('/friends/:username', function (req, res) {
-    req.validateWithSchema(usersModel.schema, ['username'], function () {
+router.post('/friends/:username',
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+
+    function (req, res) {
         friendsModel.sendRequest(
             req.user.id,
             req.params.username,
@@ -50,8 +52,8 @@ router.post('/friends/:username', function (req, res) {
                 res.status(200).end();
             }
         );
-    }, null, 'checkParams');
-});
+    }
+);
 
 
 /**
@@ -81,8 +83,9 @@ router.post('/friends/:username', function (req, res) {
  * @apiError (400) requester_max_friends The user who has sent the request has maximum number of friends.
  * @apiError (400) username_not_found There is no user with given username.
  */
-router.post('/friends/accept/:username', function (req, res) {
-    req.validateWithSchema(usersModel.schema, ['username'], function () {
+router.post('/friends/accept/:username',
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+    function (req, res) {
         friendsModel.acceptRequest(
             req.user.id,
             req.params.username,
@@ -100,8 +103,8 @@ router.post('/friends/accept/:username', function (req, res) {
                 res.status(200).end();
             }
         );
-    }, null, 'checkParams');
-});
+    }
+);
 
 
 /**
@@ -129,8 +132,10 @@ router.post('/friends/accept/:username', function (req, res) {
  * @apiError (400) no_pending_request There is no request between these users.
  * @apiError (400) username_not_found There is no user with given username.
  */
-router.post('/friends/cancel/:username', function (req, res) {
-    req.validateWithSchema(usersModel.schema, ['username'], function () {
+router.post('/friends/cancel/:username',
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+
+    function (req, res) {
         friendsModel.cancelRequest(
             req.user.id,
             req.params.username,
@@ -148,8 +153,8 @@ router.post('/friends/cancel/:username', function (req, res) {
                 res.status(200).end();
             }
         );
-    }, null, 'checkParams');
-});
+    }
+);
 
 
 /**
@@ -244,6 +249,7 @@ router.get('/friends/', function (req, res) {
  */
 router.delete('/friends/:username',
     validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+
     function (req, res) {
         friendsModel.unfriend(
             req.user.id,

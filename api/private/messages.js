@@ -58,20 +58,20 @@ var startLimitChecker = require('../../utils').startLimitChecker;
  */
 router.post('/messages',
     // Validate inputs for sending message
+    validateWithSchema(messagesModel.schema, 'all', ['point', 'personal_point', 'message']),
     function (req, res, next) {
-        req.validateWithSchema(messagesModel.schema, 'all', function () {
-            // Check if no point or personal point is given
-            if (!req.body.point && !req.body.personal_point)
-                return res.status(400).json({errors: ['no_point']});
+        // Check if no point or personal point is given
+        if (!req.body.point && !req.body.personal_point)
+            return res.status(400).json({errors: ['no_point']});
 
-            // Check if both point and personal point is given
-            if (req.body.point && req.body.personal_point)
-                return res.status(400).json({errors: ['both_points']});
+        // Check if both point and personal point is given
+        if (req.body.point && req.body.personal_point)
+            return res.status(400).json({errors: ['both_points']});
 
-            // Inputs are fine, continue.
-            next();
-        }, ['point', 'personal_point', 'message']);
+        // Inputs are fine, continue.
+        next();
     },
+
     function (req, res) {
         messagesModel.send(
             req.user.id,
@@ -302,23 +302,19 @@ router.get('/messages/outbox',
  *        }
  */
 router.get('/messages/:code',
-    function (req, res, next) {
-        req.validateWithSchema(
-            {
-                'code': {
-                    isInt: {
-                        errorMessage: 'not_numeric'
-                    }
+    validateWithSchema(
+        {
+            'code': {
+                isInt: {
+                    errorMessage: 'not_numeric'
                 }
-            },
-            'all',
-            // In case of successful validation
-            next,
-            null, // Don't ignore any fields
-            'checkParams'
-        );
-    },
+            }
+        },
+        'all', null, 'checkParams'
+    ),
+
     customFielder('query', 'fields', messagesModel.publicFields),
+
     function (req, res) {
         messagesModel.get(
             req.user.username,

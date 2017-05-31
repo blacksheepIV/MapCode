@@ -2,6 +2,7 @@ var router = require('express').Router();
 
 var personalPointsModel = require('../../models/personal-points');
 var startLimitChecker = require('../../utils').startLimitChecker;
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 /**
@@ -45,24 +46,22 @@ var startLimitChecker = require('../../utils').startLimitChecker;
  *
  * @apiError (400) description:length_greater_than_21844
  */
-router.post('/personal_points', function (req, res) {
-    req.validateWithSchema(
-        personalPointsModel.schema,
-        'all',
-        function () {
-            // Add id of the token user to object to insert in DB
-            req.body.owner = req.user.id;
-            personalPointsModel.submit(req.body, function (err, code) {
-                // serverError
-                if (err)
-                    return res.status(500).end();
+router.post('/personal_points',
+    // Validation
+    validateWithSchema(personalPointsModel.schema, 'all', ['description']),
 
-                res.status(201).json({code: code});
-            });
-        },
-        ['description']
-    );
-});
+    function (req, res) {
+        // Add id of the token user to object to insert in DB
+        req.body.owner = req.user.id;
+        personalPointsModel.submit(req.body, function (err, code) {
+            // serverError
+            if (err)
+                return res.status(500).end();
+
+            res.status(201).json({code: code});
+        });
+    }
+);
 
 
 /**
@@ -86,8 +85,9 @@ router.post('/personal_points', function (req, res) {
  *
  * @apiError (400) code:not_numeric
  */
-router.delete('/personal_points/:code', function (req, res) {
-    req.validateWithSchema(
+router.delete('/personal_points/:code',
+    // Validation
+    validateWithSchema(
         {
             'code': {
                 isInt: {
@@ -95,25 +95,23 @@ router.delete('/personal_points/:code', function (req, res) {
                 }
             }
         },
-        'all',
-        // In case of successful validation
-        function () {
-            personalPointsModel.delete(
-                req.user.id,
-                req.params.code,
-                function (err) {
-                    // serverError
-                    if (err)
-                        return res.status(500).end();
+        'all', null, 'checkParams'
+    ),
 
-                    res.status(200).end();
-                }
-            );
-        },
-        null, // Don't ignore any fields
-        'checkParams'
-    );
-});
+    function (req, res) {
+        personalPointsModel.delete(
+            req.user.id,
+            req.params.code,
+            function (err) {
+                // serverError
+                if (err)
+                    return res.status(500).end();
+
+                res.status(200).end();
+            }
+        );
+    }
+);
 
 
 /**

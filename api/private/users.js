@@ -5,6 +5,7 @@ var asyncSetImmediate = require('async/setImmediate');
 var usersModel = require('../../models/users');
 var redis = require('../../utils/redis');
 var smsModel = require('../../models/sms');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 router.route('/users/')
@@ -93,10 +94,10 @@ router.route('/users/')
      * @apiError (409) duplicate_mobile_phone
      * @apiError (409) duplicate_username
      */
-    .put(function (req, res) {
-        req.validateWithSchema(usersModel.schema, usersModel.updatableFields, function () {
+    .put(
+        validateWithSchema(usersModel.schema, usersModel.updatableFields, 'all'),
 
-
+        function (req, res) {
             asyncSeries([
                 // Handle `mobile_phone` field
                 function (next) {
@@ -158,8 +159,8 @@ router.route('/users/')
             });
 
 
-        }, 'all');
-    });
+        }
+    );
 
 
 router.post('/users/documents/', function (req, res) {

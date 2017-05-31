@@ -3,6 +3,7 @@ var asyncEach = require('async/each');
 
 var db = require('../../db');
 var pointModel = require('../../models/point');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 router.use(require('../../utils').startLimitChecker);
@@ -97,44 +98,41 @@ router.route('/point')
  *
  *
  */
-    .post(function (req, res) {
-        req.validateWithSchema(
-            pointModel.schema,
-            'all',
-            function () {
-                var point = Object.assign({}, req.body);
+    .post(
+        validateWithSchema(pointModel.schema, 'all', ['description', 'tags']),
 
-                point.owner = req.user.id;
+        function (req, res) {
+            var point = Object.assign({}, req.body);
 
-                var date = new Date();
-                point.submission_date = date;
-                point.expiration_date = new Date(date.getTime());
-                point.expiration_date.setFullYear(date.getFullYear() + 1);
+            point.owner = req.user.id;
 
-                pointModel.addPoint(point, function (err, pointCode) {
-                    if (err) {
-                        if (err === 'serverError') {
-                            res.status(500).end();
-                        }
-                        else {
-                            var statusCode = 404;
-                            if (err === 'not_enough_credit_bonus')
-                                statusCode = 400;
-                            res.status(statusCode).json({
-                                errors: [err]
-                            });
-                        }
+            var date = new Date();
+            point.submission_date = date;
+            point.expiration_date = new Date(date.getTime());
+            point.expiration_date.setFullYear(date.getFullYear() + 1);
+
+            pointModel.addPoint(point, function (err, pointCode) {
+                if (err) {
+                    if (err === 'serverError') {
+                        res.status(500).end();
                     }
                     else {
-                        res.status(201).json({
-                            code: pointCode
+                        var statusCode = 404;
+                        if (err === 'not_enough_credit_bonus')
+                            statusCode = 400;
+                        res.status(statusCode).json({
+                            errors: [err]
                         });
                     }
-                });
-            },
-            ['description', 'tags']
-        );
-    })
+                }
+                else {
+                    res.status(201).json({
+                        code: pointCode
+                    });
+                }
+            });
+        }
+    )
     /**
      * @api {get} /point/ Get current user's public/private points
      * @apiVersion 0.1.0

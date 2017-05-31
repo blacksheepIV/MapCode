@@ -1,9 +1,9 @@
 var router = require('express').Router();
 
 var redis = require('../../utils/redis');
-
 var smsModel = require('../../models/sms');
 var usersModel = require('../../models/users');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 router.route('/signup')
@@ -95,8 +95,10 @@ router.route('/signup')
      * @apiError (409) duplicate_mobile_phone
      * @apiError (409) duplicate_username
      */
-    .post(function(req, res) {
-        req.validateWithSchema(usersModel.schema, usersModel.signUpFields, function () {
+    .post(
+        validateWithSchema(usersModel.schema, usersModel.signUpFields, ['recommender_user']),
+
+        function (req, res) {
             // Check if sms verification code is correct
             redis.get(smsModel.phoneNumberKey(req.body.mobile_phone), function (err, reply) {
                 if (err) {
@@ -140,10 +142,8 @@ router.route('/signup')
                     }
                 });
             });
-        },
-        // Ignore this field's validation if it does not exist in request
-        ['recommender_user']);
-    });
+        }
+    );
 
 
 module.exports = router;

@@ -2,8 +2,8 @@ var router = require('express').Router();
 var randomstring = require("randomstring");
 
 var redis = require('../../utils/redis');
-
 var smsModel = require('../../models/sms');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 router.route('/sms')
@@ -58,8 +58,11 @@ router.route('/sms')
      *         }
      *     }
      */
-    .post(function (req, res) {
-        req.validateWithSchema(smsModel.schema, 'all', function () {
+    .post(
+        // Validation
+        validateWithSchema(smsModel.schema, 'all'),
+
+        function (req, res) {
             var redis_key = smsModel.phoneNumberKey(req.body.mobile_phone);
 
             var smsVerificationCode = randomstring.generate({
@@ -110,8 +113,8 @@ router.route('/sms')
                     console.error("Redis : Setting phone verification code : " + err);
                 }
             });
-        });
-    });
+        }
+    );
 
 
 module.exports = router;
