@@ -539,7 +539,6 @@ DELIMITER ;
 
 /*
     Errors (sqlstate = 45000):
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -559,20 +558,8 @@ CREATE PROCEDURE `addGroupMembers`
 
     SET members = TRIM(members);
 
-    IF members IS NULL OR members = ''
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
-
     SET @i = 1;
     SET @members_count = LENGTH(members) - LENGTH(REPLACE(members, ' ', '')) + 1;
-
-    IF @members_count < 2
-    THEN
-      SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'LESS_THAN_TWO_MEMBERS';
-    END IF;
 
     /*
         Add members to the group
@@ -626,7 +613,6 @@ DELIMITER ;
       - GROUP_ALREADY_EXISTS
 
       (Caused by `addGroupMembers`)
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)
@@ -684,7 +670,6 @@ DELIMITER ;
       - GROUP_ALREADY_EXISTS
 
       (Caused by `addGroupMembers`)
-      - LESS_THAN_TWO_MEMBERS
       - USERNAME_%S_NOT_FRIEND
           (%S will replace with the username)
           (If username is the owner's username)

@@ -66,7 +66,6 @@ router.route('/groups')
      * @apiError (400) members:empty
      * @apiError (400) members:not_array
      *
-     * @apiError (400) less_than_two_members A group must at least have two members
      * @apiError (400) group_already_exists User already has a group with given name
      * @apiError (400) username_USERNAME_not_friend - `USERNAME` will replace with the username<br />- If username is the owner's username<br />- If username does not exists<br />- If username is not owner's friend
      *
@@ -296,7 +295,6 @@ router.route('/groups/:name')
      * @apiError (400) new_members:not_array
      *
      * @apiError (400) group_not_exists User has no group with given name
-     * @apiError (400) less_than_two_members A group must at least have two members
      * @apiError (400) group_already_exists User already has a group with given name
      * @apiError (400) username_USERNAME_not_friend - `USERNAME` will replace with the username<br />- If username is the owner's username<br />- If username does not exists<br />- If username is not owner's friend
      *
