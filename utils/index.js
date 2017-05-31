@@ -81,33 +81,44 @@ module.exports.customFielder = function (type, name, fields, fieldsOnly, sep) {
 
 
 module.exports.validateWithSchema = function (schema, params, ignorables, checkFunction) {
+    var newSchema = {};
+
+    if (params === 'all') {
+        params = Object.keys(schema);
+    }
+
+    params.forEach(function (param) {
+        newSchema[param] = schema[param];
+    });
+
+    if (checkFunction === undefined)
+        checkFunction = 'checkBody';
+
+    var checkField = checkFunction.substr(5).toLowerCase();
+
     return function (req, res, next) {
-        var newSchema = {};
-
-        if (params === 'all') {
-            params = Object.keys(schema);
-        }
-
-        params.forEach(function (param) {
-            newSchema[param] = schema[param];
-        });
-
-        if (checkFunction === undefined)
-            checkFunction = 'checkBody';
-
-        var checkField = checkFunction.substr(5).toLowerCase();
-
+        var ignored_fields = null;
         if (ignorables) {
+            ignored_fields = [];
+
             if (ignorables === 'all')
                 ignorables = params;
             for (var i = 0; i < ignorables.length; i++) {
                 if (req[checkField][ignorables[i]] === undefined) {
-                    delete newSchema[ignorables[i]];
+                    var field = newSchema[ignorables[i]];
+                    field.optional = true;
+                    ignored_fields.push(field);
                 }
             }
         }
 
         req[checkFunction](newSchema);
+
+        if (ignored_fields) {
+            ignored_fields.forEach(function (field) {
+                field.optional = false;
+            });
+        }
 
         req.getValidationResult().then(function (result) {
             // Parameters are not valid
