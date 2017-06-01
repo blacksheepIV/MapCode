@@ -135,10 +135,10 @@ $scope.levelPage = function(level){
             console.log("**"+userService.getUserTime());
             var t = userService.getUserTime();
             console.log(t);
-            console.log(moment().unix(t));
+          /*  console.log(moment().unix(t));
             console.log(moment().format());
             var momentDate = (moment(t).format()).split("T");
-            console.log(momentDate[0]);
+            console.log(momentDate[0]); */
             //console.log($rootScope.userClone.cDate);
             var myurl = window.apiHref + "signup/";
             var usrInfo = {
