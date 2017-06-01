@@ -568,6 +568,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "A user's points",
+					"request": {
+						"url": "http://localhost:3000/api/users/alireza/points",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6IldFUWZtIn0.1qOT8jWbNhz0w6DfMTXHWovcZ4RCKsOGSHw-RhVnmYM",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
