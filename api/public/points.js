@@ -108,7 +108,7 @@ router.use('/point/search',
  * @apiParam {Number{1..}} [start=1] Send points from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
  *
- * @apiParam {String[]} [fields] Can be composition on these (separated with comma(',')): lat, lng, submission_date, expiration_date, name, phone, provincem city, code, address, public, owner, rate, popularity, category, description, tags
+ * @apiParam {String[]} [fields] Can be composition on these (separated with comma(',')): lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags
  *
  * @apiExample Request-Example
  *     GET http://mapcode.ir/api/point/search?name=آر&tags=food restaurant

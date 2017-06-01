@@ -471,3 +471,77 @@ module.exports.get = function (username, fields, callback) {
         }
     );
 };
+
+
+/*
+    Get a user's points
+
+    publicOrPrivate: if 'public' then only public points
+                     if 'private' then only private points
+
+
+    Errors:
+        - serverError
+ */
+module.exports.getPoints = function (username, publicOrPrivate, fields, start, limit, callback) {
+    var conditions = {
+        owner: username
+    };
+
+    if (publicOrPrivate)
+        switch (publicOrPrivate) {
+            case 'public':
+                conditions.public = true;
+                break;
+            default:
+                conditions.public = false;
+        }
+
+    db.runSelectQuery({
+        table: 'points_detailed',
+        columns: fields,
+        conditions: conditions,
+        start: start,
+        limit: limit
+    }, function (err, results) {
+        // MySQL error
+        if (err) {
+            console.error("getPoints@models/users: MySQL: Error in getting user's points:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+            return callback('serverError');
+        }
+
+        callback(null, results);
+    });
+};
+
+
+module.exports.checkFriendshipStatus = function () {
+    // A middleware that checks friendship status
+    return function (req, res, next) {
+        // Is current requester user is friend of `username`
+        req.isFriend = false;
+
+        // If user is signed in
+        if (req.user) {
+            // If the requester and `username` are same
+            if (req.params.username === req.user.username) {
+                req.isFriend = true;
+                req.isMySelf = true;
+
+                return next();
+            }
+
+            // Check if signed in user is a friend of `username`
+            module.exports.areFriends(req.params.username, req.user.username, function (err, areFriends) {
+                // Server error
+                if (err) return res.status(500).end();
+
+                req.isFriend = areFriends;
+                next();
+            });
+        }
+        // If user is a signed out user
+        else
+            next();
+    };
+};

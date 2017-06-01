@@ -5,7 +5,6 @@ module.exports.publicFields = [
     'lat',
     'lng',
     'submission_date',
-    'expiration_date',
     'name',
     'phone',
     'province',

@@ -89,9 +89,19 @@ module.exports.runSelectQuery = function (options, callback) {
         query += "WHERE ";
         var conditions = Object.keys(options.conditions);
         conditions.forEach(function (cond, index) {
-            query += '?? = ?' + (index !== conditions.length - 1 ? 'AND ' : ';');
+            query += '?? = ?' + (index !== conditions.length - 1 ? 'AND ' : ' ');
             values.push(cond, options.conditions[cond]);
         });
+    }
+
+    if (options.start || options.start === 0) {
+        query += 'LIMIT ?';
+        values.push(options.start);
+
+        if (options.limit) {
+            query += ", ?";
+            values.push(options.limit);
+        }
     }
 
     conn.query(query, values, function (err, results, fields) {

@@ -147,27 +147,3 @@ module.exports.validateWithSchema = function (schema, params, ignorables, checkF
         });
     };
 };
-
-
-module.exports.checkFriendshipStatus = function () {
-    // A middleware that checks friendship status
-    return function (req, res, next) {
-        // Is current requestee user is friend of `username`
-        req.isFriend = false;
-
-        // If user is signed in
-        if (req.user) {
-            // Check if signed in user is a friend of `username`
-            usersModel.areFriends(req.params.username, req.user.username, function (err, areFriends) {
-                // Server error
-                if (err) return res.status(500).end();
-
-                req.isFriend = areFriends;
-                next();
-            });
-        }
-        // If user is a signed out user
-        else
-            next();
-    };
-};

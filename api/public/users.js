@@ -2,12 +2,15 @@ var router = require('express').Router();
 var moment = require('moment');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
+var pointModel = require('../../models/point');
 
 var jwt = require('../../utils/jwt');
 var db = require('../../db');
 var usersModel = require('../../models/users');
 var validateWithSchema = require('../../utils').validateWithSchema;
-var checkFriendshipStatus = require('../../utils').checkFriendshipStatus;
+var checkFriendshipStatus = require('../../models/users').checkFriendshipStatus;
+var startLimitChecker = require('../../utils').startLimitChecker;
+var customFielder = require('../../utils').customFielder;
 
 
 router.use('/users/',
@@ -133,6 +136,44 @@ router.route('/users/')
         );
 
     });
+
+
+router.get('/users/:username/points',
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+
+    jwt.JWTCheck,
+    jwt.JWTErrorIgnore,
+
+    startLimitChecker,
+
+    customFielder('query', 'fields', pointModel.publicFields),
+
+    checkFriendshipStatus(),
+
+    function (req, res) {
+        var publicOrPriavte = 'private';
+        if (req.isFriend === true) {
+            publicOrPriavte = null; // Both public and private
+            if (req.query.public)
+                publicOrPriavte = 'public';
+            else if (req.query.private)
+                publicOrPriavte = 'private';
+        }
+
+        usersModel.getPoints(
+            req.params.username,
+            publicOrPriavte,
+            req.queryFields,
+            req.queryStart,
+            req.queryLimit,
+            function (err, points) {
+                if (err) return res.status(500).end();
+
+                res.json(points);
+            }
+        );
+    }
+);
 
 
 /**
