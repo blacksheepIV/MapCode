@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
-var usersModel = require('../models/users');
 
 
 /*
