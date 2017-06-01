@@ -126,3 +126,12 @@ CREATE VIEW `groups_detailed` AS
     JOIN `groups` ON `groups`.`id` = `group_members`.`group_id`
     JOIN `users` ON `users`.`id` = `group_members`.`member_id`
   GROUP BY `group_members`.`group_id`;
+
+
+CREATE VIEW `friends_username` AS
+  SELECT
+    U1.`username` AS `first_user`,
+    U2.`username` AS `second_user`
+  FROM `friends`
+    JOIN `users` AS U1 ON U1.`id` = `friends`.`first_user`
+    JOIN `users` AS U2 ON U2.`id` = `friends`.`second_user`;

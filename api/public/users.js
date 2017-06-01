@@ -1,10 +1,12 @@
 var router = require('express').Router();
 var moment = require('moment');
 var lodashIntersection = require('lodash/intersection');
+var lodashTrim = require('lodash/trim');
 
 var jwt = require('../../utils/jwt');
 var db = require('../../db');
 var usersModel = require('../../models/users');
+var validateWithSchema = require('../../utils').validateWithSchema;
 
 
 router.use('/users/',
@@ -130,6 +132,82 @@ router.route('/users/')
         );
 
     });
+
+
+router.get('/users/:username',
+    jwt.JWTCheck,
+    jwt.JWTErrorIgnore,
+
+    validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
+
+    // Checks friendship status
+    function (req, res, next) {
+        // Is current requestee user is friend of `username`
+        req.isFriend = false;
+
+        // If user is signed in
+        if (req.user) {
+            // Check if signed in user is a friend of `username`
+            usersModel.areFriends(req.params.username, req.user.username, function (err, areFriends) {
+                // Server error
+                if (err) return res.status(500).end();
+
+                req.isFriend = areFriends;
+                next();
+            });
+        }
+        // If user is a signed out user
+        else
+            next();
+    },
+
+    function (req, res, next) {
+        req.queryFields = [];
+
+        // If field query string is present
+        if (req.query.fields) {
+            // Split and trim the fiends
+            req.query.fields = req.query.fields.split(',').map(lodashTrim);
+
+            if (req.isFriend)
+                req.queryFields = lodashIntersection(
+                    req.query.fields,
+                    usersModel.friendFields
+                );
+            else
+                req.queryFields = lodashIntersection(
+                    req.query.fields,
+                    usersModel.nonFriendFields
+                );
+
+        }
+
+        // If field query string is not present or fields is empty after intersection
+        if (!req.query.fields || !req.queryFields.length){
+            if (req.isFriend)
+                req.queryFields = usersModel.friendFields;
+            else
+                req.queryFields = usersModel.nonFriendFields;
+        }
+
+        next();
+    },
+
+    function (req, res) {
+        usersModel.get(
+            req.params.username,
+            req.queryFields,
+            function (err, results) {
+                if (err) return res.status(500).end();
+
+                if (results)
+                    res.send(results);
+                else
+                    res.status(404).end();
+            }
+        );
+    }
+);
 
 
 module.exports = router;

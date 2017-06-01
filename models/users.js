@@ -27,6 +27,7 @@ module.exports.publicFields = [
 
 ];
 
+
 module.exports.updatableFields = [
     'name',
     'melli_code',
@@ -54,6 +55,23 @@ module.exports.signUpFields = [
     'type',
     'sms_code'
 ];
+
+
+// Fields that non-friends and sign out users can access
+module.exports.nonFriendFields = [
+    'name',
+    'phone',
+    'username',
+    'description'
+];
+
+
+// Fields that user's friends can access
+module.exports.friendFields =
+    // All non-friends fields in addition of below fields
+    module.exports.nonFriendFields.concat([
+    'email'
+]);
 
 
 // Verification schema
@@ -386,6 +404,70 @@ module.exports.signIn = function (username, password, callback) {
                     }
                 });
             }
+        }
+    );
+};
+
+
+/*
+    Returns tru if user1 and user2 are friends, false otherwise.
+
+    user1, user2: username
+
+    Errors:
+        - serverError
+ */
+module.exports.areFriends = function (user1, user2, callback) {
+    user1 = db.conn.escape(user1);
+    user2 = db.conn.escape(user2);
+
+    db.conn.query(
+        " SELECT * FROM `friends_username`" +
+        " WHERE (`first_user` = " + user1 + " AND `second_user` = " + user2 + ")" +
+        "       OR" +
+        "       (`second_user` = " + user1 + " AND `first_user` = " + user2 + ")",
+        function (err, results) {
+            // MySQL error
+            if (err) {
+                console.error("areFriends@models/users: MySQL error in getting user's friendship from `friends_username` view:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            if (results.length !== 0)
+                return callback(null, true);
+
+            callback(null, false);
+        }
+    );
+};
+
+
+/*
+    Get user's info
+
+    Errors:
+        - serverError
+ */
+module.exports.get = function (username, fields, callback) {
+    db.runSelectQuery(
+        {
+            columns: fields,
+            table: 'users',
+            conditions: {
+                username: username
+            }
+        },
+        function (err, results) {
+            if (err) {
+                console.error("get@models/users: MySQL: Error in getting user info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // User with given username not found
+            if (results.length === 0)
+                return callback(null, null);
+
+            callback(null, results[0]);
         }
     );
 };
