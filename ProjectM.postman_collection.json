@@ -551,6 +551,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User info",
+					"request": {
+						"url": "http://localhost:3000/api/users/mohammad",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoibjRSMFAifQ.XutcOUAmQcDPniCbDL9bde1KZRomNHb6c0vSUAZEnzY",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -572,32 +589,27 @@
 						{
 							"key": "username",
 							"value": "arshinco",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "password",
 							"value": "azarmehr",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "number",
 							"value": "10000297201579",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "recipient",
 							"value": "09365075855",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "message",
 							"value": "Hello from dummy service",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
