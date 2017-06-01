@@ -22,9 +22,6 @@ mapCodeApp.config(function ($routeProvider, $locationProvider,$httpProvider) {
         .when('/advancedSearch',{
             templateUrl:"./templates/Panel/advancedSearch.html"
         })
-        .when('/FriendsGroups',{
-            templateUrl:"./templates/Panel/userPanelItems/FriendsGroups.html"
-        })
         .otherwise({
             redirectTo:"/"
         });

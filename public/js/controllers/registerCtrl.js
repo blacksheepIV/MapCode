@@ -7,8 +7,6 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
     $scope.v_code= 0;
     $scope.holding = [];
     $scope.initvars = function (){
-        console.log(moment().format());
-       // $scope.is2ndPage = false;
         //TODO:name constraint outta be changed from persion to english;date should support unixTimeStamp
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
@@ -16,11 +14,12 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
         $scope.mobilePattern='09[1|2|3][0-9]{8}';
         $scope.smsPattern='[0-9]+';
         $scope.levelPage(1);
+
         $scope.user = {
             name: '',
             melli_code: 0,
             email: '',
-            cDate: '',
+            cDate: persianDate().unix(),
             mobile_phone: '',
             phone: '',
             username: '',
@@ -30,11 +29,22 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
             description: '',
             isRecommended: false,
             recommender_user: '',
-            type: -1,
+            type: 0,
             code: '',
             credit: 0,
             bonus: 0
         };
+
+       // console.log( $( "#BdateALT" ).val());
+        $("#Bdate").pDatepicker(
+            {
+                altField: '#BdateALT',
+                format: 'YYYY - MM - DD dddd',
+                viewMode: "year",
+                position: "auto",
+                autoClose: true
+            });
+       /*  $( "#BdateALT" ).pDatepicker("setDate",[1392,12,1,11,11] ); */
     };//end of function initVars
     //****************************************************************************************************************************************
 
@@ -275,13 +285,6 @@ $scope.levelPage = function(level){
             console.log($scope.resubmits);
         };
         //******************************************************Persian_DatePicker config*********************************************************
-        $("#Bdate").pDatepicker(
-            {
-                altField: '#BdateALT',
-                format: 'YYYY - MM - DD dddd',
-                viewMode: "year",
-                position: "auto",
-                autoClose: true
-            });
+
 
 }//end of registerCtrl
