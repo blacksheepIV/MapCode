@@ -70,21 +70,28 @@ module.exports.listOfDuplicates = function (err) {
 };
 
 
-module.exports.getFromBy = function (columns, table, conditions, callback) {
-    var values = [].concat(columns);
+module.exports.runSelectQuery = function (options, callback) {
+    var values = (options.columns === '*' ? [] : [].concat(options.columns));
+
     var query = "SELECT ";
-    for (var i = 0; i < columns.length; i++) {
-        query += "??" + (i !== columns.length - 1 ? ', ' : ' ');
-    }
+
+    if (options.columns === '*')
+        query += "* ";
+    else
+        options.columns.forEach(function (column, index) {
+            query += "??" + (index !== options.columns.length - 1 ? ', ' : ' ');
+        });
 
     query += "FROM ?? ";
-    values.push(table);
+    values.push(options.table);
 
-    query += "WHERE ";
-    var keys = Object.keys(conditions);
-    for (i = 0; i < keys.length; i++) {
-        query += '?? = ?' + (i !== keys.length - 1 ? 'AND ' : ';');
-        values.push(keys[i], conditions[keys[i]]);
+    if (options.conditions) {
+        query += "WHERE ";
+        var conditions = Object.keys(options.conditions);
+        conditions.forEach(function (cond, index) {
+            query += '?? = ?' + (index !== conditions.length - 1 ? 'AND ' : ';');
+            values.push(cond, options.conditions[cond]);
+        });
     }
 
     conn.query(query, values, function (err, results, fields) {

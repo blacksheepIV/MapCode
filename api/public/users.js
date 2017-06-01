@@ -101,10 +101,14 @@ router.route('/users/')
         if (fields.length === 0)
             fields = allFields;
 
-        db.getFromBy(
-            fields,
-            'users_detailed',
-            {username: req.user.username},
+        db.runSelectQuery(
+            {
+                columns: fields,
+                table: 'users_detailed',
+                conditions: {
+                    username: req.user.username
+                }
+            },
             function (err, results) {
                 if (err) {
                     console.error("MySQL: Error in getting token user's info: %s", err);
