@@ -257,7 +257,7 @@ router.get('/users/:username/points',
  * <ul><li>name</li><li>phone</li><li>username</li><li>description</li></ul>
  * But if user is signed in and is also a friend of `username` in addition
  * to above field these fields are also accessible:
- * <ul><li>email</li></ul>
+ * <ul><li>email</li><li>friendship</li></ul>
  *
  * @apiParam {String{5..15}} username
  * @apiParam {String[]} [fields] A combination of accessible fields split with comma
@@ -265,6 +265,8 @@ router.get('/users/:username/points',
  * @apiError (400) username:empty
  * @apiError (400) username:not_valid_username Can only start with english letters and then have letters, underscores, or numbers
  * @apiError (400) username:length_not_5_to_15
+ *
+ * @apiSuccess {String} friendship One one these values: `no`, `friend`, `pending_to_me` (Request has sent to me), `pending_from_me` (I have sent the request)
  *
  * @apiSuccessExample
  *     Request-Example:
@@ -289,11 +291,15 @@ router.get('/users/:username',
 
     function (req, res, next) {
         req.queryFields = [];
+        req.friendshipRequested = false;
 
         // If field query string is present
         if (req.query.fields) {
             // Split and trim the fiends
             req.query.fields = req.query.fields.split(',').map(lodashTrim);
+
+            if (req.query.fields.includes('friendship'))
+                req.friendshipRequested = true;
 
             if (req.isFriend)
                 req.queryFields = lodashIntersection(
@@ -310,10 +316,16 @@ router.get('/users/:username',
 
         // If field query string is not present or fields is empty after intersection
         if (!req.query.fields || !req.queryFields.length){
-            if (req.isFriend)
-                req.queryFields = usersModel.friendFields;
-            else
-                req.queryFields = usersModel.nonFriendFields;
+            // If friendship field was not in requested fields
+            if (!req.friendshipRequested) {
+                if (req.isFriend)
+                    req.queryFields = usersModel.friendFields;
+                else
+                    req.queryFields = usersModel.nonFriendFields;
+
+                if (req.user)
+                    req.friendshipRequested = true;
+            }
         }
 
         next();
@@ -323,12 +335,17 @@ router.get('/users/:username',
         usersModel.get(
             req.params.username,
             req.queryFields,
-            function (err, results) {
+            function (err, user_info) {
                 if (err) return res.status(500).end();
 
                 // If user found
-                if (results)
-                    res.send(results);
+                if (user_info) {
+                    // If request wants friendship status
+                    if (req.friendshipRequested)
+                        user_info.friendship = req.friendship;
+
+                    res.json(user_info);
+                }
                 else
                     res.status(404).json({errors: ['username_not_found']});
             }

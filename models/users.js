@@ -70,8 +70,8 @@ module.exports.nonFriendFields = [
 module.exports.friendFields =
     // All non-friends fields in addition of below fields
     module.exports.nonFriendFields.concat([
-    'email'
-]);
+        'email'
+    ]);
 
 
 // Verification schema
@@ -410,22 +410,23 @@ module.exports.signIn = function (username, password, callback) {
 
 
 /*
-    Returns tru if user1 and user2 are friends, false otherwise.
+     Check friendship status of two users base on their usernames.
 
-    user1, user2: username
+     Returns:
+         0 : Are not friends
+         1 : Are friends
+         2 : Are friends and first_user has requested
+         3 : Are friends has second_user has requested
 
-    Errors:
+     Note: If any one given usernames does not exist, 0 will return.
+
+     Errors:
         - serverError
  */
-module.exports.areFriends = function (user1, user2, callback) {
-    user1 = db.conn.escape(user1);
-    user2 = db.conn.escape(user2);
-
+module.exports.friendshipStatus = function (user1, user2, callback) {
     db.conn.query(
-        " SELECT * FROM `friends_username`" +
-        " WHERE (`first_user` = " + user1 + " AND `second_user` = " + user2 + ")" +
-        "       OR" +
-        "       (`second_user` = " + user1 + " AND `first_user` = " + user2 + ")",
+        "SELECT `friendshipStatus` (?, ?) as `status`",
+        [user1, user2],
         function (err, results) {
             // MySQL error
             if (err) {
@@ -433,10 +434,7 @@ module.exports.areFriends = function (user1, user2, callback) {
                 return callback('serverError');
             }
 
-            if (results.length !== 0)
-                return callback(null, true);
-
-            callback(null, false);
+            callback(null, results[0].status);
         }
     );
 };
@@ -449,6 +447,9 @@ module.exports.areFriends = function (user1, user2, callback) {
         - serverError
  */
 module.exports.get = function (username, fields, callback) {
+    if (fields.length === 0)
+        return callback(null, {});
+
     db.runSelectQuery(
         {
             columns: fields,
@@ -520,6 +521,10 @@ module.exports.checkFriendshipStatus = function () {
     return function (req, res, next) {
         // Is current requester user is friend of `username`
         req.isFriend = false;
+        // Is current requester user same as `username`
+        req.isMySelf = false;
+        // Friendship status between current requester and `username`
+        req.friendship = 'no';
 
         // If user is signed in
         if (req.user) {
@@ -527,16 +532,30 @@ module.exports.checkFriendshipStatus = function () {
             if (req.params.username === req.user.username) {
                 req.isFriend = true;
                 req.isMySelf = true;
+                req.friendship = 'friend';
 
                 return next();
             }
 
             // Check if signed in user is a friend of `username`
-            module.exports.areFriends(req.params.username, req.user.username, function (err, areFriends) {
+            module.exports.friendshipStatus(req.params.username, req.user.username, function (err, friendship_status) {
                 // Server error
                 if (err) return res.status(500).end();
 
-                req.isFriend = areFriends;
+                switch (friendship_status) {
+                    case 0: // Are not friends
+                        break;
+                    case 1: // Are friends
+                        req.isFriend = true;
+                        req.friendship = 'friend';
+                        break;
+                    case 2: // username has requested to user
+                        req.friendship = 'pending_to_me';
+                        break;
+                    default: // user has requested to username
+                        req.friendship = 'pending_from_me';
+                }
+
                 next();
             });
         }
