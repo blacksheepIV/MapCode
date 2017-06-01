@@ -7,6 +7,7 @@ var jwt = require('../../utils/jwt');
 var db = require('../../db');
 var usersModel = require('../../models/users');
 var validateWithSchema = require('../../utils').validateWithSchema;
+var checkFriendshipStatus = require('../../utils').checkFriendshipStatus;
 
 
 router.use('/users/',
@@ -174,26 +175,7 @@ router.get('/users/:username',
 
     validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
 
-    // Checks friendship status
-    function (req, res, next) {
-        // Is current requestee user is friend of `username`
-        req.isFriend = false;
-
-        // If user is signed in
-        if (req.user) {
-            // Check if signed in user is a friend of `username`
-            usersModel.areFriends(req.params.username, req.user.username, function (err, areFriends) {
-                // Server error
-                if (err) return res.status(500).end();
-
-                req.isFriend = areFriends;
-                next();
-            });
-        }
-        // If user is a signed out user
-        else
-            next();
-    },
+    checkFriendshipStatus(),
 
     function (req, res, next) {
         req.queryFields = [];
