@@ -199,3 +199,90 @@ CREATE FUNCTION `friendRequestsCount_ForUpdate`
 
   END ~
 DELIMITER ;
+
+
+/*
+    Check friendship status of two users base on their usernames.
+
+    Returns:
+      0 : Are not friends
+      1 : Are friends
+      2 : Are friends and first_user has requested
+      3 : Are friends has second_user has requested
+
+    Note: If any one given usernames does not exist, 0 will return.
+ */
+DELIMITER ~
+CREATE FUNCTION `friendshipStatus`
+  (
+    first_user  VARCHAR(15),
+    second_user VARCHAR(15)
+  )
+  RETURNS TINYINT
+  BEGIN
+    -- Fetch first user's id from it's username
+    SELECT `users`.`id`
+    INTO @first_user_id
+    FROM `users`
+    WHERE `users`.`username` = first_user
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      RETURN 0;
+    END IF;
+
+    -- Fetch second user's id from it's username
+    SELECT `users`.`id`
+    INTO @second_user_id
+    FROM `users`
+    WHERE `users`.`username` = second_user
+    LOCK IN SHARE MODE;
+    -- Check if there is any user with given username
+    IF found_rows() != 1
+    THEN
+      RETURN 0;
+    END IF;
+
+    -- Check if they are fiends
+    SELECT `friends`.`first_user`
+    INTO @dummy
+    FROM `friends`
+    WHERE (`friends`.`first_user` = @first_user_id
+           AND
+           `friends`.second_user = @second_user_id)
+          OR
+          (`friends`.`first_user` = @second_user_id
+           AND
+           `friends`.second_user = @first_user_id);
+    IF found_rows() > 0
+    THEN
+      RETURN 1;
+    END IF;
+
+    -- Check if there is any request between them
+    SELECT `friend_requests`.requester
+    INTO @requester
+    FROM `friend_requests`
+    WHERE (`friend_requests`.`first_user` = @first_user_id
+           AND
+           `friend_requests`.second_user = @second_user_id)
+          OR
+          (`friend_requests`.`first_user` = @second_user_id
+           AND
+           `friend_requests`.second_user = @first_user_id);
+    IF found_rows() > 0
+    THEN
+      IF @requester = @first_user_id
+      THEN
+        RETURN 2;
+      ELSE
+        RETURN 3;
+      END IF;
+    END IF;
+
+    -- They are not friends!
+    RETURN 0;
+
+  END ~
+DELIMITER ;
