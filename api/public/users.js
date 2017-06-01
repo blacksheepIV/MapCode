@@ -134,6 +134,40 @@ router.route('/users/')
     });
 
 
+/**
+ * @api {get} /users/:username Get a user's information
+ * @apiVersion 0.1.0
+ * @apiName getUser
+ * @apiGroup users
+ * @apiPermission public
+ *
+ * @apiDescription Get a user's information. If current user is signed out
+ * or is signed in but is not `username`'s friend, these fields are accessible:
+ * <ul><li>name</li><li>phone</li><li>username</li><li>description</li></ul>
+ * But if user is signed in and is also a friend of `username` in addition
+ * to above field these fields are also accessible:
+ * <ul><li>email</li></ul>
+ *
+ * @apiParam {String{5..15}} username
+ * @apiParam {String[]} [fields] A combination of accessible fields split with comma
+ *
+ * @apiError (400) username:empty
+ * @apiError (400) username:not_valid_username Can only start with english letters and then have letters, underscores, or numbers
+ * @apiError (400) username:length_not_5_to_15
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/api/users/mohammad?fields=email,username
+ *     Response:
+ *         HTTP/1.1 200 OK
+ *
+ *         {
+ *             "email": "test@test.com",
+ *             "username": "mohammad"
+ *         }
+ *
+ *  @apiError (404) username_not_found There is no user with given username
+ */
 router.get('/users/:username',
     jwt.JWTCheck,
     jwt.JWTErrorIgnore,
@@ -200,10 +234,11 @@ router.get('/users/:username',
             function (err, results) {
                 if (err) return res.status(500).end();
 
+                // If user found
                 if (results)
                     res.send(results);
                 else
-                    res.status(404).end();
+                    res.status(404).json({errors: ['username_not_found']});
             }
         );
     }
