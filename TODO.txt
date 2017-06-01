@@ -34,3 +34,18 @@
     It solves the problem of deleting a point
 
 - Verbosify and Beautify all logs
+
+- Get other users info
+    * Public points
+    * Phone number
+    * Name
+    * Username
+    * Description
+    * Code
+        (If is friend):
+    * Private points
+    * Email
+
+- User search by:
+    * Username
+    * Phone number
