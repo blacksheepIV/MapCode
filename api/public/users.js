@@ -138,6 +138,71 @@ router.route('/users/')
     });
 
 
+/**
+ * @api {get} /users/:username/points Get a user's points
+ * @apiVersion 0.1.0
+ * @apiName getUserPoints
+ * @apiGroup users
+ * @apiPermission public
+ *
+ * @apiDescription Get a user's points. If token user is username's friend
+ * then he/she can access username's private points; Otherwise only
+ * username's private points are accessible.
+ *
+ * @apiParam {String{5..15}} username
+ * @apiParam {String[]} [fields] A combination of accessible fields split with comma: lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags
+ * @apiParam {Number{1..}} [start=1] Send points from start-th point!
+ * @apiParam {Number{1..100}} [limit=100] Number of points to receive
+ * @apiParam {Boolean} [private] Only private points
+ * @apiParam {Boolean} [public] Only public points
+ *
+ * @apiError (400) username:empty
+ * @apiError (400) username:not_valid_username Can only start with english letters and then have letters, underscores, or numbers
+ * @apiError (400) username:length_not_5_to_15
+ *
+ * @apiExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/api/users/alireza/?private
+ *     Response-Example:
+ *         HTTP/1.1 200 OK
+ *
+ *         [{
+ *            "lat": 24.32,
+ *            "lng": 113.32,
+ *            "submission_date": "2017-04-27T11:05:19.000Z",
+ *            "name": "قصابی اصغرآفا و پسران",
+ *            "phone": "03266118769",
+ *            "province": "کرمان",
+ *            "city": "کرمان",
+ *            "code": "gLPQZOpnel5aKBzyVXvA",
+ *            "address": "خیابان قسطنطنیه",
+ *            "public": 0,
+ *            "rate": 0,
+ *            "popularity": 0,
+ *            "category": "کبابی",
+ *            "description": "یک توضیح!",
+ *            "tags": ["رستوران", "food"]
+ *          }]
+ *
+ *
+ * @apiExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/api/users/alireza/?start=10&limit=2&public&fields=lat,lng
+ *     Response-Example:
+ *         HTTP/1.1 200 OK
+ *
+ *         [
+ *           {
+ *              "lat": 24.32,
+ *              "lng": 113.32
+ *           },
+ *           {
+ *              "lat": 13.32,
+ *              "lng": 2.3
+ *           }
+ *         ]
+ *
+ */
 router.get('/users/:username/points',
     validateWithSchema(usersModel.schema, ['username'], null, 'checkParams'),
 
@@ -156,8 +221,12 @@ router.get('/users/:username/points',
             publicOrPriavte = null; // Both public and private
             if (req.query.public)
                 publicOrPriavte = 'public';
-            else if (req.query.private)
-                publicOrPriavte = 'private';
+            else if (req.query.private) {
+                if (publicOrPriavte === 'public')
+                    publicOrPriavte = null;
+                else
+                    publicOrPriavte = 'private';
+            }
         }
 
         usersModel.getPoints(

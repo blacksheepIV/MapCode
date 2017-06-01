@@ -158,7 +158,6 @@ router.route('/point')
      *            "lat": 24.32,
      *            "lng": 113.32,
      *            "submission_date": "2017-04-27T11:05:19.000Z",
-     *            "expiration_date": "2018-04-27T11:05:19.000Z",
      *            "name": "قصابی اصغرآفا و پسران",
      *            "phone": "03266118769",
      *            "province": "کرمان",
