@@ -8,6 +8,7 @@ var friendService = function ($http){
       requestList : {} ,
       acceptResult : {},
       cancelResult :{},
+      unfriendedResult:{},
       getFriends : function(){
            var getFriend = window.apiHref + 'friends';
            return $http({url:getFriend,method:'GET'})
@@ -19,14 +20,14 @@ var friendService = function ($http){
           var sendRequest =  window.apiHref + 'friends';
           return $http({url:sendRequest,method:'POST',data:userName})
                        .success(function(data){
-                           friendService.requestResult = data;
+                           friend.requestResult = data;
                        });
       },
       getAlistOfFriendRequest : function(){
           var getRequests = window.apiHref + 'friends/requests/';
           return $http({url:getRequests,method:'GET'})
               .success(function(data){
-                  friendService.requestList = data;
+                  friend.requestList = data;
               });
       },
       acceptFriendReq : function(userName){
@@ -35,7 +36,7 @@ var friendService = function ($http){
           return $http({url:acceptUrl,method:'POST'})
               .success(function(data){
                   console.log(data);
-                  friendService.acceptResult = data;
+                  friend.acceptResult = data;
               });
       },
       cancelFriendReq : function(userName){
@@ -43,7 +44,14 @@ var friendService = function ($http){
           console.log(cancelUrl);
           return $http({url:cancelUrl,method:'POST'})
               .success(function(data){
-                  friendService.cancelResult = data;
+                  friend.cancelResult = data;
+              });
+      },
+      unfriend : function(userName){
+          var unfriendUrl = window.apiHref + "friends/" +userName;
+          return $http({url:unfriendUrl,method:"DELETE"})
+              .success(function(data){
+                  friend.unfriendedResult = data;
               });
       }
   };

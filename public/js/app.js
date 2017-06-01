@@ -6,6 +6,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('registerCtrl',registerCtrl)
         .controller('mapCtrl',mapCtrl)
         .controller('mainCtrl',mainCtrl)
+        .controller('panelCtrl',panelCtrl)
         .controller('userCtrl',userCtrl)
         .controller('pointCtrl',pointCtrl)
         .controller('PanelCodeVerfication',PanelCodeVerfication)

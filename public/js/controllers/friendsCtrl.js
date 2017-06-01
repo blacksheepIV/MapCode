@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 21-May-17.
  */
-function friendsCtrl ($scope,friendService,$mdDialog){
+function friendsCtrl ($scope,friendService,$mdDialog,toastr){
     var getFriend =  window.apiHref + 'friends';
     $scope.initFriends = function(){
      /*   $scope.availableFeatures=
@@ -16,9 +16,10 @@ function friendsCtrl ($scope,friendService,$mdDialog){
         friendService.getFriends().then(
             function(friendsList){
                 console.log(friendsList);
-                if(friendsList.data === 0)
+                if(friendsList.data.length === 0)
                     $scope.noFriends = true;
-                $scope.myFriends = friendsList.data;
+                else if(friendsList.data.length !== 0)
+                    $scope.myFriends = friendsList.data;
             },
             function(friendsList){
                 console.log(friendsList);
@@ -81,4 +82,19 @@ function friendsCtrl ($scope,friendService,$mdDialog){
                 fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
             });
     };//end of shareIt func
+    /* ###################################################################################################################### */
+    $scope.unfriended = function(friendUsrname){
+          console.log(friendUsrname);
+        friendService.unfriend(friendUsrname)
+            .then(function(unfriendedResult){
+                toastr.info( 'حذف دوست با موفقیت انجام شد!', {
+                    closeButton: true
+                });
+            },function(unfriendedResult){
+               // console.log(unfriendedResult);
+                toastr.warning( 'ارسال درخواست با خطا مواجه شده؛با ادمین تماس بگیرید!','خطا', {
+                    closeButton: true
+                });
+            });
+    };//end of unfriended func
 };//end of friendsCtrl

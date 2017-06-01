@@ -7,7 +7,8 @@ function RegisteredUsr ($http,$location,$rootScope,authenticationToken){
         response:null,
         alteredData: null,
         getUSrInfo:function(){
-           return $http.get(window.apiHref+"users/")
+            var usrUrl = window.apiHref+"users/";
+           return $http({url:usrUrl,method:"GET"})
                .success(function(data){
                    registeredUsr.Info = data;
                });

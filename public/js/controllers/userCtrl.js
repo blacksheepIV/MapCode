@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService,authenticationToken){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService){
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
@@ -107,8 +107,6 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                 RegisteredUsr.goodriddance();
             }
         });
-    }; //end of initVars func
-    $(document).ready(function () {
         $("#creationDate").pDatepicker(
             {
                 format:"YYYY - MM - DD dddd",
@@ -119,19 +117,13 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                 position: "auto",
                 autoClose: true
             });
-    });
+    }; //end of initVars func
+
+
+
 //**********************************************************************************************************************
-$scope.takeMeHome =  function(){
-    $location.path('/');
-};//end of function take me home
-    //******************************************************************************************************************
-    var originatorEv;
 
-    $scope.openMenu = function($mdOpenMenu, ev) {
-        originatorEv = ev;
-        $mdOpenMenu(ev);
 
-    };
 //*************************************************************************************************************************
     $scope.showDlg = function() {
         $mdDialog.show({

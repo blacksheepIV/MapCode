@@ -1,10 +1,4 @@
 <md-content layout="column" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
-    <!-- <p class="md-headline">لسیت دوستان :</p> -->
-   <!-- <div class="chip" ng-repeat="friend in myFriends">
-        <img src="../img/Avatar/img_avatar3.png" alt="Person" width="96" height="96">
-       {{friend}}
-        <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
-    </div> -->
     <div class="animate-switch-container" ng-switch on="noFriends">
         <div class="animate-switch" ng-switch-when="true">شما هیچ دوستی ندارید</div>
         <div class="animate-switch" ng-switch-when="false">
@@ -12,8 +6,8 @@
                 <md-list-item ng-repeat="friend in myFriends"  class="noleft">
                     <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
                     <p>{{friend}}</p>
-                    <md-icon class="md-secondary"  aria-label="sendMsg" ng-click="shareIt()"  md-font-icon="fa fa-envelope"></md-icon>
-                    <md-icon class="md-secondary"  aria-label="unfriend" md-font-icon="fa fa-times"></md-icon>
+                   <!-- <md-icon class="md-secondary"  aria-label="sendMsg" ng-click="shareIt()"  md-font-icon="fa fa-envelope"></md-icon> -->
+                    <md-icon class="md-secondary"  aria-label="unfriend" md-font-icon="fa fa-times" ng-click="unfriended(friend)"></md-icon>
                     <md-divider></md-divider>
                 </md-list-item>
             </md-list>

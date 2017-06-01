@@ -1,4 +1,4 @@
-<div ng-controller="userCtrl">
+<div ng-controller="panelCtrl" >
     <md-toolbar md-theme="NewTheme" class=" md-primary md-hue-2" dir="rtl" class="mainHeader">
         <div layout="row" flex="100" layout-align="end center" class="md-accent">
             <div flex="5"></div>
@@ -27,7 +27,7 @@
             </md-menu>
         </div>
     </md-toolbar>
-    <md-content class="md-padding">
+    <md-content class="md-padding" flex="100">
         <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="ویرایش اطلاعات" >
                 <md-content class="md-padding">
@@ -49,7 +49,7 @@
                       <div ng-include="'./templates/Panel/userPanelItems/usrPersonalPoints.html'"></div>
                   </md-content>
             </md-tab>
-            <md-tab label="لیست دوستان و گروه ها" >
+            <md-tab label="لیست دوستان" >
                 <md-content class="md-padding">
                     <!-- <div ng-include="'./templates/Panel/userPanelItems/FriendsGroups.html'"></div> -->
                     <md-tabs md-dynamic-height md-border-bottom>
@@ -68,12 +68,12 @@
                                 <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/sentReqs.html'"></div>
                             </md-content>
                         </md-tab>
-                        <md-tab label=" لیست گروه ها" >
-                            <md-content class="md-padding">
-                               <h5>این ویژگی فعلا در دسترس نیست.</h5>
-                            </md-content>
-                        </md-tab>
                     </md-tabs>
+                </md-content>
+            </md-tab>
+            <md-tab label="لیست گروه ها" >
+                <md-content class="md-padding">
+                    <h5>این ویژگی فعلا در دسترس نیست.</h5>
                 </md-content>
             </md-tab>
             <md-tab label="پیغام های شخصی">
