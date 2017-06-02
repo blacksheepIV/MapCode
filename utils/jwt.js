@@ -86,25 +86,26 @@ module.exports.generateToken = function (userId, username, isMobile, callback) {
         username: username,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
+        // jsonwebtoken Error
         if (err) {
-            callback('serverError');
-            console.error("jsonwebtoken: Error in generating a new JWT: %s", err);
+            console.error("generateToken@utils/jwt: jsonwebtoken: Error in generating a new JWT:\n\t%s", err);
+            return callback('serverError');
         }
-        else {
-            redis.set(
-                process.env.REDIS_PREFIX + 'user:' + userId + (isMobile === true ? ':mtoken' : ':wtoken'),
-                jti,
-                function (err, reply) {
-                    if (err) {
-                        callback('serverError');
-                        console.error('Redis: Error in setting JWT key for new generated JWT in Signin: %s', err);
-                    }
-                    else {
-                        callback(null, token);
-                    }
+
+        redis.set(
+            process.env.REDIS_PREFIX + 'user:' + userId + (isMobile === true ? ':mtoken' : ':wtoken'),
+            jti,
+            // Redis error
+            function (err) {
+                if (err) {
+                    callback('serverError');
+                    return console.error('generateToken@utils/jwt: Redis: Error in setting JWT key for new generated JWT:\n\t%s', err);
                 }
-            );
-        }
+
+                // Token successfully generated
+                callback(null, token);
+            }
+        );
     });
 };
 
