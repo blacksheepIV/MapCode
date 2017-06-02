@@ -2,6 +2,7 @@ var router = require('express').Router();
 var asyncSeries = require('async/series');
 var asyncSetImmediate = require('async/setImmediate');
 
+var jwt = require('../../utils/jwt');
 var usersModel = require('../../models/users');
 var redis = require('../../utils/redis');
 var smsModel = require('../../models/sms');
@@ -224,11 +225,18 @@ router.route('/users/')
                     if (err) return res.status(500).end(0); // Server error
 
                     // If there is no such a user in database
+                    // it means that token is in Redis
+                    // so let's remove the token from Redis
+                    // and return 401 Unauthorized error
                     if (!user_info) {
                         console.error("{GET}/users/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
-                        return res.status(401).json({
+
+                        res.status(401).json({
                             errors: ["auth_failure"]
                         });
+
+                        return jwt.removeFromRedis(req.user.id);
+
                     }
 
                     res.send(user_info);
