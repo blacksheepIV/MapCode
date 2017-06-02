@@ -50,25 +50,19 @@ module.exports.JWTCheck = jwt({
 
 
 module.exports.JWTErrorHandler = function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        res.status(401).json({
+    if (err.name === 'UnauthorizedError')
+        return res.status(401).json({
             errors: ['auth_failure']
         });
-    }
-    else {
-        next(err);
-    }
+
+    next(err);
 };
 
 
 module.exports.JWTErrorIgnore = function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        // Ignore the authentication error
-        next();
-    }
-    else {
-        next(err);
-    }
+    if (err.name === 'UnauthorizedError') return next(); // Ignore the authentication error
+
+    next(err)
 };
 
 
