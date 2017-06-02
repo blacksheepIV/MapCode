@@ -176,7 +176,7 @@ module.exports.getFriendRequests = function (id, callback) {
         "WHERE `requester` != " + id + " AND (first_user = " + id + " OR second_user = " + id + ");",
         function (err, results) {
             if (err) {
-                console.log("MySQL: Error in getting user's friend requests. query: %s\nError: %s", err.sql, err);
+                console.error("MySQL: Error in getting user's friend requests. query: %s\nError: %s", err.sql, err);
                 return callback('serverError');
             }
 
@@ -212,7 +212,7 @@ module.exports.getFriends = function (id, callback) {
         "WHERE (first_user = " + id + " OR second_user = " + id + ")",
         function (err, results) {
             if (err) {
-                console.log("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
+                console.error("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
                 return callback('serverError');
             }
 

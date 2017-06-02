@@ -187,7 +187,7 @@ async.series([
                                     "' for user '" + user.info.username +
                                     "' response =\n\t" + JSON.stringify(res.body) + '\n';
                                 if (fallThrough) {
-                                    console.log(errMsg + 'Falling through...\n');
+                                    console.error(errMsg + 'Falling through...\n');
                                     return next(null, null);
                                 } else
                                     return next(errMsg);
@@ -197,7 +197,7 @@ async.series([
                                 redis.get(smsModel.phoneNumberKey(user.info.mobile_phone), function (err, reply) {
                                     if (err) {
                                         if (fallThrough) {
-                                            console.log("Redis erro: %s\nFalling through...\n", err);
+                                            console.error("Redis erro: %s\nFalling through...\n", err);
                                             return next(null, null);
                                         } else
                                             return next(err);
