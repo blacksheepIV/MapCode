@@ -6,7 +6,7 @@ var smsModel = require('../../models/sms');
 var validateWithSchema = require('../../utils').validateWithSchema;
 
 
-router.route('/sms')
+router.route('/sms/')
     /**
      * @api {post} /sms/ Send SMS verification code
      * @apiVersion 0.1.0
@@ -70,46 +70,37 @@ router.route('/sms')
                 charset: 'numeric'
             });
             redis.setnx(redis_key, smsVerificationCode, function (err, reply) {
-                if (!err) {
-                    // The key didn't exist and was set
-                    if (reply === 1) {
-                        redis.expire(redis_key, 120, function (err, reply) {
-                            if (err) {
-                                res.status(500).end();
-                                return console.error("Redis: Setting phone verification code expiration: " + err);
-                            }
-                            // If key does not exist or the timeout could not be set
-                            if (reply === 0) {
-                                res.status(500).end();
-                                console.error("Redis: Setting phone verification code expiration : key does not exist or the timeout cannot not be set");
-                            }
-                            // Phone verification code successfully generated
-                            else {
-                                res.status(200);
-
-                                if (process.env.NODE_ENV !== 'production')
-                                    res.json({
-                                        'sms_code': smsVerificationCode
-                                    });
-                                else
-                                    res.end();
-
-                                // TODO: Send SMS request to SMS service provider API
-                            }
-                        });
-                    }
-                    // The Redis key is already exists
-                    else {
-                        // Too many requests
-                        res.status(429).json({
-                            errors: ['mobile_phone_already_has_a_code']
-                        });
-                    }
+                // Redis error
+                if (err) {
+                    console.error("{POST}/sms/: Redis: Error in setting phone verification code:\n\t%s", err);
+                    return res.status(500).end();
                 }
-                // Redis SETNX error
+
+                // The key didn't exist and was set
+                if (reply === 1) {
+                    redis.expire(redis_key, 120, function (err, reply) {
+                        // Redis error
+                        if (err) {
+                            console.error("{POST}/sms/: Redis: Error in setting phone verification code expiration:\n\t%s", err);
+                            return res.status(500).end();
+                        }
+
+                        if (process.env.NODE_ENV !== 'production')
+                            res.json({
+                                'sms_code': smsVerificationCode
+                            });
+                        else
+                            res.status(200).end();
+
+                        // TODO: Send SMS request to SMS service provider API
+                    });
+                }
+                // The Redis key is already exists
                 else {
-                    res.status(500).end();
-                    console.error("Redis : Setting phone verification code : " + err);
+                    // Too many requests
+                    res.status(429).json({
+                        errors: ['mobile_phone_already_has_a_code']
+                    });
                 }
             });
         }
