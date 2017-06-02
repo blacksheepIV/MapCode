@@ -456,7 +456,41 @@ module.exports.get = function (username, fields, callback) {
         },
         function (err, results) {
             if (err) {
-                console.error("get@models/users: MySQL: Error in getting user info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("get@models/users: MySQL: Error in getting user's info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // User with given username not found
+            if (results.length === 0)
+                return callback(null, null);
+
+            callback(null, results[0]);
+        }
+    );
+};
+
+
+/*
+ Get user's detailed info
+
+ Errors:
+    - serverError
+ */
+module.exports.getDetailed = function (username, fields, callback) {
+    if (fields.length === 0)
+        return callback(null, {});
+
+    db.runSelectQuery(
+        {
+            columns: fields,
+            table: 'users_detailed',
+            conditions: {
+                username: username
+            }
+        },
+        function (err, results) {
+            if (err) {
+                console.error("getDetailed@models/users: MySQL: Error in getting user's detailed info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 

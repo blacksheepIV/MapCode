@@ -6,6 +6,7 @@ var usersModel = require('../../models/users');
 var redis = require('../../utils/redis');
 var smsModel = require('../../models/sms');
 var validateWithSchema = require('../../utils').validateWithSchema;
+var customFielder = require('../../utils').customFielder;
 
 
 router.route('/users/')
@@ -160,7 +161,82 @@ router.route('/users/')
 
 
         }
-    );
+    )
+    /**
+     * @api {get} /users/ Gets signed-in users's information
+     * @apiVersion 0.1.0
+     * @apiName usersGet
+     * @apiGroup users
+     * @apiPermission public
+     *
+     * @apiDescription Get user's information by providing a token
+     *
+     * @apiParam {String[]} [fields] A combination of fields split with comma: name, melli_code, email, date, mobile_phone, phone, username, address, description, type, code, credit, bonus, recommender_user, friend_requests_count, friends_count
+     *
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/api/users?fiends=melli_code,email,address
+     *     Response:
+     *         HTTP/1.1 200 OK
+     *
+     *         {
+     *             "melli_code": "1234567891",
+     *             "email": "test@test.com",
+     *             "address": "خیابان امیبرکبیر"
+     *         }
+     *
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/api/users
+     *     Response:
+     *         HTTP/1.1 200 OK
+     *
+     *         {
+     *             "name": "علیرضا",
+     *             "melli_code": "1234567654",
+     *             "email": "a.alireza@gmail.com",
+     *             "date": "2017-04-26",
+     *             "mobile_phone": "09368765417",
+     *             "phone": null,
+     *             "username": "alireza",
+     *             "address": null,
+     *             "description": null,
+     *             "type": 0,
+     *             "code": "Opnel5aKBz",
+     *             "credit": 3,
+     *             "bonus": 0,
+     *             "recommender_user": "wMvbmOeYAl",
+     *             "friend_requests_count": 3,
+     *             "friends_count": 50
+     *         }
+     *
+     */
+    .get(
+        customFielder('query', 'fields', usersModel.publicFields.concat(['friend_requests_count', 'friends_count'])),
+
+        function (req, res) {
+            usersModel.getDetailed(
+                req.user.username,
+                req.queryFields,
+                function (err, user_info) {
+                    if (err) return res.status(500).end(0); // Server error
+
+                    // If there is no such a user in database
+                    if (!user_info) {
+                        console.error("{GET}/users/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
+                        return res.status(401).json({
+                            errors: ["auth_failure"]
+                        });
+                    }
+
+                    res.send(user_info);
+
+                }
+            );
+        });
+
 
 
 router.post('/users/documents/', function (req, res) {
