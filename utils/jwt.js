@@ -92,7 +92,7 @@ module.exports.generateToken = function (userId, username, isMobile, callback) {
         }
         else {
             redis.set(
-                process.env.REDIS_PREFIX + 'user:' + String(userId) + (isMobile === true ? ':mtoken' : ':wtoken'),
+                process.env.REDIS_PREFIX + 'user:' + userId + (isMobile === true ? ':mtoken' : ':wtoken'),
                 jti,
                 function (err, reply) {
                     if (err) {
@@ -105,5 +105,16 @@ module.exports.generateToken = function (userId, username, isMobile, callback) {
                 }
             );
         }
+    });
+};
+
+
+/*
+ Removes redis keys associated with tokens for a user with given ID
+ */
+module.exports.removeFromRedis = function (userId) {
+    var preKey = process.env.REDIS_PREFIX + 'user:' + userId;
+    [preKey + ':wtoken', preKey + ':mtoken'].forEach(function (key) {
+        redis.del(key);
     });
 };
