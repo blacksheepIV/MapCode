@@ -76,8 +76,7 @@ router.route('/sms')
                         redis.expire(redis_key, 120, function (err, reply) {
                             if (err) {
                                 res.status(500).end();
-                                console.error("Redis: Setting phone verification code expiration: " + err);
-                                return;
+                                return console.error("Redis: Setting phone verification code expiration: " + err);
                             }
                             // If key does not exist or the timeout could not be set
                             if (reply === 0) {

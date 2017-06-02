@@ -375,8 +375,7 @@ module.exports.signIn = function (username, password, callback) {
         function (err, results) {
             if (err) {
                 callback('serverError');
-                console.error("signIn@models/users: MySQL: Error in retrieving user's info for sign in:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
-                return;
+                return console.error("signIn@models/users: MySQL: Error in retrieving user's info for sign in:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
             }
 
             // If no user found with given username

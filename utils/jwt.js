@@ -12,31 +12,34 @@ module.exports.JWTCheck = jwt({
         }
         return null;
     },
+    /*
+     Checks if token is revoked or not
+
+     Each user can only have two active token at a time.
+     One for mobile device (called mtoken) and one for
+     web application (called wtoken).
+     Any new sign in from either mobile device or web application
+     causes the existing token to get revoked.
+     */
     isRevoked: function (req, payload, done) {
         redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':wtoken',
             function (err, reply) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                if (reply !== null) {
-                    if (payload.jti === reply) {
-                        done(null, false);
-                        return;
-                    }
-                }
+                if (err) return done(err);
+
+                // If token's jti is a correct wtoken (web token)
+                if (reply !== null && payload.jti === reply)
+                    return done(null, false);
+
+                // See if token is mtoken (mobile token)
                 redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':mtoken',
                     function (err, reply) {
-                        if (err) {
-                            done(err);
-                            return;
-                        }
-                        if (reply !== null) {
-                            if (payload.jti === reply) {
-                                done(null, false);
-                                return;
-                            }
-                        }
+                        if (err)
+                            return done(err);
+
+                        if (reply !== null && payload.jti === reply)
+                            return done(null, false);
+
+                        // Token is revoked
                         done(null, true);
                     }
                 );
