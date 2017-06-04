@@ -56,7 +56,7 @@ module.exports.schema = {
  * @param {object} personalPoint
  * @param {function} [callback]
  *
- * @throws 'serverError'
+ * @throws {'serverError'}
  */
 module.exports.submit = function (personalPoint, callback) {
     db.objectInsertQuery(
@@ -83,7 +83,7 @@ module.exports.submit = function (personalPoint, callback) {
  * @param {string} code Point's code
  * @param {function} [callback]
  *
- * @throws 'serverError'
+ * @throws {'serverError'}
  */
 module.exports.delete = function (owner, code, callback) {
     db.conn.query(
@@ -110,7 +110,7 @@ module.exports.delete = function (owner, code, callback) {
  * @param {(number|string)} limit Number of point's to get
  * @param {function} [callback]
  *
- * @throws 'serverError'
+ * @throws {'serverError'}
  */
 module.exports.getForUser = function (userId, start, limit, callback) {
     db.conn.query(
