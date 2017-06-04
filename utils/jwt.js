@@ -12,31 +12,34 @@ module.exports.JWTCheck = jwt({
         }
         return null;
     },
+    /*
+     Checks if token is revoked or not
+
+     Each user can only have two active token at a time.
+     One for mobile device (called mtoken) and one for
+     web application (called wtoken).
+     Any new sign in from either mobile device or web application
+     causes the existing token to get revoked.
+     */
     isRevoked: function (req, payload, done) {
         redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':wtoken',
             function (err, reply) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                if (reply !== null) {
-                    if (payload.jti === reply) {
-                        done(null, false);
-                        return;
-                    }
-                }
+                if (err) return done(err);
+
+                // If token's jti is a correct wtoken (web token)
+                if (reply !== null && payload.jti === reply)
+                    return done(null, false);
+
+                // See if token is mtoken (mobile token)
                 redis.get(process.env.REDIS_PREFIX + 'user:' + payload.id + ':mtoken',
                     function (err, reply) {
-                        if (err) {
-                            done(err);
-                            return;
-                        }
-                        if (reply !== null) {
-                            if (payload.jti === reply) {
-                                done(null, false);
-                                return;
-                            }
-                        }
+                        if (err)
+                            return done(err);
+
+                        if (reply !== null && payload.jti === reply)
+                            return done(null, false);
+
+                        // Token is revoked
                         done(null, true);
                     }
                 );
@@ -47,25 +50,19 @@ module.exports.JWTCheck = jwt({
 
 
 module.exports.JWTErrorHandler = function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        res.status(401).json({
+    if (err.name === 'UnauthorizedError')
+        return res.status(401).json({
             errors: ['auth_failure']
         });
-    }
-    else {
-        next(err);
-    }
+
+    next(err);
 };
 
 
 module.exports.JWTErrorIgnore = function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        // Ignore the authentication error
-        next();
-    }
-    else {
-        next(err);
-    }
+    if (err.name === 'UnauthorizedError') return next(); // Ignore the authentication error
+
+    next(err)
 };
 
 
@@ -83,24 +80,36 @@ module.exports.generateToken = function (userId, username, isMobile, callback) {
         username: username,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
+        // jsonwebtoken Error
         if (err) {
-            callback('serverError');
-            console.error("jsonwebtoken: Error in generating a new JWT: %s", err);
+            console.error("generateToken@utils/jwt: jsonwebtoken: Error in generating a new JWT:\n\t%s", err);
+            return callback('serverError');
         }
-        else {
-            redis.set(
-                process.env.REDIS_PREFIX + 'user:' + String(userId) + (isMobile === true ? ':mtoken' : ':wtoken'),
-                jti,
-                function (err, reply) {
-                    if (err) {
-                        callback('serverError');
-                        console.error('Redis: Error in setting JWT key for new generated JWT in Signin: %s', err);
-                    }
-                    else {
-                        callback(null, token);
-                    }
+
+        redis.set(
+            process.env.REDIS_PREFIX + 'user:' + userId + (isMobile === true ? ':mtoken' : ':wtoken'),
+            jti,
+            // Redis error
+            function (err) {
+                if (err) {
+                    callback('serverError');
+                    return console.error('generateToken@utils/jwt: Redis: Error in setting JWT key for new generated JWT:\n\t%s', err);
                 }
-            );
-        }
+
+                // Token successfully generated
+                callback(null, token);
+            }
+        );
+    });
+};
+
+
+/*
+ Removes redis keys associated with tokens for a user with given ID
+ */
+module.exports.removeFromRedis = function (userId) {
+    var preKey = process.env.REDIS_PREFIX + 'user:' + userId;
+    [preKey + ':wtoken', preKey + ':mtoken'].forEach(function (key) {
+        redis.del(key);
     });
 };

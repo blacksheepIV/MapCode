@@ -1,18 +1,28 @@
+/**
+ * Friends
+ *
+ * @module models/friends
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
 var lodashIncludes = require('lodash/includes');
 
 var db = require('../db');
 
 
-/*
-    Submits a friend request from user(id) to user(username)
-
-    Errors:
-        - are_already_friends
-        - already_request_pending
-        - self_request
-        - username_not_found
-
-        - serverError
+/**
+ * Submits a friend request from user(id) to user(username).
+ *
+ * @param {(number|string)} id Requester user's id
+ * @param {string} username Username Requestee user's username
+ * @param {function} [callback]
+ *
+ * @throws {'are_already_friends'}
+ * @throws {'already_request_pending'}
+ * @throws {'self_request'}
+ * @throws {'username_not_found'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.sendRequest = function (id, username, callback) {
     // Call friendRequest DB procedure
@@ -36,22 +46,25 @@ module.exports.sendRequest = function (id, username, callback) {
                         return callback('username_not_found');
                 }
 
-                console.error("sendRequest@models/friends: Error in calling friendRequest DB procedure: query: %, error: %s", err.sql, err);
+                console.error("sendRequest@models/friends: Error in calling friendRequest DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
+            // Request successfully sent
             callback();
         }
     );
 };
 
 
-/*
-    Unfriend two users.
-    If those two users are not friend, nothing will happen.
-
-    Errors:
-        - serverError
+/**
+ * Unfriends two users.
+ *
+ * @param {(number|string)} first_user_id First user's ID
+ * @param {string} second_user_username Second user's username
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.unfriend = function (first_user_id, second_user_username, callback) {
     // Call acceptFriendRequest DB procedure
@@ -59,28 +72,33 @@ module.exports.unfriend = function (first_user_id, second_user_username, callbac
         "CALL unfriend(?, ?)",
         [first_user_id, second_user_username],
         function (err) {
+            // MySQL error
             if (err) {
-                console.error("unfriend@models/friends: Error in calling `unfiend` DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("unfriend@models/friends: Error in calling `unfriend` DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
+            // Two users are not friends anymore!
             callback();
         }
     );
 };
 
 
-/*
-    Accepts the request sent from user(username) to user(id)
-
-    Errors:
-        - your_not_requestee
-        - no_pending_request
-        - username_not_found
-        - requestee_max_friends
-        - requester_max_friends
-
-        - serverError
+/**
+ * Accepts the request sent from user(username) to user(id).
+ *
+ * @param {(number|string)} id Requestee user's ID
+ * @param {string} username Requester user's username
+ * @param {function} [callback]
+ *
+ * @throws {'your_not_requestee'}
+ * @throws {'no_pending_request'}
+ * @throws {'username_not_found'}
+ * @throws {'requestee_max_friends'}
+ * @throws {'requester_max_friends'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.acceptRequest = function (id, username, callback) {
     // Call acceptFriendRequest DB procedure
@@ -107,24 +125,28 @@ module.exports.acceptRequest = function (id, username, callback) {
                         return callback('requester_max_friends');
                 }
 
-                console.error("acceptRequest@models/friends: Error in calling acceptFriendRequest DB procedure: query: %, error: %s", err.sql, err);
+                console.error("acceptRequest@models/friends: Error in calling acceptFriendRequest DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
+            // Hooray! Two users are now friends.
             callback();
         }
     );
 };
 
 
-/*
- Cancel the request sent from user(id) to user(username)
-
- Errors:
- - no_pending_requests
- - username_not_found
-
- - serverError
+/**
+ * Cancels the request sent from user(id) to user(name).
+ *
+ * @param {(number|string)} id Requestee user's ID
+ * @param {string} username Requester user's username
+ * @param {function} [callback]
+ *
+ * @throws {'no_pending_request'}
+ * @throws {'username_not_found'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.cancelRequest = function (id, username, callback) {
     // Call cancelFriendRequest DB procedure
@@ -145,21 +167,24 @@ module.exports.cancelRequest = function (id, username, callback) {
                         return callback('username_not_found');
                 }
 
-                console.error("cancelRequest@models/friends: Error in calling cancelFriendRequest DB procedure: query: %, error: %s", err.sql, err);
+                console.error("cancelRequest@models/friends: Error in calling cancelFriendRequest DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
+            // Request successfully canceled
             callback();
         }
     );
 };
 
 
-/*
-    Get the list of friend requests for a user
-
-    Errors:
-        - serverError
+/**
+ * Gets the list of friend requests for a user.
+ *
+ * @param {(number|string)} id User's id
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getFriendRequests = function (id, callback) {
     id = db.conn.escape(id);
@@ -176,7 +201,7 @@ module.exports.getFriendRequests = function (id, callback) {
         "WHERE `requester` != " + id + " AND (first_user = " + id + " OR second_user = " + id + ");",
         function (err, results) {
             if (err) {
-                console.log("MySQL: Error in getting user's friend requests. query: %s\nError: %s", err.sql, err);
+                console.error("getFriendRequests@models/friends: MySQL: Error in getting user's friend requests:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -197,11 +222,13 @@ module.exports.getFriendRequests = function (id, callback) {
 };
 
 
-/*
- Get the list of friends
-
- Errors:
- - serverError
+/**
+ * Gets the list of friends.
+ *
+ * @param {(number|string)} id User's id
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getFriends = function (id, callback) {
     id = db.conn.escape(id);
@@ -211,8 +238,9 @@ module.exports.getFriends = function (id, callback) {
         "JOIN `users` ON IF(first_user = " + id + ", second_user, first_user) = `users`.`id` " +
         "WHERE (first_user = " + id + " OR second_user = " + id + ")",
         function (err, results) {
+            // MySQL error
             if (err) {
-                console.log("MySQL: Error in getting user's friends. query: %s\nError: %s", err.sql, err);
+                console.error("getFriends@models/friends: MySQL: Error in getting user's friends:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 

@@ -183,7 +183,7 @@ router.route('/point')
             function (err, results) {
                 if (err) {
                     res.status(500).end();
-                    return console.log("MySQL: Error in getting token user's points: %s", err);
+                    return console.error("MySQL: Error in getting token user's points: %s", err);
                 }
 
                 asyncEach(results, function (result, done) {
@@ -192,7 +192,7 @@ router.route('/point')
                 }, function (err) {
                     if (err) {
                         res.status(500).end();
-                        return console.log("{GET}/point/ @ api/private/point.js: Line 197: async.each on user's points: %s", err);
+                        return console.error("{GET}/point/ @ api/private/point.js: Line 197: async.each on user's points: %s", err);
                     }
 
                     res.json(results);

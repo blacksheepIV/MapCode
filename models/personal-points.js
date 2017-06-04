@@ -1,7 +1,18 @@
+/**
+ * Personal points
+ *
+ * @module models/personal-points
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
+
 var db = require('../db');
 
 
-// Verification schema
+/**
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'lat': {
         notEmpty: {
@@ -39,16 +50,22 @@ module.exports.schema = {
 };
 
 
-/*
-    Submits a new personal points.
+/**
+ * Submits a new point.
+ *
+ * @param {object} personalPoint
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.submit = function (personalPoint, callback) {
     db.objectInsertQuery(
         'personal_points',
         personalPoint,
         function (err, results) {
+            // MySQL error
             if (err) {
-                console.error("submit@models/personal-points: MySQL error in inserting new personal points\nQuery: %s\nError: %s", err.sql, err);
+                console.error("submit@models/personal-points: MySQL error in inserting new personal point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -59,19 +76,23 @@ module.exports.submit = function (personalPoint, callback) {
 };
 
 
-/*
-    Delete a personal point where owner=user and id=code
-
-    Errors:
-        - serverError
+/**
+ * Deletes a personal point with given owner and code
+ *
+ * @param {string} owner Point's owner
+ * @param {string} code Point's code
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
-module.exports.delete = function (user, code, callback) {
+module.exports.delete = function (owner, code, callback) {
     db.conn.query(
         "DELETE FROM `personal_points` WHERE `owner` = ? AND `id` = ?",
-        [user, code],
+        [owner, code],
         function (err) {
+            // MySQL error
             if (err) {
-                console.error("delete@models/personal-points: MySQL error in deleting personal point\nQuery: %s\nError: %s", err.sql, err);
+                console.error("delete@models/personal-points: MySQL error in deleting personal point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -81,8 +102,15 @@ module.exports.delete = function (user, code, callback) {
 };
 
 
-/*
-    Get list of personal points for a user.
+/**
+ * Get list of personal points for a user.
+ *
+ * @param {(number|string)} userId User's ID
+ * @param {(number|string)} start Start from start-th point
+ * @param {(number|string)} limit Number of point's to get
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getForUser = function (userId, start, limit, callback) {
     db.conn.query(
@@ -94,7 +122,7 @@ module.exports.getForUser = function (userId, start, limit, callback) {
         function (err, results) {
             // MySQL error
             if (err) {
-                console.error("getForUser@models/personal-points: MySQL error in getting personal points for a user\nQuery: %s\nError: %s", err.sql, err);
+                console.error("getForUser@models/personal-points: MySQL error in getting personal points for a user:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 

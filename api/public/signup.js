@@ -103,19 +103,15 @@ router.route('/signup')
             redis.get(smsModel.phoneNumberKey(req.body.mobile_phone), function (err, reply) {
                 if (err) {
                     res.status(500).end();
-                    console.error("Redis: Getting phone_number verification code: %s", err);
-
-                    return;
+                    return console.error("Redis: Getting phone_number verification code: %s", err);
                 }
+
                 // Verification code has been expired
                 // or does not match
-                if (reply === null || req.body.sms_code !== reply) {
-                    res.status(400).json({
+                if (reply === null || req.body.sms_code !== reply)
+                    return res.status(400).json({
                         errors: ['sms_code_not_valid']
                     });
-
-                    return;
-                }
 
                 delete req.body.sms_code;
 

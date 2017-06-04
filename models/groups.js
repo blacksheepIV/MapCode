@@ -103,7 +103,7 @@ module.exports.delete = function (userId, gpName, callback) {
         function (err) {
             // MySQL error happened
             if (err) {
-                console.log("MySQL: Error in deleting user's group:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("MySQL: Error in deleting user's group:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -170,7 +170,7 @@ module.exports.getGroup = function (userId, groupName, fields, callback) {
         [userId, groupName],
         function (err, results) {
             if (err) {
-                console.log("getGroup@models/groups.js: MySQL: Error in getting group's info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("getGroup@models/groups.js: MySQL: Error in getting group's info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -198,8 +198,7 @@ module.exports.getUserGroups = function (userId, fields, start, limit, callback)
         [userId, start, limit],
         function (err, results) {
             if (err) {
-                console.log("getUserGroups@models/groups.js: Error in getting user's groups:\n\n\t%s" +
-                    "\n\tQuery:\n\n\t%s", err, err.sql);
+                console.error("getUserGroups@models/groups.js: Error in getting user's groups:\n\n\t%s\n\tQuery:\n\n\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -213,7 +212,7 @@ module.exports.getUserGroups = function (userId, fields, start, limit, callback)
                     },
                     function (err) {
                         if (err) {
-                            console.log("getUserGroups@models/groups.js: Error in splitting results members field:\n\n\t%s" + err);
+                            console.error("getUserGroups@models/groups.js: Error in splitting results members field:\n\n\t%s" + err);
                             return callback('serverError');
                         }
 

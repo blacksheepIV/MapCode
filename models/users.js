@@ -230,7 +230,7 @@ module.exports.updateUser = function (user, conditions, callback) {
             bcrypt.hash(user.password, 8, function (err, hashedPassword) {
                 // bcryptjs error
                 if (err) {
-                    console.error("updateUser@models/users: bcryptjs: Error in hasing user's password: %s", err);
+                    console.error("updateUser@models/users: bcryptjs: Error in hasing user's password:\n\t%s", err);
                     return next('serverError');
                 }
 
@@ -248,12 +248,12 @@ module.exports.updateUser = function (user, conditions, callback) {
                 if (err) {
                     // There are duplicates in user's info
                     if (err.code === 'ER_DUP_ENTRY')
-                       return next(db.listOfDuplicates(err));
+                        return next(db.listOfDuplicates(err));
 
                     if (err.code === 'ER_NO_REFERENCED_ROW_2')
                         return next('recommender_user_not_found');
 
-                    console.error("MySQL: Error happened in inserting new user: %s", err);
+                    console.error("updateUser@models/users: MySQL: Error happened in inserting new user:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                     return next('serverError');
                 }
 
@@ -269,12 +269,13 @@ module.exports.updateUser = function (user, conditions, callback) {
 
 
 /*
- Inserts a new user in database
+     Inserts a new user in database
 
- Errors:
- - serverError
- - no_recommender_user_with_this_code
- - Array of duplicate rows. e.g. ['duplicate_email']
+     Errors:
+         - no_recommender_user_with_this_code
+         - Array of duplicate rows. e.g. ['duplicate_email']
+
+         - serverError
  */
 module.exports.createNewUser = function (user, callback) {
     function saveUser() {
@@ -284,28 +285,26 @@ module.exports.createNewUser = function (user, callback) {
         bcrypt.hash(user.password, 8, function (err, hashedPassword) {
             if (err) {
                 callback('serverError');
-                console.error("bcryptjs: Error happened in hashing user's password: %s", err);
-                return;
+                return console.error("createNewUser@models/users: bcryptjs: Error happened in hashing user's password:\n\t%s", err);
             }
 
             user.password = hashedPassword;
             user.date = moment(user.date).format('YYYY-MM-DD');
 
             // Insert user into database
-            db.objectInsertQuery('users', user, function (err, results, fields) {
+            db.objectInsertQuery('users', user, function (err, results) {
                 if (err) {
                     // There are duplicates in user's info
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        callback(db.listOfDuplicates(err));
-                        return;
-                    }
+                    if (err.code === 'ER_DUP_ENTRY')
+                        return callback(db.listOfDuplicates(err));
 
                     callback('serverError');
-                    console.error("MySQL: Error happened in inserting new user: %s", err);
-                    return;
+                    return console.error("createNewUser@models/users: MySQL: Error happened in inserting new user:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 }
 
+                // Keep trying to generate a unique user code for new user
                 asyncRetry({
+                    // This error only means task has failed
                     errorFilter: function (err) {
                         return err.code === "ER_DUP_ENTRY";
                     }
@@ -315,7 +314,7 @@ module.exports.createNewUser = function (user, callback) {
                         [uniqueCode, results.insertId],
                         function (err) {
                             if (err) {
-                                console.error("MySQL: Error happened in updating new user's code: %s", err);
+                                console.error("createNewUser@models/users: MySQL: Error happened in updating new user's code:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                                 return done(err);
                             }
 
@@ -324,7 +323,7 @@ module.exports.createNewUser = function (user, callback) {
                     );
                 }, function (err, result) {
                     if (err) {
-                        console.error("!!!: Tried 5 times to generate a unique user code but failed.");
+                        console.error("createNewUser@models/users: ! : Tried 5 times to generate a unique user code but failed.");
                         return callback('serverError');
                     }
 
@@ -341,8 +340,7 @@ module.exports.createNewUser = function (user, callback) {
             function (err, results) {
                 if (err) {
                     callback('serverError');
-                    console.error("MySQL: Error happened in checking signup recommender_user existence: %s", err);
-                    return;
+                    return console.error("createNewUser@models/users: MySQL: Error happened in checking signup recommender_user existence:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 }
 
                 // There is a user with this code
@@ -353,10 +351,8 @@ module.exports.createNewUser = function (user, callback) {
                     saveUser();
                 }
                 // There is no user with this code
-                else {
-                    callback('no_recommender_user_with_this_code');
-                    return;
-                }
+                else
+                    return callback('no_recommender_user_with_this_code');
             });
     }
     else
@@ -365,11 +361,12 @@ module.exports.createNewUser = function (user, callback) {
 
 
 /*
- Checks if there is a user with given username and password
+     Checks if there is a user with given username and password
 
- Errors:
- - serverError
- - username_or_password_is_wrong
+     Errors:
+         - username_or_password_is_wrong
+
+         - serverError
  */
 module.exports.signIn = function (username, password, callback) {
     // Try to retrieve user's info with given username from DB
@@ -378,8 +375,7 @@ module.exports.signIn = function (username, password, callback) {
         function (err, results) {
             if (err) {
                 callback('serverError');
-                console.error("MySQL: Error in retrieving user's info for signin: %s", err);
-                return;
+                return console.error("signIn@models/users: MySQL: Error in retrieving user's info for sign in:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
             }
 
             // If no user found with given username
@@ -391,7 +387,7 @@ module.exports.signIn = function (username, password, callback) {
                 bcrypt.compare(password, results[0].password, function (err, result) {
                     if (err) {
                         callback('serverError');
-                        console.error("bcryptjs: Error in comparing password in signin: %s", err);
+                        console.error("signIn@models/users: bcryptjs: Error in comparing password for sign in:\n\t%s", err);
                     }
                     else {
                         // If password does not match
@@ -460,7 +456,41 @@ module.exports.get = function (username, fields, callback) {
         },
         function (err, results) {
             if (err) {
-                console.error("get@models/users: MySQL: Error in getting user info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("get@models/users: MySQL: Error in getting user's info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // User with given username not found
+            if (results.length === 0)
+                return callback(null, null);
+
+            callback(null, results[0]);
+        }
+    );
+};
+
+
+/*
+ Get user's detailed info
+
+ Errors:
+    - serverError
+ */
+module.exports.getDetailed = function (username, fields, callback) {
+    if (fields.length === 0)
+        return callback(null, {});
+
+    db.runSelectQuery(
+        {
+            columns: fields,
+            table: 'users_detailed',
+            conditions: {
+                username: username
+            }
+        },
+        function (err, results) {
+            if (err) {
+                console.error("getDetailed@models/users: MySQL: Error in getting user's detailed info:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
