@@ -1,3 +1,10 @@
+/**
+ * Users.
+ *
+ * @module models/users
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
 var bcrypt = require('bcryptjs');
 var Hashids = require('hashids');
 var hashids = new Hashids(process.env.HASHIDS, 10);
@@ -9,6 +16,12 @@ var moment = require('moment');
 var db = require('../db');
 
 
+/**
+ * Point's fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.publicFields = [
     'name',
     'melli_code',
@@ -28,6 +41,12 @@ module.exports.publicFields = [
 ];
 
 
+/**
+ * Point's fields that can get updated.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.updatableFields = [
     'name',
     'melli_code',
@@ -43,6 +62,12 @@ module.exports.updatableFields = [
 ];
 
 
+/**
+ * Fields that are available through sign up.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.signUpFields = [
     'name',
     'melli_code',
@@ -57,7 +82,12 @@ module.exports.signUpFields = [
 ];
 
 
-// Fields that non-friends and sign out users can access
+/**
+ * Fields that non-friends and sign ou users can access.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.nonFriendFields = [
     'name',
     'phone',
@@ -66,7 +96,14 @@ module.exports.nonFriendFields = [
 ];
 
 
-// Fields that user's friends can access
+/**
+ * Fields that user's friends can access.
+ * This includes nonFriendFields.
+ *
+ * @constant
+ * @type {string[]}
+ * @see {@link nonFriendFields}
+ */
 module.exports.friendFields =
     // All non-friends fields in addition of below fields
     module.exports.nonFriendFields.concat([
@@ -74,7 +111,12 @@ module.exports.friendFields =
     ]);
 
 
-// Verification schema
+/**
+ * Verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'name': {
         notEmpty: {
@@ -207,16 +249,24 @@ module.exports.schema = {
 };
 
 
-/*
-     Updates a user in database
-
-     Errors:
-        - recommender_user_not_found
-        - Array of duplicate rows. e.g. ['duplicate_email']
-
-        - serverError
+/**
+ * Updates a user info.
+ *
+ * @param {object} user New user's info.
+ * @param {(number|string)} userId User's ID.
+ * @param {function} [callback]
+ *
+ * @throws {'recommender_user_not_found'}
+ *
+ * @throws {'duplicate_melli_code'}
+ * @throws {'duplicate_email'}
+ * @throws {'duplicate_mobile_phone'}
+ * @throws {'duplicate_phone'}
+ * @throws {'duplicate_username'}
+ *
+ * @throws {'serverError'}
  */
-module.exports.updateUser = function (user, conditions, callback) {
+module.exports.updateUser = function (user, userId, callback) {
     asyncSeries([
         // Handle `password` field
         function (next) {
@@ -243,7 +293,7 @@ module.exports.updateUser = function (user, conditions, callback) {
             if (user.date)
                 user.date = moment(user.date).format('YYYY-MM-DD');
 
-            db.runUpdateQuery({table: 'users', fields: user, conditions: conditions}, function (err) {
+            db.runUpdateQuery({table: 'users', fields: user, conditions: {id: userId}}, function (err) {
                 // MySQL error
                 if (err) {
                     // There are duplicates in user's info
@@ -257,25 +307,41 @@ module.exports.updateUser = function (user, conditions, callback) {
                     return next('serverError');
                 }
 
+                // User successfully updated
                 next();
             });
         }
     ], function (err) {
         if (err) return callback(err);
 
+        // User successfully updated
         callback();
     });
 };
 
 
-/*
-     Inserts a new user in database
 
-     Errors:
-         - no_recommender_user_with_this_code
-         - Array of duplicate rows. e.g. ['duplicate_email']
+/**
+ * @callback createNewUserCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {string} userCode Newly created user's generated code.
+ */
 
-         - serverError
+/**
+ * Creates a new user.
+ *
+ * @param {object} user New user's info.
+ * @param {createNewUserCallback} [callback]
+ *
+ * @throws {'no_recommender_user_with_this_code'}
+ *
+ * @throws {'duplicate_melli_code'}
+ * @throws {'duplicate_email'}
+ * @throws {'duplicate_mobile_phone'}
+ * @throws {'duplicate_phone'}
+ * @throws {'duplicate_username'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.createNewUser = function (user, callback) {
     function saveUser() {
@@ -313,6 +379,7 @@ module.exports.createNewUser = function (user, callback) {
                     db.conn.query("UPDATE `users` SET `code` = ? WHERE `id` = ?",
                         [uniqueCode, results.insertId],
                         function (err) {
+                            // MySQL error
                             if (err) {
                                 console.error("createNewUser@models/users: MySQL: Error happened in updating new user's code:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                                 return done(err);
@@ -327,6 +394,7 @@ module.exports.createNewUser = function (user, callback) {
                         return callback('serverError');
                     }
 
+                    // Hooray! New user successfully created.
                     callback(null, result);
                 });
             });
@@ -338,6 +406,7 @@ module.exports.createNewUser = function (user, callback) {
         db.conn.query("SELECT `id` FROM `users` WHERE `code`= ?;",
             user.recommender_user,
             function (err, results) {
+                // MySQL error
                 if (err) {
                     callback('serverError');
                     return console.error("createNewUser@models/users: MySQL: Error happened in checking signup recommender_user existence:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
@@ -360,13 +429,22 @@ module.exports.createNewUser = function (user, callback) {
 };
 
 
-/*
-     Checks if there is a user with given username and password
+/**
+ * @callback signInCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {number} userId
+ */
 
-     Errors:
-         - username_or_password_is_wrong
-
-         - serverError
+/**
+ * Checks if there is a new user with given username and password.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @param {signInCallback} [callback]
+ *
+ * @throws {'username_or_password_is_wrong'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.signIn = function (username, password, callback) {
     // Try to retrieve user's info with given username from DB
@@ -405,24 +483,30 @@ module.exports.signIn = function (username, password, callback) {
 };
 
 
-/*
-     Check friendship status of two users base on their usernames.
-
-     Returns:
-         0 : Are not friends
-         1 : Are friends
-         2 : Are friends and first_user has requested
-         3 : Are friends has second_user has requested
-
-     Note: If any one given usernames does not exist, 0 will return.
-
-     Errors:
-        - serverError
+/**
+ * @callback friendshipStatusCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {number} status
  */
-module.exports.friendshipStatus = function (user1, user2, callback) {
+
+/**
+ * Checks friendship status of two users.
+ * Status can have one of these values:
+ *     0 : Are not friends
+ *     1 : Are friends
+ *     2 : Are friends and first_user has requested
+ *     3 : Are friends has second_user has requested
+ *
+ * @param {string} first_user
+ * @param {string} second_user
+ * @param {friendshipStatusCallback} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.friendshipStatus = function (first_user, second_user, callback) {
     db.conn.query(
         "SELECT `friendshipStatus` (?, ?) as `status`",
-        [user1, user2],
+        [first_user, second_user],
         function (err, results) {
             // MySQL error
             if (err) {
@@ -436,11 +520,20 @@ module.exports.friendshipStatus = function (user1, user2, callback) {
 };
 
 
-/*
-    Get user's info
+/**
+ * @callback getCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {object} userInfo
+ */
 
-    Errors:
-        - serverError
+/**
+ * Gets a user's info.
+ *
+ * @param {string} username
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {getCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.get = function (username, fields, callback) {
     if (fields.length === 0)
@@ -470,11 +563,20 @@ module.exports.get = function (username, fields, callback) {
 };
 
 
-/*
- Get user's detailed info
+/**
+ * @callback getDetailedCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {object} userDetailedInfo
+ */
 
- Errors:
-    - serverError
+/**
+ * Gets a user's detailed info.
+ *
+ * @param {string} username
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {getDetailedCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getDetailed = function (username, fields, callback) {
     if (fields.length === 0)
@@ -504,15 +606,23 @@ module.exports.getDetailed = function (username, fields, callback) {
 };
 
 
-/*
-    Get a user's points
+/**
+ * @callback getPointsCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {object[]} userPoints
+ */
 
-    publicOrPrivate: if 'public' then only public points
-                     if 'private' then only private points
-
-
-    Errors:
-        - serverError
+/**
+ * Gets a user's points.
+ *
+ * @param {string} username User's username.
+ * @param {string} publicOrPrivate Get only public or private points or both. Can be 'public', 'private' and null.
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {(number|string)} start
+ * @param {(number|string)} limit
+ * @param {getPointsCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getPoints = function (username, publicOrPrivate, fields, start, limit, callback) {
     var conditions = {
@@ -546,6 +656,16 @@ module.exports.getPoints = function (username, publicOrPrivate, fields, start, l
 };
 
 
+/**
+ * A express middleware that checks the friendship status of
+ * token user with a username that is is req.params.username
+ * and sets these variables:
+ *     - req.isFriend Shows if two users are friends
+ *     - req.isMySelf Shows if two users are the same
+ *     - req.friendship Shows friendship status of two users
+ *
+ * @returns {Function} A express middleware
+ */
 module.exports.checkFriendshipStatus = function () {
     // A middleware that checks friendship status
     return function (req, res, next) {
