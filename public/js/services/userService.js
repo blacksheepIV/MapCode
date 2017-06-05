@@ -1,9 +1,10 @@
 /**
  * Created by blackSheep on 04-Apr-17.
  */
-var userService = function(){
+var userService = function($http){
     var user = {}; //empty object literal
     var verCode = -1;
+    var usrInfo = {};
     this.setUserInfo = function(userData){
         user = userData;
       //  console.log(user);
@@ -22,5 +23,14 @@ var userService = function(){
         return times;
     };
     //****************************************************************************************************************
-
-}//end of regService function
+   this.searchUsers = function(username){
+       var searchUser =  window.apiHref+"users/"+username;
+       return $http({url:searchUser,method:"GET"});
+   };//end of searchUsers func
+    this.setUsrInfo = function (info){
+        usrInfo = info;
+    };
+    this.getUsrInfo = function(){
+        return usrInfo;
+    };
+};//end of userService function

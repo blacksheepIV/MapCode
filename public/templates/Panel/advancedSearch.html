@@ -10,91 +10,123 @@
         </div>
     </md-toolbar>
     <md-content class="md-padding" flex="100" >
-        <form name="searchForm" class="form" ng-submit="searchForm.$valid && search()" dir="rtl" flex="100" novalidate>
-            <div layout="row" layout-xs="row">
-                <h2>جستجو بر اساس:</h2>
-            </div>
-             <div layout="row" layout-xs="column">
-                 <md-input-container flex="25" flex-xs="70" class="md-block">
-                     <label for="PCode">کد نقطه:</label>
-                     <input type="text" id="PCode" name="code" ng-model="PCode"/> <!-- * -->
-                    <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                         <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                         <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
-                         <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
-                     </div> -->
-                 </md-input-container>
-                 <div flex="5"></div>
-                 <md-input-container flex="25" flex-xs="70" class="md-block">
-                     <label for="PName">نام نقطه:</label>
-                     <input type="text" id="PName" name="name" ng-model="PName"/>
-                     <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                          <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                          <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
-                          <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
-                      </div> -->
-                 </md-input-container>
-                 <div flex="5"></div>
-                 <md-input-container flex="25" flex-xs="70" class="md-block">
-                     <label for="POwner">مالک نقطه:</label>
-                     <input type="text" id="POwner" name="owner" ng-model="POwner"/>
-                     <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                          <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                          <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
-                          <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
-                      </div> -->
-                 </md-input-container>
-             </div>
-            <!-- second Row -->
-                <div layout="row" layout-xs="column">
-                     <md-input-container flex="25" flex-xs="70" class="md-block">
-                        <label for="PCity">شهر:</label>
-                        <input type="text" id="PCity" name="city" ng-model="PCity"/>
-                      <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                         <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                         <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
-                         <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
-                      </div> -->
-                     </md-input-container>
-                <div flex="5"></div>
-                <md-input-container flex="25" flex-xs="70" class="md-block">
-                    <label for="PCategory">دسته نقطه:</label>
-                    <input type="text" id="PCategory" name="PCategory" ng-model="PCategory"/>
-                    <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                         <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                         <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
-                         <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
-                     </div> -->
-                </md-input-container>
-            </div>
-                <!-- End of Second Row -->
-            <!-- 3rd row-->
-            <div layout="row" layout-xs="column">
-                <div layout="row" flex="95">
-                    <md-chips id="PTags" name="tags" ng-model="PTags" readonly="false" md-removable="true"
+        <div class="animate-switch-container" ng-switch on="lookingForusers">
+            <div class="animate-switch" ng-switch-when="false">
+                  <form name="searchForm" class="form" ng-submit="searchForm.$valid && search()" dir="rtl" flex="100" novalidate>
+                        <div layout="row" layout-xs="row">
+                             <h2>جستجو بر اساس:</h2>
+                        </div>
+                        <div layout="row" layout-xs="column">
+                        <md-input-container flex="25" flex-xs="70" class="md-block">
+                            <label for="PCode">کد نقطه:</label>
+                            <input type="text" id="PCode" name="code" ng-model="PCode" ng-pattern="codePattern"/> <!-- * -->
+                            <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                                   <div ng-message="required">وارد کردن نام  الزامی است.</div>
+                                   <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                                   <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                             </div> -->
+                         </md-input-container>
+                         <div flex="5"></div>
+                         <md-input-container flex="25" flex-xs="70" class="md-block">
+                            <label for="PName">نام نقطه:</label>
+                            <input type="text" id="PName" name="name" ng-model="PName"/>
+                            <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                                <div ng-message="required">وارد کردن نام  الزامی است.</div>
+                                <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                                <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                            </div> -->
+                          </md-input-container>
+                            <div flex="5"></div>
+                            <md-input-container flex="25" flex-xs="70" class="md-block">
+                               <label for="POwner">مالک نقطه:</label>
+                               <input type="text" id="POwner" name="owner" ng-model="POwner"/>
+                               <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                                    <div ng-message="required">وارد کردن نام  الزامی است.</div>
+                                    <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                                    <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                                </div> -->
+                              </md-input-container>
+                        </div>
+                        <!-- second Row -->
+                        <div layout="row" layout-xs="column">
+                          <md-input-container flex="25" flex-xs="70" class="md-block">
+                             <label for="PCity">شهر:</label>
+                            <input type="text" id="PCity" name="city" ng-model="PCity"/>
+                            <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                                <div ng-message="required">وارد کردن نام  الزامی است.</div>
+                                <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                               <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                             </div> -->
+                          </md-input-container>
+                            <div flex="5"></div>
+                            <md-input-container flex="25" flex-xs="70" class="md-block">
+                               <label for="PCategory">دسته نقطه:</label>
+                               <input type="text" id="PCategory" name="PCategory" ng-model="PCategory"/>
+                                <!-- <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
+                                     <div ng-message="required">وارد کردن نام  الزامی است.</div>
+                                     <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                                     <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
+                                </div> -->
+                             </md-input-container>
+                             <!--  <div flex="5"></div>
+                             <md-input-container flex="25" flex-xs="70" class="md-block">
+                             <label for="username">نام کاربری:</label>
+                            <input type="text" id="userName" name="userName" ng-click="username"/>
+                             </md-input-container> -->
+                        </div>
+                       <!-- End of Second Row -->
+                       <!-- 3rd row-->
+                       <div layout="row" layout-xs="column">
+                           <div layout="row" flex="95">
+                           <md-chips id="PTags" name="tags" ng-model="PTags" readonly="false" md-removable="true"
                               md-max-chips="5"  md-enable-chip-edit="true" placeholder="تگ ها را با enter از هم جدا کنید" required></md-chips>
-                    <div class="errors" ng-messages="addPoint.tags.$error">
-                        <div ng-message="md-max-chips">حداکثر تعداد تگ وارد شده است.</div>
-                    </div>
-                </div>
+                           <div class="errors" ng-messages="addPoint.tags.$error">
+                               <div ng-message="md-max-chips">حداکثر تعداد تگ وارد شده است.</div>
+                           </div>
+                           </div>
+                        </div>
+                        <!-- End of 3rd row-->
+                      <div layout="row" layout-xs="column" md-theme="NewTheme" layout-align="center center" >
+                          <md-button class="md-raised md-accent md-hue-2" type="submit" flex="35" >جستجو کن</md-button>
+                       </div>
+             </form>
+            <md-divider  md-inset></md-divider>
+            <div layout="row">
+                <md-list class="md-dense" flex>
+                   <md-subheader class="md-no-sticky">نتایج جستجو:</md-subheader>
+                    <md-list-item class="md-3-line" ng-repeat="searchresult in searchResults" >
+                       <img src="../img/icons/location_marker.png" class="md-avatar" alt="{{searchresult.name}}" />
+                        <div class="md-list-item-text" layout="column">
+                            <h3>{{ searchresult.name }}</h3>
+                            <h5>{{ searchresult.address }}</h5>
+                            <p>{{ searchresult.description }}</p>
+                         </div>
+                     </md-list-item>
+             </div>
             </div>
-            <!-- End of #rd row-->
-                <div layout="row" layout-xs="column" md-theme="NewTheme" layout-align="center center" >
-                    <md-button class="md-raised md-accent md-hue-2" type="submit" flex="35" >جستجو کن</md-button>
-                </div>
-        </form>
-        <md-divider  md-inset></md-divider>
-        <div layout="row">
-            <md-list class="md-dense" flex>
-                <md-subheader class="md-no-sticky">نتایج جستجو:</md-subheader>
-                <md-list-item class="md-3-line" ng-repeat="searchresult in searchResults" >
-                    <img src="../img/icons/location_marker.png" class="md-avatar" alt="{{searchresult.name}}" />
-                    <div class="md-list-item-text" layout="column">
-                        <h3>{{ searchresult.name }}</h3>
-                        <h5>{{ searchresult.address }}</h5>
-                        <p>{{ searchresult.description }}</p>
-                    </div>
-                </md-list-item>
+
+           <div class="animate-switch" ng-switch-when="true">
+               <div layout="column">
+                   <div layout="row">
+                       <div flex="5"></div>
+                       <h2>نتایج جستجو:</h2>
+                       </div>
+                   <div class="animate-switch-container" ng-switch on="sthWentWrong">
+                       <div class="animate-switch" ng-switch-when="true">
+                           <div flex="10"></div>
+                           <p style="color: darkred;">نتیجه ای یافت نشد!</p>
+                           </div>
+                       <div class="animate-switch" ng-switch-when="false">
+                           <md-list class="md-dense" flex>
+                              <md-list-item ng-repeat="user in foundedUsers"  class="noleft" ng-click="showUserInfo(user,$event)">
+                              <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
+                              <p>{{user.name}}</p>
+                              </md-list-item>
+                         </md-list>
+                       </div>
+                   </div>
+               </div>
+           </div>
         </div>
     </md-content>
 </div>

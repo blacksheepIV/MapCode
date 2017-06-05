@@ -61,7 +61,7 @@ function pointService($http){
             var searchUrl = window.apiHref+"/point/search";
             var myConfig = {};
             myConfig= searchParams;
-            console.log(myConfig);
+          //  console.log(myConfig);
            return $http({url:searchUrl,method:"GET",params : myConfig})
                 .success(function(data){
                     pointService.searchResult = data;
@@ -69,7 +69,7 @@ function pointService($http){
         },
         setSearchedValue : function(val){
             pointService.searchedFor = val;
-            console.log(pointService.searchedFor);
+            //console.log(pointService.searchedFor);
         },
         getSearchedValue : function(){
             return pointService.searchedFor;
