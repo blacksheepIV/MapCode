@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 04-Jun-17.
  */
-function usrInfoCtrl($scope,userService,$mdDialog){
+function usrInfoCtrl($scope,userService,$mdDialog,pointService){
      $scope.initUsr = function(){
          $scope.info = {};
          $scope.SendInvitation = false;
@@ -41,6 +41,19 @@ function usrInfoCtrl($scope,userService,$mdDialog){
             });
     };
     /* ################################################################################################################################################ */
+    /* ########################################## Show Point Details ################################################################################### */
+    $scope.showPointDetails = function(point, ev) {
+        pointService.setDetailedInfo(point);
+        $mdDialog.show({
+            controller: pointInfoCtrl,
+            templateUrl: 'templates/Panel/userPanelItems/pointDetailedInfo.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+    /* ########################################## Show Point Details ################################################################################### */
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
