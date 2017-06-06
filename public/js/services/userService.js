@@ -33,4 +33,9 @@ var userService = function($http){
     this.getUsrInfo = function(){
         return usrInfo;
     };
+    /* ##################################### Get User's Point ######################################################### */
+    this.GetPoints = function(username){
+        var getPoint =  window.apiHref+"users/"+username+"/points";
+        return $http({url:getPoint,method:"GET"});
+    };
 };//end of userService function

@@ -37,16 +37,26 @@
                             </div>
                     </md-content>
                 </md-tab>
-                <md-tab label="نقاط شخصی">
+                <md-tab label="نقاط" md-on-select="getUsrPoints()">
                     <md-content class="md-padding">
-                      <p>این ویژگی فعلا در دسترس نیست</p>
+                        <md-list class="md-dense" flex>
+                            <md-subheader class="md-no-sticky">نقاط عمومی و خصوصی کاربر:</md-subheader>
+                            <md-list-item class="md-3-line" ng-repeat="point in usrpoints" ng-click="showPointDetails(myPoint,$event)">
+                                <img src="../img/Icons/location_marker.png" class="md-avatar" alt="{{point.name}}" />
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>{{ point.name }}</h3>
+                                    <h5>{{ point.address }}</h5>
+                                    <p>{{ point.description }}</p>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
                     </md-content>
                 </md-tab>
-                <md-tab label="نقاط عمومی/خصوصی">
+              <!--  <md-tab label="نقاط عمومی/خصوصی">
                     <md-content class="md-padding">
                         <p>این ویژگی فعلا در دسترس نیست</p>
                     </md-content>
-                </md-tab>
+                </md-tab> -->
             </md-tabs>
         </md-dialog-content>
 
