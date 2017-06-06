@@ -1,5 +1,5 @@
 /**
- * Friends
+ * Friends.
  *
  * @module models/friends
  * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
@@ -13,8 +13,8 @@ var db = require('../db');
 /**
  * Submits a friend request from user(id) to user(username).
  *
- * @param {(number|string)} id Requester user's id
- * @param {string} username Username Requestee user's username
+ * @param {(number|string)} id Requester user's id.
+ * @param {string} username Username Requestee user's username.
  * @param {function} [callback]
  *
  * @throws {'are_already_friends'}
@@ -60,8 +60,8 @@ module.exports.sendRequest = function (id, username, callback) {
 /**
  * Unfriends two users.
  *
- * @param {(number|string)} first_user_id First user's ID
- * @param {string} second_user_username Second user's username
+ * @param {(number|string)} first_user_id First user's ID.
+ * @param {string} second_user_username Second user's username.
  * @param {function} [callback]
  *
  * @throws {'serverError'}
@@ -88,8 +88,8 @@ module.exports.unfriend = function (first_user_id, second_user_username, callbac
 /**
  * Accepts the request sent from user(username) to user(id).
  *
- * @param {(number|string)} id Requestee user's ID
- * @param {string} username Requester user's username
+ * @param {(number|string)} id Requestee user's ID.
+ * @param {string} username Requester user's username.
  * @param {function} [callback]
  *
  * @throws {'your_not_requestee'}
@@ -139,8 +139,8 @@ module.exports.acceptRequest = function (id, username, callback) {
 /**
  * Cancels the request sent from user(id) to user(name).
  *
- * @param {(number|string)} id Requestee user's ID
- * @param {string} username Requester user's username
+ * @param {(number|string)} id Requestee user's ID.
+ * @param {string} username Requester user's username.
  * @param {function} [callback]
  *
  * @throws {'no_pending_request'}
@@ -179,10 +179,18 @@ module.exports.cancelRequest = function (id, username, callback) {
 
 
 /**
+ * @callback getFriendRequestsCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {object} friendRequests
+ * @param {string[]} friendRequests.fromMe List of requests from user to others.
+ * @param {string[]} friendRequests.toMe List of requests to user.
+ */
+
+/**
  * Gets the list of friend requests for a user.
  *
- * @param {(number|string)} id User's id
- * @param {function} [callback]
+ * @param {(number|string)} id User's id.
+ * @param {getFriendRequestsCallback} [callback]
  *
  * @throws {'serverError'}
  */
@@ -225,7 +233,7 @@ module.exports.getFriendRequests = function (id, callback) {
 /**
  * Gets the list of friends.
  *
- * @param {(number|string)} id User's id
+ * @param {(number|string)} id User's id.
  * @param {function} [callback]
  *
  * @throws {'serverError'}

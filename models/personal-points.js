@@ -1,5 +1,5 @@
 /**
- * Personal points
+ * Personal points.
  *
  * @module models/personal-points
  * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
@@ -10,6 +10,8 @@ var db = require('../db');
 
 
 /**
+ * Verification schema.
+ *
  * @constant
  * @type {object}
  */
@@ -51,10 +53,16 @@ module.exports.schema = {
 
 
 /**
+ * @callback submitCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {number} personalPointId
+ */
+
+/**
  * Submits a new point.
  *
  * @param {object} personalPoint
- * @param {function} [callback]
+ * @param {submitCallback} [callback]
  *
  * @throws {'serverError'}
  */
@@ -77,10 +85,10 @@ module.exports.submit = function (personalPoint, callback) {
 
 
 /**
- * Deletes a personal point with given owner and code
+ * Deletes a personal point with given owner and code.
  *
- * @param {string} owner Point's owner
- * @param {string} code Point's code
+ * @param {string} owner Point's owner.
+ * @param {string} code Point's code.
  * @param {function} [callback]
  *
  * @throws {'serverError'}
@@ -103,12 +111,18 @@ module.exports.delete = function (owner, code, callback) {
 
 
 /**
- * Get list of personal points for a user.
+ * @callback getForUserCallback
+ * @param err The error that happened. Is null if no error has happened.
+ * @param {object[]} userPersonalPoints
+ */
+
+/**
+ * Gets list of personal points for a user.
  *
- * @param {(number|string)} userId User's ID
- * @param {(number|string)} start Start from start-th point
- * @param {(number|string)} limit Number of point's to get
- * @param {function} [callback]
+ * @param {(number|string)} userId User's ID.
+ * @param {(number|string)} start Start from start-th point.
+ * @param {(number|string)} limit Number of point's to get.
+ * @param {getForUserCallback} [callback]
  *
  * @throws {'serverError'}
  */

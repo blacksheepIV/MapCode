@@ -62,7 +62,7 @@ module.exports.JWTErrorHandler = function (err, req, res, next) {
 module.exports.JWTErrorIgnore = function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') return next(); // Ignore the authentication error
 
-    next(err)
+    next(err);
 };
 
 

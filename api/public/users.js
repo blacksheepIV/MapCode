@@ -1,11 +1,9 @@
 var router = require('express').Router();
-var moment = require('moment');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
 var pointModel = require('../../models/point');
 
 var jwt = require('../../utils/jwt');
-var db = require('../../db');
 var usersModel = require('../../models/users');
 var validateWithSchema = require('../../utils').validateWithSchema;
 var checkFriendshipStatus = require('../../models/users').checkFriendshipStatus;

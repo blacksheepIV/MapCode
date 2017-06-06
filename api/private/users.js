@@ -130,7 +130,7 @@ router.route('/users/')
                 function (next) {
                     usersModel.updateUser(
                         req.body,
-                        {id: req.user.id},
+                        req.user.id,
                         function (err) {
                             if (err) {
                                 if (err === 'serverError')
