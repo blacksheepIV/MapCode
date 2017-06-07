@@ -7,7 +7,7 @@ var lodashTrim = require('lodash/trim');
 var db = require('../../db');
 var jwt = require('../../utils/jwt');
 var escapeRegExp = require('../../utils').escapeRegExp;
-var pointModel = require('../../models/point');
+var pointModel = require('../../models/points');
 
 
 /**

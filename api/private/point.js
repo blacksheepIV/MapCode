@@ -2,7 +2,7 @@ var router = require('express').Router();
 var asyncEach = require('async/each');
 
 var db = require('../../db');
-var pointModel = require('../../models/point');
+var pointModel = require('../../models/points');
 var validateWithSchema = require('../../utils').validateWithSchema;
 
 
