@@ -1,4 +1,17 @@
-// SMS verification code request verification schema
+/**
+ * SMS.
+ *
+ * @module models/sms
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
+
+/**
+ * SMS verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'mobile_phone': {
         notEmpty: {
@@ -15,6 +28,9 @@ module.exports.schema = {
 };
 
 
+/**
+ * Returns associated Redis key for a phone number's verification code
+ */
 module.exports.phoneNumberKey = function (phone_number) {
     return process.env.REDIS_PREFIX + 'mphone:' + phone_number;
 };
