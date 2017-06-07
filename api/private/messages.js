@@ -105,6 +105,7 @@ router.post('/messages',
  *
  * @apiParam {Number{1..}} [start=1] Send messages from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of messages to receive.
+ * @apiParam {Boolean} [unread] If is set only returns unread messages.
  *
  * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time, read
  *
@@ -126,6 +127,26 @@ router.post('/messages',
  *             "sent_time": "2017-05-13 19:45:15",
  *             "read": 1
  *          },
+ *          {
+ *             "id": "10",
+ *             "sender": "mohammad",
+ *             "receiver": "alireza",
+ *             "lat": "61.32",
+ *             "lng": "110.43",
+ *             "non_personal": "0",
+ *             "point_code": "mp005001000000002",
+ *             "sent_time": "2016-05-13 19:45:15",
+ *             "read": 0
+ *          }
+ *        ]
+ *
+ * @apiSuccessExample
+ *     Request-Example:
+ *         GET http://mapcode.ir/messages?limit=1&unread
+ *     Response:
+ *        HTTP/1.1 200 OK
+ *
+ *        [
  *          {
  *             "id": "10",
  *             "sender": "mohammad",
