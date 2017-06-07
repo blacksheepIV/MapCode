@@ -72,7 +72,7 @@
 					"response": []
 				},
 				{
-					"name": "Point submission",
+					"name": "Submit point",
 					"request": {
 						"url": "http://localhost:3000/api/point",
 						"method": "POST",

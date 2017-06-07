@@ -55,11 +55,12 @@ DELIMITER ;
 
 
 /*
- err:
-     0 : Success
-     2 : Owner not found
-     3 : Not enough credit and bonus
-     4 : Category not found
+    Adds a new point.
+
+    Errors (sqlstate = 45000):
+      - OWNER_NOT_FOUND
+      - NOT_ENOUGH_CREDIT_BONUS
+      - CATEGORY_NOT_FOUND
  */
 DELIMITER ~
 CREATE PROCEDURE `addPoint`
@@ -90,8 +91,7 @@ CREATE PROCEDURE `addPoint`
     IN  `tags`            TEXT CHARACTER SET utf8mb4
                           COLLATE utf8mb4_persian_ci,
 
-    OUT `point_code`      VARCHAR(17),
-    OUT `err`             TINYINT UNSIGNED
+    OUT `point_code`      VARCHAR(17)
   )
     PROC: BEGIN
     DECLARE credit, bonus SMALLINT UNSIGNED;
@@ -115,18 +115,12 @@ CREATE PROCEDURE `addPoint`
 
     IF FOUND_ROWS() != 1
     THEN
-      -- Owner not found
-      SET err = 2;
-      ROLLBACK;
-      LEAVE PROC;
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'OWNER_NOT_FOUND';
     END IF;
 
     IF credit + bonus = 0
     THEN
-      -- Not enough credit and bonus
-      SET err = 3;
-      ROLLBACK;
-      LEAVE PROC;
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NOT_ENOUGH_CREDIT_BONUS';
     END IF;
 
     SELECT SQL_CALC_FOUND_ROWS
@@ -142,10 +136,7 @@ CREATE PROCEDURE `addPoint`
 
     IF FOUND_ROWS() != 1
     THEN
-      -- category not found
-      SET err = 4;
-      ROLLBACK;
-      LEAVE PROC;
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CATEGORY_NOT_FOUND';
     END IF;
 
     SELECT COUNT(*)
@@ -219,9 +210,6 @@ CREATE PROCEDURE `addPoint`
     CALL addPointTags(@point_id, tags);
 
     DEALLOCATE PREPARE decrease_credit_bonus_statement;
-
-    -- Success
-    SET err = 0;
   END~
 DELIMITER ;
 

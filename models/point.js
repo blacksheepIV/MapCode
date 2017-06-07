@@ -5,6 +5,8 @@
  * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
  */
 
+var lodashIncludes = require('lodash/includes');
+
 var db = require('../db');
 
 
@@ -168,7 +170,7 @@ module.exports.add = function (point, callback) {
     }
 
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code); SELECT @point_code AS `pointCode`;",
         [
             point.owner,
             point.lat,
@@ -186,30 +188,23 @@ module.exports.add = function (point, callback) {
             point.tags
         ],
         function (err, results) {
-            // MySQL error
             if (err) {
+                if (err.sqlState === '45000') {
+                    if (lodashIncludes(err.message, 'OWNER_NOT_FOUND'))
+                        return callback('owner_not_found');
+
+                    if (lodashIncludes(err.message, 'NOT_ENOUGH_CREDIT_BONUS'))
+                        return callback('not_enough_credit_bonus');
+
+                    if (lodashIncludes(err.message, 'CATEGORY_NOT_FOUND'))
+                        return callback('category_not_found');
+                }
                 console.error("MySQL: Error happened in inserting new point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
-            var procErr = results[1][0].err,
-                pointCode = results[1][0].pointCode;
-            // Procedure has returned an error
-            if (procErr !== 0) {
-                if (procErr === 2) {
-                    callback('owner_not_found');
-                }
-                else if (procErr === 4) {
-                    callback('category_not_found');
-                }
-                else {
-                    callback('not_enough_credit_bonus');
-                }
-            }
-            else {
-                // Procedure has been successful
-                callback(null, pointCode);
-            }
+            // Procedure has been successful
+            callback(null, results[1][0].pointCode);
         }
     );
 };
