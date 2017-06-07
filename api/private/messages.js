@@ -79,7 +79,7 @@ router.post('/messages',
             req.body.point,
             req.body.personal_point,
             req.body.message,
-            function (err, message_code) {
+            function (err, messageCode) {
                 if (err) {
                     switch (err) {
                         case 'serverError':
@@ -90,7 +90,7 @@ router.post('/messages',
                 }
 
                 // Hooray! message successfully sent.
-                res.status(200).json({code: message_code});
+                res.status(200).json({code: messageCode});
             }
         );
     });

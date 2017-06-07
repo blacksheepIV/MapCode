@@ -179,8 +179,8 @@ module.exports.cancelRequest = function (id, username, callback) {
 
 
 /**
- * @callback getFriendRequestsCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback friendsGetFriendRequestsCallback
+ * @param err
  * @param {object} friendRequests
  * @param {string[]} friendRequests.fromMe List of requests from user to others.
  * @param {string[]} friendRequests.toMe List of requests to user.
@@ -190,7 +190,7 @@ module.exports.cancelRequest = function (id, username, callback) {
  * Gets the list of friend requests for a user.
  *
  * @param {(number|string)} id User's id.
- * @param {getFriendRequestsCallback} [callback]
+ * @param {friendsGetFriendRequestsCallback} [callback]
  *
  * @throws {'serverError'}
  */

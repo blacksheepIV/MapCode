@@ -1,9 +1,22 @@
+/**
+ * Messages.
+ *
+ * @module models/messages
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
 var lodashIncludes = require('lodash/includes');
 var moment = require('moment');
 
 var db = require('../db');
 
 
+/**
+ * message's fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.publicFields = [
     'code',
     'sender',
@@ -17,7 +30,12 @@ module.exports.publicFields = [
 ];
 
 
-// Verification schema
+/**
+ * Verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'receiver': {
         notEmpty: {
@@ -56,19 +74,31 @@ module.exports.schema = {
 };
 
 
-/*
-    Sends a message
+/**
+ * @callback messagesSendCallback
+ * @param err
+ * @param {number} messageCode Sent message's unique code.
+ */
 
-    Errors:
-        - sender_not_found
-        - receiver_not_found
-        - point_not_found
-        - personal_point_not_found
-        - no_point
-        - both_points
-        - self_message
-
-        - serverError
+/**
+ * Sends a message.
+ *
+ * @param {(number|string)} sender Sender user's ID.
+ * @param {string} receiverUsername Receiver user's username.
+ * @param {string} point General point's code.
+ * @param {(number|string)} personal_point Personal point's code.
+ * @param {string} message
+ * @param {messagesSendCallback} [callback]
+ *
+ * @throws {'sender_not_found'}
+ * @throws {'receiver_not_found'}
+ * @throws {'point_not_found'}
+ * @throws {'personal_point_not_found'}
+ * @throws {'no_point'}
+ * @throws {'both_points'}
+ * @throws {'self_message'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.send = function (sender,
                                 receiverUsername,
@@ -107,7 +137,7 @@ module.exports.send = function (sender,
                 }
 
                 // Unexpected MySQL error has happened
-                console.error("send@models/messages: Error in calling sendMessage DB procedure: %s\nQuery:\n\t%s", err, err.sql);
+                console.error("send@models/messages: Error in calling sendMessage DB procedure:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -118,19 +148,23 @@ module.exports.send = function (sender,
 };
 
 
-/*
-    Deletes a message with given id and it's sender or receiver
-
-    Errors:
-        - serverError
+/**
+ * Deletes a message with given code and it's sender or receiver.
+ *
+ * @param {(number|string)} senderOrReceiver The ID of sender or receiver.
+ * @param {(number|string)} msgCode Message's code
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
-module.exports.delete = function (senderOrReceiver, msgId, callback) {
+module.exports.delete = function (senderOrReceiver, msgCode, callback) {
     db.conn.query(
         "DELETE FROM `messages` WHERE (`sender` = ? OR `receiver` = ?) AND `id` = ?",
-        [senderOrReceiver, senderOrReceiver, msgId],
+        [senderOrReceiver, senderOrReceiver, msgCode],
+        // MySQL error
         function (err) {
             if (err) {
-                console.error("delete@models/messages: MySQL error in deleting message: %s\nQuery:\n\t%s", err, err.sql);
+                console.error("delete@models/messages: MySQL error in deleting message:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -140,18 +174,30 @@ module.exports.delete = function (senderOrReceiver, msgId, callback) {
 };
 
 
-/*
-    Get list of user's messages
+/**
+ * @callback messagesGetUserMessagesCallback
+ * @param err
+ * @param {object[]} userMessages
+ */
 
-    Errors:
-        - serverError
+/**
+ * Gets the list of user's messages.
+ *
+ * @param {string} receiverOrSender If is 'sender' gets user's sent messages and if is 'receiver' get's user's received messages.
+ * @param {string} username User's username.
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {(number|string)} start
+ * @param {(number|string)} limit
+ * @param {messagesGetUserMessagesCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
     db.conn.query(
-        "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
-        " FROM `messages_detailed` " +
-        "WHERE ?? = ? " +
-        "LIMIT ?, ?",
+        " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
+        " FROM `messages_detailed`" +
+        " WHERE ?? = ?" +
+        " LIMIT ?, ?",
         [receiverOrSender, username, start, limit],
         function (err, results) {
             // MySQL error
@@ -166,11 +212,21 @@ module.exports.getUserMessages = function (receiverOrSender, username, fields, s
 };
 
 
-/*
-    Get message's content
+/**
+ * @callback messagesGetCallback
+ * @param err
+ * @param {object} message
+ */
 
-    Errors:
-        - serverError
+/**
+ * Gets message's content.
+ *
+ * @param {string} username Sender or receiver user's username.
+ * @param {(number|string)} msgCode Message's code.
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {messagesGetCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.get = function (username, msgCode, fields, callback) {
     db.conn.query(

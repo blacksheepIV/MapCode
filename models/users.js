@@ -322,8 +322,8 @@ module.exports.updateUser = function (user, userId, callback) {
 
 
 /**
- * @callback createNewUserCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback usersCreateNewUserCallback
+ * @param err
  * @param {string} userCode Newly created user's generated code.
  */
 
@@ -331,7 +331,7 @@ module.exports.updateUser = function (user, userId, callback) {
  * Creates a new user.
  *
  * @param {object} user New user's info.
- * @param {createNewUserCallback} [callback]
+ * @param {usersCreateNewUserCallback} [callback]
  *
  * @throws {'no_recommender_user_with_this_code'}
  *
@@ -430,8 +430,8 @@ module.exports.createNewUser = function (user, callback) {
 
 
 /**
- * @callback signInCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback usersSignInCallback
+ * @param err
  * @param {number} userId
  */
 
@@ -440,7 +440,7 @@ module.exports.createNewUser = function (user, callback) {
  *
  * @param {string} username
  * @param {string} password
- * @param {signInCallback} [callback]
+ * @param {usersSignInCallback} [callback]
  *
  * @throws {'username_or_password_is_wrong'}
  *
@@ -484,8 +484,8 @@ module.exports.signIn = function (username, password, callback) {
 
 
 /**
- * @callback friendshipStatusCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback usersFriendshipStatusCallback
+ * @param err
  * @param {number} status
  */
 
@@ -499,7 +499,7 @@ module.exports.signIn = function (username, password, callback) {
  *
  * @param {string} first_user
  * @param {string} second_user
- * @param {friendshipStatusCallback} [callback]
+ * @param {usersFriendshipStatusCallback} [callback]
  *
  * @throws {'serverError'}
  */
@@ -521,8 +521,8 @@ module.exports.friendshipStatus = function (first_user, second_user, callback) {
 
 
 /**
- * @callback getCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback usersGetCallback
+ * @param err
  * @param {object} userInfo
  */
 
@@ -531,7 +531,7 @@ module.exports.friendshipStatus = function (first_user, second_user, callback) {
  *
  * @param {string} username
  * @param {string[]} fields List of fields to retrieve.
- * @param {getCallback} [callback]
+ * @param {usersGetCallback} [callback]
  *
  * @throws {'serverError'}
  */
@@ -565,7 +565,7 @@ module.exports.get = function (username, fields, callback) {
 
 /**
  * @callback getDetailedCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @param err
  * @param {object} userDetailedInfo
  */
 
@@ -607,8 +607,8 @@ module.exports.getDetailed = function (username, fields, callback) {
 
 
 /**
- * @callback getPointsCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback usersGetPointsCallback
+ * @param err
  * @param {object[]} userPoints
  */
 
@@ -620,7 +620,7 @@ module.exports.getDetailed = function (username, fields, callback) {
  * @param {string[]} fields List of fields to retrieve.
  * @param {(number|string)} start
  * @param {(number|string)} limit
- * @param {getPointsCallback} [callback]
+ * @param {usersGetPointsCallback} [callback]
  *
  * @throws {'serverError'}
  */
