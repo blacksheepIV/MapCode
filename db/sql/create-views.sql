@@ -33,9 +33,14 @@ CREATE ALGORITHM = MERGE VIEW users_detailed AS
     `users`.`code`,
     `users`.`credit`,
     `users`.`bonus`,
-    `T`.`code` AS `recommender_user`,
-    friendsCount_ForUpdate(`users`.`id`) AS `friends_count`,
-    friendRequestsCount_ForUpdate(`users`.`id`) AS `friend_requests_count`
+    `T`.`code`                                  AS `recommender_user`,
+    friendsCount_ForUpdate(`users`.`id`)        AS `friends_count`,
+    friendRequestsCount_ForUpdate(`users`.`id`) AS `friend_requests_count`,
+    userPointsCount(`users`.`id`)               AS `points_count`,
+    userPersonalPointsCount(`users`.`id`)       AS `personal_points_count`,
+    userSentMessagesCount(`users`.`id`)         AS `sent_messages_count`,
+    userReceivedMessagesCount(`users`.`id`)     AS `received_messages_count`,
+    userUnreadMessagesCount(`users`.`id`)       AS `unread_messages_count`
   FROM `users`
     LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
 

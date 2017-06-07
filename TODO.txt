@@ -29,6 +29,7 @@
     * http://jmeter.apache.org/
     * https://github.com/tsenart/vegeta
     * https://github.com/alexfernandez/loadtest
+    * https://k6.readme.io/
 
 - Generate point's code based on MAX(code)
     It solves the problem of deleting a point
@@ -54,3 +55,6 @@
     * Check credit bonus
     * Set `code` field
     * Check `category` field
+
+- Rename views and delete 'forUpdate' if it's OK.
+    Because `FOR UPDATE` only works within TRANSACTION or when autocommit is off.

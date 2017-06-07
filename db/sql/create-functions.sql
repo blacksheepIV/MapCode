@@ -286,3 +286,115 @@ CREATE FUNCTION `friendshipStatus`
 
   END ~
 DELIMITER ;
+
+
+/*
+  Returns user's points count.
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `userPointsCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `points`
+      WHERE `points`.`owner` = user_id
+    );
+
+  END ~
+DELIMITER ;
+
+
+/*
+  Returns user's personal points count.
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `userPersonalPointsCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `personal_points`
+      WHERE `personal_points`.`owner` = user_id
+    );
+
+  END ~
+DELIMITER ;
+
+
+/*
+  Returns user's sent messages count.
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `userSentMessagesCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `messages`
+      WHERE `messages`.`sender` = user_id
+    );
+
+  END ~
+DELIMITER ;
+
+
+/*
+  Returns user's received messages count.
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `userReceivedMessagesCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `messages`
+      WHERE `messages`.`receiver` = user_id
+    );
+
+  END ~
+DELIMITER ;
+
+
+/*
+  Returns user's unread messages count.
+  Returns 0 if user does not exists.
+ */
+DELIMITER ~
+CREATE FUNCTION `userUnreadMessagesCount`
+  (
+    user_id MEDIUMINT UNSIGNED
+  )
+  RETURNS SMALLINT UNSIGNED
+  BEGIN
+
+    RETURN (
+      SELECT COUNT(*)
+      FROM `messages`
+      WHERE `messages`.`receiver` = user_id AND
+            `messages`.`read` = FALSE
+    );
+
+  END ~
+DELIMITER ;
+

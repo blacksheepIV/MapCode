@@ -82,10 +82,9 @@ getDirJsFiles(__dirname, '/public/', function (err, jsFiles) {
         });
     }
 
-    router.use(jwt.JWTCheck, jwt.JWTErrorHandler);
-
     getDirJsFiles(__dirname, '/private/', function (err, jsFiles) {
         if (!err) {
+            router.use(jwt.JWTCheck, jwt.JWTErrorHandler);
             jsFiles.forEach(function (private_api) {
                 router.use(require(private_api));
             });
