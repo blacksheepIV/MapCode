@@ -149,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `personal_point`    BIGINT UNSIGNED,
   `message`  TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci,
   `sent_time` TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `read` BOOLEAN NOT NULL DEFAULT FALSE,
 
   FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
     ON DELETE CASCADE

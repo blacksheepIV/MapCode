@@ -109,7 +109,8 @@ CREATE ALGORITHM = MERGE VIEW `messages_detailed` AS
     IF (`messages`.`point` IS NULL, FALSE, TRUE) AS `non_personal`,
     IF (`messages`.`point` IS NULL, `personal_points`.`id`, `points`.`code`) AS `point_code`,
     `messages`.`message`,
-    `messages`.`sent_time`
+    `messages`.`sent_time`,
+    `messages`.`read`
   FROM `messages`
   JOIN `users` AS U1 ON `U1`.`id` = `messages`.`sender`
   JOIN `users` AS U2 ON `U2`.`id` = `messages`.`receiver`

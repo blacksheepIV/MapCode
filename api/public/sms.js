@@ -91,8 +91,6 @@ router.route('/sms/')
                             });
                         else
                             res.status(200).end();
-
-                        // TODO: Send SMS request to SMS service provider API
                     });
                 }
                 // The Redis key is already exists

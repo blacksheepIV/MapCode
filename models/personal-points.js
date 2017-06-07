@@ -10,7 +10,7 @@ var db = require('../db');
 
 
 /**
- * Verification schema.
+ * Personal point verification schema.
  *
  * @constant
  * @type {object}
@@ -53,8 +53,8 @@ module.exports.schema = {
 
 
 /**
- * @callback submitCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback personalPointsSubmitCallback
+ * @param err
  * @param {number} personalPointId
  */
 
@@ -62,7 +62,7 @@ module.exports.schema = {
  * Submits a new point.
  *
  * @param {object} personalPoint
- * @param {submitCallback} [callback]
+ * @param {personalPointsSubmitCallback} [callback]
  *
  * @throws {'serverError'}
  */
@@ -111,8 +111,8 @@ module.exports.delete = function (owner, code, callback) {
 
 
 /**
- * @callback getForUserCallback
- * @param err The error that happened. Is null if no error has happened.
+ * @callback personalPointsGetForUserCallback
+ * @param err
  * @param {object[]} userPersonalPoints
  */
 
@@ -122,7 +122,7 @@ module.exports.delete = function (owner, code, callback) {
  * @param {(number|string)} userId User's ID.
  * @param {(number|string)} start Start from start-th point.
  * @param {(number|string)} limit Number of point's to get.
- * @param {getForUserCallback} [callback]
+ * @param {personalPointsGetForUserCallback} [callback]
  *
  * @throws {'serverError'}
  */

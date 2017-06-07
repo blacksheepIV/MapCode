@@ -33,8 +33,24 @@
 - Generate point's code based on MAX(code)
     It solves the problem of deleting a point
 
-- Verbosify and Beautify all logs
-
 - User search by:
     * Username
     * Phone number
+
+- SMS service
+
+- User document upload
+- User avatar upload
+
+- Get a point info
+
+- Add these to get current user info:
+    * Points count
+    * Personal points count
+    * Messages count
+    * Unread messages count
+
+- Add triggers for `points` table
+    * Check credit bonus
+    * Set `code` field
+    * Check `category` field

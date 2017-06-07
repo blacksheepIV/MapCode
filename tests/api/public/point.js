@@ -1,8 +1,8 @@
-describe("{GET}/point/categories", function () {
+describe("{GET}/points/categories", function () {
     it("Should have tests!");
 });
 
 
-describe("{GET}/point/search", function () {
+describe("{GET}/points/search", function () {
     it("Should have tests!");
 });

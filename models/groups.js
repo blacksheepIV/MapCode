@@ -1,3 +1,10 @@
+/**
+ * Groups.
+ *
+ * @module models/groups
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
 var lodashIncludes = require('lodash/includes');
 var asyncForEach = require('async/each');
 var moment = require('moment');
@@ -5,10 +12,21 @@ var moment = require('moment');
 var db = require('../db');
 
 
+/**
+ * Groups's fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.publicFields = ['name', 'members'];
 
 
-// Verification schema
+/**
+ * Group verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'name': {
         notEmpty: {
@@ -30,7 +48,12 @@ module.exports.schema = {
 };
 
 
-// Update verification schema
+/**
+ * Group update verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.updateSchema = {
     'new_name': {
         notEmpty: {
@@ -52,16 +75,18 @@ module.exports.updateSchema = {
 };
 
 
-/*
-    Errors:
-        - group_already_exists
-        - username_%s_not_friend
-            (%s will replace with the username)
-            (If username is the owner's username)
-            (If username does not exists)
-            (If username is not owner's friend)
-
-        - serverError
+/**
+ * Adds a new group for a user.
+ *
+ * @param {(number|string)} userId User's ID.
+ * @param {string} gpName Group's name.
+ * @param {string[]} gpMembers List of group's members usernames.
+ * @param {function} [callback]
+ *
+ * @throws {'group_already_exists'}
+ * @throws {'username_%s_not_friend'} '%s' will replace with username. Happens username is group's owner, username does not exist or username is not a friend of group's owner.
+ *
+ * @throws {'serverError'}
  */
 module.exports.add = function (userId, gpName, gpMembers, callback) {
     // Call addGroup DB procedure
@@ -92,9 +117,17 @@ module.exports.add = function (userId, gpName, gpMembers, callback) {
 };
 
 
-/*
-    Errors:
-        - serverError
+/**
+ * Deletes a group for a user.
+ *
+ * Nothing will happen if group or user does not exists
+ * and no error will throw.
+ *
+ * @param {(number|string)} userId User's ID.
+ * @param {string} gpName Group's name.
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.delete = function (userId, gpName, callback) {
     db.conn.query(
@@ -115,17 +148,20 @@ module.exports.delete = function (userId, gpName, callback) {
 };
 
 
-/*
- Errors:
-    - group_not_exists
-    - group_already_exists
-    - username_%s_not_friend
-        (%s will replace with the username)
-        (If username is the owner's username)
-        (If username does not exists)
-        (If username is not owner's friend)
-
-    - serverError
+/**
+ * Updates a user's group.
+ *
+ * @param {(number|string)} userId User's ID.
+ * @param {string} gpName Group's name.
+ * @param {string} newName Group's new name. Give null if name update is not intended.
+ * @param {string[]} members List of group's new members usernames. Give null if members update is not intended.
+ * @param {function} [callback]
+ *
+ * @throws {'group_not_exists'}
+ * @throws {'group_already_exists'}
+ * @throws {'username_%s_not_friend'} '%s' will replace with username. Happens username is group's owner, username does not exist or username is not a friend of group's owner.
+ *
+ * @throws {'serverError'}
  */
 module.exports.update = function (userId, gpName, newName, members, callback) {
     db.conn.query(
@@ -158,11 +194,23 @@ module.exports.update = function (userId, gpName, newName, members, callback) {
 };
 
 
-/*
-    Errors:
-        - serverError
+/**
+ * @callback groupsGetCallback
+ * @param err
+ * @param {object} groupInfo
  */
-module.exports.getGroup = function (userId, groupName, fields, callback) {
+
+/**
+ * Gets a group's info.
+ *
+ * @param {(number|string)} userId Group's owner ID.
+ * @param {string} groupName Group's name.
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {groupsGetCallback} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.get = function (userId, groupName, fields, callback) {
     db.conn.query(
         "SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
         " FROM `groups_detailed`" +
@@ -175,7 +223,7 @@ module.exports.getGroup = function (userId, groupName, fields, callback) {
             }
 
             if (results[0] && results[0].members)
-                    results[0].members = results[0].members.split(' ');
+                results[0].members = results[0].members.split(' ');
 
             callback(null, results[0]);
         }
@@ -183,11 +231,22 @@ module.exports.getGroup = function (userId, groupName, fields, callback) {
 };
 
 
-/*
-    Get list of user's groups
+/**
+ * @callback groupsGetUserGroupsCallback
+ * @param err
+ * @param {object[]} groupsInfo
+ */
 
-    Errors:
-        - serverError
+/**
+ * Gets the list of user's groups.
+ *
+ * @param {(number|string)} userId User's ID.
+ * @param {string[]} fields List of fields to retrieve.
+ * @param {(number|string)} start
+ * @param {(number|string)} limit
+ * @param {groupsGetUserGroupsCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getUserGroups = function (userId, fields, start, limit, callback) {
     db.conn.query(
@@ -227,19 +286,25 @@ module.exports.getUserGroups = function (userId, fields, start, limit, callback)
 };
 
 
-/*
-    Sends a message to group members
-
-     Errors:
-         - sender_not_found
-         - receiver_not_found
-         - point_not_found
-         - personal_point_not_found
-         - no_point
-         - both_points
-         - self_message
-
-         - serverError
+/**
+ * Sends a message to group members.
+ *
+ * @param {(number|string)} sender Group's owner's ID.
+ * @param {string} gpName Group's name.
+ * @param {string} point General point's code.
+ * @param {string} personal_point Personal point's code.
+ * @param {string} message
+ * @param {function} [callback]
+ *
+ * @throws {'sender_not_found'}
+ * @throws {'receiver_not_found'}
+ * @throws {'point_not_found'}
+ * @throws {'personal_point_not_found'}
+ * @throws {'not_point'}
+ * @throws {'both_points'}
+ * @throws {'self_message'}
+ *
+ * @throws {'serverError'}
  */
 module.exports.sendMessage = function (sender, gpName, point, personal_point, message, callback) {
     var sent_time = moment().format('YYYY-MM-DD HH:mm:ss');

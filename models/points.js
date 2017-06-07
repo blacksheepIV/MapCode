@@ -1,6 +1,21 @@
+/**
+ * Points.
+ *
+ * @module models/points
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
+var lodashIncludes = require('lodash/includes');
+
 var db = require('../db');
 
 
+/**
+ * Point's fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.publicFields = [
     'lat',
     'lng',
@@ -21,7 +36,12 @@ module.exports.publicFields = [
 ];
 
 
-// Verification schema
+/**
+ * Point verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'lat': {
         notEmpty: {
@@ -124,15 +144,24 @@ module.exports.schema = {
     }
 };
 
-/*
- Inserts a new point in `points` table
 
- Errors:
- - serverError
- - owner_not_found
- - not_enough_credit_bonus
+/**
+ * @callback pointsAdd
+ * @param err
+ * @param {string} pointCode Newly created point's code.
  */
-module.exports.addPoint = function (point, callback) {
+
+/**
+ * Adds a new point for a user.
+ *
+ * @param {object} point Point's info.
+ * @param {pointsAdd} [callback]
+ *
+ * @throws {'serverError'}
+ * @throws {'owner_not_found'}
+ * @throws {'not_enough_credit_bonus'}
+ */
+module.exports.add = function (point, callback) {
     if (point.tags && Array.isArray(point.tags)) {
         point.tags.map(function (tag) {
             return tag.trim();
@@ -141,7 +170,7 @@ module.exports.addPoint = function (point, callback) {
     }
 
     db.conn.query(
-        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code, @err); SELECT @err AS `err`, @point_code AS `pointCode`;",
+        "CALL addPoint(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @point_code); SELECT @point_code AS `pointCode`;",
         [
             point.owner,
             point.lat,
@@ -160,29 +189,22 @@ module.exports.addPoint = function (point, callback) {
         ],
         function (err, results) {
             if (err) {
-                console.error("MySQL: Error happened in inserting new point: %s", err);
+                if (err.sqlState === '45000') {
+                    if (lodashIncludes(err.message, 'OWNER_NOT_FOUND'))
+                        return callback('owner_not_found');
+
+                    if (lodashIncludes(err.message, 'NOT_ENOUGH_CREDIT_BONUS'))
+                        return callback('not_enough_credit_bonus');
+
+                    if (lodashIncludes(err.message, 'CATEGORY_NOT_FOUND'))
+                        return callback('category_not_found');
+                }
+                console.error("MySQL: Error happened in inserting new point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
-            var procErr = results[1][0].err,
-                pointCode = results[1][0].pointCode;
-            // Procedure has returned an error
-            if (procErr !== 0) {
-                if (procErr === 2) {
-                    callback('owner_not_found');
-                    console.error("!!!: A non existing user have passed auth and is requesting to submit a point!: user's id: %s", point.owner);
-                }
-                else if (procErr === 4) {
-                    callback('category_not_found');
-                }
-                else {
-                    callback('not_enough_credit_bonus');
-                }
-            }
-            else {
-                // Procedure has been successful
-                callback(null, pointCode);
-            }
+            // Procedure has been successful
+            callback(null, results[1][0].pointCode);
         }
     );
 };
