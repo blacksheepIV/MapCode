@@ -41,3 +41,13 @@
 
 - User document upload
 - User avatar upload
+
+- Get a point info
+
+- Add these to get current user info:
+    * Points count
+    * Personal points count
+    * Messages count
+
+- Add `read` field for messages
+    * Add "unread_messages_count" to get current user info API

@@ -9,9 +9,9 @@ var validateWithSchema = require('../../utils').validateWithSchema;
 router.use(require('../../utils').startLimitChecker);
 
 
-router.route('/point')
+router.route('/points')
 /**
- * @api {post} /point/ Create a new public/private point
+ * @api {post} /points/ Create a new public/private point
  * @apiVersion 0.1.0
  * @apiName pointSubmit
  * @apiGroup point
@@ -119,7 +119,7 @@ router.route('/point')
                        so let's remove the token from Redis
                        and return 401 Unauthorized error */
                     else if (err === 'owner_not_found') {
-                        console.error("{POST}/point/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
+                        console.error("{POST}/points/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
 
                         res.status(401).json({
                             errors: ["auth_failure"]
@@ -145,7 +145,7 @@ router.route('/point')
         }
     )
     /**
-     * @api {get} /point/ Get current user's public/private points
+     * @api {get} /points/ Get current user's public/private points
      * @apiVersion 0.1.0
      * @apiName getUserPoints
      * @apiGroup point
@@ -160,7 +160,7 @@ router.route('/point')
      *
      * @apiSuccessExample
      *     Request-Example:
-     *         GET http://mapcode.ir/api/point/?private?start=1?limit=1
+     *         GET http://mapcode.ir/api/points/?private?start=1?limit=1
      *     Response:
      *        HTTP/1.1 200 OK
      *
@@ -200,12 +200,7 @@ router.route('/point')
                 asyncEach(results, function (result, done) {
                     result.tags = result.tags.split(' ');
                     done();
-                }, function (err) {
-                    if (err) {
-                        res.status(500).end();
-                        return console.error("{GET}/point/ @ api/private/point.js: Line 197: async.each on user's points: %s", err);
-                    }
-
+                }, function () {
                     res.json(results);
                 });
             }

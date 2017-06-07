@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "ProjectM",
-		"_postman_id": "459b8e23-a8fa-a21b-3a72-b5c0c8882c24",
+		"_postman_id": "07788c8f-17b3-ce87-66ed-d5682dfb5ac4",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -54,7 +54,26 @@
 				{
 					"name": "Signin",
 					"request": {
-						"url": "http://localhost:3000/api/signin?m",
+						"url": {
+							"raw": "http://localhost:3000/api/signin?m",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"signin"
+							],
+							"query": [
+								{
+									"key": "m",
+									"value": ""
+								}
+							],
+							"variable": []
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -74,7 +93,7 @@
 				{
 					"name": "Submit point",
 					"request": {
-						"url": "http://localhost:3000/api/point",
+						"url": "http://localhost:3000/api/points",
 						"method": "POST",
 						"header": [
 							{
@@ -119,7 +138,7 @@
 				{
 					"name": "Get points",
 					"request": {
-						"url": "http://localhost:3000/api/point",
+						"url": "http://localhost:3000/api/points",
 						"method": "GET",
 						"header": [
 							{
@@ -164,10 +183,13 @@
 				{
 					"name": "Get point categories",
 					"request": {
-						"url": "http://localhost:3000/api/point/categories",
+						"url": "http://localhost:3000/api/points/categories",
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -175,7 +197,7 @@
 				{
 					"name": "Point search",
 					"request": {
-						"url": "http://mapcode.ir/api/point/search",
+						"url": "http://mapcode.ir/api/points/search",
 						"method": "GET",
 						"header": [
 							{
@@ -184,7 +206,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -201,7 +226,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -218,7 +246,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -235,7 +266,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -252,7 +286,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -269,7 +306,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -328,7 +368,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -370,7 +413,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -387,7 +433,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -395,7 +444,27 @@
 				{
 					"name": "User's inbox messages",
 					"request": {
-						"url": "http://localhost:3000/api/messages/?limit=1",
+						"url": {
+							"raw": "http://localhost:3000/api/messages/?limit=1",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"messages",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							],
+							"variable": []
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -404,7 +473,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -421,7 +493,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -463,7 +538,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -496,7 +574,26 @@
 				{
 					"name": "User's groups",
 					"request": {
-						"url": "http://localhost:3000/api/groups?fields=name",
+						"url": {
+							"raw": "http://localhost:3000/api/groups?fields=name",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "name"
+								}
+							],
+							"variable": []
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -505,7 +602,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -547,7 +647,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -564,7 +667,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -581,7 +687,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []

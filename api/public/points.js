@@ -11,7 +11,7 @@ var pointModel = require('../../models/points');
 
 
 /**
- * @api {get} /point/categories/ Get point categories
+ * @api {get} /points/categories/ Get point categories
  * @apiVersion 0.1.0
  * @apiName getPointCategories
  * @apiGroup point
@@ -19,7 +19,7 @@ var pointModel = require('../../models/points');
  *
  * @apiSuccessExample {json}
  *     Request-Example:
- *          GET http://mapcode.ir/api/categories/
+ *          GET http://mapcode.ir/api/points/categories/
  *
  *     Response-Example:
  *          HTTP/1.1 200 OK
@@ -42,14 +42,14 @@ var pointModel = require('../../models/points');
      }
   *
   */
-router.get('/point/categories/', function (req, res) {
+router.get('/points/categories/', function (req, res) {
     db.conn.query(
         "SELECT * FROM `point_categories`",
         function (err, results) {
             // MySQL error
             if (err) {
                 res.status(500).end();
-                return console.error("{GET}/point/categories: Error in getting point categories: %s", err);
+                return console.error("{GET}/points/categories: Error in getting point categories: %s", err);
             }
 
             var categories = {};
@@ -76,17 +76,17 @@ router.get('/point/categories/', function (req, res) {
 });
 
 
-router.use('/point/search/',
+router.use('/points/search/',
     jwt.JWTCheck,
     jwt.JWTErrorIgnore
 );
 
-router.use('/point/search',
+router.use('/points/search',
     require('../../utils').startLimitChecker
 );
 
 /**
- * @api {get} /point/search Search points
+ * @api {get} /points/search Search points
  * @apiVersion 0.1.0
  * @apiName pointSearch
  * @apiGroup point
@@ -109,18 +109,18 @@ router.use('/point/search',
  * @apiParam {String[]} [fields] Can be composition on these (separated with comma(',')): lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags
  *
  * @apiExample Request-Example
- *     GET http://mapcode.ir/api/point/search?name=آر&tags=food restaurant
+ *     GET http://mapcode.ir/api/points/search?name=آر&tags=food restaurant
  *
  * @apiExample Request-Example
- *     GET http://mapcode.ir/api/point/search?code=mp001002&start=10&limit=20
+ *     GET http://mapcode.ir/api/points/search?code=mp001002&start=10&limit=20
  *
  * @apiExample Request-Example
- *     GET http://mapcode.ir/api/point/search?city=kashan&fields=lat,lng
+ *     GET http://mapcode.ir/api/poinst/search?city=kashan&fields=lat,lng
  *
  *
  * @apiError (404) no_results_found
  */
-router.get('/point/search/', function (req, res) {
+router.get('/points/search/', function (req, res) {
     var fields = pointModel.publicFields;
     // If request just wants specific fields
     if (req.query.fields) {
