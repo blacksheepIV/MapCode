@@ -211,7 +211,7 @@ router.route('/groups/:name')
     .get(
         customFielder('query', 'fields', groupsModel.publicFields, true),
         function (req, res) {
-            groupsModel.getGroup(
+            groupsModel.get(
                 req.user.id,
                 req.params.name,
                 req.queryFields,

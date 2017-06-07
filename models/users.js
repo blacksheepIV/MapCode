@@ -112,7 +112,7 @@ module.exports.friendFields =
 
 
 /**
- * Verification schema.
+ * User verification schema.
  *
  * @constant
  * @type {object}

@@ -10,7 +10,7 @@ var db = require('../db');
 
 
 /**
- * Verification schema.
+ * Personal point verification schema.
  *
  * @constant
  * @type {object}

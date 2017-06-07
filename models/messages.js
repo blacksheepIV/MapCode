@@ -31,7 +31,7 @@ module.exports.publicFields = [
 
 
 /**
- * Verification schema.
+ * Message verification schema.
  *
  * @constant
  * @type {object}
