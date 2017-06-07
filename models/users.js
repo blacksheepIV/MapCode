@@ -17,7 +17,7 @@ var db = require('../db');
 
 
 /**
- * Point's fields that are available.
+ * User's fields that are available.
  *
  * @constant
  * @type {string[]}

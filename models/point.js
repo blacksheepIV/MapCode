@@ -1,6 +1,19 @@
+/**
+ * Points.
+ *
+ * @module models/points
+ * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
+ */
+
 var db = require('../db');
 
 
+/**
+ * Point's fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
 module.exports.publicFields = [
     'lat',
     'lng',
@@ -21,7 +34,12 @@ module.exports.publicFields = [
 ];
 
 
-// Verification schema
+/**
+ * Point verification schema.
+ *
+ * @constant
+ * @type {object}
+ */
 module.exports.schema = {
     'lat': {
         notEmpty: {
@@ -124,15 +142,24 @@ module.exports.schema = {
     }
 };
 
-/*
- Inserts a new point in `points` table
 
- Errors:
- - serverError
- - owner_not_found
- - not_enough_credit_bonus
+/**
+ * @callback pointsAdd
+ * @param err
+ * @param {string} pointCode Newly created point's code.
  */
-module.exports.addPoint = function (point, callback) {
+
+/**
+ * Adds a new point for a user.
+ *
+ * @param {object} point Point's info.
+ * @param {pointsAdd} [callback]
+ *
+ * @throws {'serverError'}
+ * @throws {'owner_not_found'}
+ * @throws {'not_enough_credit_bonus'}
+ */
+module.exports.add = function (point, callback) {
     if (point.tags && Array.isArray(point.tags)) {
         point.tags.map(function (tag) {
             return tag.trim();
@@ -159,8 +186,9 @@ module.exports.addPoint = function (point, callback) {
             point.tags
         ],
         function (err, results) {
+            // MySQL error
             if (err) {
-                console.error("MySQL: Error happened in inserting new point: %s", err);
+                console.error("MySQL: Error happened in inserting new point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -170,7 +198,6 @@ module.exports.addPoint = function (point, callback) {
             if (procErr !== 0) {
                 if (procErr === 2) {
                     callback('owner_not_found');
-                    console.error("!!!: A non existing user have passed auth and is requesting to submit a point!: user's id: %s", point.owner);
                 }
                 else if (procErr === 4) {
                     callback('category_not_found');

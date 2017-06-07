@@ -89,8 +89,6 @@ router.route('/point')
  * @apiError (400) tags:not_array
  * @apiError (400) tags:tag_greater_than_40
  *
- *
- * @apiError (404) owner_not_found If this error got returned sign out the user.
  * @apiError (404) category_not_found
  *
  *
@@ -111,10 +109,23 @@ router.route('/point')
             point.expiration_date = new Date(date.getTime());
             point.expiration_date.setFullYear(date.getFullYear() + 1);
 
-            pointModel.addPoint(point, function (err, pointCode) {
+            pointModel.add(point, function (err, pointCode) {
                 if (err) {
                     if (err === 'serverError') {
                         res.status(500).end();
+                    }
+                    /* If there is no such a user in database
+                       it means that token is in Redis
+                       so let's remove the token from Redis
+                       and return 401 Unauthorized error */
+                    else if (err === 'owner_not_found') {
+                        console.error("{POST}/point/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
+
+                        res.status(401).json({
+                            errors: ["auth_failure"]
+                        });
+
+                        return jwt.removeFromRedis(req.user.id);
                     }
                     else {
                         var statusCode = 404;

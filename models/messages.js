@@ -12,7 +12,7 @@ var db = require('../db');
 
 
 /**
- * message's fields that are available.
+ * Message's fields that are available.
  *
  * @constant
  * @type {string[]}
