@@ -26,7 +26,8 @@ module.exports.publicFields = [
     'non_personal',
     'point_code',
     'message',
-    'sent_time'
+    'sent_time',
+    'read'
 ];
 
 
@@ -185,6 +186,7 @@ module.exports.delete = function (senderOrReceiver, msgCode, callback) {
  *
  * @param {string} receiverOrSender If is 'sender' gets user's sent messages and if is 'receiver' get's user's received messages.
  * @param {string} username User's username.
+ * @param {boolean} unread If true, only gets unread messages.
  * @param {string[]} fields List of fields to retrieve.
  * @param {(number|string)} start
  * @param {(number|string)} limit
@@ -192,11 +194,11 @@ module.exports.delete = function (senderOrReceiver, msgCode, callback) {
  *
  * @throws {'serverError'}
  */
-module.exports.getUserMessages = function (receiverOrSender, username, fields, start, limit, callback) {
+module.exports.getUserMessages = function (receiverOrSender, username, unread, fields, start, limit, callback) {
     db.conn.query(
         " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
         " FROM `messages_detailed`" +
-        " WHERE ?? = ?" +
+        " WHERE ?? = ?" + (unread === true ? " AND `read` = FALSE" : '') +
         " LIMIT ?, ?",
         [receiverOrSender, username, start, limit],
         function (err, results) {
@@ -243,6 +245,37 @@ module.exports.get = function (username, msgCode, fields, callback) {
             }
 
             callback(null, results[0]);
+        }
+    );
+};
+
+
+/**
+ * Marks a message as read with given message code and receiver ID.
+ *
+ * If receiverId is not message's receiver or message code is not
+ * receiverId's message, nothing will happen.
+ *
+ * @param {(number|string)} receiverId Receiver user's ID.
+ * @param {(number|string)} msgCode Message's code.
+ * @param {function} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.markAsRead = function (receiverId, msgCode, callback) {
+    db.conn.query(
+        " UPDATE `messages` SET `read` = TRUE" +
+        " WHERE `receiver` = ? AND `id` = ?",
+        [receiverId, msgCode],
+        function (err) {
+            // MySQL error
+            if (err) {
+                console.error("markAsRead@models/messages: MySQL error in marking message as read:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                return callback('serverError');
+            }
+
+            // Message successfully marked as read
+            callback();
         }
     );
 };

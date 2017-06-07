@@ -97,46 +97,6 @@ router.post('/messages',
 
 
 /**
- * @api {delete} /messages/:code Delete a message with given code.
- * @apiVersion 0.1.0
- * @apiName deleteMessage
- * @apiGroup messages
- * @apiPermission private
- *
- * @apiDescription Deletes a message (with given code) for user with given token.
- * If user is not sender or receiver, nothing will happen and 200 status code will get returned.
- *
- * @apiParam {Number} code Message's code
- *
- * @apiSuccessExample
- *     Request-Example:
- *         DELETE http://mapcode.ir/api/messages/10
- *     Response:
- *         HTTP/1.1 200 OK
- *
- *
- * @apiError (400) code:not_numeric
- */
-router.delete('/messages/:code',
-    validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
-    function (req, res) {
-        messagesModel.delete(
-            req.user.id,
-            req.params.code,
-            function (err) {
-                // serverError
-                if (err)
-                    return res.status(500).end();
-
-                res.status(200).end();
-            }
-        );
-    }
-);
-
-
-
-/**
  * @api {get} /messages/ Get user's message inbox (messages to user)
  * @apiVersion 0.1.0
  * @apiName getUserMessages
@@ -146,7 +106,7 @@ router.delete('/messages/:code',
  * @apiParam {Number{1..}} [start=1] Send messages from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of messages to receive.
  *
- * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time, read
  *
  * @apiSuccessExample
  *     Request-Example:
@@ -163,7 +123,8 @@ router.delete('/messages/:code',
  *             "lng": "25.43",
  *             "non_personal": "1",
  *             "point_code": "mp005001000000001",
- *             "sent_time": "2017-05-13 19:45:15"
+ *             "sent_time": "2017-05-13 19:45:15",
+ *             "read": 1
  *          },
  *          {
  *             "id": "10",
@@ -173,17 +134,21 @@ router.delete('/messages/:code',
  *             "lng": "110.43",
  *             "non_personal": "0",
  *             "point_code": "mp005001000000002",
- *             "sent_time": "2016-05-13 19:45:15"
+ *             "sent_time": "2016-05-13 19:45:15",
+ *             "read": 0
  *          }
  *        ]
  */
 router.get('/messages',
     startLimitChecker,
+
     customFielder('query', 'fields', messagesModel.publicFields),
+
     function (req, res) {
         messagesModel.getUserMessages(
             'receiver',
             req.user.username,
+            req.query.unread !== undefined,
             req.queryFields,
             req.queryStart,
             req.queryLimit,
@@ -209,7 +174,7 @@ router.get('/messages',
  * @apiParam {Number{1..}} [start=1] Send messages from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of messages to receive.
  *
- * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
+ * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time, read
  *
  * @apiSuccessExample
  *     Request-Example:
@@ -226,7 +191,8 @@ router.get('/messages',
  *             "lng": "25.43",
  *             "non_personal": "1",
  *             "point_code": "mp005001000000001",
- *             "sent_time": "2017-05-13 19:45:15"
+ *             "sent_time": "2017-05-13 19:45:15",
+ *             "read": 0
  *          },
  *          {
  *             "id": "10",
@@ -236,7 +202,8 @@ router.get('/messages',
  *             "lng": "110.43",
  *             "non_personal": "0",
  *             "point_code": "mp005001000000002",
- *             "sent_time": "2016-05-13 19:45:15"
+ *             "sent_time": "2016-05-13 19:45:15",
+ *             "read": 1
  *          }
  *        ]
  */
@@ -247,6 +214,7 @@ router.get('/messages/outbox',
         messagesModel.getUserMessages(
             'sender',
             req.user.username,
+            false, // Both read and unread messages
             req.queryFields,
             req.queryStart,
             req.queryLimit,
@@ -262,74 +230,139 @@ router.get('/messages/outbox',
 );
 
 
+router.route('/messages/:code')
+    /**
+     * @api {get} /messages/:code Get a message's content
+     * @apiVersion 0.1.0
+     * @apiName getMessage
+     * @apiGroup messages
+     * @apiPermission private
+     *
+     * @apiParam {Number} code Message's code
+     *
+     * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time, read
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/messages/1010
+     *     Response:
+     *        HTTP/1.1 200 OK
+     *
+     *        {
+     *            "id": "1010",
+     *            "sender": "alireza",
+     *            "receiver": "mohammad",
+     *            "lat": "21.32",
+     *            "lng": "25.43",
+     *            "non_personal": "1",
+     *            "point_code": "mp005001000000001",
+     *            "sent_time": "2017-05-13 19:45:15",
+     *            "read": 1
+     *        }
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         GET http://mapcode.ir/messages/1011?fields=lat,lng
+     *     Response:
+     *        HTTP/1.1 200 OK
+     *
+     *        {
+     *            "lat": "21.32",
+     *            "lng": "25.43",
+     *        }
+     *
+     * @apiError (400) code:not_numeric
+     */
+    .get(
+        validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
+
+        customFielder('query', 'fields', messagesModel.publicFields),
+
+        function (req, res) {
+            messagesModel.get(
+                req.user.username,
+                req.params.code,
+                req.queryFields,
+                function (err, msg) {
+                    if (err) return res.status(500).end();
+
+                    if (msg)
+                        return res.json(msg);
+
+                    // No point found!
+                    res.status(404).end();
+                }
+            );
+        })
+    /**
+     * @api {delete} /messages/:code Delete a message with given code.
+     * @apiVersion 0.1.0
+     * @apiName deleteMessage
+     * @apiGroup messages
+     * @apiPermission private
+     *
+     * @apiDescription Deletes a message (with given code) for user with given token.
+     * If user is not sender or receiver, nothing will happen and 200 status code will get returned.
+     *
+     * @apiParam {Number} code Message's code
+     *
+     * @apiSuccessExample
+     *     Request-Example:
+     *         DELETE http://mapcode.ir/api/messages/10
+     *     Response:
+     *         HTTP/1.1 200 OK
+     *
+     *
+     * @apiError (400) code:not_numeric
+     */
+    .delete(
+        validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
+        function (req, res) {
+            messagesModel.delete(
+                req.user.id,
+                req.params.code,
+                function (err) {
+                    // serverError
+                    if (err)
+                        return res.status(500).end();
+
+                    res.status(200).end();
+                }
+            );
+        }
+    );
+
+
 /**
- * @api {get} /messages/:code Get a message's content
+ * @api {post} /messages/:code/read Marks a message as read.
  * @apiVersion 0.1.0
- * @apiName getMessage
+ * @apiName markMessageAsRead
  * @apiGroup messages
  * @apiPermission private
  *
+ * @apiDescription Marks a message as read. if token user is not message's
+ * receiver or message is not on of token user's received messages, nothing
+ * will happen.
+ *
  * @apiParam {Number} code Message's code
  *
- * @apiParam {String[]} [fields] Can be composition of these (separated with comma(',')): code, sender, receiver, lat, lng, non_personal, point_code, message, sent_time
- *
- * @apiSuccessExample
+ * @apiExample
  *     Request-Example:
- *         GET http://mapcode.ir/messages/1010
- *     Response:
- *        HTTP/1.1 200 OK
+ *         POST http://mapcode.ir/api/messages/10/read
+ *     Response-Example:
+ *         HTTP/1.1 200 OK
  *
- *        {
- *            "id": "1010",
- *            "sender": "alireza",
- *            "receiver": "mohammad",
- *            "lat": "21.32",
- *            "lng": "25.43",
- *            "non_personal": "1",
- *            "point_code": "mp005001000000001",
- *            "sent_time": "2017-05-13 19:45:15"
- *        }
- *
- * @apiSuccessExample
- *     Request-Example:
- *         GET http://mapcode.ir/messages/1011?fields=lat,lng
- *     Response:
- *        HTTP/1.1 200 OK
- *
- *        {
- *            "lat": "21.32",
- *            "lng": "25.43",
- *        }
+ * @apiError (400) code:not_numeric
  */
-router.get('/messages/:code',
-    validateWithSchema(
-        {
-            'code': {
-                isInt: {
-                    errorMessage: 'not_numeric'
-                }
-            }
-        },
-        'all', null, 'checkParams'
-    ),
-
-    customFielder('query', 'fields', messagesModel.publicFields),
+router.post('/messages/:code/read',
+    validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
 
     function (req, res) {
-        messagesModel.get(
-            req.user.username,
-            req.params.code,
-            req.queryFields,
-            function (err, msg) {
-                if (err) return res.status(500).end();
+        messagesModel.markAsRead(req.user.id, req.params.code, function (err) {
+            if (err) res.status(500).end();
 
-                if (msg)
-                    return res.json(msg);
-
-                // No point found!
-                res.status(404).end();
-            }
-        );
+            res.status(200).end();
+        });
     }
 );
 

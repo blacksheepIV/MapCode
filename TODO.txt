@@ -48,9 +48,7 @@
     * Points count
     * Personal points count
     * Messages count
-
-- Add `read` field for messages
-    * Add "unread_messages_count" to get current user info API
+    * Unread messages count
 
 - Add triggers for `points` table
     * Check credit bonus
