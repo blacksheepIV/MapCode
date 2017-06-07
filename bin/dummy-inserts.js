@@ -294,7 +294,7 @@ async.series([
                             user.points,
                             function (point, point_done) {
                                 request.post({
-                                    url: process.env.API_HREF + 'point/',
+                                    url: process.env.API_HREF + 'points/',
                                     headers: {
                                         "Authorization": "Bearer " + token
                                     },
@@ -303,7 +303,7 @@ async.series([
                                     if (err) return point_done(err);
 
                                     if (res.statusCode !== 201) {
-                                        var errMsg = "point/ statusCode = " + res.statusCode +
+                                        var errMsg = "points/ statusCode = " + res.statusCode +
                                             "' for point'" + point.name +
                                             "' response =\n\t" + JSON.stringify(res.body) + '\n';
                                         if (fallThrough) {
