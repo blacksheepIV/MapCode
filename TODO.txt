@@ -55,3 +55,6 @@
     * Check credit bonus
     * Set `code` field
     * Check `category` field
+
+- Rename views and delete 'forUpdate' if it's OK.
+    Because `FOR UPDATE` only works within TRANSACTION or when autocommit is off.
