@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 10-May-17.
  */
-function searchCtrl($scope,pointService,$location,userService,toastr,$mdDialog) {
+function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
     $scope.initSearch = function(){
         $scope.PCode = 0;
         $scope.PName = '';
@@ -115,6 +115,7 @@ function searchCtrl($scope,pointService,$location,userService,toastr,$mdDialog) 
     };//end of search result
     //##################################################################################################################################################################################
     $scope.takeMeHome = function(){
-        $location.path('/');
+      //  $location.path('/');
+        $state.go('home');
     };//end of function takeMeHome
 };//end of searchCtrl

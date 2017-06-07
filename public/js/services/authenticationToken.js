@@ -1,4 +1,4 @@
-/**
+ /**
  * Created by blackSheep on 19-Apr-17.
  */
 var authenticationToken = function(localStorageService){

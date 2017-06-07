@@ -4,10 +4,12 @@
             <div flex="5"></div>
             <h2 class="md-headline">پنل کاربر</h2>
             <div flex></div>
-            <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="go home" ng-click="takeMeHome()">
+           <a ui-sref="home">
+               <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="go home">
                 <md-icon md-font-icon="fa fa-home fa-2x"></md-icon>
             </md-button>
-            <md-menu >
+           </a>
+            <md-menu>
                <md-button class="md-fab md-mini md-accent md-hue-2" aria-label="Usr" ng-click="openMenu($mdOpenMenu,$event)">
                    <md-icon md-font-icon="fa fa fa-user-o fa-2x"></md-icon>
                </md-button>
@@ -28,31 +30,35 @@
         </div>
     </md-toolbar>
     <md-content class="md-padding" flex="100">
-        <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="ویرایش اطلاعات" >
+        <md-tabs md-selected="currentTab" md-dynamic-height md-border-bottom >
+            <md-tab label="ویرایش اطلاعات" ui-sref=".edit" >
                 <md-content class="md-padding">
-                      <div ng-include="'./templates/Panel/userPanelItems/EditInfo.html'"></div>
+                     <!--  <div ng-include="'./templates/Panel/userPanelItems/EditInfo.html'"></div> -->
+                    <div ui-view="edited"></div>
                  </md-content>
             </md-tab>
-            <md-tab label="تغییر رمز عبور" >
+            <md-tab label="تغییر رمز عبور" ui-sref=".passChange">
                  <md-content class="md-padding" >
-                     <div ng-include="'./templates/Panel/userPanelItems/passChange.html'"></div>
+                     <!-- <div ng-include="'./templates/Panel/userPanelItems/passChange.html'"></div> -->
+                     <div ui-view="passChange"></div>
                  </md-content>
             </md-tab>
-            <md-tab label=" نقاط من" >
-                 <md-content class="md-padding" >
-                    <div ng-include="'./templates/Panel/userPanelItems/UsrPoints.html'"></div>
+            <md-tab label=" نقاط من" ui-sref=".usrPoints">
+                 <md-content class="md-padding">
+                   <!--  <div ng-include="'./templates/Panel/userPanelItems/UsrPoints.html'"></div> -->
+                     <div ui-view="usrPoints"></div>
                  </md-content>
             </md-tab>
-            <md-tab label=" نقاط شخصی من">
+            <md-tab label=" نقاط شخصی من" ui-sref=".usrPersonalPoints">
                   <md-content class="md-padding">
-                      <div ng-include="'./templates/Panel/userPanelItems/usrPersonalPoints.html'"></div>
+                    <!--   <div ng-include="'./templates/Panel/userPanelItems/usrPersonalPoints.html'"></div> -->
+                      <div ui-view="usrPersonalPoints"></div>
                   </md-content>
             </md-tab>
-            <md-tab label="لیست دوستان" >
+            <md-tab label="لیست دوستان" ui-sref=".friends">
                 <md-content class="md-padding">
                     <!-- <div ng-include="'./templates/Panel/userPanelItems/FriendsGroups.html'"></div> -->
-                    <md-tabs md-dynamic-height md-border-bottom>
+                  <!--  <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="لیست دوستان" >
                             <md-content class="md-padding">
                                 <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/friendsList.html'"></div>
@@ -68,17 +74,20 @@
                                 <div ng-include="'./templates/Panel/userPanelItems/FriendStuff/sentReqs.html'"></div>
                             </md-content>
                         </md-tab>
-                    </md-tabs>
+                    </md-tabs> -->
+                    <div ui-view="friends"></div>
                 </md-content>
             </md-tab>
-            <md-tab label="لیست گروه ها" >
+            <md-tab label="لیست گروه ها" ui-sref=".groups" >
                 <md-content class="md-padding">
-                    <h5>این ویژگی فعلا در دسترس نیست.</h5>
+                    <!-- <h5>این ویژگی فعلا در دسترس نیست.</h5> -->
+                    <div ui-view="groups"></div>
                 </md-content>
             </md-tab>
-            <md-tab label="پیغام های شخصی">
+            <md-tab label="پیغام های شخصی" ui-sref=".messages">
                 <md-content class="md-padding">
-                    <div ng-include="'./templates/Panel/userPanelItems/messages.html'"></div>
+                  <!--  <div ng-include="'./templates/Panel/userPanelItems/messages.html'"></div> -->
+                    <div ui-view="messages"></div>
                 </md-content>
             </md-tab>
         </md-tabs>

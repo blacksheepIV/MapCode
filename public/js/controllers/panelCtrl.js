@@ -1,10 +1,10 @@
 /**
  * Created by blackSheep on 01-Jun-17.
  */
-function panelCtrl ($scope,$location,authenticationToken,$rootScope){
-    $scope.takeMeHome =  function(){
-        $location.path('/');
-    };//end of function take me home
+function panelCtrl ($scope,$state,authenticationToken,$rootScope){
+        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            $scope.currentTab = toState.data.selectedTab;
+        });
     //******************************************************************************************************************
     var originatorEv;
 
@@ -19,6 +19,7 @@ function panelCtrl ($scope,$location,authenticationToken,$rootScope){
         //TODO:sth needed to distroy user's session/token,whatever
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-        $location.path("/");
+      //  $location.path("/");
+        $state.go('home');
     };
 };//end of panelCtrl func

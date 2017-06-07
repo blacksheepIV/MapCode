@@ -32,6 +32,7 @@
    <!-- <script type="text/javascript">
         angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
     </script> -->
+    <script src="./components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="./components/angular-animate/angular-animate.min.js"></script>
     <script src="./components/angular-aria/angular-aria.min.js"></script>
     <script src="./components/angular-route/angular-route.min.js"></script>
@@ -53,7 +54,8 @@
     <title>ProjectM</title>
 </head>
 <body ng-app="mapCodeApp" dir="rtl">
-    <ng-view ></ng-view>
+   <!--  <ng-view ></ng-view> -->
+      <ui-view></ui-view>
     <!-- including the module,controllers,directives,services,.. -->
     <script type="text/javascript" src="./js/services/sysMessagesService.js"></script>
     <script src="./js/services/RegisteredUsr.js"></script>

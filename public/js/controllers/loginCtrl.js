@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 30-Mar-17.
  */
-var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticationToken) {
+var loginCtrl = function ($scope,$state,$mdDialog,authentication,authenticationToken) {
     $scope.init = function(){
         $scope.user={
            username : '' ,
@@ -9,7 +9,8 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
         };
         // somehow check wether user is already signed in or not
         if(authenticationToken.getToken())
-            $location.path('/');
+           // $location.path('/');
+            $state.go('home');
     }//end of function Init
     $scope.login={
         submit:function(){
@@ -22,7 +23,8 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
              function(res){
                  console.log(res.data.token); // gotta set the token
                  authenticationToken.setToken(res.data.token);
-                 $location.path('/');
+                 //$location.path('/');
+                 $state.go('home');
              },
              function(res){
                  console.log(res);
@@ -41,7 +43,8 @@ var loginCtrl = function ($scope,$location,$mdDialog,authentication,authenticati
         }//end of login
     };
     $scope.register = function(){
-        $location.path('/registration'); //sets the path to registrationPage
+        //$location.path('/registration'); //sets the path to registrationPage
+        $state.go('registration');
     }//end of registration function
     $scope.showAlert = function() {
         $mdDialog.show(

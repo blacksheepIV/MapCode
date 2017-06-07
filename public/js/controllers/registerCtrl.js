@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 31-Mar-17.
  */
-var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$mdDialog,$http,authentication,authenticationToken){
+var registerCtrl = function($scope,$rootScope,$state,$timeout,userService,$mdDialog,$http,authentication,authenticationToken){
     $scope.reSend = false;
     $scope.resubmits = 0; //counts the times user asked for resubmission
     $scope.v_code= 0;
@@ -78,7 +78,8 @@ var registerCtrl = function($scope,$rootScope,$location,$timeout,userService,$md
 $scope.levelPage = function(level){
      switch (level){
          case 0:
-             $location.path('/');
+           //  $location.path('/');
+             $state.go('home');
              break;
          case 1:
              $rootScope.pageTitle = "ثبت نام";
@@ -87,7 +88,8 @@ $scope.levelPage = function(level){
              $rootScope.pageTitle = "تایید ثبت نام";
             // userService.setUserInfo($rootScope.user);
              console.log($rootScope.user);
-             $location.path('/verify');
+           //  $location.path('/verify');
+             $state.go('verify');
              break;
      };
 };//end of function level page
@@ -182,7 +184,8 @@ $scope.levelPage = function(level){
                             function (response) {
                                 console.log(response.data.token); // gotta set the token
                                 authenticationToken.setToken(response.data.token);
-                                $location.path('/');
+                               // $location.path('/');
+                                $state.go('home');
                             },
                             function (response) {
                                 console.log(response);
@@ -233,7 +236,8 @@ $scope.levelPage = function(level){
                             function (res) {
                                 console.log(res.data.token); // gotta set the token
                                 authenticationToken.setToken(res.data.token);
-                                $location.path('/');
+                               // $location.path('/');
+                                $state.go('home');
                             },
                             function (res) {
                                 console.log(res);

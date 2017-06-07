@@ -1,15 +1,8 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr,$window){
+var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$state,$mdToast,authenticationToken,$mdDialog,pointService,RegisteredUsr,$window){
     $scope.initVar = function(){
-      /*  pointService.showSearchResult().then(
-            function(searchResult) {
-                console.log(searchResult);
-            }
-            ,function(searchResult){
-                console.log(searchResult);
-            }); */
       $scope.toggleFlag = true;
       $scope.searchBox = "";
         $scope.searchTopic = "";
@@ -32,8 +25,8 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
                 console.log(Info); //failure in obtaining data
                 }
                 );
-        }
-        console.log( $rootScope.isUser );
+        } //why it is called 3 times?
+       // console.log( $rootScope.isUser );
         $scope.customFullscreen = false;
         $scope.SearchTopics =[
             {id:1 , name:'کد نقطه', value:'code'},
@@ -72,17 +65,20 @@ var mainCtrl = function($scope,$rootScope,$mdSidenav,$log,$location,$mdToast,aut
     }
     //##################################################################################################################
     $scope.login=function(){
-        $location.path("/login");
+      //  $location.path("/login");
+        $state.go('login');
     };
     $scope.register=function(){
-        $location.path("/registration");
+        //$location.path("/registration");
+        $state.go('registration');
     };
     $scope.logOut=function(){
         console.log("user just logged out.");
         //TODO:sth needed to distroy user's session/token,whatever
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-        $location.path("/");
+        //$location.path("/");
+        $state.go('home');
     }
     //******************************************************************************************************************
     var last = {
@@ -206,6 +202,7 @@ $scope.addPoint = function(){
 $scope.searchPage = function(){
     var searchPrams = { key:$scope.searchTopic,value:$scope.searchBox};
     pointService.setSearchedValue(searchPrams);
-    $location.path('/advancedSearch');
+    //$location.path('/advancedSearch');
+    $state.go('advancedSearch');
 }
 }//end of main controller
