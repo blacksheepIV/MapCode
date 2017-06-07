@@ -172,7 +172,7 @@ router.route('/users/')
      *
      * @apiDescription Get user's information by providing a token
      *
-     * @apiParam {String[]} [fields] A combination of fields split with comma: name, melli_code, email, date, mobile_phone, phone, username, address, description, type, code, credit, bonus, recommender_user, friend_requests_count, friends_count
+     * @apiParam {String[]} [fields] A combination of fields split with comma: name, melli_code, email, date, mobile_phone, phone, username, address, description, type, code, credit, bonus, recommender_user, friend_requests_count, friends_count, points_count, personal_points_count, sent_messages_count, received_messages_count, unread_messages_count
      *
      *
      * @apiSuccessExample
@@ -210,12 +210,17 @@ router.route('/users/')
      *             "bonus": 0,
      *             "recommender_user": "wMvbmOeYAl",
      *             "friend_requests_count": 3,
-     *             "friends_count": 50
+     *             "friends_count": 50,
+     *             "points_count": 3,
+     *             "personal_points_count": 2,
+     *             "sent_messages_count": 0,
+     *             "received_messages_count": 0,
+     *             "unread_messages_count": 0
      *         }
      *
      */
     .get(
-        customFielder('query', 'fields', usersModel.publicFields.concat(['friend_requests_count', 'friends_count'])),
+        customFielder('query', 'fields', usersModel.detailedPublicFields),
 
         function (req, res) {
             usersModel.getDetailed(
@@ -224,10 +229,10 @@ router.route('/users/')
                 function (err, user_info) {
                     if (err) return res.status(500).end(0); // Server error
 
-                    // If there is no such a user in database
-                    // it means that token is in Redis
-                    // so let's remove the token from Redis
-                    // and return 401 Unauthorized error
+                    /* If there is no such a user in database
+                       it means that token is in Redis
+                       so let's remove the token from Redis
+                       and return 401 Unauthorized error */
                     if (!user_info) {
                         console.error("{GET}/users/: ! : Non-existent user have passed the token auth: token:\n\t%s", JSON.stringify(req.user));
 

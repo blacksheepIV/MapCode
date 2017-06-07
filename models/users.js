@@ -22,7 +22,7 @@ var db = require('../db');
  * @constant
  * @type {string[]}
  */
-module.exports.publicFields = [
+var publicFields = module.exports.publicFields = [
     'name',
     'melli_code',
     'email',
@@ -39,6 +39,23 @@ module.exports.publicFields = [
     'recommender_user'
 
 ];
+
+
+/**
+ * User's detailed fields that are available.
+ *
+ * @constant
+ * @type {string[]}
+ */
+module.exports.detailedPublicFields = publicFields.concat(
+    ['friend_requests_count',
+        'friends_count',
+        'points_count',
+        'personal_points_count',
+        'sent_messages_count',
+        'received_messages_count',
+        'unread_messages_count'
+    ]);
 
 
 /**
