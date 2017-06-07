@@ -24,7 +24,7 @@ function pointService($http){
             return coordination;
         },
         requestForCategory : function () {
-            var CatURL = window.apiHref + "point/categories";
+            var CatURL = window.apiHref + "points/categories";
             return $http({
                 url: CatURL,
                 method: "GET"
@@ -33,7 +33,7 @@ function pointService($http){
             });
         },
         sendPointInfos : function(pointInfo){
-            var pointUrl = window.apiHref + "point/";
+            var pointUrl = window.apiHref + "points/";
            return $http({
                 url: pointUrl,
                 method: "POST",
@@ -43,7 +43,7 @@ function pointService($http){
            });
         },
         getPointInfos : function () {
-            var pointUrl = window.apiHref+"point/";
+            var pointUrl = window.apiHref+"points/";
             return $http({
                 url : pointUrl ,
                 method: "GET"
@@ -58,7 +58,7 @@ function pointService($http){
             return pointService.obtainedDetailedInfo;
         },
         showSearchResult : function(searchParams){
-            var searchUrl = window.apiHref+"/point/search";
+            var searchUrl = window.apiHref+"/points/search";
             var myConfig = {};
             myConfig= searchParams;
           //  console.log(myConfig);
