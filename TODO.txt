@@ -33,8 +33,11 @@
 - Generate point's code based on MAX(code)
     It solves the problem of deleting a point
 
-- Verbosify and Beautify all logs
-
 - User search by:
     * Username
     * Phone number
+
+- SMS service
+
+- User document upload
+- User avatar upload

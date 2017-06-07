@@ -42,8 +42,6 @@ var pointModel = require('../../models/point');
      }
   *
   */
-// TODO: Cache system for /point/categories
-// TODO: Async calculation
 router.get('/point/categories/', function (req, res) {
     db.conn.query(
         "SELECT * FROM `point_categories`",

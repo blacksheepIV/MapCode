@@ -246,11 +246,4 @@ router.route('/users/')
         });
 
 
-
-router.post('/users/documents/', function (req, res) {
-    // TODO: User document upload
-    res.send("Hello from documents!");
-});
-
-
 module.exports = router;
