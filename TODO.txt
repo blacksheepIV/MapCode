@@ -51,3 +51,8 @@
 
 - Add `read` field for messages
     * Add "unread_messages_count" to get current user info API
+
+- Add triggers for `points` table
+    * Check credit bonus
+    * Set `code` field
+    * Check `category` field
