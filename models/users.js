@@ -43,9 +43,11 @@ var publicFields = module.exports.publicFields = [
 
 /**
  * User's detailed fields that are available.
+ * This includes publicFields.
  *
  * @constant
  * @type {string[]}
+ * @see module:models/users.publicFields
  */
 module.exports.detailedPublicFields = publicFields.concat(
     ['friend_requests_count',
@@ -119,7 +121,7 @@ module.exports.nonFriendFields = [
  *
  * @constant
  * @type {string[]}
- * @see {@link nonFriendFields}
+ * @see module:models/users.nonFriendFields
  */
 module.exports.friendFields =
     // All non-friends fields in addition of below fields

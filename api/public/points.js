@@ -7,14 +7,16 @@ var lodashTrim = require('lodash/trim');
 var db = require('../../db');
 var jwt = require('../../utils/jwt');
 var escapeRegExp = require('../../utils').escapeRegExp;
-var pointModel = require('../../models/points');
+var pointsModel = require('../../models/points');
+var validateWithSchema = require('../../utils').validateWithSchema;
+var customFielder = require('../../utils').customFielder;
 
 
 /**
  * @api {get} /points/categories/ Get point categories
  * @apiVersion 0.1.0
  * @apiName getPointCategories
- * @apiGroup point
+ * @apiGroup points
  * @apiPermission public
  *
  * @apiSuccessExample {json}
@@ -86,22 +88,22 @@ router.use('/points/search',
 );
 
 /**
- * @api {get} /points/search Search points
+ * @api {get} /points/search Search points.
  * @apiVersion 0.1.0
  * @apiName pointSearch
- * @apiGroup point
+ * @apiGroup points
  * @apiPermission public
  *
  * @apiDescription if user is not logged in search is getting done only in public points but
  * if the use is logged in search is getting done in public points and user's own private points
  * and user's friends private points.
  *
- * @apiParam {String} [code] Point's code
- * @apiParam {String} [name] Point's name
+ * @apiParam {String} [code] Point's code.
+ * @apiParam {String} [name] Point's name.
  * @apiParam {String[]} [tags] Points' tags. Should be separated with space(' ').
- * @apiParam {String} [city] Points' city
- * @apiParam {String} [owner] Point's owner username
- * @apiPAram {String} [category] Point's category
+ * @apiParam {String} [city] Points' city.
+ * @apiParam {String} [owner] Point's owner username.
+ * @apiPAram {String} [category] Point's category.
  *
  * @apiParam {Number{1..}} [start=1] Send points from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
@@ -121,12 +123,12 @@ router.use('/points/search',
  * @apiError (404) no_results_found
  */
 router.get('/points/search/', function (req, res) {
-    var fields = pointModel.publicFields;
+    var fields = pointsModel.publicFields;
     // If request just wants specific fields
     if (req.query.fields) {
         fields = lodashIntersection(
             req.query.fields.split(',').map(lodashTrim),
-            pointModel.publicFields
+            pointsModel.publicFields
         );
         fields = fields.map(db.conn.escapeId);
     }
@@ -187,6 +189,62 @@ router.get('/points/search/', function (req, res) {
         }
     );
 });
+
+
+/**
+ * @api {get} /points/:code Get a point's info.
+ * @apiVersion 0.1.0
+ * @apiName pointGet
+ * @apiGroup points
+ * @apiPermission public
+ *
+ * @apiDescription If user is not signed in, only public points are accessible but
+ * if user is signed in, his/her own private points and his/her friends private points
+ * are also accessible.
+ *
+ * @apiParam {String} [code] Point's code
+ * @apiParam {String[]} [fields] Can be composition on these (separated with comma): lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags and if it's user's own point can include expiration_date too.
+ *
+ * @apiExample
+ *     Request-Example
+ *         GET http://mapcode.ir/api/points/mp001004000000002?fields=name,lat,lng
+ *     Response-Example
+ *         HTTP/1.1 200 OK
+ *
+ *         {
+ *           "lat": 21.32,
+ *           "lng": 10.12,
+ *           "name": "شرکت آرشین"
+ *         }
+ *
+ * @apiError (400) not_valid_point_code
+ *
+ * @apiError (400) point_not_found
+ */
+router.get('/points/:code',
+    validateWithSchema({code: {isPointCode: {errorMessage: 'not_valid_point_code'}}}, 'all', null, 'checkParams'),
+
+    jwt.JWTCheck,
+    jwt.JWTErrorIgnore,
+
+    customFielder('query', 'fields', pointsModel.publicFields.concat(pointsModel.ownerFields), true),
+
+    function (req, res) {
+        pointsModel.getDetailedWithRequesterUser(
+            req.user,
+            req.params.code,
+            req.queryFields,
+            function (err, pointDetails) {
+                // serverError
+                if (err) return res.status(500).end();
+                // Point not found
+                if (!pointDetails) return res.status(404).json({errors: ['point_not_found']});
+
+                res.send(pointDetails);
+            }
+        );
+    }
+);
 
 
 module.exports = router;

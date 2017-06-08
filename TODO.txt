@@ -41,8 +41,6 @@
 - User document upload
 - User avatar upload
 
-- Get a point info
-
 - Add triggers for `points` table
     * Check credit bonus
     * Set `code` field

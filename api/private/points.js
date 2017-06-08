@@ -4,6 +4,7 @@ var asyncEach = require('async/each');
 var db = require('../../db');
 var pointModel = require('../../models/points');
 var validateWithSchema = require('../../utils').validateWithSchema;
+var jwt = require('../../utils/jwt');
 
 
 router.use(require('../../utils').startLimitChecker);
@@ -14,7 +15,7 @@ router.route('/points')
  * @api {post} /points/ Create a new public/private point
  * @apiVersion 0.1.0
  * @apiName pointSubmit
- * @apiGroup point
+ * @apiGroup points
  * @apiPermission private
  *
  * @apiDescription A signedin user can submit a new public/private point if the user's
@@ -148,7 +149,7 @@ router.route('/points')
      * @api {get} /points/ Get current user's public/private points
      * @apiVersion 0.1.0
      * @apiName getUserPoints
-     * @apiGroup point
+     * @apiGroup points
      * @apiPermission private
      *
      * @apiDescription Get the token user's public/private points.
