@@ -384,7 +384,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWnhjdG8ifQ.yk1bu5L5G7IEJCz0Kz1L_m7uKxKk8isohDmdYKcebOY",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQWp0eE8ifQ.e2fQRbU_oELHuIX-IDmrnwd2a-3OljqyZ7mB0C6Gh-s",
 								"description": ""
 							},
 							{
@@ -395,7 +395,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"receiver\": \"alireza\",\n\t\"point\": \"mp005001000000001\"\n}"
+							"raw": "{\n\t\"receiver\": \"mohammad\",\n\t\"point\": \"mp005001000000001\"\n}"
 						},
 						"description": ""
 					},
@@ -444,39 +444,16 @@
 				{
 					"name": "User's inbox messages",
 					"request": {
-						"url": {
-							"raw": "http://localhost:3000/api/messages/?limit=1",
-							"protocol": "http",
-							"auth": {},
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"messages",
-								""
-							],
-							"query": [
-								{
-									"key": "limit",
-									"value": "1"
-								}
-							],
-							"variable": []
-						},
+						"url": "http://localhost:3000/api/messages/",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6ImlITWM5In0.o7hRX7yv0-ywhaUDOj6FJ7R1_5YVMHjbs6oPeM-lttI",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6IlJlbDlzIn0.v2B2NXw5W_Fum3ljYRqm3Dndo4o2Ckb07Y5tHP6rARw",
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -489,14 +466,11 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtb2hhbW1hZCIsImp0aSI6Ik8xeWxXIn0.Jx4O6JDHD1DHn1rdL1N7QnYvwJXDcNyV_UrXGscNU8k",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQWp0eE8ifQ.e2fQRbU_oELHuIX-IDmrnwd2a-3OljqyZ7mB0C6Gh-s",
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -691,6 +665,50 @@
 							"mode": "raw",
 							"raw": ""
 						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Read message",
+					"request": {
+						"url": "http://localhost:3000/api/messages/1/read",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoieVlra28ifQ.xJETij1AoY1-wp7M-5pqgxWc9UeolOdCBuZKHbpON6w",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "A point",
+					"request": {
+						"url": "http://localhost:3000/api/points/mp001004000000002",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiOURRVGkifQ.GmPS247adRu1c6DZ6-ZLX8_qdny9kn-fczoEAhQvRK8",
+								"description": ""
+							}
+						],
+						"body": {},
 						"description": ""
 					},
 					"response": []
