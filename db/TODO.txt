@@ -1,6 +1,0 @@
-- `expired_points` table
-- Indexes on database tables
-- User's number of friends constraint
-- Auto increment point popularity
-- All user's message (from another user or group) in one view or function
-- Should `point`.`phone` be unique?

@@ -47,3 +47,7 @@
     * Check credit bonus
     * Set `code` field
     * Check `category` field
+
+- `expired_points` table
+
+- Indexes on database tables
