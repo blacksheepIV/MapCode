@@ -273,6 +273,8 @@ var getDetailedQuery =
  * @param {string} pointCode Point's code.
  * @param {string[]} fields List of fields to retrieve. Must be subset of {@link module:models/points.publicFields}. If requesterUser is point's owner fields also can include {@link module:models/points.ownerFields}.
  * @param {pointsGetDetailedWithRequesterUserCallback} [callback]
+ *
+ * @throws {'serverError'}
  */
 module.exports.getDetailedWithRequesterUser = function (requesterUser, pointCode, fields, callback) {
     db.conn.query(
