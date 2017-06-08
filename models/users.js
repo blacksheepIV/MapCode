@@ -5,6 +5,7 @@
  * @author Hamidreza Mahdavipanah <h.mahdavipanah@gmail.com>
  */
 
+var util = require('util');
 var bcrypt = require('bcryptjs');
 var Hashids = require('hashids');
 var hashids = new Hashids(process.env.HASHIDS, 10);
@@ -732,4 +733,116 @@ module.exports.checkFriendshipStatus = function () {
         else
             next();
     };
+};
+
+
+/**
+ * Sets req.queryFields and req.friendshipStatus based on.
+ */
+module.exports.friendshipCustomFielder = function (req, res, next) {
+    req.queryFields = [];
+    req.friendshipRequested = false;
+
+    // If field query string is present
+    if (req.query.fields) {
+        // Split and trim the fiends
+        req.query.fields = req.query.fields.split(',').map(lodashTrim);
+
+        if (req.query.fields.includes('friendship'))
+            req.friendshipRequested = true;
+
+        if (req.isFriend)
+            req.queryFields = lodashIntersection(
+                req.query.fields,
+                usersModel.friendFields
+            );
+        else
+            req.queryFields = lodashIntersection(
+                req.query.fields,
+                usersModel.nonFriendFields
+            );
+
+    }
+
+    // If field query string is not present or fields is empty after intersection
+    if (!req.query.fields || !req.queryFields.length){
+        // If friendship field was not in requested fields
+        if (!req.friendshipRequested) {
+            if (req.isFriend)
+                req.queryFields = usersModel.friendFields;
+            else
+                req.queryFields = usersModel.nonFriendFields;
+
+            if (req.user)
+                req.friendshipRequested = true;
+        }
+    }
+
+    next();
+};
+
+/**
+ * @callback usersSearchCallback
+ * @param err
+ * @param {object[]} foundUsers
+ */
+
+/**
+ * Searches through users by their username or phone number or both.
+ *
+ * @param {string} [username]
+ * @param {string} [phone]
+ * @param {(string[]|string)} [fields] Must be '*' or a subset array of {@link module:models/users.nonFriendFields}.
+ * @param {(number|string)} [start]
+ * @param {(number|string)} [limit]
+ * @param {usersSearchCallback} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.search = function (username, phone, fields, start, limit, callback) {
+    var query = "SELECT %s FROM `users` %s %s";
+
+    var conditions = [];
+
+    function addCond(str, val) {
+        if (val)
+            conditions.push(util.format(str, db.conn.escape('%' + val + '%')));
+    }
+
+    addCond("`users`.`username` LIKE %s", username);
+    addCond("`users`.`phone` LIKE %s", phone);
+
+    // If there is any condition
+    if (conditions.length)
+        conditions = 'WHERE ' + conditions.join(' AND ');
+
+    // If fields is an array and not '*'
+    if (Array.isArray(fields))
+        fields = fields.map(db.conn.escapeId).join(',');
+
+    var startLimit = '';
+    // If start and limit has given
+    if (start) {
+        startLimit = 'LIMIT ' + db.conn.escape(start);
+        if (limit)
+            startLimit += ', ' + db.conn.escape(limit);
+    }
+
+    db.conn.query(
+        util.format(
+            query,
+            fields,
+            conditions,
+            startLimit
+        ),
+        function (err, results) {
+            // MySQL error
+            if (err) {
+                console.error('search@models/users: MySQL error happened in search users:\n\t\t%s\n\tQuery:\n\t\t%s', err, err.sql);
+                return callback('serverError');
+            }
+
+            callback(null, results);
+        }
+    );
 };

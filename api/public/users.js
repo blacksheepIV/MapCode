@@ -11,12 +11,6 @@ var startLimitChecker = require('../../utils').startLimitChecker;
 var customFielder = require('../../utils').customFielder;
 
 
-router.use('/users/',
-    jwt.JWTCheck,
-    jwt.JWTErrorIgnore
-);
-
-
 /**
  * @api {get} /users/:username/points Get a user's points
  * @apiVersion 0.1.0
@@ -125,6 +119,62 @@ router.get('/users/:username/points',
 
 
 /**
+ * @api {get} /users/search Search users
+ * @apiVersion 0.1.0
+ * @apiName usersSearch
+ * @apiGroup users
+ * @apiPermission public
+ *
+ * @apiDescription Searches through users. This API is fully public
+ * so there is no different behavior for a signed in user or signed out user.
+ * If additional info about found users is needed use (#users:getUser).
+ *
+ * @apiParam {String} [username]
+ * @apiParam {String} [phone]
+ *
+ * @apiParam {Number{1..}} [start=1]
+ * @apiParam {Number{1..100}} [limit=100]
+ *
+ * @apiParam {String[]} [fields] Can be composition on these (separated with comma(',')): name, phone, username, description
+ *
+ * @apiExample Request-Example
+ *     GET http://mapcode.ir/api/users/search?username=alireza&fields=name,description
+ *
+ * @apiError (404) no_results_found
+ *
+ * @apiError (400) empty_search If neither username nor phone is provided. (Empty search in users is forbidden)
+ */
+router.get('/users/search',
+    customFielder('query', 'fields', usersModel.nonFriendFields, true),
+
+    startLimitChecker,
+
+    function (req, res) {
+        // Check if an empty search is requested
+        if (!req.query.username && !req.query.phone)
+            return res.status(400).json({errors: ['empty_search']});
+
+        usersModel.search(
+            req.query.username,
+            req.query.phone,
+            req.queryFields,
+            req.queryStart,
+            req.queryLimit,
+            function (err, foundUsers) {
+                // Server error
+                if (err) return res.status(500).end();
+
+                // No users found
+                if (!foundUsers.length) return res.status(404).json({errors: ['no_results_found']});
+
+                res.send(foundUsers);
+            }
+        );
+    }
+);
+
+
+/**
  * @api {get} /users/:username Get a user's information
  * @apiVersion 0.1.0
  * @apiName getUser
@@ -168,47 +218,7 @@ router.get('/users/:username',
 
     checkFriendshipStatus(),
 
-    function (req, res, next) {
-        req.queryFields = [];
-        req.friendshipRequested = false;
-
-        // If field query string is present
-        if (req.query.fields) {
-            // Split and trim the fiends
-            req.query.fields = req.query.fields.split(',').map(lodashTrim);
-
-            if (req.query.fields.includes('friendship'))
-                req.friendshipRequested = true;
-
-            if (req.isFriend)
-                req.queryFields = lodashIntersection(
-                    req.query.fields,
-                    usersModel.friendFields
-                );
-            else
-                req.queryFields = lodashIntersection(
-                    req.query.fields,
-                    usersModel.nonFriendFields
-                );
-
-        }
-
-        // If field query string is not present or fields is empty after intersection
-        if (!req.query.fields || !req.queryFields.length){
-            // If friendship field was not in requested fields
-            if (!req.friendshipRequested) {
-                if (req.isFriend)
-                    req.queryFields = usersModel.friendFields;
-                else
-                    req.queryFields = usersModel.nonFriendFields;
-
-                if (req.user)
-                    req.friendshipRequested = true;
-            }
-        }
-
-        next();
-    },
+    usersModel.friendshipCustomFielder,
 
     function (req, res) {
         usersModel.get(
