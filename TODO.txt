@@ -1,8 +1,6 @@
 - Rate limiting
     - Specially for SMS API
 
-- SMS service API
-
 - Auto minimize front-end sources
 
 - Check XSS
@@ -45,16 +43,7 @@
 
 - Get a point info
 
-- Add these to get current user info:
-    * Points count
-    * Personal points count
-    * Messages count
-    * Unread messages count
-
 - Add triggers for `points` table
     * Check credit bonus
     * Set `code` field
     * Check `category` field
-
-- Rename views and delete 'forUpdate' if it's OK.
-    Because `FOR UPDATE` only works within TRANSACTION or when autocommit is off.
