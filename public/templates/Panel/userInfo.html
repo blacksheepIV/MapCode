@@ -29,7 +29,7 @@
                                     <span class="md-subhead">توضیحات: {{info.description}}  </span>
                                 </md-card-content>
                                 <md-card-actions  layout="column" layout-align="center">
-                                    <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2" ng-disabled="!SendInvitation" target="_blank" md-autofocus>
+                                    <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2" ng-disabled="!SendInvitation" target="_blank" ng-click="sendReq(info.username)" md-autofocus>
                                         ارسال درخواست دوستی
                                     </md-button>
                                 </md-card-actions>

@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 04-Jun-17.
  */
-function usrInfoCtrl($scope,userService,$mdDialog,pointService){
+function usrInfoCtrl($scope,userService,$mdDialog,pointService,friendService,toastr){
      $scope.initUsr = function(){
          $scope.info = {};
          $scope.SendInvitation = false;
@@ -54,6 +54,25 @@ function usrInfoCtrl($scope,userService,$mdDialog,pointService){
         });
     };
     /* ########################################## Show Point Details ################################################################################### */
+    /* ########################################### Send Friend Request ################################################################################# */
+    $scope.sendReq = function(username){
+        console.log(username);
+        friendService.sendFriendReq(username)
+            .then(
+                function(requestResult){
+                  //  console.log(requestResult);
+                    toastr.success('درخواست دوستی ارسال شد.','موفقیت',{
+                        closeButton: true
+                    });
+            },
+                function(requestResult){
+                  // console.log(requestResult);
+                    toastr.error('درخواست قبلی شما در حال انتظار است','خطا', {
+                        closeButton: true
+                    });
+                });
+    };//end of sendFriendReq func
+    /* ########################################### Send Friend Request ################################################################################# */
     $scope.cancel = function () {
         $mdDialog.cancel();
     };

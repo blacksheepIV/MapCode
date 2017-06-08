@@ -17,8 +17,8 @@ var friendService = function ($http){
            });
       },
       sendFriendReq : function(userName){
-          var sendRequest =  window.apiHref + 'friends';
-          return $http({url:sendRequest,method:'POST',data:userName})
+          var sendRequest =  window.apiHref + 'friends/'+userName;
+          return $http({url:sendRequest,method:'POST'})
                        .success(function(data){
                            friend.requestResult = data;
                        });

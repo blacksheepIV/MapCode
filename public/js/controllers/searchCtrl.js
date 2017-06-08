@@ -52,7 +52,7 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
                     $scope.lookingForusers = true;
                     userService.searchUsers(temp.value).then(
                         function (data) {
-                           // console.log(data);
+                            console.log(data);
                             $scope.foundedUsers.push(data.data);
                         },function (data) {
                             $scope.sthWentWrong = true;
@@ -115,7 +115,6 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
     };//end of search result
     //##################################################################################################################################################################################
     $scope.takeMeHome = function(){
-      //  $location.path('/');
         $state.go('home');
     };//end of function takeMeHome
 };//end of searchCtrl
