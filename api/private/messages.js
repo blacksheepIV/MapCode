@@ -316,7 +316,7 @@ router.route('/messages/:code')
             );
         })
     /**
-     * @api {delete} /messages/:code Delete a message with given code.
+     * @api {delete} /messages/:code Delete a message with given code
      * @apiVersion 0.1.0
      * @apiName deleteMessage
      * @apiGroup messages
@@ -355,7 +355,7 @@ router.route('/messages/:code')
 
 
 /**
- * @api {post} /messages/:code/read Marks a message as read.
+ * @api {post} /messages/:code/read Marks a message as read
  * @apiVersion 0.1.0
  * @apiName markMessageAsRead
  * @apiGroup messages

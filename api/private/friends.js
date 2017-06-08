@@ -194,7 +194,7 @@ router.get('/friends/requests', function (req, res) {
 
 
 /**
- * @api {get} /friends/ Get list of friends.
+ * @api {get} /friends/ Get list of friends
  * @apiVersion 0.1.0
  * @apiName getFriendsList
  * @apiGroup friends

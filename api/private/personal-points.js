@@ -65,7 +65,7 @@ router.post('/personal_points',
 
 
 /**
- * @api {delete} /personal_points/:code Delete a personal point with given code.
+ * @api {delete} /personal_points/:code Delete a personal point with given code
  * @apiVersion 0.1.0
  * @apiName deletePersonalPoint
  * @apiGroup personal_points

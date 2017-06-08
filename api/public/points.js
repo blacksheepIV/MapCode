@@ -88,7 +88,7 @@ router.use('/points/search',
 );
 
 /**
- * @api {get} /points/search Search points.
+ * @api {get} /points/search Search points
  * @apiVersion 0.1.0
  * @apiName pointSearch
  * @apiGroup points
@@ -192,7 +192,7 @@ router.get('/points/search/', function (req, res) {
 
 
 /**
- * @api {get} /points/:code Get a point's info.
+ * @api {get} /points/:code Get a point's info
  * @apiVersion 0.1.0
  * @apiName pointGet
  * @apiGroup points
