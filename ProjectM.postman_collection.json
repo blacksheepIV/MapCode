@@ -712,6 +712,45 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Search users",
+					"request": {
+						"url": {
+							"raw": "http://localhost:3000/api/users/search?username=aliff&fields=username",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "aliff",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "fields",
+									"value": "username",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

@@ -10,6 +10,7 @@ var escapeRegExp = require('../../utils').escapeRegExp;
 var pointsModel = require('../../models/points');
 var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
+var startLimitChecker = require('../../utils').startLimitChecker;
 
 
 /**
@@ -122,73 +123,76 @@ router.use('/points/search',
  *
  * @apiError (404) no_results_found
  */
-router.get('/points/search/', function (req, res) {
-    var fields = pointsModel.publicFields;
-    // If request just wants specific fields
-    if (req.query.fields) {
-        fields = lodashIntersection(
-            req.query.fields.split(',').map(lodashTrim),
-            pointsModel.publicFields
-        );
-        fields = fields.map(db.conn.escapeId);
-    }
+router.get('/points/search/',
+    startLimitChecker,
 
-    var hasCond = false;
-    var query = "SELECT " + fields.join(', ') + " FROM `points_detailed_with_owner_id`";
-
-    function checkQueryParam(subQuery, field, value) {
-        if (req.query[field]) {
-            query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(subQuery, [field, value]);
-            hasCond = true;
+    function (req, res) {
+        var fields = pointsModel.publicFields;
+        // If request just wants specific fields
+        if (req.query.fields) {
+            fields = lodashIntersection(
+                req.query.fields.split(',').map(lodashTrim),
+                pointsModel.publicFields
+            );
+            fields = fields.map(db.conn.escapeId);
         }
-    }
 
-    checkQueryParam("?? LIKE ?", 'code', '%' + req.query.code + '%');
+        var hasCond = false;
+        var query = "SELECT " + fields.join(', ') + " FROM `points_detailed_with_owner_id`";
 
-    checkQueryParam("?? LIKE ?", 'name', '%' + req.query.name + '%');
-
-    checkQueryParam("?? REGEXP ?", 'tags',
-        req.query.tags ? req.query.tags.split(' ').filter(function (tag) {
-            // Remove empty string tags
-            return tag.trim() !== '';
-        })
-            .map(escapeRegExp) // Escape tags to insert them in regular expression
-            .join('|') : null);
-
-    checkQueryParam("?? LIKE ?", 'city', '%' + req.query.city + '%');
-
-    checkQueryParam("?? LIKE ?", 'owner', '%' + req.query.owner + '%');
-
-    checkQueryParam("?? LIKE ?", 'category', '%' + req.query.category + '%');
-
-
-    // If request is not authenticated just search in public points
-    if (!req.user) {
-        query += (hasCond ? " AND " : " WHERE ") + "`public` = TRUE";
-    }
-    // If request is authenticated search in public points + user's and his/her friends private points
-    else {
-        var cond = "(public = TRUE  OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
-        query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id]);
-    }
-
-
-    db.conn.query(
-        query += " LIMIT " + db.conn.escape(req.queryStart) + ", " + db.conn.escape(req.queryLimit),
-        function (err, results) {
-            if (err) {
-                console.error("Error happened in point search with query: \"%s\"\nError: %s", query, err);
-                return res.status(500).end();
+        function checkQueryParam(subQuery, field, value) {
+            if (req.query[field]) {
+                query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(subQuery, [field, value]);
+                hasCond = true;
             }
-
-            // If no record found, return 404 HTTP status code
-            if (results.length === 0)
-                return res.status(404).json({errors: ['no_results_found']});
-
-            res.json(results);
         }
-    );
-});
+
+        checkQueryParam("?? LIKE ?", 'code', '%' + req.query.code + '%');
+
+        checkQueryParam("?? LIKE ?", 'name', '%' + req.query.name + '%');
+
+        checkQueryParam("?? REGEXP ?", 'tags',
+            req.query.tags ? req.query.tags.split(' ').filter(function (tag) {
+                // Remove empty string tags
+                return tag.trim() !== '';
+            })
+                .map(escapeRegExp) // Escape tags to insert them in regular expression
+                .join('|') : null);
+
+        checkQueryParam("?? LIKE ?", 'city', '%' + req.query.city + '%');
+
+        checkQueryParam("?? LIKE ?", 'owner', '%' + req.query.owner + '%');
+
+        checkQueryParam("?? LIKE ?", 'category', '%' + req.query.category + '%');
+
+
+        // If request is not authenticated just search in public points
+        if (!req.user) {
+            query += (hasCond ? " AND " : " WHERE ") + "`public` = TRUE";
+        }
+        // If request is authenticated search in public points + user's and his/her friends private points
+        else {
+            var cond = "(public = TRUE  OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
+            query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id]);
+        }
+
+
+        db.conn.query(
+            query += " LIMIT " + db.conn.escape(req.queryStart) + ", " + db.conn.escape(req.queryLimit),
+            function (err, results) {
+                if (err) {
+                    console.error("Error happened in point search with query: \"%s\"\nError: %s", query, err);
+                    return res.status(500).end();
+                }
+
+                // If no record found, return 404 HTTP status code
+                if (results.length === 0)
+                    return res.status(404).json({errors: ['no_results_found']});
+
+                res.json(results);
+            }
+        );
+    });
 
 
 /**
