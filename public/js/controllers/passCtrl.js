@@ -8,31 +8,24 @@ function passCtrl ($scope,RegisteredUsr,toastr){
     };//end of initPassStuff
     //**************************************** pass Change *******************************************************************************
     $scope.submitPass = function(){
-         RegisteredUsr.getUSrInfo().then(function(Info){
-             console.log(Info);
-         },function(Info){
-             console.log(Info);
-         });
-
-     /*   console.log($scope.user.password);
-        if($scope.claimedPass !== $scope.user.password) //TODO:pass is not obtained from database query so obviously it's not working
-            $scope.showAlert3();
         if($scope.newPass !== $scope.newPassConfirm)
-            $scope.showAlert();
-        if($scope.newPass === $scope.claimedPass)
-            $scope.showAlert2();
-        else if($scope.newPass === $scope.newPassConfirm && $scope.claimedPass === $scope.user.password ) {
+            toastr.error('رمز جدید و تکرار رمز جدید مشابه نیستند', 'خطا');
+       //TODO:new pass shouldn't be equal to old pass
+        else if($scope.newPass === $scope.newPassConfirm) {
             var alteredPass = {
                 password: $scope.newPass
             };
             RegisteredUsr.updateUsrInfo(alteredPass).then(
                 function (response) {
-                    console.log(response);
-                    $scope.logOut(); //password was changed user's gotta be dumped
+                    toastr.success('رمزعبور با موفقیت تغییر داده شد!', 'تبریک');
+                   // $scope.logOut(); //password was changed user's gotta be dumped
                 },
                 function (response) {
                     console.log(response);
+                    if(response.status === 400)
+                        toastr.error('لطفا فیلدهای خالی را پر کنید!', 'خطا');
                 });
-        } */
+        }
     };//end of submit
+
 };//end of passCtrl func

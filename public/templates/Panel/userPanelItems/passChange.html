@@ -8,11 +8,21 @@
              </md-input-container> -->
                <md-input-container flex="25" flex-xs="70">
                    <label>رمز عبور جدید:</label>
-                   <input type="password" name="newPasswd" ng-model="newPass"/>
+                   <input type="password" name="newPasswd" ng-model="newPass" ng-minlength="6" ng-maxlength="20" required/>
+                   <div ng-messages="userForm.newPasswd.$error" ng-if="userForm.newPasswd.$touched">
+                       <div ng-message="required">وارد کردن رمز الزامی است.</div>
+                       <div ng-message="minlength">رمز ضعیف است!</div>
+                       <div ng-message="maxlength">رمز فوق طولانی!!</div>
+                   </div>
                </md-input-container>
                <md-input-container flex="25" flex-xs="70">
                    <label>تایید رمز عبور جدید:</label>
-                   <input type="password" name="ConfirmNewPasswd" ng-model="newPassConfirm"/>
+                   <input type="password" name="ConfirmNewPasswd" ng-model="newPassConfirm" ng-minlength="6" ng-maxlength="20" required/>
+                   <div ng-messages="userForm.ConfirmNewPasswd.$error" ng-if="userForm.ConfirmNewPasswd.$touched">
+                       <div ng-message="required">وارد کردن رمز الزامی است.</div>
+                       <div ng-message="minlength">رمز ضعیف است!</div>
+                       <div ng-message="maxlength">رمز فوق طولانی!!</div>
+                   </div>
                </md-input-container>
                <div layout="row" layout-xs="column" md-theme="NewTheme" layout-align="center center">
                    <md-button flex class="md-raised md-warn md-hue-2" type="submit">تغییر رمز</md-button>
