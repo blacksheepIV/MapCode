@@ -1,28 +1,27 @@
-<md-content layout="row" dir="rtl" ng-controller="groupCtrl" ng-init="initGroup()">
-    <div class="animate-switch-container" ng-switch on="noGroup">
-        <div class="animate-switch" ng-switch-when="true">شما هیچ گروهی تا کنون نساخته اید.</div>
-        <div class="animate-switch" ng-switch-when="false" layout="row" layout-xs="column">
+<md-content layout="row" flex="100" dir="rtl" ng-controller="groupCtrl" ng-init="initGroup()">
           <div layout="column" layout-xs="column">
-              <md-button
-                         title="Launch Groups List"
+            <a ui-sref=".showGroupList">
+                <md-button
+                         title="لیست گروه ها"
                          target="_blank"
-                         ng-disabled="true"
-                         aria-label="Groups List"
+                         aria-label="LaunchGroupsList"
                          class="md-icon-button launch" >
                   <md-icon md-font-icon="fa fa-users fa-2x"></md-icon>
               </md-button>
+            </a>
               <span flex="5"></span>
               <md-button
                       title="Create a Group"
                       target="_blank"
                       ng-disabled="true"
-                      aria-label="Group Cretion"
+                      aria-label="ایجاد یک گروه جدید"
                       class="md-icon-button launch" >
                   <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
               </md-button>
           </div>
             <md-divider></md-divider>
-            <div ui-view="groupStuff"></div>
+            <div flex="5"></div>
+            <div ui-view="groupList" flex="100"></div>
         </div>
     </div>
 </md-content>

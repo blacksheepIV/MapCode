@@ -122,6 +122,15 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
                 }
     }
     })
+        .state('panel.groups.showGroupList', {
+            url: '/groupsList',
+            views: {
+                'groupList': {
+                    templateUrl: '../templates/Panel/userPanelItems/groupStuff/groupsList.html',
+                    controller: groupCtrl
+                }
+            }
+        })
         .state('panel.messages', {
             url: '/messages',
             data: {
