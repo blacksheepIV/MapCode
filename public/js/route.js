@@ -115,8 +115,13 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             data: {
                 'selectedTab': 5
             },
-            template : '<h4>این ویژگی فعلا در دسترس نیست.</h4>'
-        })
+            views: {
+                'groups': {
+                    templateUrl: '../templates/Panel/userPanelItems/groupStuff/groups.html',
+                    controller: groupCtrl
+                }
+    }
+    })
         .state('panel.messages', {
             url: '/messages',
             data: {

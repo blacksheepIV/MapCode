@@ -53,7 +53,7 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
                     userService.searchUsers(temp.value).then(
                         function (data) {
                             console.log(data);
-                            $scope.foundedUsers.push(data.data);
+                            $scope.foundedUsers=data.data;
                         },function (data) {
                             $scope.sthWentWrong = true;
                             if(data.status === 400)
@@ -72,8 +72,9 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
     }; //end of function initSearch
     /* ############################################################################################################################################################################## */
     $scope.showUserInfo = function(user,ev){
-        console.log(user);
-        userService.setUsrInfo(user);
+       // userService.setUsrInfo(user);
+        console.log(user.username);
+        userService.setUsername (user.username);
         $mdDialog.show({
             controller: usrInfoCtrl,
             templateUrl: 'templates/Panel/userInfo.html',

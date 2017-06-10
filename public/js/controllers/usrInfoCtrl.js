@@ -5,29 +5,40 @@ function usrInfoCtrl($scope,userService,$mdDialog,pointService,friendService,toa
      $scope.initUsr = function(){
          $scope.info = {};
          $scope.SendInvitation = false;
-         $scope.info = userService.getUsrInfo();
+         //$scope.info = userService.getUsrInfo();
          $scope.friendshipStatus = "";
          $scope.usrpoints = [];
          //console.log($scope.info); phone number if it has value
-         switch ($scope.info.friendship){
-             case 'no':
-                 $scope.friendshipStatus = "دوست شما نیست";
-                 $scope.SendInvitation = true;
-                 break;
-             case 'friend':
-                 $scope.friendshipStatus = "دوست هستید";
-                 break;
-             case 'pending_to_me':
-                 $scope.friendshipStatus = "درخواست دوستی فرستاده";
-                 break;
-             case 'pending_from_me':
-                 $scope.friendshipStatus = "درخواست دوستی برایش فرستادید";
-                 break;
-         };
-         if($scope.info.description === "" || $scope.info.description === null)
-             $scope.info.description = "-ندارد-";
-         if($scope.info.phone === "" || $scope.info.phone === null)
-             $scope.info.phone = "-ندارد-";
+         $scope.getThisUsr = userService.getUsername();
+         if( $scope.getThisUsr !== "" ||  $scope.getThisUsr !== null)
+             userService.getUsrInfo($scope.getThisUsr).then(
+                 function(data){
+                     $scope.info = data.data;
+                     console.log($scope.info);
+                     switch ($scope.info.friendship){
+                         case 'no':
+                             $scope.friendshipStatus = "دوست شما نیست";
+                             $scope.SendInvitation = true;
+                             break;
+                         case 'friend':
+                             $scope.friendshipStatus = "دوست هستید";
+                             break;
+                         case 'pending_to_me':
+                             $scope.friendshipStatus = "درخواست دوستی فرستاده";
+                             break;
+                         case 'pending_from_me':
+                             $scope.friendshipStatus = "درخواست دوستی برایش فرستادید";
+                             break;
+                     };
+                     if($scope.info.description === "" || $scope.info.description === null)
+                         $scope.info.description = "-ندارد-";
+                     if($scope.info.phone === "" || $scope.info.phone === null)
+                         $scope.info.phone = "-ندارد-";
+                 } ,
+                 function(data){
+                     console.log(data);
+                 });
+
      };//end of initUsr
     /* ################################################################################################################################################# */
     $scope.getUsrPoints = function(){

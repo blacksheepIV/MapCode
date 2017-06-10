@@ -5,6 +5,7 @@ var userService = function($http){
     var user = {}; //empty object literal
     var verCode = -1;
     var usrInfo = {};
+    var usr ="";
     this.setUserInfo = function(userData){
         user = userData;
       //  console.log(user);
@@ -23,16 +24,24 @@ var userService = function($http){
         return times;
     };
     //****************************************************************************************************************
-   this.searchUsers = function(username){
-       var searchUser =  window.apiHref+"users/"+username;
-       return $http({url:searchUser,method:"GET"});
+   this.searchUsers = function(name){
+       var searchUser =  window.apiHref+"users/search";
+       var searchingFor={username:name};
+       return $http({url:searchUser,method:"GET",params:searchingFor});
    };//end of searchUsers func
-    this.setUsrInfo = function (info){
-        usrInfo = info;
-    };
-    this.getUsrInfo = function(){
-        return usrInfo;
-    };
+    /* ############################################### get user Info############################################################# */
+   this.getUsrInfo = function(name){
+       var getThisUsr =  window.apiHref+"users/"+name;
+       return $http({url:getThisUsr,method:"GET"});
+   };//end of getUsrInfo function
+    /* ############################################################################################################ */
+    this.setUsername = function(usrname){
+        usr = usrname;
+        console.log(usr);
+    };//end of setUsername function
+    this.getUsername = function(){
+        return usr;
+    };//end of getUsername func
     /* ##################################### Get User's Point ######################################################### */
     this.GetPoints = function(username){
         var getPoint =  window.apiHref+"users/"+username+"/points";

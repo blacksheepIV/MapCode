@@ -18,6 +18,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('friendsCtrl',friendsCtrl)
         .controller('msgCTRL',msgCTRL)
         .controller('sharePointCtrl',sharePointCtrl)
+        .controller('groupCtrl',groupCtrl)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)
@@ -26,5 +27,6 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .factory('sysMessagesService',sysMessagesService)
         .factory('RegisteredUsr',RegisteredUsr)
         .factory('friendService',friendService)
-        .factory('msgService',msgService);
+        .factory('msgService',msgService)
+        .factory('groupService',groupService);
 
