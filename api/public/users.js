@@ -1,6 +1,4 @@
 var router = require('express').Router();
-var lodashIntersection = require('lodash/intersection');
-var lodashTrim = require('lodash/trim');
 var pointModel = require('../../models/points');
 
 var jwt = require('../../utils/jwt');

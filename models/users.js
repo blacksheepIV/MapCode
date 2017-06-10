@@ -13,6 +13,8 @@ var asyncRetry = require('async/retry');
 var asyncSeries = require('async/series');
 var asyncSetImmediate = require('async/setImmediate');
 var moment = require('moment');
+var lodashIntersection = require('lodash/intersection');
+var lodashTrim = require('lodash/trim');
 
 var db = require('../db');
 
@@ -108,7 +110,7 @@ module.exports.signUpFields = [
  * @constant
  * @type {string[]}
  */
-module.exports.nonFriendFields = [
+var nonFriendFields = module.exports.nonFriendFields = [
     'name',
     'phone',
     'username',
@@ -124,7 +126,7 @@ module.exports.nonFriendFields = [
  * @type {string[]}
  * @see module:models/users.nonFriendFields
  */
-module.exports.friendFields =
+var friendFields = module.exports.friendFields =
     // All non-friends fields in addition of below fields
     module.exports.nonFriendFields.concat([
         'email'
@@ -754,12 +756,12 @@ module.exports.friendshipCustomFielder = function (req, res, next) {
         if (req.isFriend)
             req.queryFields = lodashIntersection(
                 req.query.fields,
-                usersModel.friendFields
+                friendFields
             );
         else
             req.queryFields = lodashIntersection(
                 req.query.fields,
-                usersModel.nonFriendFields
+                nonFriendFields
             );
 
     }
@@ -769,9 +771,9 @@ module.exports.friendshipCustomFielder = function (req, res, next) {
         // If friendship field was not in requested fields
         if (!req.friendshipRequested) {
             if (req.isFriend)
-                req.queryFields = usersModel.friendFields;
+                req.queryFields = friendFields;
             else
-                req.queryFields = usersModel.nonFriendFields;
+                req.queryFields = nonFriendFields;
 
             if (req.user)
                 req.friendshipRequested = true;
