@@ -70,7 +70,7 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             views: {
                 'passChange': {
                     templateUrl: '../templates/Panel/userPanelItems/passChange.html',
-                    controller: userCtrl
+                    controller: passCtrl
                 }
             }
         })

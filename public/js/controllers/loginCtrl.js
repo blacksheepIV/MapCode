@@ -38,7 +38,7 @@ var loginCtrl = function ($scope,$state,$mdDialog,authentication,authenticationT
              }//failure
            );
 
-            console.log(incomer);
+           // console.log(incomer);
             //set $rootScope.guest equal to false if login was a success
         }//end of login
     };

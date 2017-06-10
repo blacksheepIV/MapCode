@@ -1,11 +1,11 @@
-<div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
+<div ng-controller="passCtrl" ng-init="initPassStuff()" ng-cloak>
    <md-content layout="row">
        <form name="userForm" ng-submit="submitPass()" dir="rtl"  style="padding:15px 10px 0 0;margin:auto;" layout-align="center center"  novalidate>
            <div layout="column" layout-xs="column" flex="100">
-             <md-input-container flex="25" flex-xs="70">
+            <!-- <md-input-container flex="25" flex-xs="70">
                  <label>رمز عبور فعلی:</label>
                  <input type="password" name="passwd" ng-model="claimedPass"/>
-             </md-input-container>
+             </md-input-container> -->
                <md-input-container flex="25" flex-xs="70">
                    <label>رمز عبور جدید:</label>
                    <input type="password" name="newPasswd" ng-model="newPass"/>

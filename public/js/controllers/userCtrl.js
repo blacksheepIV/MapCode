@@ -1,15 +1,13 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$location,userService,$mdDialog,authenticationToken,pointService){
+var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$state,userService,$mdDialog,authenticationToken,pointService){
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.myPoints = [];
         $scope.myPpoints = [];
-        $scope.newPass = "";
-        $scope.newPassConfirm = "";
-        $scope.claimedPass = "";
+
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         // $scope.namePattern='[a-zA-Z]+';
@@ -359,76 +357,15 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             });
     };//end of updateInfo
     /*  ######################################################Edit User Info ################################################################# */
-//**************************************** pass Change *******************************************************************************
-    $scope.submitPass = function(){
-        console.log($scope.user.password);
-        if($scope.claimedPass !== $scope.user.password) //TODO:pass is not obtained from database query so obviously it's not working
-            $scope.showAlert3();
-          if($scope.newPass !== $scope.newPassConfirm)
-              $scope.showAlert();
-        if($scope.newPass === $scope.claimedPass)
-            $scope.showAlert2();
-        else if($scope.newPass === $scope.newPassConfirm && $scope.claimedPass === $scope.user.password ) {
-            var alteredPass = {
-                password: $scope.newPass
-            };
-            RegisteredUsr.updateUsrInfo(alteredPass).then(
-                function (response) {
-                    console.log(response);
-                    $scope.logOut(); //password was changed user's gotta be dumped
-                },
-                function (response) {
-                    console.log(response);
-                });
-        }
-    };//end of submit
+
     $scope.logOut=function(){
-        console.log("user just logged out.");
-        //TODO:sth needed to distroy user's session/token,whatever
+        //console.log("user just logged out.");
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-        $location.path("/");
-    };
+       // $location.path("/");
+        $state.go('home');
+    }; //end of logOut func
 
-    $scope.showAlert = function() {
-        $mdDialog.show(
-            $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title('خطا!')
-                .textContent('رمز عبور و تکرار رمز عبور مشابه نیستند!!!')
-                .ariaLabel('AlertDialog')
-                .ok('متوجه شدم')
-            // .targetEvent(ev)
-        );
-    };
-    //*******************************************************************************************************************
-    $scope.showAlert2 = function() {
-        $mdDialog.show(
-            $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title('خطا!')
-                .textContent('رمز عبور جدید و  قدیم نمی توانند مشابه باشند!!!')
-                .ariaLabel('AlertDialog')
-                .ok('متوجه شدم')
-            // .targetEvent(ev)
-        );
-    };
-
-    $scope.showAlert3 = function() {
-        $mdDialog.show(
-            $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title('عدم مطابقت!')
-                .textContent('رمز عبور فعلی به درستی وارد نشده !!!')
-                .ariaLabel('AlertDialog')
-                .ok('متوجه شدم')
-            // .targetEvent(ev)
-        );
-    };
-    // **************************************** pass Change *******************************************************************************
     /* **************************************** Point Details **************************************************************************** */
     $scope.showPointDetails = function(point, ev) {
         pointService.setDetailedInfo(point);
@@ -457,26 +394,4 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
         
     };
     /* **************************************** Personal Point Detail ********************************************************************  */
-    $scope.logOut=function(){
-        authenticationToken.removeToken();
-        $rootScope.isUser = false;
-        $location.path("/");
-    }
-    /* ************************************************ tab routnig ************************************************************* */
-    $scope.tabEditInfo = function(){
-        $location.path("/EditInfo");
-    };
-    $scope.passChange = function(){
-        $location.path("/passChange");
-    };
-    $scope.userPoints =function(){
-        $location.path("/userPoints");
-    };
-    $scope.personalPoints = function(){
-        $location.path("/personalPoints");
-    };
-    $scope.FriendsGroups = function(){
-        $location.path("/FriendsGroups");
-    };
-    /* ************************************************ tab routnig ************************************************************* */
 }//end of userCtrl controller

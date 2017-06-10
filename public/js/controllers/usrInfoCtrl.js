@@ -8,13 +8,13 @@ function usrInfoCtrl($scope,userService,$mdDialog,pointService,friendService,toa
          //$scope.info = userService.getUsrInfo();
          $scope.friendshipStatus = "";
          $scope.usrpoints = [];
+         $scope.hasPoints = false;
          //console.log($scope.info); phone number if it has value
          $scope.getThisUsr = userService.getUsername();
          if( $scope.getThisUsr !== "" ||  $scope.getThisUsr !== null)
              userService.getUsrInfo($scope.getThisUsr).then(
                  function(data){
-                     $scope.info = data.data;
-                     console.log($scope.info);
+                    $scope.info = data.data;
                      switch ($scope.info.friendship){
                          case 'no':
                              $scope.friendshipStatus = "دوست شما نیست";
@@ -27,29 +27,49 @@ function usrInfoCtrl($scope,userService,$mdDialog,pointService,friendService,toa
                              $scope.friendshipStatus = "درخواست دوستی فرستاده";
                              break;
                          case 'pending_from_me':
-                             $scope.friendshipStatus = "درخواست دوستی برایش فرستادید";
+                             $scope.friendshipStatus = "درخواست دوستی فرستادید";
                              break;
                      };
                      if($scope.info.description === "" || $scope.info.description === null)
                          $scope.info.description = "-ندارد-";
                      if($scope.info.phone === "" || $scope.info.phone === null)
                          $scope.info.phone = "-ندارد-";
+                     if($scope.info.email === "" || $scope.info.email === null)
+                         $scope.info.email = "-ندارد-";
                  } ,
                  function(data){
-                     console.log(data);
+                     if(data.status === 400)
+                         toastr.error('جستجو برای نام کاربری بدون در نظر کرفتن مقدار یا نام کاربری غیر معتبر(طول کمتر از 5)', {
+                             closeButton: true
+                         });
+                     else if(data.status === 404)
+                         toastr.warning('متاسفانه کاربری با این نام کاربری یافت نشد):', {
+                             closeButton: true
+                         });
                  });
 
      };//end of initUsr
     /* ################################################################################################################################################# */
     $scope.getUsrPoints = function(){
-        var username = userService.getUsrInfo() .username;
-        userService.GetPoints(username).then(
-            function(data){
-               $scope.usrpoints = data.data;
-            },
-            function(data){
-                console.log(data);
-            });
+        var uname = userService.getUsername();
+        console.log(uname);
+        if(uname !== "" || uname !== null) {
+            userService.GetPoints(uname).then(
+                function (data) {
+                    $scope.usrpoints = data.data;
+                    if($scope.usrpoints.length > 0)
+                        $scope.hasPoints = true;
+                },
+                function (data) {
+                    if(data.status === 400)
+                        toastr.error(' مقداری برای نام کاربری درنظر گرفته نشده یا نام کاربری غیر معتبر(طول کمتر از 5)', {
+                            closeButton: true
+                        });
+                });
+        }
+        else{
+            toastr.error('در سیستم خطایی رخ داده،لطفا با ادمین تماس بگیرید!', 'خطا');
+        }
     };
     /* ################################################################################################################################################ */
     /* ########################################## Show Point Details ################################################################################### */
