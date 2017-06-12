@@ -1,0 +1,39 @@
+<md-dialog  flex="60" aria-label="composeMessage" ng-controller="gpEditCtrl" ng-init="initEdit()" >
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">ویرایش گروه</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form name="editGroup" class="form" dir="rtl" flex="100" ng-submit="editGroup.$valid && submit()" novalidate layout="column"  layout-align="center">
+        <md-dialog-content layout="row" layout-align="center" >
+            <div class="md-dialog-content" dir="rtl">
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <label>نام گروه:</label>
+                        <input type="text" name="new_name" ng-model="gpName" />
+                    </md-input-container>
+                </div>
+                <div layout="column" layout-xs="column">
+                      <!--  <ui-select ng-model="selected.value">
+                            <ui-select-match>
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="item in (itemArray | filter: $select.search) track by item.id">
+                                <span ng-bind="item.name"></span>
+                            </ui-select-choices>
+                        </ui-select> --> <!-- why the fuck this ui-select thing does not work? -->
+                        <md-select placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedFriend" name="new_members">
+                             <md-option ng-value="friend" ng-repeat="friend in friendList ">{{friend}}</md-option>
+                         </md-select>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit">  ویرایش  </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

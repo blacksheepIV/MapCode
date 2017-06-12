@@ -24,9 +24,10 @@
     "persian-date": "^0.1.8",
     "persian-datepicker": "^0.4.5",
     "angular-local-storage": "^0.5.2",
-    "moment": "^2.18.1",
     "angular-toastr": "^2.1.1",
     "angular-material-sidemenu": "^1.0.1",
-    "angular-ui-router": "^1.0.3"
+    "angular-ui-router": "^1.0.3",
+    "angular-ui-select": "^0.19.8",
+    "angular-sanitize":"1.5.8"
   }
 }

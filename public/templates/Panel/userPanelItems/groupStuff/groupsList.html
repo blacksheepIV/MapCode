@@ -1,16 +1,16 @@
 <md-content layout="column" flex="100" dir="rtl" ng-controller="groupCtrl" ng-init="initGroup()">
  <div class="animate-switch-container" ng-switch on="noGroup">
     <div class="animate-switch" ng-switch-when="true">
-        <h5>شما هیچ گروهی تا کنون نساخته اید.</h5>
+        <h5>شما تا کنون هیچ گروهی نساخته اید.</h5>
     </div>
     <div class="animate-switch" ng-switch-when="false" layout="row" layout-xs="column">
         <md-list class="md-dense" flex>
             <md-list-item ng-repeat="group in groupList"  class="noleft">
                 <img src="../img/Icons/Groups-Meeting.png" alt="Person" class="md-avatar" width="96" height="96"/>
                 <p>{{group.name}}</p>
-                <md-icon class="md-secondary"  aria-label="deleteGroup" md-font-icon="fa fa-trash" ng-click="DeleteGP(group.name)" ></md-icon>
-                <md-icon class="md-secondary"  aria-label="messageGroup" md-font-icon="fa fa-envelope" ng-click="gpMessage()" ></md-icon>
-                <md-icon class="md-secondary"  aria-label="editGroup" md-font-icon="fa fa-pencil-square-o" ></md-icon>
+                <md-icon class="md-secondary"  aria-label="deleteGroup" md-font-icon="fa fa-trash fa-lg" ng-click="DeleteGP(group.name)" ></md-icon>
+                <md-icon class="md-secondary"  aria-label="messageGroup" md-font-icon="fa fa-envelope fa-lg" ng-click="gpMessage()" ></md-icon>
+                <md-icon class="md-secondary"  aria-label="editGroup" md-font-icon="fa fa-pencil-square-o fa-lg" ng-click="editGroup(group.name,$event)" ></md-icon>
                 <md-divider></md-divider>
             </md-list-item>
         </md-list>

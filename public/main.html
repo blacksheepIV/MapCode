@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <base href="/">
-   <!--  <script src="./components/moment/min/moment.min.js"></script> -->
     <!-- datePicker requirements -->
     <script src="./components/jquery/dist/jquery.js"></script>
     <!-- including the Google Map API -->
@@ -23,7 +22,12 @@
     <!-- angular_toastr -->
     <link rel="stylesheet" type="text/css" href="./components/angular-toastr/dist/angular-toastr.css" />
     <!-- angular_toastr -->
+    <!-- angular ui select -->
+    <link rel="stylesheet" type="text/css" href="./components/angular-ui-select/dist/select.css"/>
+    <!-- angular ui select -->
+
     <!-- EO styling Files -->
+
     <script>
         window.apiHref = '{{{ apiHref }}}';
     </script>
@@ -50,6 +54,13 @@
     <!-- angul_toastr -->
     <script type="text/javascript" src="./components/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <!-- angul_toastr -->
+
+    <script type="text/javascript" src="./components/angular-sanitize/angular-sanitize.js"></script>
+
+    <!-- angular ui select -->
+    <script type="text/javascript" src="./components/angular-ui-select/dist/select.js"></script>
+    <!-- angular ui select -->
+
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
     <title>ProjectM</title>
 </head>
@@ -66,8 +77,9 @@
     <script src="./js/services/userService.js"></script>
     <script src="./js/services/friendService.js"></script>
     <script src="./js/services/msgService.js"></script>
-   <script src="./js/services/groupService.js"></script>
-   <script type="text/javascript" src="./js/controllers/groupCtrl.js"></script>
+    <script src="./js/services/groupService.js"></script>
+    <script type="text/javascript" src="./js/controllers/gpEditCtrl.js"></script>
+    <script type="text/javascript" src="./js/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/panelCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/sharePointCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/msgCTRL.js"></script>
@@ -83,7 +95,7 @@
     <script type="text/javascript" src="./js/controllers/registerCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/MapCtrl.js" ></script>
     <script type="text/javascript" src="./js/controllers/mainCtrl.js"></script>
-   <script type="text/javascript" src="./js/controllers/passCtrl.js"></script>
+    <script type="text/javascript" src="./js/controllers/passCtrl.js"></script>
     <script type="text/javascript" src="./js/controllers/userCtrl.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/route.js"></script>

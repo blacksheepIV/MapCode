@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource','ngMessages','lr.upload','LocalStorageModule','ngAnimate','toastr','ui.router']);
+var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource','ngMessages','lr.upload','LocalStorageModule','ngAnimate','toastr','ui.router','ui.select', 'ngSanitize']);
     mapCodeApp.controller('loginCtrl',loginCtrl)
         .controller('registerCtrl',registerCtrl)
         .controller('mapCtrl',mapCtrl)
@@ -20,6 +20,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('msgCTRL',msgCTRL)
         .controller('sharePointCtrl',sharePointCtrl)
         .controller('groupCtrl',groupCtrl)
+        .controller('gpEditCtrl',gpEditCtrl)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)
