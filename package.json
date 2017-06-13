@@ -8,7 +8,7 @@
     "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test && echo \">> mocha\" && npm run mocha && echo \">> JSHint\" && npm run lint",
     "install": "echo \"> npm update\" && npm update && npm run update",
     "update": "echo \"> bower install\" && ./node_modules/.bin/bower install && echo \"> bower update\" && ./node_modules/.bin/bower update",
-    "start": "pm2 startOrReload ecosystem.config.js --env production",
+    "start": "pm2 startOrReload ecosystem.config.js",
     "deploy": "pm2 deploy production",
     "gen-api-doc": "apidoc -i ./api -o ../documents/api",
     "mkdb": "./bin/mkdb",

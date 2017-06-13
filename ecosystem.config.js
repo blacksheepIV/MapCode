@@ -6,7 +6,7 @@ module.exports = {
             kill_timeout:5000,
             env: {},
             env_production: {
-                NODE_ENV: 'development'
+                NODE_ENV: 'production'
             },
             "merge_logs": true,
             "log_date_format": "YYYY-MM-DD HH:mm Z"
@@ -19,7 +19,10 @@ module.exports = {
             ref: 'origin/master',
             repo: 'git@gitlab.com:ProjectM/src.git',
             path: '/var/www/vhosts/mapcode.ir',
-            'post-deploy': 'npm install --production && npm start'
+            "post-deploy": 'npm install --production && npm start',
+            "env"  : {
+                "NODE_ENV": "production"
+            }
         }
     }
 };
