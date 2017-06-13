@@ -5,7 +5,7 @@
   "scripts": {
     "mocha": "mocha ./tests/**/test*.js",
     "lint": "jshint . --show-non-errors",
-    "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test && echo \">> mocha\" && npm run lint && npm run mocha",
+    "test": "echo \">> Check NPM packages security\n>>> nsp\" && nsp check && echo \">>> snyk\" && snyk test && echo \">> mocha\" && npm run mocha && echo \">> JSHint\" && npm run lint",
     "install": "echo \"> npm update\" && npm update && npm run update",
     "update": "echo \"> bower install\" && ./node_modules/.bin/bower install && echo \"> bower update\" && ./node_modules/.bin/bower update",
     "start": "pm2 startOrReload ecosystem.config.js --env production",
