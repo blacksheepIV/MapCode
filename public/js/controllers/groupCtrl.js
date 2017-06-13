@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 08-Jun-17.
  */
-function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService,toastr){
+function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService){
     $scope.initGroup = function(){
         $scope.noGroup = true;
         $scope.groupList=[];
@@ -72,8 +72,8 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService,toastr){
     };//end of findAlreadyMembers
     /* ################################################################################################################################### */
     $scope.gpInfo = function(gp){
-       // console.log(gp);
-        groupService.setGroup(gp);
+
+       groupService.setGroup(gp);
         $mdDialog.show({
             controller: groupCtrl,
             templateUrl: 'templates/Panel/userPanelItems/groupStuff/gpInfo.html',
@@ -84,6 +84,34 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService,toastr){
     };//end of gpInfo function
     $scope.infoInit = function(){
         $scope.gp = groupService.getGroup();
+    };
+    /* ######################################################################################################################################### */
+    $scope.loadfriends = function(){
+        return  friendService.getFriends()
+            .then(
+                function(friendsList){
+                    $scope.friends = friendsList.data;
+                }
+                ,function(friendsList){
+                    console.log(friendsList);
+                });
+    };//end of loadfriends func
+
+    $scope.createGp = function (){
+        //console.log($scope.gpName);
+       // console.log($scope.addedMembers);
+        var group = {name:$scope.gpName,members:$scope.addedMembers};
+        groupService.createGroup(group)
+            .then(
+                function(gpCreationResult){
+                    // console.log(gpCreationResult);
+                    toastr.success('گروه جدید ایجاد شد', 'موفقیت!');
+                },
+                function(gpCreationResult){
+                    //console.log(gpCreationResult);
+                    if(gpCreationResult.status === 400)
+                        toastr.error(' گروهی با این نام از قبل وجود دارد ', 'خطا');
+                });
     };
     /* ######################################################################################################################################### */
     $scope.cancel = function () {

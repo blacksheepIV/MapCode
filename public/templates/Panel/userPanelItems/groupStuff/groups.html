@@ -10,18 +10,19 @@
               </md-button>
             </a>
               <span flex="5"></span>
-              <md-button
-                      title="Create a Group"
+              <a ui-sref=".createGp">
+                 <md-button
+                      title="ایجاد یک گروه جدید"
                       target="_blank"
-                      ng-disabled="true"
-                      aria-label="ایجاد یک گروه جدید"
+                      aria-label="Create a Group"
                       class="md-icon-button launch" >
-                  <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
-              </md-button>
+                      <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
+                 </md-button>
+              </a>
           </div>
             <md-divider></md-divider>
             <div flex="5"></div>
-            <div ui-view="groupList" flex="100"></div>
+            <div ui-view="groupStuff" flex="100"></div>
         </div>
     </div>
 </md-content>

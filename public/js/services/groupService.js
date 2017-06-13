@@ -45,7 +45,7 @@ function groupService ($http){
         },
         createGroup : function(GP){
             var creation =  window.apiHref+'groups';
-            return $http({url:gpInfo,method:"POST",data:GP})
+            return $http({url:creation,method:"POST",data:GP})
                 .success(
                     function(data){
                         group.gpCreationResult = data;

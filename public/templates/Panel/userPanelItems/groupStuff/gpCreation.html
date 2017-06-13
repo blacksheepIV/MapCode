@@ -1,0 +1,22 @@
+<md-content ng-controller="groupCtrl" >
+    <form name="editGroup" class="form" dir="rtl" flex="100" ng-submit="editGroup.$valid && createGp()" novalidate layout="column"  layout-align="center">
+        <md-dialog-content layout="row" layout-align="center" >
+            <div class="md-dialog-content" dir="rtl">
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <label>نام گروه:</label>
+                        <input type="text" name="name" ng-model="gpName" ng-minlength="1" ng-maxlength="25" required/>
+                    </md-input-container>
+                </div>
+                <div layout="column" layout-xs="column">
+                    <md-select multiple placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedMembers" name="members" md-on-open="loadfriends()" required>
+                        <md-option ng-value="friend" ng-repeat="friend in friends ">{{friend}}</md-option>
+                    </md-select>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+            <md-button flex="30" class="md-raised md-accent md-hue-2 md-block" type="submit">  ساخت گروه  </md-button>
+        </md-dialog-actions>
+    </form>
+</md-content>
