@@ -1,5 +1,5 @@
-<div ng-controller="msgCTRL" ng-init="msgInit()">
-    <div layout="row" flex="100" layout-align='start center'>
+<md-content layout="row" flex="100" ng-controller="msgCTRL">
+  <!--  <div layout="row" flex="100" layout-align='start center'>
         <span>نمایش محتوای:</span>
         <div flex="5"></div>
     <md-select placeholder="چک کردن" class="md-no-underline" ng-model="selectedType" >
@@ -9,7 +9,7 @@
 
             <md-icon class="md-secondary"  aria-label="refresh"  md-font-icon="fa fa-refresh fa-lg" ng-show="selectedType"></md-icon>
             <md-checkbox  aria-label="selectAll" class="md-secondary" ng-checked="isChecked()"  md-indeterminate="isIndeterminate()" ng-click="toggleAll()" ng-show="selectedType"></md-checkbox>
-            <!-- TODO: they don't align well -->
+
 
     </div>
     <md-content layout="column">
@@ -56,5 +56,31 @@
 
             </div>
         </div>
-    </md-content>
-</div>
+    </md-content> -->
+    <div layout="column" layout-xs="column">
+        <a ui-sref=".checkInbox">
+            <md-button
+                    title="صندوق ورودی"
+                    target="_blank"
+                    aria-label="checkinboxMsgs"
+                    class="md-icon-button launch" >
+                <md-icon md-font-icon="fa fa-inbox fa-2x"></md-icon>
+            </md-button>
+        </a>
+        <span flex="5"></span>
+        <a ui-sref=".checkOutbox">
+            <md-button
+                    title="صندوق خروجی"
+                    target="_blank"
+                    aria-label="checkOutboxMsgs"
+                    class="md-icon-button launch" >
+                <md-icon md-font-icon="fa fa-upload fa-2x"></md-icon>
+            </md-button>
+        </a>
+    </div>
+    <md-divider></md-divider>
+    <div flex="5"></div>
+    <div ui-view="groupStuff" flex="100"></div>
+    </div>
+    </div>
+</md-content>

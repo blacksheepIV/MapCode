@@ -147,8 +147,26 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             },
             views: {
                 'messages': {
-                    templateUrl: '../templates/Panel/userPanelItems/messages.html',
-                    controller: userCtrl
+                    templateUrl: '../templates/Panel/userPanelItems/messageStuff/messages.html',
+                    controller: msgCTRL
+                }
+            }
+        })
+        .state('panel.messages.checkInbox', {
+            url: '/inbox',
+            views: {
+                'groupStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/messageStuff/inbox.html',
+                    controller: msgCTRL
+                }
+            }
+        })
+        .state('panel.messages.checkOutbox', {
+            url: '/outbox',
+            views: {
+                'groupStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/messageStuff/outBox.html',
+                    controller: msgCTRL
                 }
             }
         });

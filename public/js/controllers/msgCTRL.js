@@ -2,12 +2,10 @@
  * Created by blackSheep on 26-May-17.
  */
 function msgCTRL ($scope,msgService,toastr,$mdDialog){
-    $scope.msgInit = function (){
+    $scope.inboxInit = function (){
         $scope.inboxMsgs = [];
         $scope.thereIsNoMsg = false;
-        $scope.outboxMsgs = [];
-        $scope.noSentMsgs = false;
-        $scope.checkTypes = ['صندوق خروجی','صندوق ورودی'];
+       // $scope.checkTypes = ['صندوق خروجی','صندوق ورودی'];
         msgService.getInboxMsgs().then(
             function(inboxResult){
              console.log(inboxResult);
@@ -23,20 +21,25 @@ function msgCTRL ($scope,msgService,toastr,$mdDialog){
             function(inboxResult){
                 console.log(inboxResult);
             });
-        msgService.getOutboxMsgs().then(
-            function(outboxResult){
-                console.log(outboxResult);
-                if(outboxResult.data.length === 0)
-                    $scope.noSentMsgs = true;
-                else{
-                    $scope.outboxMsgs = [];
-                    $scope.outboxMsgs = outboxResult.data;
-                }
-        },
-            function(outboxResult){
-            console.log(outboxResult);
-        });
-    }; //end of msgInit
+    }; //end of inboxInit
+    /* ####################################################################################################################################### */
+    $scope.outboxInit = function(){
+          $scope.outboxMsgs = [];
+         $scope.noSentMsgs = false;
+          msgService.getOutboxMsgs().then(
+         function(outboxResult){
+         console.log(outboxResult);
+         if(outboxResult.data.length === 0)
+         $scope.noSentMsgs = true;
+         else{
+         $scope.outboxMsgs = [];
+         $scope.outboxMsgs = outboxResult.data;
+         }
+         },
+         function(outboxResult){
+         console.log(outboxResult);
+         });
+    };//end of outboxInit
     /* #################################################################################################################### */
     $scope.deleteMsg = function(msgCode){
         //console.log(msgCode);
