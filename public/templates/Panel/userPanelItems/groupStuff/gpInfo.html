@@ -1,0 +1,28 @@
+<md-dialog  flex="60" aria-label="composeMessage" ng-controller="groupCtrl" ng-init="infoInit()" >
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row">
+            <h2 class="md-display-2">گروه {{gp.name}}</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+        <md-dialog-content layout="row" layout-align="center" >
+            <div class="md-dialog-content" dir="rtl">
+                <p>لیست اعضا:</p>
+                <md-list class="md-dense" flex>
+                    <md-list-item ng-repeat="member in gp.members"  class="noleft" ng-click="gpInfo(group)">
+                        <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
+                        <p>{{member}}</p>
+                        <md-icon class="md-secondary"  aria-label="deleteGroup" md-font-icon="fa fa-trash fa-lg" ng-click="DeleteGP(group.name)" ></md-icon>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-dialog-content>
+      <!--  <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
+            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit">  ویرایش  </md-button>
+        </md-dialog-actions> -->
+</md-dialog>

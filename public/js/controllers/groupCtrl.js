@@ -70,4 +70,23 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService,toastr){
                // console.log($scope.friendList);
             }
     };//end of findAlreadyMembers
+    /* ################################################################################################################################### */
+    $scope.gpInfo = function(gp){
+       // console.log(gp);
+        groupService.setGroup(gp);
+        $mdDialog.show({
+            controller: groupCtrl,
+            templateUrl: 'templates/Panel/userPanelItems/groupStuff/gpInfo.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false // Only for -xs, -sm breakpoints.
+        });
+    };//end of gpInfo function
+    $scope.infoInit = function(){
+        $scope.gp = groupService.getGroup();
+    };
+    /* ######################################################################################################################################### */
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
 };//end of groupCtrl func

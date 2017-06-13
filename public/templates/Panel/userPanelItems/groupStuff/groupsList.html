@@ -5,7 +5,7 @@
     </div>
     <div class="animate-switch" ng-switch-when="false" layout="row" layout-xs="column">
         <md-list class="md-dense" flex>
-            <md-list-item ng-repeat="group in groupList"  class="noleft">
+            <md-list-item ng-repeat="group in groupList"  class="noleft" ng-click="gpInfo(group)">
                 <img src="../img/Icons/Groups-Meeting.png" alt="Person" class="md-avatar" width="96" height="96"/>
                 <p>{{group.name}}</p>
                 <md-icon class="md-secondary"  aria-label="deleteGroup" md-font-icon="fa fa-trash fa-lg" ng-click="DeleteGP(group.name)" ></md-icon>

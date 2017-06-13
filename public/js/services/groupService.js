@@ -9,6 +9,7 @@ function groupService ($http){
         gpInfoResult:{},
         gpCreationResult:{},
         editInfo:{},
+        gpInfo:{},
         getGroupsList : function(){
              var getGroups = window.apiHref+'groups/';
              return $http({url:getGroups,method:'GET'})
@@ -58,6 +59,12 @@ function groupService ($http){
         },
         getSharedInfo : function(){
             return  group.editInfo;
+        },
+        setGroup:function(gp){
+            group.gpInfo = gp;
+        },
+        getGroup : function(){
+            return group.gpInfo;
         }
 
     };
