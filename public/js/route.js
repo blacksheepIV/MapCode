@@ -105,8 +105,35 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             },
             views: {
                 'friends': {
+                    templateUrl: '../templates/Panel/userPanelItems/FriendStuff/friends.html',
+                    controller: friendsCtrl
+                }
+            }
+        })
+        .state('panel.friends.friendsList', {
+            url: '/friendsList',
+            views: {
+                'friendStuff': {
                     templateUrl: '../templates/Panel/userPanelItems/FriendStuff/friendsList.html',
-                    controller: userCtrl
+                    controller: friendsCtrl
+                }
+            }
+        })
+        .state('panel.friends.pendingReqs', {
+            url: '/pendingReqs',
+            views: {
+                'friendStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/FriendStuff/pendingReqs.html',
+                    controller: friendsCtrl
+                }
+            }
+        })
+        .state('panel.friends.sentInvitations', {
+            url: '/sentInvitations',
+            views: {
+                'friendStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/FriendStuff/SentReqs.html',
+                    controller: friendsCtrl
                 }
             }
         })

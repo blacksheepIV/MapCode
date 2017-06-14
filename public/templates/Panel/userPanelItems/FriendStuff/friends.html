@@ -1,0 +1,33 @@
+<md-content layout="row" flex="100" ng-controller="msgCTRL">
+    <div layout="column"  layout-xs="column">
+        <a ui-sref=".friendsList">
+            <md-button
+                    target="_blank"
+                    aria-label="friendList"
+                    class="md-icon-button launch" style="width:150px;">
+                لیست دوستان
+            </md-button>
+        </a>
+        <span flex="5"></span>
+        <a ui-sref=".pendingReqs">
+            <md-button
+                    target="_blank"
+                    aria-label="friendList"
+                    class="md-icon-button launch" style="width:150px;"  >
+           درخواست های در حال انتظار
+             </md-button>
+        </a>
+        <span flex="5"></span>
+        <a ui-sref=".sentInvitations">
+            <md-button
+                    target="_blank"
+                    aria-label="friendList"
+                    class="md-icon-button launch" style="width:150px;" >
+            درخواست های ارسالی
+             </md-button>
+        </a>
+    </div>
+    <md-divider></md-divider>
+    <div flex="5"></div>
+    <div ui-view="friendStuff" flex="100"></div>
+</md-content>
