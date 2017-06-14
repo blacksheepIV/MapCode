@@ -117,4 +117,36 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService){
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
+    /* ########################################################################################################################################## */
+    $scope.deleteMember = function(member,groupName){
+        var foundIt = false;
+        groupService.getGroupInfo(groupName).then(
+            function(gpInfoResult)
+            {
+                var currentMembers = gpInfoResult.data.members;
+                for(var j=0 ; j<currentMembers.length ; j++)
+                    if(currentMembers[j] === member){
+                        currentMembers.splice(j,1);
+                        foundIt= true;
+                        break;
+                }
+                if(!foundIt)
+                    console.log("user is not a friend of yours!!!!");
+                else if(foundIt){
+                    var newGp = {new_members:currentMembers};
+                    groupService.updateGroup(groupName,newGp)
+                        .then(function(updateResult){
+                            toastr.success('کاربر از گروه حذف شد.');
+                        },function(updateResult){
+                            console.log(updateResult);
+                            toastr.error('خطایی روی داده است.');
+                        });
+                }
+
+
+
+            },function(gpInfoResult){
+                console.log(gpInfoResult);
+            });
+    };
 };//end of groupCtrl func
