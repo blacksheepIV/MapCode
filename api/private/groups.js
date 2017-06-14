@@ -331,7 +331,7 @@ router.route('/groups/:name')
                 req.user.id,
                 req.params.name,
                 req.body.new_name,
-                req.body.new_members.join(" "),
+                req.body.new_members,
                 function (err) {
                     if (err) {
                         switch (err) {

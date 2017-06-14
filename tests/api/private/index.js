@@ -1,5 +1,5 @@
 describe('Private API', function () {
-    require('./point');
+    require('./points');
     require('./users');
     require('./friends');
     require('./personal-points');

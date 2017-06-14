@@ -164,6 +164,9 @@ module.exports.delete = function (userId, gpName, callback) {
  * @throws {'serverError'}
  */
 module.exports.update = function (userId, gpName, newName, members, callback) {
+    if (Array.isArray(members))
+        members = members.join(' ');  // DB procedure wants members to be list of members split with space, e.g. "ali hamid".
+
     db.conn.query(
         "CALL `updateGroup` (?, ?, ?, ?)",
         [userId, gpName, newName, members],

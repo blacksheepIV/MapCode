@@ -3,5 +3,5 @@ describe('Public API', function () {
     require('./signup');
     require('./signin');
     require('./users');
-    require('./point');
+    require('./points');
 });

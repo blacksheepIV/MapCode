@@ -57,7 +57,6 @@
 						"url": {
 							"raw": "http://localhost:3000/api/signin?m",
 							"protocol": "http",
-							"auth": {},
 							"host": [
 								"localhost"
 							],
@@ -523,12 +522,12 @@
 				{
 					"name": "Update group",
 					"request": {
-						"url": "http://localhost:3000/api/groups/helloo",
+						"url": "http://localhost:3000/api/groups/newgp",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiZUZ2SmEifQ.CB4htoyRLJEidQGuQ3vCQSs1j102NJq1ApnlnTGQJ_w",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiekRPU0gifQ.Y8hU2wLHWON42imsJR9zBTS9lzt91TEtTP_7ETtZe-E",
 								"description": ""
 							},
 							{
@@ -539,7 +538,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"newgp\",\n\t\"members\": \"vahid mohammad\"\n}"
+							"raw": "{\n\t\"new_name\": \"testgp\",\n\t\"new_members\": [\"mohammad\", \"vahid\"]\n}"
 						},
 						"description": ""
 					},
@@ -551,7 +550,6 @@
 						"url": {
 							"raw": "http://localhost:3000/api/groups?fields=name",
 							"protocol": "http",
-							"auth": {},
 							"host": [
 								"localhost"
 							],
@@ -719,7 +717,6 @@
 						"url": {
 							"raw": "http://localhost:3000/api/users/search?username=aliff&fields=username",
 							"protocol": "http",
-							"auth": {},
 							"host": [
 								"localhost"
 							],
