@@ -26,7 +26,7 @@
                                 <span ng-bind="item.name"></span>
                             </ui-select-choices>
                         </ui-select> --> <!-- why the fuck this ui-select thing does not work? -->
-                        <md-select placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedFriend" name="new_members">
+                        <md-select multiple placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedFriend" name="new_members">
                              <md-option ng-value="friend" ng-repeat="friend in friendList ">{{friend}}</md-option>
                          </md-select>
                 </div>
