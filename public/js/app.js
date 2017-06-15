@@ -14,6 +14,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('pointInfoCtrl',pointInfoCtrl)
         .controller('searchCtrl',searchCtrl)
         .controller('usrInfoCtrl',usrInfoCtrl)
+        .controller('usrPointsCtrl',usrPointsCtrl)
         .controller('pPointCtrl',pPointCtrl)
         .controller('pPointInfo',pPointInfo)
         .controller('friendsCtrl',friendsCtrl)

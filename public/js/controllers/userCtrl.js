@@ -5,9 +5,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
-        $scope.myPoints = [];
         $scope.myPpoints = [];
-
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         // $scope.namePattern='[a-zA-Z]+';
@@ -71,13 +69,6 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                         $scope.user.type = " ";
                         break;
                 }; //end of switchCase
-//#######################################################################################################################################################
-                pointService.getPointInfos().then(function(res){
-                   // console.log(res);
-                    $scope.myPoints=res.data;
-                },function(res){
-                    console.log(res);
-                });
             },function (Info) {
                 if(Info.status === 401) {
                     console.log("نقض قوانین!کاربر احراز هویت نشده!");
@@ -120,8 +111,6 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
 
 
 //**********************************************************************************************************************
-
-
 //*************************************************************************************************************************
     $scope.showDlg = function() {
         $mdDialog.show({
@@ -366,19 +355,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
         $state.go('home');
     }; //end of logOut func
 
-    /* **************************************** Point Details **************************************************************************** */
-    $scope.showPointDetails = function(point, ev) {
-        pointService.setDetailedInfo(point);
-        $mdDialog.show({
-            controller: pointInfoCtrl,
-            templateUrl: 'templates/Panel/userPanelItems/pointDetailedInfo.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true,
-            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            });
-    };
-    /* **************************************** Point Details **************************************************************************** */
+
     /* **************************************** Personal Point Detail ********************************************************************  */
     $scope.pPointDetails = function(pPoint,ev){
         pointService.setPpointDetailedInfo(pPoint);
