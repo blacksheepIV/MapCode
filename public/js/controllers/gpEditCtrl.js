@@ -7,6 +7,7 @@ function gpEditCtrl ($scope,groupService,$mdDialog,toastr){
         $scope.gpInfo = groupService.getSharedInfo();
         $scope.gpName = $scope.gpInfo.name;
         $scope.friendList = $scope.gpInfo.friends;
+        console.log($scope.gpInfo.members);
     };
     /* ##################################################################################################################### */
     $scope.submit = function(){
@@ -15,7 +16,7 @@ function gpEditCtrl ($scope,groupService,$mdDialog,toastr){
             new_name:$scope.gpInfo.name,
             new_members:[]
         };
-        console.log($scope.addedFriend);
+      //  console.log($scope.addedFriend);
      /*   angular.forEach($scope.editGroup, function(value, key) {
             if(key[0] == '$') return;
             if(value.$dirty){
@@ -24,7 +25,7 @@ function gpEditCtrl ($scope,groupService,$mdDialog,toastr){
                 newGroup[key] = value.$modelValue;
             }
         }); */
-       //TODO:angular own bug with md-select multiple and $pristine
+       //TODO:Due to angular own bug with md-select multiple and $pristine I'm doomed
        /* if($scope.editGroup.new_members.$dirty && $scope.editGroup.new_name.$pristine ) {
             newGroup.new_members = $scope.addedFriend;
             console.log("hello");
@@ -38,9 +39,12 @@ function gpEditCtrl ($scope,groupService,$mdDialog,toastr){
         else if($scope.addedFriend.length !== 0 &&  !$scope.editGroup.new_name.$pristine){
             newGroup.new_name = $scope.gpName ;
             newGroup. new_members = $scope.addedFriend ;
+            newGroup.new_members.push($scope.gpInfo.members);
         }
-        else if($scope.addedFriend.length !== 0 &&  $scope.editGroup.new_name.$pristine)
+        else if($scope.addedFriend.length !== 0 &&  $scope.editGroup.new_name.$pristine) {
             newGroup.new_members = $scope.addedFriend;
+            newGroup.new_members.push($scope.gpInfo.members);
+        }
         if(goodToGo) {
             groupService.updateGroup($scope.gpInfo.name, newGroup).then(
                 function (updateResult) {

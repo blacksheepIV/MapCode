@@ -44,7 +44,7 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService){
                                 $scope.findAlreadyMembers($scope.alreadymember[j]);
                           //  $scope.selectedItem = $scope.friendList[0];
                             console.log($scope.friendList);
-                            groupService.setSharedInfo($scope.friendList,name);
+                            groupService.setSharedInfo($scope.friendList, $scope.alreadymember,name);
                             $mdDialog.show({
                                 controller: gpEditCtrl,
                                 templateUrl: 'templates/Panel/userPanelItems/groupStuff/editGroup.html',
@@ -72,7 +72,6 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService){
     };//end of findAlreadyMembers
     /* ################################################################################################################################### */
     $scope.gpInfo = function(gp){
-
        groupService.setGroup(gp);
         $mdDialog.show({
             controller: groupCtrl,

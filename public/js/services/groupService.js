@@ -51,10 +51,11 @@ function groupService ($http){
                         group.gpCreationResult = data;
                     });
         },
-        setSharedInfo : function(availableFriends,gpName){
+        setSharedInfo : function(availableFriends,currentMembers,gpName){
               group.editInfo ={
                   name:gpName,
-                  friends:availableFriends
+                  friends:availableFriends,
+                  members:currentMembers
               };
         },
         getSharedInfo : function(){
