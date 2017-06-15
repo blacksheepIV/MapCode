@@ -10,15 +10,13 @@ function groupService ($http){
         gpCreationResult:{},
         editInfo:{},
         gpInfo:{},
+        msgResult:{},
         getGroupsList : function(){
              var getGroups = window.apiHref+'groups/';
              return $http({url:getGroups,method:'GET'})
                  .success(function(data){
                      group.groupsList = data;
-                 }).success(
-                     function(data){
-                         group.groupsList = data;
-                     });
+                 });
         },
         groupDeletion:function(name){
             var deletion = window.apiHref+'groups/'+name;
@@ -49,6 +47,14 @@ function groupService ($http){
                 .success(
                     function(data){
                         group.gpCreationResult = data;
+                    });
+        },
+        sendGroupMsg : function(msg,gpName){
+            var msgUrl = window.apiHref+'groups/'+gpName;
+            return $http({url:msgUrl,method:"POST"})
+                .success(
+                    function(data){
+                        group.msgResult = data;
                     });
         },
         setSharedInfo : function(availableFriends,currentMembers,gpName){

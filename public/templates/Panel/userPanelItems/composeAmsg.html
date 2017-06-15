@@ -13,11 +13,20 @@
             <div class="md-dialog-content" dir="rtl">
                 <div layout="column" layout-xs="column">
                     <md-input-container flex="100" flex-xs="100">
-                        <label>ارسال به:</label>
-                        <input type="text"name="receiver" ng-model="msg.receiver" ng-minlength="5" ng-maxlength="15" ng-pattern="namePattern" required/>
+                        <label>ارسال به شخص:</label>
+                        <input type="text"name="receiver" ng-model="msg.receiver" ng-minlength="5" ng-maxlength="15" ng-pattern="namePattern"/>
                     </md-input-container>
                     <!--TODO: let it search through user's friend ;got the API ;need to implement-->
                 </div>
+
+                <div layout="column" layout-xs="column">
+                    <md-input-container flex="100" flex-xs="100">
+                        <md-select placeholder="ارسال به گروه:" class="md-no-underline" ng-model="msg.gpReceiver">
+                            <md-option ng-value="group.name" ng-repeat="group in groupList">{{group.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
                 <div layout="column" layout-xs="column" ng-show="!isPersonal">
                     <md-input-container flex="100" flex-xs="100">
                         <label>کد نقطه:</label>

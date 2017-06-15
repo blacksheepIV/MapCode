@@ -13,8 +13,6 @@ function pointService($http){
         pPointDetailedInfo : {},
         sharedPoint : {},
         setLocation: function (lat, lang) {
-          //  console.log(lat);
-         //   console.log(lang);
             coordination = {
                 lat: lat,
                 lng: lang

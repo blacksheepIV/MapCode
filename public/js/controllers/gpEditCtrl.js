@@ -39,11 +39,13 @@ function gpEditCtrl ($scope,groupService,$mdDialog,toastr){
         else if($scope.addedFriend.length !== 0 &&  !$scope.editGroup.new_name.$pristine){
             newGroup.new_name = $scope.gpName ;
             newGroup. new_members = $scope.addedFriend ;
-            newGroup.new_members.push($scope.gpInfo.members);
+            for(var i=0 ; i<$scope.gpInfo.members.length;i++ )
+                newGroup.new_members.push($scope.gpInfo.members[i]);
         }
         else if($scope.addedFriend.length !== 0 &&  $scope.editGroup.new_name.$pristine) {
             newGroup.new_members = $scope.addedFriend;
-            newGroup.new_members.push($scope.gpInfo.members);
+            for(var i=0 ; i<$scope.gpInfo.members.length;i++ )
+                newGroup.new_members.push($scope.gpInfo.members[i]);
         }
         if(goodToGo) {
             groupService.updateGroup($scope.gpInfo.name, newGroup).then(
