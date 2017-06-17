@@ -51,7 +51,7 @@ function groupService ($http){
         },
         sendGroupMsg : function(msg,gpName){
             var msgUrl = window.apiHref+'groups/'+gpName;
-            return $http({url:msgUrl,method:"POST"})
+            return $http({url:msgUrl,method:"POST",data:msg})
                 .success(
                     function(data){
                         group.msgResult = data;
