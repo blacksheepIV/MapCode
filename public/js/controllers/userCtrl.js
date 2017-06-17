@@ -5,7 +5,6 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     var alteredData = {};
     $scope.initVars = function(){
         $scope.investigate = false; // user's not been investigated and approved yet
-        $scope.myPpoints = [];
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         // $scope.namePattern='[a-zA-Z]+';
@@ -86,16 +85,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
            $scope.myPoint = localStorageService.get('point1');
             console.log($scope.myPoint);
         } */
-        pointService.getPpointInfo().then (function(pPointResult){
-            console.log(pPointResult);
-            $scope.myPpoints = pPointResult.data;
-        },function(pPointResult){
-            console.log(pPointResult);
-            if(pPointResult.status = 401){
-                console.log("نقض قوانین!کاربر احراز هویت نشده!");
-                RegisteredUsr.goodriddance();
-            }
-        });
+
         $("#creationDate").pDatepicker(
             {
                 format:"YYYY - MM - DD dddd",
@@ -356,19 +346,5 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     }; //end of logOut func
 
 
-    /* **************************************** Personal Point Detail ********************************************************************  */
-    $scope.pPointDetails = function(pPoint,ev){
-        pointService.setPpointDetailedInfo(pPoint);
-        var templateUrl = 'templates/Panel/userPanelItems/pPointDetailedInfo.html';
-            $mdDialog.show({
-                controller: pPointInfo,
-                templateUrl: templateUrl,
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose:true,
-                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            });
-        
-    };
-    /* **************************************** Personal Point Detail ********************************************************************  */
+
 }//end of userCtrl controller

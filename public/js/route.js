@@ -94,7 +94,7 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             views: {
                 'usrPersonalPoints': {
                     templateUrl: '../templates/Panel/userPanelItems/usrPersonalPoints.html',
-                    controller: userCtrl
+                    controller: usrPpointCtrl
                 }
             }
         })

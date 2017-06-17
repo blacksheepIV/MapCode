@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource','ngMessages','lr.upload','LocalStorageModule','ngAnimate','toastr','ui.router','ui.select', 'ngSanitize']);
+var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource','ngMessages','lr.upload','LocalStorageModule','ngAnimate','toastr','ui.router']);
     mapCodeApp.controller('loginCtrl',loginCtrl)
         .controller('registerCtrl',registerCtrl)
         .controller('mapCtrl',mapCtrl)
@@ -17,6 +17,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('usrPointsCtrl',usrPointsCtrl)
         .controller('pPointCtrl',pPointCtrl)
         .controller('pPointInfo',pPointInfo)
+        .controller('usrPpointCtrl',usrPpointCtrl)
         .controller('friendsCtrl',friendsCtrl)
         .controller('msgCTRL',msgCTRL)
         .controller('sharePointCtrl',sharePointCtrl)
