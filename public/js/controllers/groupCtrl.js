@@ -20,11 +20,15 @@ function groupCtrl ($scope,groupService,toastr,$mdDialog,friendService){
             });
     };//end of initGroup function
 /* ################################################################################################################# */
- $scope.DeleteGP = function(gpName){
-     groupService.groupDeletion(gpName).then(
+ $scope.DeleteGP = function(gp){
+     groupService.groupDeletion(gp.name).then(
          function(deletionResult){
         // console.log(deletionResult);
-             toastr.success('گروه حذف شد.');
+             angular.forEach($scope.groupList,function(value,key){
+                 if(gp === value)
+                     $scope.groupList.splice(key,1);
+             });
+             toastr.info('گروه حذف شد.',{closeButton: true});
      }
      ,function(deletionResult){
             // console.log(deletionResult);

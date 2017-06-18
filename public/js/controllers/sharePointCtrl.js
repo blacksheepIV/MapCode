@@ -51,7 +51,7 @@ function sharePointCtrl ($scope,pointService,$mdDialog,msgService,toastr,groupSe
     /* ######################################################################################################################### */
     $scope.submit = function (){
         var msgTemplate = {};
-        if($scope.sendMsg.gpReciever.$pristine && !$scope.sendMsg.receiver.$pristine )
+        if($scope.sendMsg.gpReciever.$pristine && $scope.sendMsg.receiver.$pristine )
             toastr.error('گیرنده پیغام مشخص نشده است', 'خطا',{ closeButton: true});
         if(!$scope.sendMsg.gpReciever.$pristine && !$scope.sendMsg.receiver.$pristine )
             toastr.error('ارسال پیغام تنها به فرد یا به گروه ممکن است و نه هردو', 'خطا',{ closeButton: true});

@@ -42,35 +42,42 @@ function friendsCtrl ($scope,friendService,$mdDialog,toastr){
     $scope.abortSentReq = function (username){
         friendService.cancelFriendReq(username).then(
             function(cancelResult){
-                console.log(cancelResult);
-             //   this.parentElement.style.display='none';
+                angular.forEach($scope.pendingReqs,function(value,key){
+                    if(username === value)
+                        $scope.pendingReqs.splice(key,1);
+                });
+                toastr.info( 'شما درخواست دوستی را رد کردید!', {
+                    closeButton: true
+                });
+              //  console.log(cancelResult);
+
             },
             function(cancelResult){
-                console.log(cancelResult);
+                toastr.warning( 'ارسال درخواست با خطا مواجه شده؛با ادمین تماس بگیرید!','خطا', {
+                    closeButton: true
+                });
+                //console.log(cancelResult);
             });
     };//end of acceptFriendReq func
     $scope.acceptReq = function(username){
         console.log(username);
         friendService.acceptFriendReq(username).then(
             function(acceptResult){
+                angular.forEach($scope.pendingReqs,function(value,key){
+                    if(username === value)
+                        $scope.pendingReqs.splice(key,1);
+                });
+                toastr.success( 'شما درخواست دوستی را پذیرفتید!', {
+                    closeButton: true
+                });
                 console.log(acceptResult);
-                rem();
+
             },
             function(acceptResult){
                 console.log(acceptResult);
             });
 };//end of acceptReq func
     /* #################################################################################################################### */
-    function rem(){
-        var list = document.getElementById('pendingRequests'),
-            items = Array.prototype.slice.call(list.childNodes),
-            item;
-        while (item = items.pop()) {
-            if (item.firstChild && item.firstChild.checked) {
-                list.removeChild(item);
-            }
-        }
-    };//end of rem func
     /* #################################################################################################################### */
     $scope.shareIt = function (){
         //console.log("hello");
@@ -87,6 +94,10 @@ function friendsCtrl ($scope,friendService,$mdDialog,toastr){
           console.log(friendUsrname);
         friendService.unfriend(friendUsrname)
             .then(function(unfriendedResult){
+                angular.forEach($scope.myFriends,function(value,key){
+                   if(friendUsrname === value)
+                       $scope.myFriends.splice(key,1);
+                });
                 toastr.info( 'حذف دوست با موفقیت انجام شد!', {
                     closeButton: true
                 });

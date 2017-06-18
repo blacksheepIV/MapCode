@@ -41,17 +41,24 @@ function msgCTRL ($scope,msgService,toastr,$mdDialog){
          });
     };//end of outboxInit
     /* #################################################################################################################### */
-    $scope.deleteMsg = function(msgCode){
+    $scope.deleteMsg = function(msg){
         //console.log(msgCode);
-        msgService.deleteMsg(msgCode).then(
+        msgService.deleteMsg(msg.code).then(
             function(deleteResult){
-                console.log(deleteResult);
+               // console.log(deleteResult);
+                angular.forEach($scope.inboxMsgs,function(value,key){
+                    if(msg === value)
+                        $scope.inboxMsgs.splice(key,1);
+                });
                 toastr.info( 'پیغام حذف شد!', {
                     closeButton: true
                 });
             }
             ,function(deleteResult){
                 console.log(deleteResult);
+                toastr.info( 'حذف پیغام با خطا مواجه شد!','خطا', {
+                    closeButton: true
+                });
             }
         );
     };//end of deleteMsg

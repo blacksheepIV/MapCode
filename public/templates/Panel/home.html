@@ -1,10 +1,16 @@
 <div layout="column" ng-controller="mainCtrl"  ng-init="initVar()" style="height:100%;width:100%; ">
-    <div ng-include="'./templates/Panel/header.html'"></div>
+    <header>
+            <div ng-include="'./templates/Panel/header.html'"></div>
+    </header>
     <div ng-include="'./templates/Panel/sideNav.html'"></div>
     <!--<div flex layout="row"> -->
     <md-content layout-fill>
                <div  id="map" style="height: 100%;" ></div>
 
     </md-content>
-  <!--  </div> -->
+    <footer style="background-color:#2E7D32;">
+        <div layout="row" layout-align="center center">
+             <h2 style="font-family: Verdana;">My Awesome Footer</h2>
+        </div>
+    </footer>
 </div>
