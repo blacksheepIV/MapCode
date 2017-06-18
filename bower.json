@@ -25,9 +25,9 @@
     "persian-datepicker": "^0.4.5",
     "angular-local-storage": "^0.5.2",
     "angular-toastr": "^2.1.1",
-    "angular-material-sidemenu": "^1.0.1",
     "angular-ui-router": "^1.0.3",
     "angular-ui-select": "^0.19.8",
-    "angular-sanitize":"1.5.8"
+    "angular-sanitize": "1.5.8",
+    "angular-material-sidemenu": "^1.0.1"
   }
 }
