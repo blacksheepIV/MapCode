@@ -35,7 +35,7 @@
 - SMS service
 
 - User document upload
-- User avatar upload
+    - User avatar upload
 
 - Add triggers for `points` table
     * Check credit bonus
@@ -45,3 +45,5 @@
 - `expired_points` table
 
 - Indexes on database tables
+
+- Check if point is expired in APIs
