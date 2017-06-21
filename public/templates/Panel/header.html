@@ -1,4 +1,4 @@
-<md-toolbar md-theme="Khaz" class=" md-primary md-hue-2" dir="rtl" class="mainHeader" ng-controller="mainCtrl" ng-init="initVar()">
+<md-toolbar md-theme="Khaz" class=" md-primary md-hue-2" dir="rtl" class="mainHeader" ng-controller="mainCtrl" >
     <div class="md-toolbar-tools" layout="row">
         <div layout="row" flex="300">
            <!-- <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" > -->
@@ -11,22 +11,6 @@
             </div>
         </div>
         <div flex="30"></div>
-        <form name="searchForm" layout="row" flex="300" ng-submit="searchForm.$valid && searchPage()" layout-align="center center">
-            <md-input-container md-no-float id="SearchBoxContainer" >
-                <input name="SearchBox" id="SearchBox" ng-model="searchBox" placeholder="جستجوی ..."/>
-            </md-input-container>
-            <!--<a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
-            <div flex="5"></div>
-            <md-select placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
-                <md-option ng-value="Stopic.value" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
-            </md-select>
-            <md-button class = "md-icon-button" aria-label = "searchBtn" type="submit" flex="30">
-                <md-icon md-font-icon="fa fa-search fa-2x" class="material-icons md-48" ></md-icon>
-            </md-button>
-           <!--  <div flex="5"></div> -->
-            <a href="/advancedSearch">جستجوی پیشرفته</a>
-        </form>
-        <div flex="10"></div>
         <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="!isUser">
             <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
             <md-button class="md-raised md-warn " ng-click="register()">ثبت نام</md-button>

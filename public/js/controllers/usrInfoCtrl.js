@@ -52,11 +52,12 @@ function usrInfoCtrl($scope,userService,$mdDialog,pointService,friendService,toa
     /* ################################################################################################################################################# */
     $scope.getUsrPoints = function(){
         var uname = userService.getUsername();
-        console.log(uname);
         if(uname !== "" || uname !== null) {
             userService.GetPoints(uname).then(
                 function (data) {
                     $scope.usrpoints = data.data;
+                    console.log( data.data);
+                    console.log( $scope.usrpoints);
                     if($scope.usrpoints.length > 0)
                         $scope.hasPoints = true;
                 },

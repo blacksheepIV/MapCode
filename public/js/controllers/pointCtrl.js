@@ -1,14 +1,13 @@
 /**
  * Created by blackSheep on 23-Apr-17.
  */
-function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,localStorageService) {
+function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toastr) {
     $scope.initPoint = function () {
-       // $scope.pointNames = ['point1', 'point2', 'point3', 'point4', 'point5', 'point6', 'point7', 'point8', 'point9', 'point10'];
         $scope.index = 0;
         $scope.HeadCat = "";
         $scope.subcats = [];
         $scope.namePattern = '[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
-        $scope.provinces = [
+       /* $scope.provinces = [
             {id: 1, name: 'اصفهان'},
             {id: 2, name: 'تهران'}
         ];
@@ -26,7 +25,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             {prov: 'تهران', name: 'شمیرانات'},
             {prov: 'تهران', name: 'فشم'},
             {prov: 'تهران', name: 'ورامین'}
-        ]; //TODO:change it to input
+        ]; */
         var coord = pointService.getLocation();
         console.log(coord);
         $scope.point = {
@@ -43,24 +42,29 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
             description: "",
             tags: []
         };
-        pointService.requestForCategory().then(
-            function (categories) {
-                console.log(categories);
-                $scope.cats = categories.data;
-                //console.log($scope.point.category);
-            }, function (categories) {
-                console.log(categories); //in case of failure
-            });
+
     }; //end initPoint
     //******************************************************************************************************************
-    $scope.$watch('point.province',function (newValue, oldValue, scope) {
+   /* $scope.$watch('point.province',function (newValue, oldValue, scope) {
         $scope.PresentableCities = [];// to fix appending issue on parameter;s value change
         angular.forEach($scope.cities ,function(value,key){
             if(value.prov === newValue.name){
                 $scope.PresentableCities.push(value.name);
             }
         });
-    },false);
+    },false); */
+   /* ################################################################################################################## */
+   $scope.loadCats = function (){
+     return  pointService.requestForCategory().then(
+           function (categories) {
+               console.log(categories);
+               $scope.cats = categories.data;
+               //console.log($scope.point.category);
+           }, function (categories) {
+               console.log(categories); //in case of failure
+             toastr.error('دریافت دسته ها با خطا مواجه شده');
+           });
+   };
     //******************************************************************************************************************
     $scope.$watch('HeadCat',function (newValue, oldValue, scope) {
             $scope.subcats = []; // to fix appending issue on parameter;s value change
@@ -96,7 +100,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
                 lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
-                province: $scope.point.province.name,
+                province: $scope.point.province,
                 city: $scope.point.city,
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),
@@ -123,7 +127,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
                 lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
-                province: $scope.point.province.name,
+                province: $scope.point.province,
                 city: $scope.point.city,
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),
@@ -137,7 +141,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,$location,$rootScope,loc
                 lng: longitude,
                 name: $scope.point.name,
                 phone: $scope.point.phone,
-                province: $scope.point.province.name,
+                province: $scope.point.province,
                 city: $scope.point.city,
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),

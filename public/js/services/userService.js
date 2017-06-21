@@ -37,7 +37,7 @@ var userService = function($http){
     /* ############################################################################################################ */
     this.setUsername = function(usrname){
         usr = usrname;
-        console.log(usr);
+      //  console.log(usr);
     };//end of setUsername function
     this.getUsername = function(){
         return usr;

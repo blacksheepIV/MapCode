@@ -73,7 +73,6 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
     /* ############################################################################################################################################################################## */
     $scope.showUserInfo = function(user,ev){
        // userService.setUsrInfo(user);
-        console.log(user.username);
         userService.setUsername (user.username);
         $mdDialog.show({
             controller: usrInfoCtrl,

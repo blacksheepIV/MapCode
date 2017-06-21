@@ -42,13 +42,63 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             url:'/login', templateUrl:"./templates/LogIn/login.html"
         })
         .state('verify', {
-            url:'/verify', templateUrl: "./templates/Registeration/2Step_verification.html"
+            url:'/verify', templateUrl: "../templates/Registeration/2Step_verification.html"
         })
         .state('panel', {
-            url:'/panel', templateUrl: "./templates/Panel/userPanel.html"
+            url:'/panel', templateUrl: "../templates/Panel/userPanel.html"
         })
         .state('advancedSearch', {
-            url:'/advancedSearch', templateUrl: "./templates/Panel/advancedSearch.html"
+            url:'/advancedSearch', templateUrl: "../templates/Panel/advancedSearch.html"
+        })
+        .state('home.mainTheme', {
+            url: 'main',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/mainView.html',
+                    controller: mainViewCtrl
+                }
+            }
+        })
+        .state('home.showMap', {
+            url: 'map',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/map.html',
+                    controller: mapPointCtrl
+                }
+            }
+        })
+        .state('home.aboutUs', {
+            url: 'aboutUS',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/aboutUs.html'
+                }
+            }
+        })
+        .state('home.contactUs', {
+            url: 'contactUs',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/contactUs.html'
+                }
+            }
+        })
+        .state('home.rules', {
+            url: 'rules',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/rules.html'
+                }
+            }
+        })
+        .state('home.guide', {
+            url: 'guide',
+            views: {
+                'mainContent': {
+                    templateUrl: '../templates/Panel/mainPageStuff/guide.html'
+                }
+            }
         })
         .state('panel.edit', {
             url: '/editInfo',
@@ -82,7 +132,7 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
             views: {
                 'usrPoints': {
                     templateUrl: '../templates/Panel/userPanelItems/UsrPoints.html',
-                    controller: userCtrl
+                    controller: usrPointsCtrl
                 }
             }
         })

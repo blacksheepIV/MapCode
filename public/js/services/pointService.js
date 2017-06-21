@@ -12,6 +12,7 @@ function pointService($http){
         pPointResult : {},
         pPointDetailedInfo : {},
         sharedPoint : {},
+        pointToBeSubmitted :{},
         setLocation: function (lat, lang) {
             coordination = {
                 lat: lat,
@@ -102,7 +103,18 @@ function pointService($http){
         },
         getSharedPoint : function(){
             return pointService.sharedPoint;
+        },
+        wannaSubmit : function(pointType){
+            switch (pointType){
+                case 'public':
+                    pointService.pointToBeSubmitted = {isPublic:true,isPersonal:false};
+                    break;
+                case 'personal':
+                    pointService.pointToBeSubmitted = {isPublic:false,isPersonal:true};
+                    break;
+            };
         }
+
     };
     return pointService;
 };//end of service

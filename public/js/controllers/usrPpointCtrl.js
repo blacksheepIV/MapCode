@@ -3,11 +3,17 @@
  */
 function usrPpointCtrl ($scope,toastr,$mdDialog,pointService,RegisteredUsr){
     $scope.initPpoint = function(){
+        $scope.noPpointsYet =true;
         $scope.myPpoints = [];
-        pointService.getPpointInfo().then (function(pPointResult){
+        pointService.getPpointInfo()
+            .then (
+            function(pPointResult){
             console.log(pPointResult);
             $scope.myPpoints = pPointResult.data;
-        },function(pPointResult){
+                if($scope.myPpoints.length !== 0)
+                    $scope.noPpointsYet = false;
+        },
+            function(pPointResult){
             console.log(pPointResult);
             if(pPointResult.status = 401){
                 toastr.error('نقض قوانین!کاربر احراز هویت نشده!', 'خطا');

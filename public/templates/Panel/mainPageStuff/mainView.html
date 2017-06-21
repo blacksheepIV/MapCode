@@ -1,0 +1,48 @@
+<md-content layout="row" ng-controller="mainViewCtrl" ng-init="initMainView()" >
+    <md-card flex="30">
+        <img src="../img/BGs/card-imgs/ad.jpg" class="md-card-image" alt="advertisement">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">محل درج تبلیغات</span>
+            </md-card-title-text>
+        </md-card-title>
+    </md-card>
+    <div flex="5"></div>
+  <!--<div layout="column" flex="60" layout-align="center" style="border: 1px solid rgba(0,0,0,0.5); border-radius:5px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);"> -->
+    <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-padding layout-align="center" style="height:100px; background-color: white; margin-top: 100px; ">
+    <div layout="row" layout-align="center" flex="70">
+        <form name="searchForm" layout="row"  ng-submit="searchForm.$valid && searchPage()" layout-align="center center">
+             <md-input-container class="md-block md-icon-left" flex="70" ">
+                 <label>جستجوی ...</label>
+                <input name="SearchBox"  ng-model="searchBox"/>
+              </md-input-container>
+              <!--<a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
+            <div flex="5"></div>
+            <md-input-container >
+                <md-select placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
+                   <md-option ng-value="Stopic.value" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
+                </md-select>
+            </md-input-container>
+           <!-- <md-button class = "md-icon-button" aria-label = "searchBtn" type="submit" flex="30">
+                <md-icon md-font-icon="fa fa-search fa-lg"></md-icon>
+            </md-button> -->
+            <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2"  aria-label = "searchBtn" type="submit" flex="30" md-autofocus>
+                جستجو
+            </md-button>
+
+        </form>
+    </div>
+      <div layout="row" layout-align="center" flex="70">
+        <a ui-sref="advancedSearch" style=" text-decoration: none;" class="md-subhead">جستجوی پیشرفته</a>
+      </div>
+  </md-whiteframe>
+    <div flex="5"></div>
+    <md-card flex="30">
+        <img src="../img/BGs/card-imgs/ad.jpg" class="md-card-image" alt="advertisement">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">محل درج تبلیغات</span>
+            </md-card-title-text>
+        </md-card-title>
+    </md-card>
+</md-content>
