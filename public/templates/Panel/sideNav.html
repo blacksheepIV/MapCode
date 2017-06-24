@@ -16,23 +16,26 @@
             </div>
         </div>
     </md-toolbar>
-    <md-content layout-margin dir="rtl" layout-align="center center">
-          <div id="mySidenav" class="sidenav" ng-show="isUser" layout-align="center center">
-              <div class="SNav_items">
-                  <span class="fa fa-address-card fa-lg"></span>
-                   <a ui-sref="panel" class="menuItems" >حساب کاربری من</a>
+    <md-content layout-margin dir="rtl" layout-align=" center">
+          <div  class="sidenav" ng-show="isUser"  layout="column" align="center">
+              <div >
+                  <span class="fa fa-address-card fa"></span>
+                   <a ui-sref="panel"class="menuItems"  ><h6>حساب کاربری من</h6></a>
                   </div>
-              <div class="SNav_items">
-                  <span class="fa fa-heart fa-lg"></span>
-                   <a href="#" class="menuItems"> مکان های منتخب من</a>
+              <md-divider></md-divider>
+              <div >
+                  <span class="fa fa-heart fa"></span>
+                   <a href="#" class="menuItems"><h6> مکان های منتخب من</h6> </a>
               </div>
-              <div class="SNav_items">
-                  <span class="fa fa-map-marker fa-lg"></span>
-                   <a class="menuItems" ng-click="addPoint()" > ثبت یک مکان جدید </a>
+              <md-divider></md-divider>
+              <div >
+                  <span class="fa fa-map-marker fa"></span>
+                   <a class="menuItems" ng-click="addPoint()" ><h6>  ثبت یک مکان جدید</h6> </a>
               </div>
-              <div class="SNav_items">
-                  <span class="fa fa-map-marker fa-lg"></span>
-                  <a ng-click="addPersonalPoint()" class="menuItems"> ثبت یک مکان خصوصی </a>
+              <md-divider></md-divider>
+              <div>
+                  <span class="fa fa-map-marker fa"></span>
+                  <a ng-click="addPersonalPoint()" class="menuItems"> <h6>ثبت یک مکان خصوصی</h6> </a>
               </div>
           </div>
 
