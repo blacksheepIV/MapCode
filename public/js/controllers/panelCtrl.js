@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 01-Jun-17.
  */
-function panelCtrl ($scope,$state,authenticationToken,$rootScope){
+function panelCtrl ($scope,$state,authenticationToken,$rootScope,$mdDialog){
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
             $scope.currentTab = toState.data.selectedTab;
         });
@@ -13,6 +13,18 @@ function panelCtrl ($scope,$state,authenticationToken,$rootScope){
         $mdOpenMenu(ev);
 
     };
+    /* ################################################################################################################# */
+    $scope.showOffers = function(ev){
+        $mdDialog.show({
+            controller: paymentCtrl,
+            templateUrl: 'templates/Panel/buyApackage.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: false // Only for -xs, -sm breakpoints.
+        });
+    };
+    /* ################################################################################################################# */
     /* ##################################################################################### */
     $scope.logOut=function(){
         console.log("user just logged out.");

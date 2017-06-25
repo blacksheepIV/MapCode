@@ -221,6 +221,32 @@ blockquote {
     font-family: Koodak;
     color: darkred;
 }
+#searchInput{
+    width:400px;
+    height: 40px;
+    background: #F5F7F4;
+    border-radius: 3px;
+    box-shadow: none;
+    box-sizing: border-box;
+    color:#546E7A;
+    padding: 0 16px 0 32px;
+    text-shadow: none;
+    transition: all .3s;
+    font-family: IRANSans,Koodak, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+
+}
+#filtersubmit {
+    position: relative;
+    z-index: 1;
+    left: 34px;
+    top: 1px;
+    color: #070707;
+    cursor:pointer;
+    width: 0;
+}
+
 /* ###########################################################################################################*/
 md-sidenav,
 md-sidenav.md-locked-open,

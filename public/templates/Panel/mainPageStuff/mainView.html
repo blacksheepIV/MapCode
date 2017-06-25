@@ -1,26 +1,25 @@
-<md-content layout="column" ng-controller="mainViewCtrl" ng-init="initMainView()" >
+<md-content layout="column" ng-controller="mainViewCtrl" ng-init="initMainView()" style=" height:100% ; background-image: url('../../../img/BGs/mapBlurry.JPG');background-repeat: no-repeat;background-size: 100% 100%;" >
     <div layout="row" flex="100">
         <div flex="35"></div>
     <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-padding layout-align="center" style="height:100px; background-color: white; margin-top: 25px; ">
     <div layout="row" layout-align="center" flex="80">
         <form name="searchForm" layout="row"  ng-submit="searchForm.$valid && searchPage()" layout-align="center center">
-             <md-input-container class="md-block md-icon-left" flex="70" ">
-                 <label>جستجوی ...</label>
-                <input name="SearchBox"  ng-model="searchBox"/>
-              </md-input-container>
+             <!-- <md-input-container class="md-block md-icon-left" flex="70" "> -->
+            <input name="SearchBox" placeholder="جستجوی ..." id="searchInput"  ng-model="searchBox"/>
+            <i id="filtersubmit" class="fa fa-search fa-2x"></i>
              <!--  <a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
-            <div flex="5"></div>
-            <div layout='row' layout-fill layout-margin layout-align='start center'>
+
+          <!--  <div layout='row' layout-fill layout-margin layout-align='start center'>
                 <md-input-container>
                 <md-select layout="column" placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
                    <md-option ng-value="Stopic.value" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
                 </md-select>
                 </md-input-container>
-           </div>
+           </div> -->
 
-            <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2"  aria-label = "searchBtn" type="submit" flex="30" md-autofocus>
+            <!-- <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2"  aria-label = "searchBtn" type="submit" flex="30" md-autofocus>
                 جستجو
-            </md-button>
+            </md-button> -->
 
         </form>
     </div>
@@ -31,68 +30,68 @@
 
         <div flex="35"></div>
 </div>
-    <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-padding layout-align="center" style="height:200px; background-color: white; margin-top: 25px; ">
+<div layout="row" flex="100" layout-align="center">
+    <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-align="center" style="height:150px; width: 800px; background-color: white;">
         <div layout="row" layout-align="center">
             <h4>پربازدیدترین دسته ها</h4>
         </div>
-        <div flex="5"></div>
+        <div flex="35"></div>
         <div layout="row" flex="100">
             <div flex="10"></div>
             <div layout="column">
                <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/344.png" style="width: 64px;height: 64px;" />
-                   <h5>پارکینگ</h5>
+                    <img class="png-icon" src="../../../img/cats/344.png" style="width: 32px;height: 32px;" />
+                   <h6 style="margin-top:-10px; ">پارکینگ</h6>
                </a>
 
             </div>
             <div flex="5"></div>
             <div layout="column">
                 <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/333.png" style="width: 64px; height: 64px;"/>
-                    <h5>پمپ بنزین</h5>
+                    <img class="png-icon" src="../../../img/cats/333.png" style="width: 32px; height: 32px;"/>
+                    <h6 style="margin-top:-10px; ">پمپ بنزین</h6>
                 </a>
             </div>
             <div flex="5"></div>
             <a href="#" style="text-decoration: none; display: block;">
-                <img class="png-icon" src="../../../img/cats/350.png" style="width: 64px; height: 64px;"/>
-                <h5>ایستگاه مترو</h5>
+                <img class="png-icon" src="../../../img/cats/350.png" style="width: 32px; height: 32px;"/>
+                <h6 style="margin-top:-10px; ">ایستگاه مترو</h6>
             </a>
             <div flex="5"></div>
             <a href="#" style="text-decoration: none; display: block;">
-                <img class="png-icon" src="../../../img/cats/49.png" style="width: 64px; height: 64px;"/>
-                <h5>رستوران</h5>
+                <img class="png-icon" src="../../../img/cats/49.png" style="width: 32px; height: 32px;"/>
+                <h6 style="margin-top:-10px; ">رستوران</h6>
             </a>
             <div flex="5"></div>
             <div layout="column">
                 <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/333.png" style="width: 64px; height: 64px;"/>
-                    <h5>پمپ بنزین</h5>
+                    <img class="png-icon" src="../../../img/cats/333.png" style="width: 32px; height: 32px;"/>
+                    <h6 style="margin-top:-10px; ">پمپ بنزین</h6>
                 </a>
             </div>
             <div flex="5"></div>
             <div layout="column">
                 <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/4.png" style="width: 64px; height: 64px;"/>
-                    <h5>سینما</h5>
+                    <img class="png-icon" src="../../../img/cats/4.png" style="width: 32px; height: 32px;"/>
+                    <h6 style="margin-top:-10px; ">سینما</h6>
                 </a>
             </div>
             <div flex="5"></div>
             <div layout="column">
                 <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/105.png" style="width: 64px; height: 64px;"/>
-                    <h5>پاساژ و مرکزخرید</h5>
+                    <img class="png-icon" src="../../../img/cats/105.png" style="width: 32px; height: 32px;"/>
+                    <h6 style="margin-top:-10px;">پاساژ و مرکزخرید</h6>
                 </a>
             </div>
             <div flex="5"></div>
             <div layout="column">
                 <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/201.png" style="width: 64px; height: 64px;"/>
-                    <h5>آژانس مسافرتی</h5>
+                    <img class="png-icon" src="../../../img/cats/201.png" style="width: 32px; height: 32px;"/>
+                    <h6 style="margin-top:-10px;">آژانس مسافرتی</h6>
                 </a>
             </div>
-        </div>
-        <div layout="column" flex="50">
         </div>
 
     </md-whiteframe>
+    </div>
 </md-content>

@@ -25,6 +25,7 @@ var mapCodeApp = angular.module('mapCodeApp',['ngMaterial','ngRoute','ngResource
         .controller('sharePointCtrl',sharePointCtrl)
         .controller('groupCtrl',groupCtrl)
         .controller('gpEditCtrl',gpEditCtrl)
+        .controller('paymentCtrl',paymentCtrl)
         .service('userService',userService)
         .service('authentication',authentication)
         .service('authenticationToken',authenticationToken)
