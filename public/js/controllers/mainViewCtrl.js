@@ -22,5 +22,7 @@ function mainViewCtrl ($scope,pointService,$state){
         //$location.path('/advancedSearch');
         $state.go('advancedSearch');
     }
-
+    $('#filtersubmit').click(function() {
+        $scope.searchPage();
+    });
 };//end of mainViewCtrl
