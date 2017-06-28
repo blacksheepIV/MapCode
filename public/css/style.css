@@ -443,3 +443,35 @@ padding-left: 28px; //was null
 .menuItem{
     font-family: Koodak;
 }
+/* ############################################################################################################### */
+ md-grid-list {
+    margin: 8px; }
+
+ .gray {
+    background: #f5f5f5; }
+
+ .green {
+    background: #b9f6ca; }
+
+ .yellow {
+    background: #ffff8d; }
+
+ .blue {
+    background: #05fff5; }
+
+ .purple {
+    background: #b80cff; }
+
+ .red {
+    background: #ff1f49; }
+
+ md-grid-tile {
+    transition: all 400ms ease-out 50ms; }
+.iconSvg {
+    width: 50%;
+    height: 30%; }
+
+.iconSvg {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%; }

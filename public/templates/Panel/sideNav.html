@@ -3,12 +3,12 @@
      <md-toolbar md-theme="Khaz" class="md-tall md-primary md-hue-2" >
         <div class="md-toolbar-tools" layout="column" layout-fill layout-align="center" >
             <div layout="row" layout-align="center" flex="100">
-               <div lsyout="column"  flex="100">
+               <div layout="column"  flex="100">
                    <div layout="row">
-                       <span class="md-headline">{{U.name}}</span>
+                       <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
                        <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
                    </div>
-                   <span class="md-subhead description ">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
+                   <span class="md-subhead description" style="font-family: IRANSans;">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
                    <div layout="row">
                        <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج </md-button>
                    </div>
@@ -20,7 +20,7 @@
           <div  class="sidenav" ng-show="isUser"  layout="column" align="center">
               <div >
                   <span class="fa fa-address-card fa"></span>
-                   <a ui-sref="panel"class="menuItems"  ><h6>حساب کاربری من</h6></a>
+                   <a ui-sref="panel"class="menuItems" ><h6>حساب کاربری من</h6></a>
                   </div>
               <md-divider></md-divider>
               <div >
