@@ -3,46 +3,36 @@
         <div flex="35"></div>
     <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-padding layout-align="center" style="height:100px; background-color: white; margin-top: 25px; ">
     <div layout="row" layout-align="center" flex="80">
-        <form name="searchForm" layout="row"  ng-submit="searchForm.$valid && searchPage()" layout-align="center center">
-             <!-- <md-input-container class="md-block md-icon-left" flex="70" "> -->
-            <input name="SearchBox" placeholder="جستجوی ..." id="searchInput"  ng-model="searchBox"/>
-            <i id="filtersubmit" class="fa fa-search fa-2x"></i>
-             <!--  <a href="#"> <md-icon md-font-icon="fa fa-search"></md-icon> </a> -->
-
-          <!--  <div layout='row' layout-fill layout-margin layout-align='start center'>
-                <md-input-container>
-                <md-select layout="column" placeholder="جستجو بر اساس" class="md-no-underline" ng-model="searchTopic">
-                   <md-option ng-value="Stopic.value" ng-repeat="Stopic in SearchTopics">{{Stopic.name}}</md-option>
-                </md-select>
-                </md-input-container>
-           </div> -->
-
-            <!-- <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2"  aria-label = "searchBtn" type="submit" flex="30" md-autofocus>
-                جستجو
-            </md-button> -->
-
+        <form name="searchForm" layout="row"  ng-submit="searchForm.$valid && searchPage()" layout-align="center center" novalidate>
+            <input name="SearchBox" placeholder="جستجوی ..." id="searchInput"  ng-model="searchBox" required/>
+          <!--  <div class="errorMsg" ng-messages="searchForm.SearchBox.$error" ng-if="searchForm.SearchBox.$touched">
+                <div ng-message="required">عبارتی برای جستجو وارد نشده):</div>
+            </div> -->
+            <button type="submit" id="completed-task" class="fabutton">
+               <i id="filtersubmit" class="fa fa-search fa-2x"></i>
+            </button>
         </form>
     </div>
-      <div layout="row" layout-align="center" flex="70">
+      <!-- <div layout="row" layout-align="center" flex="70">
         <a ui-sref="advancedSearch" style=" text-decoration: none;" class="md-subhead">جستجوی پیشرفته</a>
-      </div>
+      </div> -->
   </md-whiteframe>
 
         <div flex="35"></div>
-</div>
-<div layout="row" flex="100" layout-align="center">
-    <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-align="center" style="height:150px; width: 800px; background-color: white;">
-        <div layout="row" layout-align="center">
-            <h4>پربازدیدترین دسته ها</h4>
-        </div>
-        <div flex="35"></div>
-        <div layout="row" flex="100">
-            <div flex="10"></div>
-            <div layout="column">
-               <a href="#" style="text-decoration: none; display: block;">
-                    <img class="png-icon" src="../../../img/cats/344.png" style="width: 32px;height: 32px;" />
-                   <h6 style="margin-top:-10px; ">پارکینگ</h6>
-               </a>
+   </div>
+    <div layout="row" flex="100" layout-align="center">
+        <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-align="center" style="height:150px; width: 800px; background-color: white;">
+           <div layout="row" layout-align="center">
+              <h4>پربازدیدترین دسته ها</h4>
+           </div>
+           <div flex="35"></div>
+           <div layout="row" flex="100">
+               <div flex="10"></div>
+               <div layout="column">
+                   <a href="#" style="text-decoration: none; display: block;">
+                      <img class="png-icon" src="../../../img/cats/344.png" style="width: 32px;height: 32px;" />
+                      <h6 style="margin-top:-10px; ">پارکینگ</h6>
+                   </a>
 
             </div>
             <div flex="5"></div>

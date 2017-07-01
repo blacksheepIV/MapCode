@@ -9,14 +9,32 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
         $scope.PTags = [];
         $scope. PCity = '';
         $scope. PCategory = '';
-       // $scope.username = '';
+        $scope.username = '';
         $scope.simpleSearch = false;
+        $scope.searchingUser = false;
         $scope.simpleSearchPrams = {};
         $scope.lookingForusers = false;
-        $scope.foundedUsers = []; //TODO: why multiple user is not shown so it can be stored in an array
+        $scope.foundedUsers = [];
         $scope.sthWentWrong = false;
+        $scope.searchTopic = "";
+        $scope.SearchTopics =[
+            {id:1 , name:'کد نقطه', value:'code'},
+            {id:2 , name:'نام نقطه',value:'name'},
+            {id:3 , name:'نام کاربر ثبت کننده نقطه',value:'owner'},
+            {id:4 , name:'تگ ها',value:'tags'},
+            {id:5 , name:'شهر',value:'city'},
+            {id:6 , name:'دسته بندی',value:'category'},
+            {id:5 , name:'نام کاربری',value:'username'}
+        ] ;
         var temp = pointService.getSearchedValue();
-        if( temp !== null){
+        if(temp ){
+            $scope.searchTopic = 'name';
+            $scope.PName = temp;
+            $scope.simpleSearch = true;
+            $scope.simpleSearchPrams["name"] = temp;
+            console.log($scope.simpleSearchPrams);
+        }//end if condition
+     /*  if( temp !== null){
             switch(temp.key){
                 case 'name':
                    $scope.PName = temp.value;
@@ -68,7 +86,7 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
                     );
                     break;
             };
-        }
+        } */
     }; //end of function initSearch
     /* ############################################################################################################################################################################## */
     $scope.showUserInfo = function(user,ev){
@@ -85,23 +103,21 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
 
     };//end of function showUserInfo
     /* ############################################################################################################################################################################ */
-    $scope.search = function(){
+    $scope.search = function(searchForm){
         $scope.searchResults = [];
-        $scope.searchParams ={};
-
+        $scope.searchParams = {};
         if($scope.simpleSearch) {
             $scope.searchParams = $scope.simpleSearchPrams;
             console.log($scope.simpleSearchPrams);
         }
-        angular.forEach($scope.searchForm, function(value, key) {
+        angular.forEach(searchForm ,function(value, key) {
             if(key[0] == '$') return;
-           // console.log(key, value.$pristine);
-            if(!value.$pristine){
+          //  console.log(key,value);
+            if(!value.$pristine && value.$modelValue ){
                 $scope.searchParams[key] = value.$modelValue;
             }
         });
         console.log($scope.searchParams);
-
         pointService.showSearchResult($scope.searchParams).then(
             function(searchResult){
                      console.log(searchResult);
@@ -113,6 +129,34 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
                     toastr.info('متاسفانه نتیجه ای یافت نشد!', 'بی نتیجه',{ closeButton: true});
             });
     };//end of search result
+    //##################################################################################################################################################################################
+    $scope.userSearch = function(searchForUser){
+        angular.forEach(searchForUser ,function(value, key) {
+            if(key[0] == '$') return;
+            //  console.log(key,value);
+            if(!value.$pristine && value.$modelValue ){
+                $scope.username = value.$modelValue;
+            }
+        });
+        console.log($scope.username);
+        userService.searchUsers($scope.username).then(
+            function (data) {
+                console.log(data);
+                $scope.foundedUsers = data.data;
+            }, function (data) {
+                $scope.sthWentWrong = true;
+                if (data.status === 400)
+                    toastr.error('جستجو برای نام کاربری بدون در نظر کرفتن مقدار یا نام کاربری غیر معتبر(طول کمتر از 5)', {
+                        closeButton: true
+                    });
+                else if (data.status === 404)
+                    toastr.warning('متاسفانه کاربری با این نام کاربری یافت نشد):', {
+                        closeButton: true
+                    });
+            }
+        );
+
+    };//end of userSearch func
     //##################################################################################################################################################################################
     $scope.takeMeHome = function(){
         $state.go('home');

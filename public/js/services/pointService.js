@@ -8,7 +8,8 @@ function pointService($http){
         res:null,
         obtainedDetailedInfo : {},
         searchResult : {},
-        searchedFor : null,
+        //searchedFor : null,
+        searchedFor: "",
         pPointResult : {},
         pPointDetailedInfo : {},
         sharedPoint : {},
@@ -57,7 +58,7 @@ function pointService($http){
             return pointService.obtainedDetailedInfo;
         },
         showSearchResult : function(searchParams){
-            var searchUrl = window.apiHref+"/points/search";
+            var searchUrl = window.apiHref+"points/search";
             var myConfig = {};
             myConfig= searchParams;
           //  console.log(myConfig);

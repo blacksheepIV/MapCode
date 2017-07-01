@@ -1,4 +1,4 @@
-@import url('../font/css/fontiran.css'); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+@import url('../font/css/fontiran.css');
 body {
     font-family: IRANSans !important;
     font-weight: 300;
@@ -212,7 +212,6 @@ blockquote {
 .loginMSGs{
     color: yellow;
     font-size:10px;
-
 }
 .red{
     border: solid 1px red;
@@ -235,6 +234,7 @@ blockquote {
     font-family: IRANSans,Koodak, sans-serif;
     font-size: 16px;
     font-weight: 400;
+    display: block;
 
 }
 #filtersubmit {
@@ -245,6 +245,15 @@ blockquote {
     color: #070707;
     cursor:pointer;
     width: 0;
+}
+.fabutton {
+    background: none;
+    padding: 0px;
+    border: none;
+}
+.errorMsg{
+    color: black;
+    font-size:10px;
 }
 
 /* ###########################################################################################################*/
@@ -461,10 +470,6 @@ padding-left: 28px; //was null
 
  .purple {
     background: #b80cff; }
-
- .red {
-    background: #ff1f49; }
-
  md-grid-tile {
     transition: all 400ms ease-out 50ms; }
 .iconSvg {
