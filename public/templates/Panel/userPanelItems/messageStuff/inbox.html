@@ -3,11 +3,13 @@
         <div class="animate-switch" ng-switch-when="true">صندوق پیام ها خالی است.</div>
         <div class="animate-switch" ng-switch-when="false">
             <md-list class="md-dense" flex>
-                <md-list-item ng-repeat="message in inboxMsgs"  class="noleft">
+                <md-list-item ng-repeat="message in inboxMsgs" class="noleft">
                     <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
                     <p>{{message.point_code}}:{{message.sender}} </p>
-                    <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-envelope" ng-click="showMsgContent(message.code,$event)"></md-icon>
-                    <md-icon class="md-secondary"  aria-label="readMsg"  md-font-icon="fa fa-trash" ng-click="deleteMsg(message)"></md-icon>
+                    <md-icon class="md-secondary" aria-label="readMsg" md-font-icon="fa fa-envelope"
+                             ng-click="showMsgContent(message.code,$event)"></md-icon>
+                    <md-icon class="md-secondary" aria-label="readMsg" md-font-icon="fa fa-trash"
+                             ng-click="deleteMsg(message)"></md-icon>
                     <p>{{message.sent_time | date : "h:mma"}}</p>
                     <md-divider></md-divider>
                 </md-list-item>

@@ -17,7 +17,7 @@ function usrPointsCtrl ($scope,pointService,toastr,$mdDialog){
     };//end of initUsrPoints func
     /* **************************************** Point Details **************************************************************************** */
     $scope.showPointDetails = function(point, ev) {
-        pointService.setDetailedInfo(point);
+        pointService.setDetailedInfo(point,true);
         $mdDialog.show({
             controller: pointInfoCtrl,
             templateUrl: 'templates/Panel/userPanelItems/pointDetailedInfo.html',

@@ -57,8 +57,8 @@ function usrInfoCtrl($scope, userService, $mdDialog, pointService, friendService
             userService.GetPoints(uname).then(
                 function (data) {
                     $scope.usrpoints = data.data;
-                    console.log(data.data);
-                    console.log($scope.usrpoints);
+                   // console.log(data.data);
+                   // console.log($scope.usrpoints);
                     if ($scope.usrpoints.length > 0)
                         $scope.hasPoints = true;
                 },
@@ -76,7 +76,7 @@ function usrInfoCtrl($scope, userService, $mdDialog, pointService, friendService
     /* ################################################################################################################################################ */
     /* ########################################## Show Point Details ################################################################################### */
     $scope.showPointDetails = function (point, ev) {
-        pointService.setDetailedInfo(point);
+        pointService.setDetailedInfo(point , false);
         $mdDialog.show({
             controller: pointInfoCtrl,
             templateUrl: 'templates/Panel/userPanelItems/pointDetailedInfo.html',
