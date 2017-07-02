@@ -131,6 +131,7 @@ function searchCtrl($scope,pointService,$state,userService,toastr,$mdDialog) {
     };//end of search result
     //##################################################################################################################################################################################
     $scope.userSearch = function(searchForUser){
+        $scope.sthWentWrong = false;
         angular.forEach(searchForUser ,function(value, key) {
             if(key[0] == '$') return;
             //  console.log(key,value);
