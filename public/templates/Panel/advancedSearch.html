@@ -19,7 +19,8 @@
         </div>
         <div class="animate-switch-container" ng-switch on="searchTopic">
             <div class="animate-switch" ng-switch-when="username">
-                <form name="searchForUser" class="form" ng-submit="searchForUser.$valid && userSearch(searchForUser)" dir="rtl" layout="row" flex="100" layout-align="center">
+                <form name="searchForUser" class="form" ng-submit="searchForUser.$valid && userSearch(searchForUser)"
+                      dir="rtl" layout="row" flex="100" layout-align="center">
                     <div layout="column" layout-xs="column" layout-align="center">
                         <md-input-container flex="70" flex-xs="70" class="md-block">
                             <label for="PCode">نام کاربری:</label>
@@ -57,9 +58,10 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
             <div class="animate-switch" ng-switch-default>
-                <form name="searchForm" class="form" ng-submit="searchForm.$valid && search(searchForm)" dir="rtl" flex="100"
+                <form name="searchForm" class="form" ng-submit="searchForm.$valid && search(searchForm)" dir="rtl"
+                      flex="100"
                       novalidate>
                     <div layout="row" layout-xs="column">
                         <md-input-container flex="25" flex-xs="70" class="md-block">

@@ -1,4 +1,4 @@
-<md-dialog aria-label="user Info" ng-controller="usrInfoCtrl" ng-init="initUsr()" >
+<md-dialog aria-label="user Info" ng-controller="usrInfoCtrl" ng-init="initUsr()">
     <form>
         <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
             <div class="md-toolbar-tools" dir="rtl" layout="row">
@@ -10,9 +10,9 @@
             </div>
         </md-toolbar>
         <md-dialog-content layout-fill style="max-width:800px;max-height:810px; ">
-            <md-tabs md-dynamic-height md-stretch-tabs="always" >
+            <md-tabs md-dynamic-height md-stretch-tabs="always">
                 <md-tab label="مشخصات کاربر">
-                    <md-content class="md-padding" layout="column"  layout-xs="column" layout-align="center">
+                    <md-content class="md-padding" layout="column" layout-xs="column" layout-align="center">
                         <div layout="row" layout-xs="row" layout-align="center" flex="40" flex-xs="50">
                             <md-card flex="50" flex-xs="50">
                                 <img src="../img/Avatar/img_avatar3.png" class="md-card-image" alt="{{info.name}}">
@@ -24,17 +24,21 @@
                                 <md-card-content layout="column">
                                     <span class="md-subhead">نام کاربری: {{info.username}}</span>
                                     <span class="md-subhead">آدرس ایمیل: {{info.email}}</span>
-                                    <md-button ng-disabled="true" class="md-raised md-primary">وضعیت دوستی: {{friendshipStatus}}</md-button>
+                                    <md-button ng-disabled="true" class="md-raised md-primary">وضعیت دوستی:
+                                        {{friendshipStatus}}
+                                    </md-button>
                                     <span class="md-subhead">شماره تماس: {{info.phone}}  </span>
                                     <span class="md-subhead">توضیحات: {{info.description}}  </span>
                                 </md-card-content>
-                                <md-card-actions  layout="column" layout-align="center">
-                                    <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2" ng-disabled="!SendInvitation" target="_blank" ng-click="sendReq(info.username)" md-autofocus>
+                                <md-card-actions layout="column" layout-align="center">
+                                    <md-button md-theme="NewTheme" class=" md-raised md-warn md-hue-2"
+                                               ng-disabled="!SendInvitation" target="_blank"
+                                               ng-click="sendReq(info.username)" md-autofocus>
                                         ارسال درخواست دوستی
                                     </md-button>
                                 </md-card-actions>
                             </md-card>
-                            </div>
+                        </div>
                     </md-content>
                 </md-tab>
                 <md-tab label="نقاط" md-on-select="getUsrPoints()">
@@ -43,8 +47,10 @@
                             <div class="animate-switch" ng-switch-when="true">
                                 <md-list class="md-dense" flex>
                                     <md-subheader class="md-no-sticky">نقاط عمومی و خصوصی کاربر:</md-subheader>
-                                    <md-list-item class="md-3-line" ng-repeat="point in usrpoints" ng-click="showPointDetails(point,$event)">
-                                        <img src="../img/Icons/location_marker.png" class="md-avatar" alt="{{point.name}}" />
+                                    <md-list-item class="md-3-line" ng-repeat="point in usrpoints"
+                                                  ng-click="showPointDetails(point,$event)">
+                                        <img src="../img/Icons/location_marker.png" class="md-avatar"
+                                             alt="{{point.name}}"/>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ point.name }}</h3>
                                             <h5>{{ point.address }}</h5>

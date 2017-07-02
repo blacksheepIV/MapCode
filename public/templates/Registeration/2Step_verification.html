@@ -2,23 +2,27 @@
     <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
     <md-content layout="row" layout-align="center center" ng-cloak>
         <div layout="column" layout-align="center center" flex="100">
-          <!--  <md-button  class="md-icon-button md-warn" aria-label="ReturnBack">
-                     <md-icon  md-font-icon="fa fa-reply fa-3x"></md-icon>
-                     <md-tooltip md-direction="bottom "> برگشت به صفحه قبل</md-tooltip>
-            </md-button> -->
+            <!--  <md-button  class="md-icon-button md-warn" aria-label="ReturnBack">
+                       <md-icon  md-font-icon="fa fa-reply fa-3x"></md-icon>
+                       <md-tooltip md-direction="bottom "> برگشت به صفحه قبل</md-tooltip>
+              </md-button> -->
             <div layout="row" layout-align="start center">
                 <md-icon md-font-icon="fa fa-mobile fa-3x"></md-icon>
                 <span flex="5"></span>
-               <p style="display: inline-block;color:darkred;">یک پیام متن حاوی کد فعالسازی شما به شماره {{user.mobile_phone}} ارسال شد</p>
+                <p style="display: inline-block;color:darkred;">یک پیام متن حاوی کد فعالسازی شما به شماره
+                    {{user.mobile_phone}} ارسال شد</p>
             </div>
-            <h5 >درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
-                <md-input-container class="md-block" flex="auto">
-                   <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5" name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
-                </md-input-container>
+            <h5>درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
+            <md-input-container class="md-block" flex="auto">
+                <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5"
+                       name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
+            </md-input-container>
             <div layout="row" layout-align="center center" layout-xs="column" md-theme="docs-dark">
-                <md-button class="md-raised md-warn md-hue-2"  ng-click="finSignUp()" >تایید</md-button>
-                <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend" ng-click="resendCode()">ارسال مجدد</md-button>
+                <md-button class="md-raised md-warn md-hue-2" ng-click="finSignUp()">تایید</md-button>
+                <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend" ng-click="resendCode()">ارسال
+                    مجدد
+                </md-button>
             </div>
-            </div>
-        </md-content>
-    </div>
+        </div>
+    </md-content>
+</div>

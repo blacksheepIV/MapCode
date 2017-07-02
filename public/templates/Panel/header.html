@@ -1,23 +1,24 @@
-<md-toolbar md-theme="Khaz" class=" md-primary md-hue-2" dir="rtl" class="mainHeader" ng-controller="mainCtrl" >
-    <div class="md-toolbar-tools" layout="row">
-        <div layout="row" flex="300">
-           <!-- <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" > -->
-            <div layout="row" flex="auto">
-            <md-button  class="md-icon-button " aria-label="Menu" ng-click="toggleRight()">
-                <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
-                <md-tooltip md-direction="bottom"> منو</md-tooltip>
-            </md-button>
-               <!-- <span  class="fa fa-ellipsis-v fa-lg"></span> -->
+<md-toolbar md-theme="Khaz" class=" md-primary md-hue-2" dir="rtl" class="mainHeader" ng-controller="mainCtrl">
+    <div class="md-toolbar-tools" layout="row" layout-md="row" layout-sm="row">
+        <div layout="row" layout-md="row" layout-sm="row" flex="300" flex-md="300" flex-sm="300">
+            <!-- <md-button class="md-fab md-mini md-warn md-hue-2 " aria-label="SideNav" ng-click="toggleRight()" > -->
+            <div layout="row" layout-md="row" layout-sm="row" flex="auto" flex-md="auto" flex-sm="auto">
+                <md-button class="md-icon-button " aria-label="Menu" ng-click="toggleRight()">
+                    <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
+                    <md-tooltip md-direction="bottom"> منو</md-tooltip>
+                </md-button>
+                <!-- <span  class="fa fa-ellipsis-v fa-lg"></span> -->
             </div>
         </div>
-        <div flex="30"></div>
-        <div layout="row" layout-xs="row" flex="100" layout-align="end top" ng-show="!isUser">
+        <div flex="30" flex-md="30" flex-sm="30"></div>
+        <div layout="row" layout-md="row" layout-xs="row" layout-sm="row" flex="100" flex-md="100" flex-sm="100"
+             layout-align="end top" layout-align-md="end top" layout-align-sm="end top" ng-show="!isUser">
             <md-button class="md-raised md-accent md-hue-2" ng-click="login()">ورود</md-button>
             <md-button class="md-raised md-warn " ng-click="register()">ثبت نام</md-button>
         </div>
-       <!-- <h2 class="md-display-4">صفحه اصلی</h2> -->
+        <!-- <h2 class="md-display-4">صفحه اصلی</h2> -->
         <div flex></div>
-        <div layout="row">
+        <div layout="row" layout-md="row" layout-sm="row">
             <img ng-src="../img/Icons/logo2.png" style="width:192px;height:192px;"/>
         </div>
     </div>

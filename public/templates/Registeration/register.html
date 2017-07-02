@@ -1,146 +1,164 @@
 <div ng-controller="registerCtrl" ng-init="initvars()" id="popupContainer" ng-cloak>
-     <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
-        <md-content layout="row">
-           <form name="registrationForm" class="form" ng-submit="registrationForm.$valid && submit()" dir="rtl" flex="100"  novalidate>
-               <!-- first row -->
-               <div layout="row" layout-xs="row">
-               <label flex="30"> من یک شخص :</label>
-               <md-radio-group class="md-warn md-hue-4" layout="row" flex="80"  ng-model="user.type">
-                   <md-radio-button flex="auto"  value="0">حقیقی هستم</md-radio-button>
-                   <md-radio-button flex="auto"  value="2">حقوقی هستم</md-radio-button>
-               </md-radio-group>
-                   </div>
-               <!-- first row -->
-               <!-- 2nd row -->
-               <div layout="row" layout-xs="column">
-                <md-input-container flex="25" flex-xs="70" class="md-block">
+    <div ng-include="'./templates/Registeration/RegHeader.html'"></div>
+    <md-content layout="row" layout-md="row" layout-sm="row">
+        <form name="registrationForm" class="form" ng-submit="registrationForm.$valid && submit()" dir="rtl" flex="100"
+              flex-sm="100" flex-md="100"
+              novalidate>
+            <!-- first row -->
+            <div layout="row" layout-xs="row" layout-md="row" layout-sm="row">
+                <label flex="30" flex-md="30" flex-sm="30"> من یک شخص :</label>
+                <md-radio-group class="md-warn md-hue-4" layout="row" layout-md="row" layout-sm="row" flex="80"
+                                flex-sm="80" flex-md="80" ng-model="user.type">
+                    <md-radio-button flex="auto" value="0">حقیقی هستم</md-radio-button>
+                    <md-radio-button flex="auto" value="2">حقوقی هستم</md-radio-button>
+                </md-radio-group>
+            </div>
+            <!-- first row -->
+            <!-- 2nd row -->
+            <div layout="row" layout-xs="column" layout-md="coulmn" layout-sm="column">
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
                     <label for="fullName" ng-show="user.type != 2">نام کامل:</label>
                     <label ng-show="user.type == 2">نام شرکت:</label>
-                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-maxlength="40" ng-pattern="namePattern" /> <!-- * -->
+                    <input type="text" id="fullName" name="fullName" ng-model="user.name" required ng-maxlength="40"
+                           ng-pattern="namePattern"/> <!-- * -->
                     <div ng-messages="registrationForm.fullName.$error" ng-if="registrationForm.fullName.$touched">
-                        <div ng-message="required">وارد کردن نام  الزامی است.</div>
-                        <div ng-message="maxlength">نام  طولانی تر از حد مجاز است!</div>
+                        <div ng-message="required">وارد کردن نام الزامی است.</div>
+                        <div ng-message="maxlength">نام طولانی تر از حد مجاز است!</div>
                         <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
                     </div>
                 </md-input-container>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>ایمیل:</label>
-                       <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern" ng-minlength="0" ng-maxlength="100" required/>
-                       <div ng-messages="registrationForm.mail.$error" ng-if="registrationForm.mail.$touched">
-                           <div ng-message="required">وارد کردن ایمیل الزامی است.</div>
-                           <div ng-message="pattern">قالب ابمبل نامعتبر!!!</div>
-                           <div ng-message="maxlength">رایانامه فوق طولانی!!</div>
-                       </div>
-                   </md-input-container>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>نام کاربری:</label>
-                       <input type="text" name="username" ng-model="user.username" ng-minlength="5" ng-maxlength="15" required />
-                       <div ng-messages="registrationForm.username.$error" ng-if="registrationForm.username.$touched">
-                           <div ng-message="required">وارد کردن نام کاربری الزامی است.</div>
-                           <div ng-message="minlength">نام کاربری حداقل 5 کاراکتر است.</div>
-                           <div ng-message="maxlength">نام کاربری طولانی تر از حد مجاز است.</div>
-                       </div>
-                   </md-input-container>
-                   </div>
-               <!-- 2nd row -->
-               <!-- 3rd row -->
-               <div layout="row" layout-xs="column">
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>کلمه عبور:</label>
-                       <input type="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="20" required/>
-                       <div ng-messages="registrationForm.password.$error" ng-if="registrationForm.password.$touched">
-                           <div ng-message="required">وارد کردن رمز الزامی است.</div>
-                           <div ng-message="minlength">رمز ضعیف است!</div>
-                           <div ng-message="maxlength">رمز فوق طولانی!!</div>
-                       </div>
-                   </md-input-container>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>تکرار کلمه عبور:</label>
-                       <input type="password" name="passRepeat" ng-model="user.passRepeat" ng-minlength="6" ng-maxlength="20" required/>
-                       <div ng-messages="registrationForm.passRepeat.$error" ng-if="registrationForm.passRepeat.$touched">
-                           <div ng-message="required"> تکرار رمز فراموش شده است!</div>
-                       </div>
-                   </md-input-container>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>کدملی:</label>
-                       <!-- * -->  <input type="text" name="nationalcode" ng-model="user.melli_code" ng-disabled="user.type!= 0"
-                                         ng-required="user.type == 0" ng-maxlength="user.type!= 0 ? false:10" ng-minlength="user.type!= 0 ? false:10" md-maxlength="10"/>
-                       <!--input validation -->
-                       <div ng-messages="registrationForm.nationalCode.$error" ng-if="registrationForm.nationalCode.$touched">
-                          <div ng-message="required">وارد کردن کدملی الزامی است.</div>
-                           <div ng-message="maxlength">کدملی طولانی تر از 10 رقم است.</div>
-                           <div ng-message="minlength">کدملی کم تر از 10 رقم است.</div>
-                       </div>
-                       <!--input validation -->
-                   </md-input-container>
-               </div>
-               <!-- 3rd row -->
-               <!-- 4th row -->
-               <div layout="row" layout-xs="column">
-                   <input type="text" id="BdateALT" ng-model="user.cDate" />
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label ng-show="user.type != 2">تاریخ تولد:</label>
-                       <label ng-show="user.type == 2">تاریخ ثبت:</label>
-                       <input type="text" name="birthdate" id="Bdate" required />
-                       <div ng-messages="registrationForm.birthdate.$error" ng-if="registrationForm.birthdate.$touched">
-                           <div ng-message="required">وارد کردن تاریخ  الزامی است.</div>
-                           </div>
-                   </md-input-container>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>شماره موبایل:</label>
-                       <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11" ng-maxlength="11" ng-pattern="mobilePattern" required />
-                       <div ng-messages="registrationForm.cellNumber.$error" ng-if="registrationForm.cellNumber.$touched">
-                           <div ng-message="required">وارد کردن شماره همراه الزامی است.</div>
-                           <div ng-message="maxlength">شماره همراه طولانی تر از 11 رقم است.</div>
-                           <div ng-message="minlength">شماره همراه نامعتبر!</div>
-                           <div ng-message="pattern">عدم همخوانی با شماره های اپراتورهای ایران!</div>
-                       </div>
-                   </md-input-container>
-                   <div flex="5"></div>
-                 <!--  <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>تلفن ثابت:</label>
-                       <input type="tel" name="phoneNum" ng-model="user.phone" ng-disabled="user.type!= 2"
-                                          ng-required="user.type == 2" ng-minlength="user.type != 2 ? false:11" ng-maxlength="user.type!= 2 ? false:11"/>
-                       <div ng-messages="registrationForm.phoneNum.$error" ng-if="registrationForm.phoneNum.$touched">
-                           <p ng-message="required">وارد کردن شماره تلفن الزامی است.</p>
-                           <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
-                           <div ng-message="minlength">شماره تلفن نامعتبر!</div>
-                       </div>
-                   </md-input-container>  -->
-                   <md-input-container flex="25" flex-xs="70" class="md-block">
-                       <label>کدثبت:</label> <!-- what it looks like -->
-                       <input type="text" name="code" ng-model="user.code" ng-disabled="user.type!= 2" ng-required="user.type == 2"/><!-- * -->
-                   </md-input-container>
-               </div>
-               <!-- 4th row -->
-               <!-- 5th row -->
-               <div layout="row" layout-xs="column">
+                <div flex="5" flex-sm="5" flex-md="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>ایمیل:</label>
+                    <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern" ng-minlength="0"
+                           ng-maxlength="100" required/>
+                    <div ng-messages="registrationForm.mail.$error" ng-if="registrationForm.mail.$touched">
+                        <div ng-message="required">وارد کردن ایمیل الزامی است.</div>
+                        <div ng-message="pattern">قالب ابمبل نامعتبر!!!</div>
+                        <div ng-message="maxlength">رایانامه فوق طولانی!!</div>
+                    </div>
+                </md-input-container>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <md-input-container flex="25" flex-xs="70" class="md-block">
+                    <label>نام کاربری:</label>
+                    <input type="text" name="username" ng-model="user.username" ng-minlength="5" ng-maxlength="15"
+                           required/>
+                    <div ng-messages="registrationForm.username.$error" ng-if="registrationForm.username.$touched">
+                        <div ng-message="required">وارد کردن نام کاربری الزامی است.</div>
+                        <div ng-message="minlength">نام کاربری حداقل 5 کاراکتر است.</div>
+                        <div ng-message="maxlength">نام کاربری طولانی تر از حد مجاز است.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <!-- 2nd row -->
+            <!-- 3rd row -->
+            <div layout="row" layout-xs="column" layout-md="column" layout-sm="column">
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>کلمه عبور:</label>
+                    <input type="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="20"
+                           required/>
+                    <div ng-messages="registrationForm.password.$error" ng-if="registrationForm.password.$touched">
+                        <div ng-message="required">وارد کردن رمز الزامی است.</div>
+                        <div ng-message="minlength">رمز ضعیف است!</div>
+                        <div ng-message="maxlength">رمز فوق طولانی!!</div>
+                    </div>
+                </md-input-container>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>تکرار کلمه عبور:</label>
+                    <input type="password" name="passRepeat" ng-model="user.passRepeat" ng-minlength="6"
+                           ng-maxlength="20" required/>
+                    <div ng-messages="registrationForm.passRepeat.$error" ng-if="registrationForm.passRepeat.$touched">
+                        <div ng-message="required"> تکرار رمز فراموش شده است!</div>
+                    </div>
+                </md-input-container>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>کدملی:</label>
+                    <!-- * --> <input type="text" name="nationalcode" ng-model="user.melli_code"
+                                      ng-disabled="user.type!= 0"
+                                      ng-required="user.type == 0" ng-maxlength="user.type!= 0 ? false:10"
+                                      ng-minlength="user.type!= 0 ? false:10" md-maxlength="10"/>
+                    <!--input validation -->
+                    <div ng-messages="registrationForm.nationalCode.$error"
+                         ng-if="registrationForm.nationalCode.$touched">
+                        <div ng-message="required">وارد کردن کدملی الزامی است.</div>
+                        <div ng-message="maxlength">کدملی طولانی تر از 10 رقم است.</div>
+                        <div ng-message="minlength">کدملی کم تر از 10 رقم است.</div>
+                    </div>
+                    <!--input validation -->
+                </md-input-container>
+            </div>
+            <!-- 3rd row -->
+            <!-- 4th row -->
+            <div layout="row" layout-xs="column" layout-md="column" layout-sm="column">
+                <input type="text" id="BdateALT" ng-model="user.cDate"/>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label ng-show="user.type != 2">تاریخ تولد:</label>
+                    <label ng-show="user.type == 2">تاریخ ثبت:</label>
+                    <input type="text" name="birthdate" id="Bdate" required/>
+                    <div ng-messages="registrationForm.birthdate.$error" ng-if="registrationForm.birthdate.$touched">
+                        <div ng-message="required">وارد کردن تاریخ الزامی است.</div>
+                    </div>
+                </md-input-container>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>شماره موبایل:</label>
+                    <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11"
+                           ng-maxlength="11" ng-pattern="mobilePattern" required/>
+                    <div ng-messages="registrationForm.cellNumber.$error" ng-if="registrationForm.cellNumber.$touched">
+                        <div ng-message="required">وارد کردن شماره همراه الزامی است.</div>
+                        <div ng-message="maxlength">شماره همراه طولانی تر از 11 رقم است.</div>
+                        <div ng-message="minlength">شماره همراه نامعتبر!</div>
+                        <div ng-message="pattern">عدم همخوانی با شماره های اپراتورهای ایران!</div>
+                    </div>
+                </md-input-container>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <!--  <md-input-container flex="25" flex-xs="70" class="md-block">
+                      <label>تلفن ثابت:</label>
+                      <input type="tel" name="phoneNum" ng-model="user.phone" ng-disabled="user.type!= 2"
+                                         ng-required="user.type == 2" ng-minlength="user.type != 2 ? false:11" ng-maxlength="user.type!= 2 ? false:11"/>
+                      <div ng-messages="registrationForm.phoneNum.$error" ng-if="registrationForm.phoneNum.$touched">
+                          <p ng-message="required">وارد کردن شماره تلفن الزامی است.</p>
+                          <div ng-message="maxlength">شماره تلفن طولانی تر از 11 رقم است.</div>
+                          <div ng-message="minlength">شماره تلفن نامعتبر!</div>
+                      </div>
+                  </md-input-container>  -->
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>کدثبت:</label> <!-- what it looks like -->
+                    <input type="text" name="code" ng-model="user.code" ng-disabled="user.type!= 2"
+                           ng-required="user.type == 2"/><!-- * -->
+                </md-input-container>
+            </div>
+            <!-- 4th row -->
+            <!-- 5th row -->
+            <div layout="row" layout-xs="column" layout-md="column" layout-sm="column">
 
-                    <!-- <div flex="30"></div> -->
-                   <div flex="25" flex-xs="70">
-                       <md-checkbox ng-model="user.isRecommended" class="md-warn md-align-bottom-right">از طریق  معرف با سایت آشنا شدم</md-checkbox>
-                   </div>
-                   <div flex="5"></div>
-                   <md-input-container flex="25" flex-xs="70" class="md-block" >
-                       <label>کد معرف:</label>
-                       <input type="text" name="recommender" ng-model="user.recommender_user"  ng-disabled="!user.isRecommended"
-                              ng-required="user.isRecommended" ng-minlength="!user.isRecommended ? false:10" ng-maxlength="!user.isRecommended ? false:10"/> <!-- * -->
-                   </md-input-container>
-               </div>
-               <!-- 5th row -->
-               <div md-theme="docs-dark"  layout="row" layout-xs="row" layout-align="center center">
-                   <md-button class="md-raised md-accent md-hue-2" type="submit">
-                       تایید و ادامه
-                   </md-button>
-                   <md-button class="md-raised md-warn md-hue-2" ng-click="levelPage(0)">
-                       انصراف
-                   </md-button>
-               </div>
-           </form>
-</md-content>
-    </div>
+                <!-- <div flex="30"></div> -->
+                <div flex="25" flex-xs="70" flex-md="70" flex-sm="70">
+                    <md-checkbox ng-model="user.isRecommended" class="md-warn md-align-bottom-right">از طریق معرف با
+                        سایت آشنا شدم
+                    </md-checkbox>
+                </div>
+                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-md="70" flex-sm="70" class="md-block">
+                    <label>کد معرف:</label>
+                    <input type="text" name="recommender" ng-model="user.recommender_user"
+                           ng-disabled="!user.isRecommended"
+                           ng-required="user.isRecommended" ng-minlength="!user.isRecommended ? false:10"
+                           ng-maxlength="!user.isRecommended ? false:10"/> <!-- * -->
+                </md-input-container>
+            </div>
+            <!-- 5th row -->
+            <div md-theme="docs-dark" layout="row" layout-xs="row" layout-md="row" layout-sm="row"
+                 layout-align="center center" layout-align-md="center center" layout-align-sm="center center">
+                <md-button class="md-raised md-accent md-hue-2" type="submit">
+                    تایید و ادامه
+                </md-button>
+                <md-button class="md-raised md-warn md-hue-2" ng-click="levelPage(0)">
+                    انصراف
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>
