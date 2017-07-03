@@ -1,54 +1,54 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$urlRouterProvider) {
+mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
     /* $routeProvider
-        .when("/", {
-            //templateUrl: "./templates/login.html"
-             templateUrl: "./templates/Panel/home.html"
-        })
-        .when("/registration", {
-            templateUrl: "./templates/Registeration/register.html"
-        })
-        .when("/login",{
-            templateUrl:"./templates/LogIn/login.html"
-        })
-        .when('/verify', {
-            templateUrl: "./templates/Registeration/2Step_verification.html"
-        })
-        .when('/panel',{
-            templateUrl:"./templates/Panel/userPanel.html"
-        })
-        .when('/advancedSearch',{
-            templateUrl:"./templates/Panel/advancedSearch.html"
-        })
-        .otherwise({
-            redirectTo:"/"
-        });
-    // use the HTML5 History API
-    $locationProvider.html5Mode(true);
-    $httpProvider.interceptors.push('authInterceptor'); */
+     .when("/", {
+     //templateUrl: "./templates/login.html"
+     templateUrl: "./templates/Panel/home.html"
+     })
+     .when("/registration", {
+     templateUrl: "./templates/Registeration/register.html"
+     })
+     .when("/login",{
+     templateUrl:"./templates/LogIn/login.html"
+     })
+     .when('/verify', {
+     templateUrl: "./templates/Registeration/2Step_verification.html"
+     })
+     .when('/panel',{
+     templateUrl:"./templates/Panel/userPanel.html"
+     })
+     .when('/advancedSearch',{
+     templateUrl:"./templates/Panel/advancedSearch.html"
+     })
+     .otherwise({
+     redirectTo:"/"
+     });
+     // use the HTML5 History API
+     $locationProvider.html5Mode(true);
+     $httpProvider.interceptors.push('authInterceptor'); */
     /* #################################################################################################################### */
     $urlRouterProvider.otherwise('/');
     $stateProvider
-        .state('home',{
+        .state('home', {
             url: '/',
-            templateUrl:"./templates/Panel/home.html"
+            templateUrl: "./templates/Panel/home.html"
         })
         .state('registration', {
-                url:'/registration', templateUrl: "./templates/Registeration/register.html"
+            url: '/registration', templateUrl: "./templates/Registeration/register.html"
         })
         .state('login', {
-            url:'/login', templateUrl:"./templates/LogIn/login.html"
+            url: '/login', templateUrl: "./templates/LogIn/login.html"
         })
         .state('verify', {
-            url:'/verify', templateUrl: "../templates/Registeration/2Step_verification.html"
+            url: '/verify', templateUrl: "../templates/Registeration/2Step_verification.html"
         })
         .state('panel', {
-            url:'/panel', templateUrl: "../templates/Panel/userPanel.html"
+            url: '/panel', templateUrl: "../templates/Panel/userPanel.html"
         })
         .state('advancedSearch', {
-            url:'/advancedSearch', templateUrl: "../templates/Panel/advancedSearch.html"
+            url: '/advancedSearch', templateUrl: "../templates/Panel/advancedSearch.html"
         })
         .state('home.mainTheme', {
             url: 'main',
@@ -197,8 +197,8 @@ mapCodeApp.config(function ( $locationProvider,$httpProvider,$stateProvider,$url
                     templateUrl: '../templates/Panel/userPanelItems/groupStuff/groups.html',
                     controller: groupCtrl
                 }
-    }
-    })
+            }
+        })
         .state('panel.groups.showGroupList', {
             url: '/groupsList',
             views: {

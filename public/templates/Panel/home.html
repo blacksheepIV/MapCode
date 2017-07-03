@@ -5,8 +5,9 @@
         <div ng-include="'./templates/Panel/sideNav.html'"></div>
     </header>
     <!--<div flex layout="row"> -->
-    <md-content layout="column" layout-md="column" layout-sm="column" flex="100" flex-md="100" flex-sm="100">
-        <div ui-view="mainContent" flex="100" flex-md="100" flex-sm="100"></div>
+    <md-content layout="column" layout-md="column" layout-sm="column" flex="100" flex-md="100" flex-sm="100"
+                style="width: 100%; height: 100%;">
+        <div ui-view="mainContent" flex="100" flex-md="100" flex-sm="100" style="width: 100%; height: 100%;"></div>
     </md-content>
     <footer style="background-color:#2E7D32;height: 300px;" layout="column" layout-align-md="column"
             layout-align-sm="column">
