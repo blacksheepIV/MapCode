@@ -2,9 +2,18 @@
  * Created by blackSheep on 01-Jun-17.
  */
 function panelCtrl ($scope,$state,authenticationToken,$rootScope,$mdDialog){
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      /*  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
             $scope.currentTab = toState.data.selectedTab;
-        });
+        }); */
+    $scope.selectedIndex = 0;
+    $scope.$watch('selectedIndex', function(current, old) {
+        switch (current) {
+            case 0:
+                $state.go(".edit");
+                break;
+
+        }
+    });
     //******************************************************************************************************************
     var originatorEv;
 

@@ -1,14 +1,14 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageService,$state,userService,$mdDialog,authenticationToken,pointService){
+var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, localStorageService, $state, userService, $mdDialog, authenticationToken,toastr) {
     var alteredData = {};
-    $scope.initVars = function(){
+    $scope.initVars = function () {
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
-        $scope.namePattern='[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        $scope.namePattern = '[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
         // $scope.namePattern='[a-zA-Z]+';
-        $scope.mobilePattern='09[1|2|3][0-9]{8}';
+        $scope.mobilePattern = '09[1|2|3][0-9]{8}';
         $scope.user = {
             name: '',
             melli_code: 0,
@@ -18,7 +18,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             phone: '',
             username: '',
             password: '',
-            passRepeat:'',
+            passRepeat: '',
             address: '',
             description: '',
             isRecommended: false,
@@ -34,7 +34,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                 console.log(Info);
                 var temp = persianDate(new Date(Info.data.date)).format();
                 var usrDate = temp.split(" ");
-              //  console.log(usrDate);
+                //  console.log(usrDate);
 
                 $scope.user = {
                     name: Info.data.name,
@@ -43,11 +43,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                     date: usrDate,
                     mobile_phone: Info.data.mobile_phone,
                     phone: Info.data.phone,
-                    username:Info.data.username,
-                    password:'', // TODO:gotta get this password thing
-                    passRepeat:'',
+                    username: Info.data.username,
+                    password: '', // TODO:gotta get this password thing
+                    passRepeat: '',
                     address: Info.data.address,
-                    description:Info.data.description,
+                    description: Info.data.description,
                     isRecommended: false,
                     recommender: Info.data.recommender_user,
                     code: '',
@@ -55,7 +55,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                     bonus: Info.data.bonus
                 };
                 console.log(Info.data.type);
-                switch( Info.data.type ){
+                switch (Info.data.type) {
                     case 0 :
                         $scope.investigate = false;
                         $scope.user.type = "حقیقی تایید نشده";
@@ -67,13 +67,14 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                     default:
                         $scope.user.type = " ";
                         break;
-                }; //end of switchCase
-            },function (Info) {
-                if(Info.status === 401) {
+                }
+                ; //end of switchCase
+            }, function (Info) {
+                if (Info.status === 401) {
                     console.log("نقض قوانین!کاربر احراز هویت نشده!");
                     RegisteredUsr.goodriddance();
                 }
-                if(Info.status === 404){
+                if (Info.status === 404) {
                     console.log("کاربری با این مشخصات در سامانه وجود ندارد.");
                     RegisteredUsr.goodriddance();
                 }
@@ -81,15 +82,15 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             }
         );
         //***********************************************************************************************************************************************
-       /* if(localStorageService.isSupported) {
-           $scope.myPoint = localStorageService.get('point1');
-            console.log($scope.myPoint);
-        } */
+        /* if(localStorageService.isSupported) {
+         $scope.myPoint = localStorageService.get('point1');
+         console.log($scope.myPoint);
+         } */
 
         $("#creationDate").pDatepicker(
             {
-                format:"YYYY - MM - DD dddd",
-                viewMode : "year",
+                format: "YYYY - MM - DD dddd",
+                viewMode: "year",
                 persianDigit: true,
                 altField: '#dateAltEdit',
                 altFormat: 'unix',
@@ -99,22 +100,21 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     }; //end of initVars func
 
 
-
 //**********************************************************************************************************************
 //*************************************************************************************************************************
-    $scope.showDlg = function() {
+    $scope.showDlg = function () {
         $mdDialog.show({
             controller: PanelCodeVerfication,
             templateUrl: 'templates/Panel/userPanelItems/VerificationCode.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose: true,
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         });
     };
     /*  ######################################################Edit User Info ################################################################# */
-    $scope.edit = function(){
+    $scope.edit = function () {
         console.log($scope.userForm.cellNumber.$pristine);
-        if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+        if ($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -124,7 +124,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -135,7 +135,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -146,7 +146,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-       else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -158,7 +158,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             $scope.updateInfo(alteredData);
         }
 
-        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -171,7 +171,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -183,7 +183,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && !$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -195,7 +195,7 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+        else if ($scope.userForm.cellNumber.$pristine && $scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
             console.log("phone number was not changed!");
             alteredData = {
                 name: $scope.user.name,
@@ -207,31 +207,31 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
             };
             $scope.updateInfo(alteredData);
         }
-        else if(!$scope.userForm.cellNumber.$pristine){
-            var mysmsUrl = window.apiHref+"sms/";
+        else if (!$scope.userForm.cellNumber.$pristine) {
+            var mysmsUrl = window.apiHref + "sms/";
             $http({
-                url :mysmsUrl ,
-                method: "POST" ,
-                data : {
+                url: mysmsUrl,
+                method: "POST",
+                data: {
                     mobile_phone: $scope.user.mobile_phone
                 }
             }).then(
-                function(response) {
+                function (response) {
                     userService.setUserInfo($scope.user);
                     console.log(response.data.sms_code);
-                    $scope.sCode =response.data.sms_code;
-                    if($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                    $scope.sCode = response.data.sms_code;
+                    if ($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
                             email: $scope.user.email,
                             mobile_phone: $scope.user.mobile_phone,
                             username: $scope.user.username,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if(!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                    else if (!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -239,11 +239,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             mobile_phone: $scope.user.mobile_phone,
                             username: $scope.user.username,
                             address: $scope.user.address,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                    else if ($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -251,11 +251,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
                             username: $scope.user.username,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                    else if ($scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -263,11 +263,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             mobile_phone: $scope.user.mobile_phone,
                             username: $scope.user.username,
                             description: $scope.user.description,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if(!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                    else if (!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -277,11 +277,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             username: $scope.user.username,
                             address: $scope.user.address,
                             description: $scope.user.description,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if(!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine ) {
+                    else if (!$scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && $scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -289,11 +289,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             mobile_phone: $scope.user.mobile_phone,
                             phone: $scope.user.phone,
                             username: $scope.user.username,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                    else if ($scope.userForm.address.$pristine && !$scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -302,11 +302,11 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             phone: $scope.user.phone,
                             username: $scope.user.username,
                             description: $scope.user.description,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
-                    else if(!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine ) {
+                    else if (!$scope.userForm.address.$pristine && $scope.userForm.phoneNum.$pristine && !$scope.userForm.description.$pristine) {
                         alteredData = {
                             name: $scope.user.name,
                             melli_code: $scope.user.melli_code,
@@ -314,22 +314,21 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
                             email: $scope.user.email,
                             username: $scope.user.username,
                             description: $scope.user.description,
-                            sms_code:$scope.sCode
+                            sms_code: $scope.sCode
                         };
                         RegisteredUsr.setAlteredData(alteredData);
                     }
                     $scope.showDlg();
 
-                },function(response){
+                }, function (response) {
                     console.log(response);
                 });
         }
     };//end of edit
-   $scope.updateInfo =function(alteredData)
-    {
+    $scope.updateInfo = function (alteredData) {
         RegisteredUsr.updateUsrInfo(alteredData).then(
             function (response) {
-                console.log(response);
+                toastr.success('اطلاعات با موفقیت بروزرسانی شد!', 'تبریک!');
             },
             function (response) {
                 console.log(response);
@@ -337,14 +336,13 @@ var userCtrl = function($scope,$http,$rootScope,RegisteredUsr,localStorageServic
     };//end of updateInfo
     /*  ######################################################Edit User Info ################################################################# */
 
-    $scope.logOut=function(){
+    $scope.logOut = function () {
         //console.log("user just logged out.");
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-       // $location.path("/");
+        // $location.path("/");
         $state.go('home');
     }; //end of logOut func
-
 
 
 }//end of userCtrl controller

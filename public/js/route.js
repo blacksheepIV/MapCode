@@ -103,7 +103,7 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
         .state('panel.edit', {
             url: '/editInfo',
             data: {
-                'selectedTab': 0
+                'selectedIndex': 0
             },
             views: {
                 'edited': {
@@ -115,7 +115,7 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
         .state('panel.passChange', {
             url: '/passChange',
             data: {
-                'selectedTab': 1
+                'selectedIndex': 1
             },
             views: {
                 'passChange': {
@@ -127,7 +127,7 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
         .state('panel.usrPoints', {
             url: '/usrPoints',
             data: {
-                'selectedTab': 2
+                'selectedIndex': 2
             },
             views: {
                 'usrPoints': {
@@ -139,7 +139,7 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
         .state('panel.usrPersonalPoints', {
             url: '/usrPersonalPoints',
             data: {
-                'selectedTab': 3
+                'selectedIndex': 3
             },
             views: {
                 'usrPersonalPoints': {
@@ -151,7 +151,7 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
         .state('panel.friends', {
             url: '/friends',
             data: {
-                'selectedTab': 4
+                'selectedIndex': 4
             },
             views: {
                 'friends': {
