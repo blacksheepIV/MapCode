@@ -1,31 +1,32 @@
 /**
  * Created by blackSheep on 23-Apr-17.
  */
-function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toastr) {
+function pointCtrl($scope, pointService, $mdDialog, localStorageService, toastr) {
     $scope.initPoint = function () {
         $scope.index = 0;
         $scope.HeadCat = "";
         $scope.subcats = [];
         $scope.namePattern = '[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
-       /* $scope.provinces = [
-            {id: 1, name: 'اصفهان'},
-            {id: 2, name: 'تهران'}
-        ];
-        $scope.PresentableCities = [];
-        $scope.cities = [
-            {prov: 'اصفهان', name: 'اصفهان'},
-            {prov: 'اصفهان', name: 'اردستان'},
-            {prov: 'اصفهان', name: 'شهرضا'},
-            {prov: 'اصفهان', name: 'فولادشهر'},
-            {prov: 'اصفهان', name: 'کاشان'},
-            {prov: 'اصفهان', name: 'آران و بیدگل'},
-            {prov: 'تهران', name: 'آبعلی'},
-            {prov: 'تهران', name: 'تهران'},
-            {prov: 'تهران', name: 'دماوند'},
-            {prov: 'تهران', name: 'شمیرانات'},
-            {prov: 'تهران', name: 'فشم'},
-            {prov: 'تهران', name: 'ورامین'}
-        ]; */
+        $scope.phonePattern = '^[0-9]+$';
+        /* $scope.provinces = [
+         {id: 1, name: 'اصفهان'},
+         {id: 2, name: 'تهران'}
+         ];
+         $scope.PresentableCities = [];
+         $scope.cities = [
+         {prov: 'اصفهان', name: 'اصفهان'},
+         {prov: 'اصفهان', name: 'اردستان'},
+         {prov: 'اصفهان', name: 'شهرضا'},
+         {prov: 'اصفهان', name: 'فولادشهر'},
+         {prov: 'اصفهان', name: 'کاشان'},
+         {prov: 'اصفهان', name: 'آران و بیدگل'},
+         {prov: 'تهران', name: 'آبعلی'},
+         {prov: 'تهران', name: 'تهران'},
+         {prov: 'تهران', name: 'دماوند'},
+         {prov: 'تهران', name: 'شمیرانات'},
+         {prov: 'تهران', name: 'فشم'},
+         {prov: 'تهران', name: 'ورامین'}
+         ]; */
         var coord = pointService.getLocation();
         console.log(coord);
         $scope.point = {
@@ -37,7 +38,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
             province: "",
             city: "",
             address: "",
-            public: -1,
+            public: '0',
             category: "",
             description: "",
             tags: []
@@ -45,38 +46,38 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
 
     }; //end initPoint
     //******************************************************************************************************************
-   /* $scope.$watch('point.province',function (newValue, oldValue, scope) {
-        $scope.PresentableCities = [];// to fix appending issue on parameter;s value change
-        angular.forEach($scope.cities ,function(value,key){
-            if(value.prov === newValue.name){
-                $scope.PresentableCities.push(value.name);
-            }
-        });
-    },false); */
-   /* ################################################################################################################## */
-   $scope.loadCats = function (){
-     return  pointService.requestForCategory().then(
-           function (categories) {
-               console.log(categories);
-               $scope.cats = categories.data;
-               //console.log($scope.point.category);
-           }, function (categories) {
-               console.log(categories); //in case of failure
-             toastr.error('دریافت دسته ها با خطا مواجه شده');
-           });
-   };
+    /* $scope.$watch('point.province',function (newValue, oldValue, scope) {
+     $scope.PresentableCities = [];// to fix appending issue on parameter;s value change
+     angular.forEach($scope.cities ,function(value,key){
+     if(value.prov === newValue.name){
+     $scope.PresentableCities.push(value.name);
+     }
+     });
+     },false); */
+    /* ################################################################################################################## */
+    $scope.loadCats = function () {
+        return pointService.requestForCategory().then(
+            function (categories) {
+                console.log(categories);
+                $scope.cats = categories.data;
+                //console.log($scope.point.category);
+            }, function (categories) {
+                console.log(categories); //in case of failure
+                toastr.error('دریافت دسته ها با خطا مواجه شده');
+            });
+    };
     //******************************************************************************************************************
-    $scope.$watch('HeadCat',function (newValue, oldValue, scope) {
+    $scope.$watch('HeadCat', function (newValue, oldValue, scope) {
             $scope.subcats = []; // to fix appending issue on parameter;s value change
-            angular.forEach($scope.cats, function(value, key) {
-                if(key === newValue ) {
+            angular.forEach($scope.cats, function (value, key) {
+                if (key === newValue) {
                     angular.forEach(value, function (value2, key2) {
                         $scope.subcats.push(value2.name);
                     });
                 }
             });
-        },false
-        );
+        }, false
+    );
     //******************************************************************************************************************
     $scope.showSucces = function () {
         $mdDialog.show(
@@ -94,7 +95,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
         console.log('data Was sent');
         var latitude = String($scope.point.lat).substr(0, 10);
         var longitude = String($scope.point.lng).substr(0, 11);
-        if($scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
+        if ($scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine) {
             var pointInfo = {
                 lat: latitude,
                 lng: longitude,
@@ -107,7 +108,7 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
                 category: $scope.point.category
             }; // data to be sent
         }
-        else if(!$scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine ) {
+        else if (!$scope.addPoint.description.$pristine && $scope.addPoint.tags.$pristine) {
             var pointInfo = {
                 lat: latitude,
                 lng: longitude,
@@ -118,10 +119,10 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),
                 category: $scope.point.category,
-                description : $scope.point.description
+                description: $scope.point.description
             }; // data to be sent
         }
-        else if($scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
+        else if ($scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine) {
             var pointInfo = {
                 lat: latitude,
                 lng: longitude,
@@ -132,10 +133,10 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),
                 category: $scope.point.category,
-                tags : $scope.point.tags
+                tags: $scope.point.tags
             }; // data to be sent
         }
-        else if(!$scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine ){
+        else if (!$scope.addPoint.description.$pristine && !$scope.addPoint.tags.$pristine) {
             var pointInfo = {
                 lat: latitude,
                 lng: longitude,
@@ -146,20 +147,24 @@ function pointCtrl ($scope,pointService,$mdDialog,$http,localStorageService,toas
                 address: $scope.point.address,
                 public: parseInt($scope.point.public),
                 category: $scope.point.category,
-                description : $scope.point.description,
-                tags : $scope.point.tags
+                description: $scope.point.description,
+                tags: $scope.point.tags
             }; // data to be sent
         }
-            pointService.sendPointInfos(pointInfo).then(function(res){
+        pointService.sendPointInfos(pointInfo).then(function (res) {
             console.log(res);
             $mdDialog.hide();
             $scope.showSucces();
-            if(localStorageService.isSupported) {
-                localStorageService.set('point1', pointInfo);
-            }
+            /*  if (localStorageService.isSupported) {
+             localStorageService.set('point1', pointInfo);
+             }*/
 
-            },function(res){
-                console.log(res);
+        }, function (res) {
+            console.log(res);
+            if (res.status === 404)
+                toastr.error('دسته بندی موردنظر یافت نشد!', 'خطا');
+            else if (res.status === 400)
+                toastr.error('ارسال نقطه با خطا مواجه شد', 'خطا');
         });
     };
     $scope.cancel = function () {

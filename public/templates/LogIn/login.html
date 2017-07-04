@@ -1,11 +1,13 @@
 <md-content ng-controller="loginCtrl" ng-init="init()" layout-align="center end" layout-align-sm="center end"
-            layout-align-md="center end" layout-padding
+            layout-align-md="center end" layout-align-xs="center end" layout-padding
             style="height:100%;background-image: url('../../img/BGs/milad tower.jpg');background-repeat: no-repeat;background-size: 100% 100%;">
-    <form name="loginForm" id="loginForm" layout="column" layout-md="column" layout-sm="column"
+    <form name="loginForm" id="loginForm" layout="column" layout-md="column" layout-sm="column" layout-xl="column"
           layout-align="center center" layout-align-sm="center center" layout-align-md="center center"
+          layout-align-xl="center center"
           ng-submit="loginForm.$valid && login.submit()" ng-cloak>
-        <div layout="column" layout-sm="column" layout-md="column" layout-align="center center"
-             layout-align-sm="center center" layout-align-md="center center" flex="100" flex-sm="100" flex-md="100">
+        <div layout="column" layout-sm="column" layout-md="column" layout-xl="column" layout-align="center center"
+             layout-align-sm="center center" layout-align-md="center center" layout-align-xl="center center" flex="100"
+             flex-sm="100" flex-md="100" flex-xl="100">
             <!-- <span style="width:25px;height: 25px; " flex="40" class="fa fa-user-circle-o fa-lg"></span> -->
             <div layout="column" layout-md="column" layout-sm="column" layout-align="center center"
                  layout-align-sm="center center" layout-align-md="center center">
