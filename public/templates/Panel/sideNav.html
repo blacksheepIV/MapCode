@@ -1,15 +1,23 @@
 <div ng-controller="mainCtrl" style="height:100%;" layout-fill>
-    <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" layout="column" layout-md="column" layout-sm="column" style="height:100%;">
+    <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" layout="column" layout-xs="column"
+                layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" style="height:100%;">
         <md-toolbar md-theme="Khaz" class="md-tall md-primary md-hue-2">
-            <div class="md-toolbar-tools" layout="column" layout-fill layout-align="center">
-                <div layout="row" layout-align="center" flex="100">
-                    <div layout="column" flex="100">
-                        <div layout="row">
+            <div class="md-toolbar-tools" layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+                 layout-lg="column" layout-xl="column" layout-fill layout-align="center" layout-align-xs="center"
+                 layout-align-sm="center" layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
+                <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                     layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+                     layout-align-lg="center" layout-align-xl="center" flex="100" flex-xs="100" flex-sm="100"
+                     flex-md="100" flex-lg="100" flex-xl="100">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                         flex-xl="100">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
                             <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
                             <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
                         </div>
                         <span class="md-subhead description" style="font-family: IRANSans;">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
-                        <div layout="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
                             <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج
                             </md-button>
                         </div>
@@ -17,8 +25,11 @@
                 </div>
             </div>
         </md-toolbar>
-        <md-content layout-margin dir="rtl" layout-align=" center">
-            <div class="sidenav" ng-show="isUser" layout="column" align="center">
+        <md-content layout-margin dir="rtl" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                    layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
+            <div class="sidenav" ng-show="isUser" layout="column" layout-xs="column" layout-sm="column"
+                 layout-md="column" layout-lg="column" layout-xl="column" layout-align="center" layout-align-xs="center"
+                 layout-align-sm="center" layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
                 <div>
                     <span class="fa fa-address-card fa"></span>
                     <a ui-sref="panel" class="menuItems"><h6>حساب کاربری من</h6></a>

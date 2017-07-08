@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 27-Mar-17.
  */
-mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider,toastrConfig) {
+mapCodeApp.config(function ($mdThemingProvider, localStorageServiceProvider, toastrConfig) {
 
     // Configure a dark theme with primary foreground grey
 
@@ -17,8 +17,8 @@ mapCodeApp.config(function($mdThemingProvider,localStorageServiceProvider,toastr
         .dark();
     $mdThemingProvider.theme('Khaz', 'default')
         .primaryPalette('green')
-        .accentPalette('amber')
-        .warnPalette('brown')
+        .accentPalette('lime')
+        .warnPalette('yellow')
         .dark();
     //************************************************************************************
     localStorageServiceProvider

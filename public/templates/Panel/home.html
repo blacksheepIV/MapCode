@@ -1,41 +1,43 @@
-<div layout="column" layout-md="column" layout-sm="column" ng-controller="mainCtrl" ng-init="initVar()"
-     style="height:100%;width:100%; ">
+<div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column"
+     ng-controller="mainCtrl" ng-init="initVar()" style="height:100%;width:100%; ">
     <header>
         <div ng-include="'./templates/Panel/header.html'"></div>
         <div ng-include="'./templates/Panel/sideNav.html'"></div>
     </header>
-    <!--<div flex layout="row"> -->
-    <md-content layout="column" layout-md="column" layout-sm="column" flex="100" flex-md="100" flex-sm="100"
-                style="width: 100%; height: 100%;">
-        <div ui-view="mainContent" flex="100" flex-md="100" flex-sm="100" style="width: 100%; height: 100%;"></div>
+    <md-content layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                layout-xl="column" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                flex-xl="100" style="width: 100%; height: 100%;">
+        <div ui-view="mainContent" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"
+             style="width: 100%; height: 100%;"></div>
     </md-content>
-    <footer style="background-color:#2E7D32;height: 300px;" layout="column" layout-align-md="column"
-            layout-align-sm="column">
-        <div layout="row" layout-align="center" layout-md="row" layout-align-md="center" layout-sm="row"
-             layout-align-sm="center">
+    <footer style="background-color:#2E7D32;height: 300px;" layout="column" layout-xs="column" layout-sm="column"
+            layout-md="column" layout-lg="column" layout-xl="column" layout-align-md="column" layout-align-sm="column">
+        <div layout="row" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+             layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
             <a style="color:white; text-decoration: none;" ui-sref=".aboutUs">
                 <h6>درباره ما</h6>
             </a>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <md-divider style="border-color:white; border-width:1px; border-style: dashed;"></md-divider>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <a style=" color:white;text-decoration: none;" ui-sref=".contactUs">
                 <h6>تماس با ما</h6></a>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <md-divider style="border-color:white; border-width:1px; border-style: dashed;"></md-divider>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <a style=" color:white;text-decoration: none;" ui-sref=".rules">
                 <h6>قوانین و مقررات</h6>
             </a>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <md-divider style="border-color:white; border-width:1px; border-style: dashed;"></md-divider>
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <a style=" color:white;text-decoration: none;" ui-sref=".guide">
                 <h6>راهنمای سایت</h6>
             </a>
         </div>
-        <div layout="row" layout-align="center" layout-md="row" layout-align-md="center" layout-sm="row"
-             layout-align-sm="center">
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+             layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+             layout-align-lg="center" layout-align-xl="center">
             <md-button class="md-icon-button " aria-label="feed">
                 <md-icon md-font-icon="fa fa-google-plus-square fa-lg"></md-icon>
             </md-button>
@@ -49,12 +51,14 @@
                 <md-icon md-font-icon="fa fa-facebook-official fa-lg"></md-icon>
             </md-button>
         </div>
-        <div layout="row" layout-align="center" layout-md="row" layout-align-md="center" layout-sm="row"
-             layout-align-sm="center">
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+             layout-align="center" layout-align-xs="row" layout-align-sm="center" layout-align-md="center"
+             layout-align-lg="center" layout-align-xl="center">
             <h5 style=" color:white;">طراحی و توسعه توسط آرشین</h5>
         </div>
-        <div layout="row" layout-md="row" layout-align="center" layout-align-md="center" layout-sm="row"
-             layout-align-sm="center">
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+             layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+             layout-align-lg="center" layout-align-xl="center">
             <h6 style=" color:white;">&#169کلیه حقوق مادی و معنوی این سایت متعلق است به...</h6>
         </div>
     </footer>

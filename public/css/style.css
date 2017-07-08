@@ -216,16 +216,8 @@ blockquote {
     display: none;
 }
 
-#loginForm {
-    width: 500px;
-    height: 350px;
-    margin: auto;
-    margin-top: 5em;
-    background: transparent;
-}
-
 .loginInput {
-    width: 200px;
+    width: 250px;
     height: 30px;
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.6);
@@ -236,6 +228,7 @@ blockquote {
     font-weight: 400;
     padding: 4px;
     display: block;
+   /* margin-bottom: 15px; */
 }
 
 .loginMSGs {
