@@ -228,7 +228,7 @@ blockquote {
     font-weight: 400;
     padding: 4px;
     display: block;
-   /* margin-bottom: 15px; */
+    /* margin-bottom: 15px; */
 }
 
 .loginMSGs {
@@ -288,6 +288,10 @@ blockquote {
     font-size: 12px;
     color: #dd2c00;
     margin-top: 10px;
+}
+
+.md-tab-label { /* meh */
+    width: 100%;
 }
 
 /* ###########################################################################################################*/

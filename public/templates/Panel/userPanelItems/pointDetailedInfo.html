@@ -1,6 +1,7 @@
 <md-dialog aria-label="reviewPointInfo" ng-controller="pointInfoCtrl" ng-init="initPoint()">
     <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
-        <div dir="rtl" class="md-toolbar-tools" layout="row">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
             <h2 class="md-display-2">{{point.name}}</h2>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="cancel()">
@@ -8,9 +9,15 @@
             </md-button>
         </div>
     </md-toolbar>
-    <md-dialog-content layout-fill layout="column" layout-align="center">
-        <div layout="row" layout-align="center" flex="50">
-            <md-card flex="50">
+    <md-dialog-content layout-fill layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+                       layout-lg="column" layout-xl="column" layout-align="center" layout-align-xs="center"
+                       layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+                       layout-align-xl="center">
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xs="row"
+             layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+             layout-align-lg="center" layout-align-xl="center" flex="50" flex-xs="50" flex-sm="50" flex-md="50"
+             flex-lg="50" flex-xl="50">
+            <md-card flex="50" flex-xs="50" flex-sm="50" flex-md="50" flex-lg="50" flex-xl="50">
                 <img src="../img/BGs/card-imgs/1 (1).jpg" class="md-card-image" alt="{{point.description}}">
                 <md-card-title>
                     <md-card-title-text>
@@ -18,12 +25,16 @@
                         <span class="md-subhead">امتیاز: {{point.rate}}, محبوبیت: {{point.popularity}}</span>
                     </md-card-title-text>
                 </md-card-title>
-                <md-card-content layout="column">
+                <md-card-content layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+                                 layout-lg="column" layout-xl="column">
                     <span class="md-subhead">کدنقطه: {{point.code}}</span>
                     <span class="md-subhead">آدرس: {{point.address}}</span>
                     <span class="md-subhead">توضیحات: {{point.description}}  </span>
                 </md-card-content>
-                <md-card-actions layout="row" layout-align="end center">
+                <md-card-actions layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                                 layout-xl="row" layout-align="end center" layout-align-xs="end center"
+                                 layout-align-sm="end center" layout-align-md="end center" layout-align-lg="end center"
+                                 layout-align-xl="end center">
                     <md-button class="md-icon-button" aria-label="Favorite">
                         <md-icon md-font-icon="fa fa-heart fa-lg"></md-icon>
                         <md-tooltip md-direction="top"> موردعلاقه</md-tooltip>

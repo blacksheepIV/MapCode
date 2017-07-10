@@ -1,5 +1,8 @@
-<md-content layout="row" flex="100" ng-controller="msgCTRL">
-    <div layout="column"  layout-xs="column">
+<md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+            layout-xl="row" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"
+            ng-controller="msgCTRL">
+    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+         layout-xl="column">
         <a ui-sref=".friendsList">
             <md-button
                     target="_blank"
@@ -8,26 +11,26 @@
                 لیست دوستان
             </md-button>
         </a>
-        <span flex="5"></span>
+        <span flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></span>
         <a ui-sref=".pendingReqs">
             <md-button
                     target="_blank"
                     aria-label="friendList"
-                    class="md-icon-button launch" style="width:200px;"  >
-           درخواست های در حال انتظار
-             </md-button>
+                    class="md-icon-button launch" style="width:200px;">
+                درخواست های در حال انتظار
+            </md-button>
         </a>
-        <span flex="5"></span>
+        <span flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></span>
         <a ui-sref=".sentInvitations">
             <md-button
                     target="_blank"
                     aria-label="friendList"
-                    class="md-icon-button launch" style="width:200px;" >
-            درخواست های ارسالی
-             </md-button>
+                    class="md-icon-button launch" style="width:200px;">
+                درخواست های ارسالی
+            </md-button>
         </a>
     </div>
     <md-divider></md-divider>
-    <div flex="5"></div>
-    <div ui-view="friendStuff" flex="100"></div>
+    <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+    <div ui-view="friendStuff" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"></div>
 </md-content>

@@ -1,6 +1,7 @@
-<md-dialog aria-label="verifyNewNumber" ng-controller="PanelCodeVerfication" ng-init="initUserInfo()" >
+<md-dialog aria-label="verifyNewNumber" ng-controller="PanelCodeVerfication" ng-init="initUserInfo()">
     <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
-        <div dir="rtl" class="md-toolbar-tools" layout="row">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
             <h2 class="md-display-2">پیامک هاتو چک کن!</h2>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="cancel()">
@@ -8,23 +9,37 @@
             </md-button>
         </div>
     </md-toolbar>
-    <form name="addPoint" class="form" dir="rtl" flex="100" ng-submit="addPoint.$valid && submit()" novalidate>
-        <md-dialog-content layout="row" layout-align="center center" flex="50">
-            <div layout="column" layout-align="center center" flex="100">
-                <div layout="row" layout-align="start center">
+    <form name="addPoint" class="form" dir="rtl" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+          flex-xl="100" ng-submit="addPoint.$valid && submit()" novalidate>
+        <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                           layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"
+                           layout-align-md="center center" layout-align-lg="center center"
+                           layout-align-xl="center center" flex="50" flex-xs="50" flex-sm="50" flex-md="50"
+                           flex-lg="50">
+            <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                 layout-xl="column" layout-align="center center" flex="100">
+                <div layout="row" layout-align="start center" layout-align-xs="start center"
+                     layout-align-md="start center" layout-align-lg="start center" layout-align-xl="start center">
                     <md-icon md-font-icon="fa fa-mobile fa-3x"></md-icon>
-                    <span flex="5"></span>
-                    <p style="display: inline-block;color:darkcyan;">یک پیام متن حاوی کد فعالسازی شما به شماره {{usr.mobile_phone}} ارسال شد</p>
+                    <span flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></span>
+                    <p style="display: inline-block;color:darkcyan;">یک پیام متن حاوی کد فعالسازی شما به شماره
+                        {{usr.mobile_phone}} ارسال شد</p>
                 </div>
-                <h5 >درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
+                <h5>درخواست ارسال مجدد در {{counter}}ثانیه...</h5>
                 <md-input-container class="md-block" flex="auto">
-                    <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5" name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
+                    <input type="text" placeholder="کد پنج رقمی را وارد کنید" ng-minlength="5" ng-maxlength="5"
+                           name="verificationCode" ng-model="v_code" ng-pattern="smsPattern"/>
                 </md-input-container>
             </div>
         </md-dialog-content>
-        <md-dialog-actions md-theme="NewTheme" layout="row" layout-align="center center">
-            <md-button class="md-raised md-warn md-hue-2"  type="submit" >تایید</md-button>
-            <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend" ng-click="resendCode()">ارسال مجدد</md-button>
+        <md-dialog-actions md-theme="NewTheme" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+                           layout-lg="row" layout-xl="column" layout-align="center center"
+                           layout-align-xs="center center"  layout-align-sm="center center"
+                           layout-align-md="center center" layout-align-lg="center center"
+                           layout-align-xl="center center">
+            <md-button class="md-raised md-warn md-hue-2" type="submit">تایید</md-button>
+            <md-button class="md-raised md-accent md-hue-2" ng-disabled="!reSend" ng-click="resendCode()">ارسال مجدد
+            </md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

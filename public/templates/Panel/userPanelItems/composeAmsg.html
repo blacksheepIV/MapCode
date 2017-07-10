@@ -1,6 +1,8 @@
-<md-dialog  flex="60" aria-label="composeMessage" ng-controller="sharePointCtrl" ng-init="initCompose()">
+<md-dialog flex="60" flex-xs="60" flex-sm="60" flex-md="60" flex-lg="60" flex-xl="60" aria-label="composeMessage"
+           ng-controller="sharePointCtrl" ng-init="initCompose()">
     <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
-        <div dir="rtl" class="md-toolbar-tools" layout="row">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
             <h2 class="md-display-2">ارسال پیام</h2>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="cancel()">
@@ -8,47 +10,68 @@
             </md-button>
         </div>
     </md-toolbar>
-    <form name="sendMsg" class="form" dir="rtl" flex="100" ng-submit="sendMsg.$valid && submit()" novalidate layout="column"  layout-align="center">
-        <md-dialog-content layout="row" layout-align="center" >
+    <form name="sendMsg" class="form" dir="rtl" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+          flex-xl="100" ng-submit="sendMsg.$valid && submit()" novalidate
+          layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column"
+          layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+          layout-align-lg="center" layout-align-xl="center">
+        <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                           layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                           layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
             <div class="md-dialog-content" dir="rtl">
                 <div layout="column" layout-xs="column">
-                    <md-input-container flex="100" flex-xs="100">
-                        <md-select name="receiver" placeholder="ارسال به شخص:" class="md-no-underline" ng-model="msg.receiver" md-on-open="loadFriendList()">
+                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                                        flex-xl="100">
+                        <md-select name="receiver" placeholder="ارسال به شخص:" class="md-no-underline"
+                                   ng-model="msg.receiver" md-on-open="loadFriendList()">
                             <md-option ng-value="friend" ng-repeat="friend in friends">{{friend}}</md-option>
                         </md-select>
                     </md-input-container>
-                    <!--TODO: let it search through user's friend ;got the API ;need to implement-->
                 </div>
 
-                <div layout="column" layout-xs="column">
-                    <md-input-container flex="100" flex-xs="100">
-                        <md-select name="gpReciever" placeholder="ارسال به گروه:" class="md-no-underline" ng-model="msg.gpReceiver" md-on-open="loadGroupList()">
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
+                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                                        flex-xl="100">
+                        <md-select name="gpReciever" placeholder="ارسال به گروه:" class="md-no-underline"
+                                   ng-model="msg.gpReceiver" md-on-open="loadGroupList()">
                             <md-option ng-value="group.name" ng-repeat="group in groupList">{{group.name}}</md-option>
                         </md-select>
                     </md-input-container>
                 </div>
 
-                <div layout="column" layout-xs="column" ng-show="!isPersonal">
-                    <md-input-container flex="100" flex-xs="100">
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column" ng-show="!isPersonal">
+                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                                        flex-xl="100">
                         <label>کد نقطه:</label>
-                        <input type="text" name="code" ng-model="msg.point" ng-disabled="true" ng-required="!isPersonal"/>
+                        <input type="text" name="code" ng-model="msg.point" ng-disabled="true"
+                               ng-required="!isPersonal"/>
                     </md-input-container>
                 </div>
-                <div layout="column" layout-xs="column" ng-show="isPersonal">
-                    <md-input-container flex="100" flex-xs="100">
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column" ng-show="isPersonal">
+                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                                        flex-xl="100">
                         <label>کد نقطه شخصی:</label>
-                        <input type="text" name="code" ng-model="msg.personal_point" ng-disabled="true" ng-required="isPersonal"/>
+                        <input type="text" name="code" ng-model="msg.personal_point" ng-disabled="true"
+                               ng-required="isPersonal"/>
                     </md-input-container>
                 </div>
-                <div layout="column" layout-xs="column">
-                    <md-input-container flex="100" flex-xs="100">
-                        <textarea name="message" ng-model="msg.message" columns="16" ng-maxlength="21844" md-maxlength="21844" rows="2" placeholder="پیامت رو اینجا بنویس..." id="textAreas" ></textarea>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
+                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
+                                        flex-xl="100">
+                        <textarea name="message" ng-model="msg.message" columns="16" ng-maxlength="21844"
+                                  md-maxlength="21844" rows="2" placeholder="پیامت رو اینجا بنویس..."
+                                  id="textAreas"></textarea>
                     </md-input-container>
                 </div>
             </div>
         </md-dialog-content>
-        <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">
-            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit">  ارسال پیام  </md-button>
+        <md-dialog-actions md-theme="docs-dark" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+                           layout-lg="row" layout-xl="row" layout-align="center center">
+            <md-button flex="50" class="md-raised md-accent md-hue-2 md-block" type="submit"> ارسال پیام</md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

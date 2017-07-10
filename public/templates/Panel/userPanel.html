@@ -1,8 +1,10 @@
 <div ng-controller="panelCtrl">
     <md-toolbar md-theme="NewTheme" class=" md-primary md-hue-2" dir="rtl" class="mainHeader">
-        <div layout="row" layout-md="row" layout-sm="row" flex="100" flex-md="100" flex-sm="100"
-             layout-align="end center" layout-align-sm="end center" layout-align-md="end center" class="md-accent">
-            <div flex="5" flex-md="5" flex-sm="5"></div>
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+             flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100" layout-align="end center"
+             layout-align-xs="end center" layout-align-sm="end center" layout-align-md="end center"
+             layout-align-lg="end center" layout-align-xl="end center" class="md-accent">
+            <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
             <h3>پنل کاربر</h3>
             <div flex></div>
             <a ui-sref="home">
@@ -35,7 +37,7 @@
             </md-menu>
         </div>
     </md-toolbar>
-    <md-content class="md-padding" flex="100" flex-md="100" flex-sm="100">
+    <md-content class="md-padding" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100">
         <md-tabs md-selected="selectedIndex" md-dynamic-height md-border-bottom>
             <md-tab label="ویرایش اطلاعات" ui-sref=".edit">
                 <md-content class="md-padding">
@@ -68,7 +70,6 @@
             </md-tab>
             <md-tab label=" گروه ها" ui-sref=".groups">
                 <md-content class="md-padding">
-                    <!-- <h5>این ویژگی فعلا در دسترس نیست.</h5> -->
                     <div ui-view="groups"></div>
                 </md-content>
             </md-tab>

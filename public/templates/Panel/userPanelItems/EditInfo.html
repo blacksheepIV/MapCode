@@ -1,19 +1,22 @@
 <div ng-controller="userCtrl" ng-init="initVars()" ng-cloak>
-    <md-content layout="row" layout-md="row" layout-sm="row" layout-xl="row" flex="100" flex-sm="100" flex-md="100"
+    <md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+                flex-xs="100" flex-sm="100" flex-md="100"
                 flex-xl="100">
         <form name="userForm" class="form" ng-submit="edit()" dir="rtl" flex="100" flex-sm="100" flex-md="100"
-              flex-xl="100" novalidate>
+              flex-lg="100" flex-xl="100" novalidate>
             <!-- first row -->
-            <div layout="row" layout-xs="column" layout-md="row" layout-sm="column" layout-xl="row">
-                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-xl="70" class="md-block">
+            <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>نوع کاربر</label>
                     <input type="text" name="userType" ng-model="user.type" ng-disabled="true"/>
                     <div class="hint" ng-if="!investigate">وضعیت شما هنوز تایید نشده است،لطفا در اسرع وقت به تکمیل
                         اطلاعات خود بپردازید.
                     </div>
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label for="fullName" ng-show="user.type != 'legalPerson'">نام کامل:</label>
                     <input type="text" id="fullName" name="fullName" ng-model="user.name" ng-disabled="false"
                            ng-maxlength="40"/> <!--REGEX -->
@@ -22,8 +25,8 @@
                         <div ng-message="pattern">لطفا نام را به لاتین وارد کنید و عدد مجاز نیست!</div>
                     </div>
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-xl="25" class="md-block">
                     <label>نام کاربری:</label>
                     <input type="text" name="username" ng-model="user.username" ng-maxlength="15" ng-disabled="true"/>
                     <!--TODO: ask;technically username should ont be editable-->
@@ -35,8 +38,9 @@
             </div>
             <!-- first row -->
             <!-- 2nd row -->
-            <div layout="row" layout-xs="column" layout-md="row" layout-sm="column" layout-xl="row">
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+            <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="70" flex-xl="25"
+                                    class="md-block">
                     <label>ایمیل:</label>
                     <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern"/>
                     <div ng-messages="userForm.mail.$error" ng-if="userForm.mail.$touched">
@@ -44,14 +48,16 @@
                         <div ng-message="maxlength">رایانامه فوق طولانی!!</div>
                     </div>
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="70" flex-xl="25"
+                                    class="md-block">
                     <label>تاریخ تولد:</label>
                     <input type="text" name="birthdate" id="creationDate"/>
                 </md-input-container>
                 <input id="dateAltEdit" ng.model="user.date"/>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>کدملی:</label>
                     <input type="text" name="nationalcode" ng-model="user.melli_code" ng-maxlength="10"
                            ng-minlength="10" md-maxlength="10"/>
@@ -64,8 +70,9 @@
             </div>
             <!-- 2nd row -->
             <!-- 3rd row -->
-            <div layout="row" layout-xs="column" layout-md="row" layout-sm="column" layout-xl="row">
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+            <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>شماره موبایل:</label>
                     <input type="text" name="cellNumber" ng-model="user.mobile_phone" ng-minlength="11"
                            ng-maxlength="11"/>
@@ -75,8 +82,9 @@
                         <div ng-message="pattern">عدم همخوانی با شماره های اپراتورهای ایران!</div>
                     </div>
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>تلفن ثابت:</label>
                     <input type="tel" name="phoneNum" ng-model="user.phone" ng-minlength="11" ng-maxlength="11"/>
                     <div ng-messages="userForm.phoneNum.$error" ng-if="userForm.phoneNum.$touched">
@@ -84,15 +92,16 @@
                         <div ng-message="minlength">شماره تلفن نامعتبر!</div>
                     </div>
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>آدرس:</label>
                     <input type="text" name="address" ng-model="user.address"/>
                 </md-input-container>
             </div>
             <!-- 3rd row -->
             <!-- 4th row -->
-            <div layout="row" layout-xs="column" layout-md="row" layout-sm="column" layout-xl="row">
+            <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
                 <div flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25">
                     <div
                             class="btn btn-primary btn-upload"
@@ -102,14 +111,15 @@
                     >آواتار:
                     </div>
                 </div> <!-- gotta check the file being uploaded for corect type -->
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <md-input-container flex="20" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25" class="md-block">
+                <div flex="5" flex-md="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <md-input-container flex="20" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+                                    class="md-block">
                     <label>کدثبت:</label>
                     <input type="text" name="code" ng-model="user.code" ng-disabled="true"/>
                     <!--TODO:ask for it's pattern-->
                 </md-input-container>
-                <div flex="5" flex-md="5" flex-sm="5" flex-xl="5"></div>
-                <div flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25">
                     <div
                             class="btn btn-primary btn-upload"
                             upload-button
@@ -121,17 +131,20 @@
             </div>
             <!-- 4th row -->
             <!-- 5th row -->
-            <div layout="row" layout-xs="column" layout-sm="coulumn" layout-md="row" layout-xl="row"
-                 layout-align="center center" layout-align-sm="center center" layout-align-md="center center" layout-align-xl="center center">
-                <md-input-container flex="70" class="md-block">
+            <div layout="row" layout-xs="column" layout-sm="coulumn" layout-md="row" layout-lg="row" layout-xl="row"
+                 layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"
+                 layout-align-md="center center" layout-align-lg="center center" layout-align-xl="center center">
+                <md-input-container flex="70" flex-xs="70" flex-sm="70" flex-md="70" flex-lg="70" flex-xl="70"
+                                    class="md-block">
                     <textarea ng-model="user.description" name="description" columns="8" md-maxlength="21844" rows="2"
                               placeholder="توضیحاتت رو اینجا بنویس..." id="textAres"></textarea>
                 </md-input-container>
             </div>
             <!-- 5th row -->
-            <div md-theme="NewTheme" layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-xl="row"
-                 layout-align="center center" layout-align-sm="center center" layout-align-md="center center"
-                 layout-align-xl="center center">
+            <div md-theme="NewTheme" layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                 layout-xl="row"
+                 layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"
+                 layout-align-md="center center" layout-align-lg="center center" layout-align-xl="center center">
                 <md-button class="md-raised md-accent md-hue-2" type="submit">
                     اعمال تغییرات
                 </md-button>

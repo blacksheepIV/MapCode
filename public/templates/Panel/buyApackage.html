@@ -1,6 +1,7 @@
-<md-dialog aria-label="reviewPointInfo" ng-controller="paymentCtrl" ng-init="initPayment()"  flex="80">
+<md-dialog aria-label="reviewPointInfo" ng-controller="paymentCtrl" ng-init="initPayment()" flex="80">
     <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
-        <div dir="rtl" class="md-toolbar-tools" layout="row">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
             <h2 class="md-display-2">خرید بسته</h2>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="cancel()">
@@ -8,20 +9,26 @@
             </md-button>
         </div>
     </md-toolbar>
-    <md-dialog-content  layout="row" ng-cloak >
-        <div layout="column" layout-fill   >
+    <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                       ng-cloak>
+        <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+             layout-xl="column" layout-fill>
             <md-grid-list
                     md-cols-xs="2" md-cols-sm="2" md-cols-md="2" md-cols-gt-md="2"
                     md-row-height-gt-md="2:2" md-row-height="2:2"
-                    md-gutter="12px" md-gutter-gt-sm="8px" >
+                    md-gutter="12px" md-gutter-gt-sm="8px">
 
-                <md-grid-tile class="purple" md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1"  ng-class="tile.background">
-                    <div layout="column" layout-align="center">
+                <md-grid-tile class="purple" md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1"
+                              ng-class="tile.background">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                         layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
                         <md-icon md-svg-icon="../../img/Icons/box.svg" class="iconSvg"></md-icon>
                         <h5>بسته ایکس</h5>
                     </div>
                     <md-grid-tile-footer>
-                        <div layout="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <md-button md-no-ink class="md-primary">خرید</md-button>
                             <div flex></div>
                             <md-button md-no-ink class="md-primary">جزئیات بیشتر</md-button>
@@ -29,39 +36,48 @@
                     </md-grid-tile-footer>
                 </md-grid-tile>
 
-                <md-grid-tile class="green"  md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
-                    <div layout="column" layout-align="center">
+                <md-grid-tile class="green" md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                         layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
                         <md-icon md-svg-icon="../../img/Icons/box.svg" class="iconSvg"></md-icon>
                         <h5>بسته وای</h5>
                     </div>
                     <md-grid-tile-footer>
-                        <div layout="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <md-button md-no-ink class="md-primary">خرید</md-button>
                             <div flex></div>
                             <md-button md-no-ink class="md-primary">جزئیات بیشتر</md-button>
                         </div>
                     </md-grid-tile-footer>
                 </md-grid-tile>
-                <md-grid-tile class="blue"  md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
-                    <div layout="column" layout-align="center">
+                <md-grid-tile class="blue" md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                         layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
                         <md-icon md-svg-icon="../../img/Icons/box.svg" class="iconSvg"></md-icon>
                         <h5>بسته زد</h5>
                     </div>
                     <md-grid-tile-footer>
-                        <div layout="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <md-button md-no-ink class="md-primary">خرید</md-button>
                             <div flex></div>
                             <md-button md-no-ink class="md-primary">جزئیات بیشتر</md-button>
                         </div>
                     </md-grid-tile-footer>
                 </md-grid-tile>
-                <md-grid-tile class="yellow"  md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
-                    <div layout="column" layout-align="center">
+                <md-grid-tile class="yellow" md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                         layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
                         <md-icon md-svg-icon="../../img/Icons/box.svg" class="iconSvg"></md-icon>
                         <h5>بسته ایکس</h5>
                     </div>
                     <md-grid-tile-footer>
-                        <div layout="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <md-button md-no-ink class="md-primary">خرید</md-button>
                             <div flex></div>
                             <md-button md-no-ink class="md-primary">جزئیات بیشتر</md-button>

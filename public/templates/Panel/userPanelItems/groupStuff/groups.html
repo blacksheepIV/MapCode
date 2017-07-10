@@ -1,28 +1,30 @@
-<md-content layout="row" flex="100" dir="rtl" ng-controller="groupCtrl" ng-init="initGroup()">
-          <div layout="column" layout-xs="column">
-            <a ui-sref=".showGroupList">
-                <md-button
-                         title="لیست گروه ها"
-                         target="_blank"
-                         aria-label="LaunchGroupsList"
-                         class="md-icon-button launch" >
-                  <md-icon md-font-icon="fa fa-users fa-2x"></md-icon>
-              </md-button>
-            </a>
-              <span flex="5"></span>
-              <a ui-sref=".createGp">
-                 <md-button
-                      title="ایجاد یک گروه جدید"
-                      target="_blank"
-                      aria-label="Create a Group"
-                      class="md-icon-button launch" >
-                      <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
-                 </md-button>
-              </a>
-          </div>
-            <md-divider></md-divider>
-            <div flex="5"></div>
-            <div ui-view="groupStuff" flex="100"></div>
-        </div>
+<md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+            flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"
+            dir="rtl" ng-controller="groupCtrl" ng-init="initGroup()">
+    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column">
+        <a ui-sref=".showGroupList">
+            <md-button
+                    title="لیست گروه ها"
+                    target="_blank"
+                    aria-label="LaunchGroupsList"
+                    class="md-icon-button launch">
+                <md-icon md-font-icon="fa fa-users fa-2x"></md-icon>
+            </md-button>
+        </a>
+        <span flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></span>
+        <a ui-sref=".createGp">
+            <md-button
+                    title="ایجاد یک گروه جدید"
+                    target="_blank"
+                    aria-label="Create a Group"
+                    class="md-icon-button launch">
+                <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
+            </md-button>
+        </a>
+    </div>
+    <md-divider></md-divider>
+    <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+    <div ui-view="groupStuff" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"></div>
+    </div>
     </div>
 </md-content>

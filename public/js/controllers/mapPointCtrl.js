@@ -84,6 +84,7 @@ function mapPointCtrl($scope, $window, toastr, $timeout, $mdDialog, pointService
                 };
             }//end of if condition
             if (!pointService.pointToBeSubmitted.isPublic && pointService.pointToBeSubmitted.isPersonal) {
+                console.log("Holo!");
                 google.maps.event.addListener($scope.map, 'click', function (event) {
                     placeMarker(event.latLng, $scope.addPersonalPointDlg);
                 });

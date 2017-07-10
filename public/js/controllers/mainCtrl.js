@@ -66,13 +66,15 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
     //******************************************************************************************************************
     //******************************************************************************************************************
     $scope.addPoint = function () {
-        $state.go('home.showMap');
+        $state.go('home.showMap',{ reload: true,inherit: false,
+            notify: true });
         $scope.toggleRight();
         pointService.wannaSubmit("public");
     };//end of addPoint
     //######################################################################################################################################
     $scope.addPersonalPoint = function () {
-        $state.go('home.showMap');
+        $state.transitionTo('home.showMap',{ reload: true,inherit: false,
+            notify: true});
         $scope.toggleRight();
         pointService.wannaSubmit("personal");
     };//end of addPersonalPoint

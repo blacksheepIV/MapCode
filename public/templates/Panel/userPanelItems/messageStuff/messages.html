@@ -1,4 +1,5 @@
-<md-content layout="row" flex="100" ng-controller="msgCTRL">
+<md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+            flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100" ng-controller="msgCTRL">
     <!--  <div layout="row" flex="100" layout-align='start center'>
           <span>نمایش محتوای:</span>
           <div flex="5"></div>
@@ -57,7 +58,7 @@
               </div>
           </div>
       </md-content> -->
-    <div layout="column" layout-xs="column">
+    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column">
         <a ui-sref=".checkInbox">
             <md-button
                     title="صندوق ورودی"
@@ -79,6 +80,6 @@
         </a>
     </div>
     <md-divider></md-divider>
-    <div flex="5"></div>
-    <div ui-view="groupStuff" flex="100"></div>
+    <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+    <div ui-view="groupStuff" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"></div>
 </md-content>
