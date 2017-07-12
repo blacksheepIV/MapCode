@@ -45,5 +45,3 @@
 - `expired_points` table
 
 - Indexes on database tables
-
-- Check if point is expired in APIs
