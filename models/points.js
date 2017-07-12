@@ -173,7 +173,7 @@ module.exports.schema = {
  *
  * @throws {'serverError'}
  * @throws {'owner_not_found'}
- * @throws {'not_enough_credit_bonus'}
+ * @throws {'not_enough_credit'}
  */
 module.exports.add = function (point, callback) {
     if (point.tags && Array.isArray(point.tags)) {
@@ -207,8 +207,8 @@ module.exports.add = function (point, callback) {
                     if (lodashIncludes(err.message, 'OWNER_NOT_FOUND'))
                         return callback('owner_not_found');
 
-                    if (lodashIncludes(err.message, 'NOT_ENOUGH_CREDIT_BONUS'))
-                        return callback('not_enough_credit_bonus');
+                    if (lodashIncludes(err.message, 'NOT_ENOUGH_CREDIT'))
+                        return callback('not_enough_credit');
 
                     if (lodashIncludes(err.message, 'CATEGORY_NOT_FOUND'))
                         return callback('category_not_found');

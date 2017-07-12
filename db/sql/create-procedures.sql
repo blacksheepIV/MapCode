@@ -59,7 +59,7 @@ DELIMITER ;
 
     Errors (sqlstate = 45000):
       - OWNER_NOT_FOUND
-      - NOT_ENOUGH_CREDIT_BONUS
+      - NOT_ENOUGH_CREDIT
       - CATEGORY_NOT_FOUND
  */
 DELIMITER ~
@@ -94,7 +94,7 @@ CREATE PROCEDURE `addPoint`
     OUT `point_code`      VARCHAR(17)
   )
     PROC: BEGIN
-    DECLARE credit, bonus SMALLINT UNSIGNED;
+    DECLARE credit SMALLINT UNSIGNED;
     DECLARE category_id SMALLINT UNSIGNED;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -106,9 +106,8 @@ CREATE PROCEDURE `addPoint`
 
     START TRANSACTION;
     SELECT SQL_CALC_FOUND_ROWS
-      users.credit,
-      users.bonus
-    INTO credit, bonus
+      users.credit
+    INTO credit
     FROM users
     WHERE id = owner
     FOR UPDATE;
@@ -118,9 +117,9 @@ CREATE PROCEDURE `addPoint`
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'OWNER_NOT_FOUND';
     END IF;
 
-    IF credit + bonus = 0
+    IF credit <= 0
     THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NOT_ENOUGH_CREDIT_BONUS';
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NOT_ENOUGH_CREDIT';
     END IF;
 
     SELECT SQL_CALC_FOUND_ROWS
@@ -191,25 +190,11 @@ CREATE PROCEDURE `addPoint`
     SET point_code = @code;
     SET @point_id = LAST_INSERT_ID();
 
-    SET @column_name = 'credit';
-    SET @column_value = credit;
-    IF credit = 0
-    THEN
-      SET @column_name = 'bonus';
-      SET @column_value = bonus;
-    END IF;
-    SET @column_value = @column_value - 1;
-    SET @owner = owner;
+    UPDATE `users` SET `credit` = `credit` - 1 WHERE `id` = owner;
 
-    SET @query = CONCAT('UPDATE `users` SET `', @column_name, '` = ? WHERE `id` = ?');
-    PREPARE decrease_credit_bonus_statement FROM @query;
-    EXECUTE decrease_credit_bonus_statement
-    USING @column_value, @owner;
     COMMIT;
 
     CALL addPointTags(@point_id, tags);
-
-    DEALLOCATE PREPARE decrease_credit_bonus_statement;
   END~
 DELIMITER ;
 

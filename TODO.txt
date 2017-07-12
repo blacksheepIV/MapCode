@@ -38,7 +38,7 @@
     - User avatar upload
 
 - Add triggers for `points` table
-    * Check credit bonus
+    * Check credit
     * Set `code` field
     * Check `category` field
 

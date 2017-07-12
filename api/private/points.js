@@ -18,8 +18,8 @@ router.route('/points')
  * @apiGroup points
  * @apiPermission private
  *
- * @apiDescription A signedin user can submit a new public/private point if the user's
- * credit+bonus is more than 0.
+ * @apiDescription A signed-in user can submit a new public/private point if the user's
+ * credit is bigger than 0.
  *
  * @apiParam {Decimal{10, 8}} lat Point's latitude
  * @apiParam {Decimal{11, 8}} lng Point's longitude
@@ -93,7 +93,7 @@ router.route('/points')
  * @apiError (404) category_not_found
  *
  *
- * @apiError (400) not_enough_credit_bonus
+ * @apiError (400) not_enough_credit
  *
  *
  */
@@ -130,7 +130,7 @@ router.route('/points')
                     }
                     else {
                         var statusCode = 404;
-                        if (err === 'not_enough_credit_bonus')
+                        if (err === 'not_enough_credit')
                             statusCode = 400;
                         res.status(statusCode).json({
                             errors: [err]

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `type`             TINYINT UNSIGNED   NOT NULL              DEFAULT 0,
   `code`             VARCHAR(10)                 UNIQUE,
   `credit`           SMALLINT UNSIGNED  NOT NULL              DEFAULT 0,
-  `bonus`            SMALLINT UNSIGNED  NOT NULL              DEFAULT 0,
+  `bonus`            INTEGER UNSIGNED  NOT NULL              DEFAULT 0,
 
   FOREIGN KEY (`recommender_user`) REFERENCES `users` (`id`)
     ON DELETE SET NULL
