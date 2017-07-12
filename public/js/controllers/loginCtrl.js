@@ -1,52 +1,44 @@
 /**
  * Created by blackSheep on 30-Mar-17.
  */
-var loginCtrl = function ($scope,$state,$mdDialog,authentication,authenticationToken) {
-    $scope.init = function(){
-        $scope.user={
-           username : '' ,
-            pass : ''
+var loginCtrl = function ($scope, $state, $mdDialog, authentication, authenticationToken, toastr) {
+    $scope.init = function () {
+        $scope.user = {
+            username: '',
+            pass: ''
         };
-        // somehow check wether user is already signed in or not
-        if(authenticationToken.getToken())
-           // $location.path('/');
+        if (authenticationToken.getToken())
             $state.go('home');
     }//end of function Init
-    $scope.login={
-        submit:function(){
+    $scope.login = {
+        submit: function () {
             var incomer = {
-                username : $scope.user.username ,
-                password : $scope.user.pass
+                username: $scope.user.username,
+                password: $scope.user.pass
             };
-            //TODO : Gotta send incomer to a service which will fetch the user in case it exists
-           authentication.validateUser(incomer).then(
-             function(res){
-                 console.log(res.data.token); // gotta set the token
-                 authenticationToken.setToken(res.data.token);
-                 //$location.path('/');
-                 $state.go('home');
-             },
-             function(res){
-                 console.log(res);
-                // console.log(res.status);
-                 if(res.status == 400)
-                     console.log("نام کاربری با الگوی غیر معتبر!");
-                     else if(res.status == 404) {
-                     console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
-                     $scope.showAlert();
-                 }
-             }//failure
-           );
-
-           // console.log(incomer);
-            //set $rootScope.guest equal to false if login was a success
-        }//end of login
+            authentication.validateUser(incomer).then(
+                function (res) {
+                    //  console.log(res.data.token); // gotta set the token
+                    authenticationToken.setToken(res.data.token);
+                    $state.go('home');
+                },
+                function (res) {
+                    console.log(res);
+                    if (res.status === 400)
+                        toastr.error('نام کاربری با الگوی غیر معتبر!', 'خطا');
+                    else if (res.status === 404) {
+                        console.log("نام کاربری یا رمز عبور صحیح نمی باشد.");
+                        $scope.showAlert();
+                    }
+                }//failure
+            );
+        }//end of login function
     };
-    $scope.register = function(){
-        //$location.path('/registration'); //sets the path to registrationPage
+    $scope.register = function () {
         $state.go('registration');
     }//end of registration function
-    $scope.showAlert = function() {
+    /* ############################################################################################################## */
+    $scope.showAlert = function () {
         $mdDialog.show(
             $mdDialog.alert()
                 .parent(angular.element(document.querySelector('#popupContainer')))
@@ -58,5 +50,4 @@ var loginCtrl = function ($scope,$state,$mdDialog,authentication,authenticationT
             // .targetEvent(ev)
         );
     };
-
 }//end of loginCtrl

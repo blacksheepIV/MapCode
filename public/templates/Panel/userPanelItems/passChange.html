@@ -1,33 +1,40 @@
 <div ng-controller="passCtrl" ng-init="initPassStuff()" ng-cloak>
-   <md-content layout="row">
-       <form name="userForm" ng-submit="submitPass()" dir="rtl"  style="padding:15px 10px 0 0;margin:auto;" layout-align="center center"  novalidate>
-           <div layout="column" layout-xs="column" flex="100">
-            <!-- <md-input-container flex="25" flex-xs="70">
-                 <label>رمز عبور فعلی:</label>
-                 <input type="password" name="passwd" ng-model="claimedPass"/>
-             </md-input-container> -->
-               <md-input-container flex="25" flex-xs="70">
-                   <label>رمز عبور جدید:</label>
-                   <input type="password" name="newPasswd" ng-model="newPass" ng-minlength="6" ng-maxlength="20" required/>
-                   <div ng-messages="userForm.newPasswd.$error" ng-if="userForm.newPasswd.$touched">
-                       <div ng-message="required">وارد کردن رمز الزامی است.</div>
-                       <div ng-message="minlength">رمز ضعیف است!</div>
-                       <div ng-message="maxlength">رمز فوق طولانی!!</div>
-                   </div>
-               </md-input-container>
-               <md-input-container flex="25" flex-xs="70">
-                   <label>تایید رمز عبور جدید:</label>
-                   <input type="password" name="ConfirmNewPasswd" ng-model="newPassConfirm" ng-minlength="6" ng-maxlength="20" required/>
-                   <div ng-messages="userForm.ConfirmNewPasswd.$error" ng-if="userForm.ConfirmNewPasswd.$touched">
-                       <div ng-message="required">وارد کردن رمز الزامی است.</div>
-                       <div ng-message="minlength">رمز ضعیف است!</div>
-                       <div ng-message="maxlength">رمز فوق طولانی!!</div>
-                   </div>
-               </md-input-container>
-               <div layout="row" layout-xs="column" md-theme="NewTheme" layout-align="center center">
-                   <md-button flex class="md-raised md-warn md-hue-2" type="submit">تغییر رمز</md-button>
-               </div>
-           </div>
-       </form>
-   </md-content>
+    <md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
+        <form name="userForm" ng-submit="submitPass()" dir="rtl" style="padding:15px 10px 0 0;margin:auto;"
+              layout-align="center center" novalidate>
+            <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                 layout-xl="column" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100">
+                <!-- <md-input-container flex="25" flex-xs="70">
+                     <label>رمز عبور فعلی:</label>
+                     <input type="password" name="passwd" ng-model="claimedPass"/>
+                 </md-input-container> -->
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="70">
+                    <label>رمز عبور جدید:</label>
+                    <input type="password" name="newPasswd" ng-model="newPass" ng-minlength="6" ng-maxlength="20"
+                           required/>
+                    <div ng-messages="userForm.newPasswd.$error" ng-if="userForm.newPasswd.$touched">
+                        <div ng-message="required">وارد کردن رمز الزامی است.</div>
+                        <div ng-message="minlength">رمز ضعیف است!</div>
+                        <div ng-message="maxlength">رمز فوق طولانی!!</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="70">
+                    <label>تایید رمز عبور جدید:</label>
+                    <input type="password" name="ConfirmNewPasswd" ng-model="newPassConfirm" ng-minlength="6"
+                           ng-maxlength="20" required/>
+                    <div ng-messages="userForm.ConfirmNewPasswd.$error" ng-if="userForm.ConfirmNewPasswd.$touched">
+                        <div ng-message="required">وارد کردن رمز الزامی است.</div>
+                        <div ng-message="minlength">رمز ضعیف است!</div>
+                        <div ng-message="maxlength">رمز فوق طولانی!!</div>
+                    </div>
+                </md-input-container>
+                <div layout="row" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column" md-theme="NewTheme" layout-align="center center" layout-align-xs="center center"
+                     layout-align-sm="center center" layout-align-md="column column" layout-align-lg="column column"
+                     layout-align-xl="column column">
+                    <md-button flex class="md-raised md-warn md-hue-2" type="submit">تغییر رمز</md-button>
+                </div>
+            </div>
+        </form>
+    </md-content>
 </div>

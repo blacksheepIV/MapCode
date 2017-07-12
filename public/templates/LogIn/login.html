@@ -1,46 +1,56 @@
-<md-content ng-controller="loginCtrl" ng-init="init()" layout-align="center end" layout-align-sm="center end"
-            layout-align-md="center end" layout-align-xs="center end" layout-padding
+<md-content ng-controller="loginCtrl" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+            layout-lg="row" layout-xl="row" layout-align="center" layout-align-sm="center"
+            layout-align-md="center" layout-align-xl="center" ng-init="init()"
             style="height:100%;background-image: url('../../img/BGs/milad tower.jpg');background-repeat: no-repeat;background-size: 100% 100%;">
-    <form name="loginForm" id="loginForm" layout="column" layout-md="column" layout-sm="column" layout-xl="column"
-          layout-align="center center" layout-align-sm="center center" layout-align-md="center center"
-          layout-align-xl="center center"
-          ng-submit="loginForm.$valid && login.submit()" ng-cloak>
-        <div layout="column" layout-sm="column" layout-md="column" layout-xl="column" layout-align="center center"
-             layout-align-sm="center center" layout-align-md="center center" layout-align-xl="center center" flex="100"
-             flex-sm="100" flex-md="100" flex-xl="100">
-            <!-- <span style="width:25px;height: 25px; " flex="40" class="fa fa-user-circle-o fa-lg"></span> -->
-            <div layout="column" layout-md="column" layout-sm="column" layout-align="center center"
-                 layout-align-sm="center center" layout-align-md="center center">
-                <input type="text" class="loginInput" required name="username" placeholder="نام کاربری:"
-                       ng-model="user.username" ng-minlength="5" ng-maxlength="15"
-                       ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
-                <div class="loginMSGs" ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
-                    <div ng-message="required">نام کاربری را وارد کنید!</div>
-                    <div ng-message="maxlength">نام کاربری طولانی!</div>
-                    <div ng-message="minlength">نام کاربری حداقل باید 5 کاراکتر باشد.</div>
-                </div>
+    <form name="loginForm" id="loginForm" ng-submit="loginForm.$valid && login.submit()" layout="column"
+          layout-xs="column" layout-sm="column" layout-md="column"
+          layout-lg="column" layout-xl="column" layout-align="center" layout-align-sm="center"
+          layout-align-md="center" layout-align-xl="center" ng-cloak novalidate>
+        <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+             layout-xl="column" layout-md="column" layout-align="center" layout-align-xs="center"
+             layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+             layout-align-xl="center">
+            <input type="text" class="loginInput" style="margin-bottom: 15px;" required name="username"
+                   placeholder="نام کاربری:"
+                   ng-model="user.username" ng-minlength="5" ng-maxlength="15"
+                   ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
+            <div class="loginMSGs" ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
+                <div ng-message="required">نام کاربری را وارد کنید!</div>
+                <div ng-message="maxlength">نام کاربری طولانی!</div>
+                <div ng-message="minlength">نام کاربری حداقل باید 5 کاراکتر باشد.</div>
             </div>
-            <div flex="5" flex-sm="5" flex-md="5"></div>
-            <div layout="column" layout-sm="column" layout-md="column" layout-align="center center"
-                 layout-align-md="center center" layout-align-sm="center center">
-                <input type="password" class="loginInput" required name="pass" placeholder="رمز عبور :" ng-minlength="6"
-                       ng-model="user.pass"
-                       ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
-                <div class="loginMSGs" ng-messages="loginForm.pass.$error" ng-if="loginForm.pass.$touched">
-                    <div ng-message="required">رمز عبور را وارد کنید!</div>
-                    <div ng-message="minlength">رمز نامعتبر!</div>
-                </div>
+        </div>
+        <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+             layout-xl="column" layout-md="column" layout-align="center" layout-align-xs="center"
+             layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+             layout-align-xl="center">
+            <input type="password" class="loginInput" required name="pass" placeholder="رمز عبور :" ng-minlength="6"
+                   ng-model="user.pass"
+                   ng-class="{red: loginForm.username.$invalid && loginForm.username.$touched }">
+            <div class="loginMSGs" ng-messages="loginForm.pass.$error" ng-if="loginForm.pass.$touched">
+                <div ng-message="required">رمز عبور را وارد کنید!</div>
+                <div ng-message="minlength">رمز نامعتبر!</div>
             </div>
-            <div layout="row" layout-xs="column" layout-sm="row" layout-md="row" md-theme="docs-dark" flex="10"
-                 flex-md="10" flex-sm="10">
-                <md-button class="md-raised  md-accent md-hue-2" type="submit">
-                    ورود
-                </md-button>
+        </div>
+        <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+             layout-xl="column" layout-md="column" layout-align="center" layout-align-xs="center"
+             layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+             layout-align-xl="center">
+            <h5 style="color: white;">رمز عبور خود را فراموش کرده اید؟<a style="text-decoration: none; color: white;"
+                                                                         href="#"> اینجا را کلیک کنید</a></h5>
+        </div>
 
-                <md-button class="md-raised  md-warn md-hue-2" ng-click="register()">
-                    ثبت نام
-                </md-button>
-            </div>
+        <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+             layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+             layout-align-md="center" layout-align-lg="center" layout-align-xl="center" md-theme="docs-dark">
+            <md-divider style="border-color: white;"></md-divider>
+            <md-button class="md-raised  md-accent md-hue-2" type="submit">
+                ورود
+            </md-button>
+
+            <md-button class="md-raised  md-warn md-hue-2" ng-click="register()">
+                ثبت نام
+            </md-button>
         </div>
     </form>
 

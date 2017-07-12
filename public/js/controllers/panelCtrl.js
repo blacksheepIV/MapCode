@@ -11,6 +11,21 @@ function panelCtrl ($scope,$state,authenticationToken,$rootScope,$mdDialog){
             case 0:
                 $state.go(".edit");
                 break;
+            case 1:
+                $state.go(".passChange");
+                break;
+            case 2:
+                $state.go(".usrPoints");
+                break;
+            case 3:
+                $state.go(".usrPersonalPoints");
+                break;
+            case 4:
+                $state.go(".friends");
+                break;
+            case 5:
+                $state.go(".groups");
+                break;
 
         }
     });

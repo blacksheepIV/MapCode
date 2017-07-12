@@ -1,6 +1,8 @@
-<md-dialog  flex="60" aria-label="AddNewPoint" ng-controller="pPointCtrl" ng-init="initPpoint()">
+<md-dialog flex="60" flex-xs="60" flex-sm="60" flex-md="60" flex-lg="60" flex-xl="60" aria-label="AddNewPoint"
+           ng-controller="pPointCtrl" ng-init="initPpoint()">
     <md-toolbar md-theme="Khaz" class="md-warn md-hue-2">
-        <div dir="rtl" class="md-toolbar-tools" layout="row">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
             <h2 class="md-display-2">نقطه شخصی اضافه کن(:</h2>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="cancel()">
@@ -8,36 +10,45 @@
             </md-button>
         </div>
     </md-toolbar>
-    <form name="addPersonalPoint" class="form" dir="rtl" flex="100" ng-submit="addPersonalPoint.$valid && addPpoint()" novalidate>
+    <form name="addPersonalPoint" class="form" dir="rtl" flex="100" flex-xs="100" flex-sm="100" flex-md="100"
+          flex-lg="100" flex-xl="100" ng-submit="addPersonalPoint.$valid && addPpoint()"
+          novalidate>
         <md-dialog-content layout="row">
             <div class="md-dialog-content" dir="rtl">
-                <div layout="row" layout-xs="column">
-                    <md-input-container flex="35" flex-xs="70" class="md-block">
+                <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
+                    <md-input-container flex="35" flex-xs="70" flex-sm="70" flex-md="35" flex-lg="35" flex-xl="35"
+                                        class="md-block">
                         <label>نام:</label>
                         <input type="text" name="pPointName" ng-model="pPoint.name" required/>
-                        <div ng-messages="addPersonalPoint.pPointName.$error" ng-if="addPersonalPoint.pPointName.$touched">
+                        <div ng-messages="addPersonalPoint.pPointName.$error"
+                             ng-if="addPersonalPoint.pPointName.$touched">
                             <div ng-message="required"> نام نقطه ضروریه.</div>
-                            <div ng-message="maxlength">نام  طولانی تر از حد مجازه!</div>
+                            <div ng-message="maxlength">نام طولانی تر از حد مجازه!</div>
                             <div ng-message="pattern">لطفا نام فارسی وارد کنید!</div>
                         </div>
                     </md-input-container>
+                    <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                    <md-input-container flex="35" flex-xs="70" flex-sm="70" flex-md="35" flex-lg="35" flex-xl="35"
+                                        class="md-block">
+                        <label>طول جغرافیایی</label>
+                        <input type="text" name="latitude" ng-model="pPoint.lat" ng-disabled="true" required/>
+                    </md-input-container>
                     <div flex="5"></div>
-                    <md-input-container flex="35" flex-xs="70" class="md-block">
-                       <label>طول جغرافیایی</label>
-                       <input type="text" name="latitude" ng-model="pPoint.lat" ng-disabled="true" required/>
-                     </md-input-container>
-                    <div flex="5"></div>
-                    <md-input-container flex="35" flex-xs="70" class="md-block">
-                       <label>عرض جغرافیایی</label>
-                       <input type="text" name="longitude" ng-model="pPoint.lng" ng-disabled="true" required/>
-                     </md-input-container>
+                    <md-input-container flex="35" flex-xs="70" flex-sm="70" flex-md="35" flex-lg="35" flex-xl="35"
+                                        class="md-block">
+                        <label>عرض جغرافیایی</label>
+                        <input type="text" name="longitude" ng-model="pPoint.lng" ng-disabled="true" required/>
+                    </md-input-container>
                 </div>
-            <div layout="row" layout-xs="column">
-                <div flex="10"></div>
-                <md-input-container flex="90" flex-xs="70" class="md-block">
-                    <textarea name="description" ng-model="pPoint.description" columns="8" ng-maxlength="21844" md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas" ></textarea>
-                </md-input-container>
-             </div>
+                <div layout="row" layout-xs="column">
+                    <div flex="10"></div>
+                    <md-input-container flex="90" flex-xs="70" flex-sm="70" flex-md="90" flex-lg="90" flex-xl="90"
+                                        class="md-block">
+                        <textarea name="description" ng-model="pPoint.description" columns="8" ng-maxlength="21844"
+                                  md-maxlength="21844" rows="2" placeholder="توضیحاتت رو اینجا بنویس..."
+                                  id="textAreas"></textarea>
+                    </md-input-container>
+                </div>
             </div>
         </md-dialog-content>
         <md-dialog-actions md-theme="docs-dark" layout="row" layout-align="center center">

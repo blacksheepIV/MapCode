@@ -1,45 +1,53 @@
-<md-dialog aria-label="reviewPointInfo" ng-controller="pPointInfo" ng-init="initPpoint()" flex="80" >
-        <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
-            <div dir="rtl" class="md-toolbar-tools" layout="row">
-              <h2 class="md-display-2">{{pPoint.name}}</h2>
-                <div flex></div>
-              <md-button class="md-icon-button" ng-click="cancel()">
+<md-dialog aria-label="reviewPointInfo" ng-controller="pPointInfo" ng-init="initPpoint()" flex="80">
+    <md-toolbar md-theme="NewTheme" class="md-primary md-hue-2">
+        <div dir="rtl" class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+             layout-lg="row" layout-xl="row">
+            <h2 class="md-display-2">{{pPoint.name}}</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon class="fa fa-times fa-lg" aria-label="Close dialog"></md-icon>
-              </md-button>
-             </div>
-         </md-toolbar>
-         <md-dialog-content layout-fill layout="column"  layout-align="center" > <!--  change layout to row no need to center and delete flex="100" -->
-            <div layout="row" layout-align="center" flex="50">
-                 <md-card flex="50">
-                     <img src="../img/BGs/card-imgs/1 (1).jpg" class="md-card-image" alt="{{pPoint.description}}">
-                     <md-card-title>
-                         <md-card-title-text>
-                             <span class="md-headline">{{pPoint.name}}</span>
-                         </md-card-title-text>
-                     </md-card-title>
-                     <md-card-content layout="column">
-                         <span class="md-subhead">کدنقطه: {{pPoint.code}}</span>
-                         <span class="md-subhead">توضیحات: {{pPoint.description}}  </span>
-                     </md-card-content>
-                     <md-card-actions layout="row" layout-align="end center">
-                         <md-button class="md-icon-button" aria-label="remove">
-                             <md-icon md-font-icon="fa fa-trash fa-lg"></md-icon>
-                             <md-tooltip md-direction="top"> حذف</md-tooltip>
-                         </md-button>
-                         <md-button class="md-icon-button" aria-label="Settings" ng-click="showThePath(pPoint)">
-                             <md-icon md-font-icon="fa fa-map fa-lg"></md-icon>
-                             <md-tooltip md-direction="top"> مسیریابی</md-tooltip>
-                         </md-button>
-                         <md-button class="md-icon-button" aria-label="Share" ng-click="shareIt(pPoint)">
-                             <md-icon md-font-icon="fa fa-share-alt fa-lg"></md-icon>
-                             <md-tooltip md-direction="top"> اشتراک گذاری</md-tooltip>
-                         </md-button>
-                     </md-card-actions>
-                 </md-card>
-             </div>
-
-           <!--  <div layout="column" layout-fill flex="50">
-                  <div id="myMap" style="height: 100%;" ></div>
-            </div> -->
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-fill layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+                       layout-lg="column" layout-xl="column" layout-align="center" layout-align-xs="center"
+                       layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+                       layout-align-xl="center">
+        <!--  change layout to row no need to center and delete flex="100" -->
+        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+             layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+             layout-align-lg="row" layout-align-xl="row" flex="50" flex-xs="50" flex-sm="50" flex-md="50" flex-lg="50"
+             flex-xl="50">
+            <md-card flex="50" flex-xs="50" flex-sm="50" flex-md="50" flex-lg="50" flex-xl="50">
+                <img src="../img/BGs/card-imgs/1 (1).jpg" class="md-card-image" alt="{{pPoint.description}}">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{pPoint.name}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+                                 layout-lg="column" layout-xl="column">
+                    <span class="md-subhead">کدنقطه: {{pPoint.code}}</span>
+                    <span class="md-subhead">توضیحات: {{pPoint.description}}  </span>
+                </md-card-content>
+                <md-card-actions layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+                                 layout-lg="row" layout-xl="row" layout-align="end center" layout-align-xs="end center"
+                                 layout-align-sm="end center" layout-align-md="end center" layout-align-lg="end center"
+                                 layout-align-xs="end center">
+                    <md-button class="md-icon-button" aria-label="remove">
+                        <md-icon md-font-icon="fa fa-trash fa-lg"></md-icon>
+                        <md-tooltip md-direction="top"> حذف</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="showThePath(pPoint)">
+                        <md-icon md-font-icon="fa fa-map fa-lg"></md-icon>
+                        <md-tooltip md-direction="top"> مسیریابی</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Share" ng-click="shareIt(pPoint)">
+                        <md-icon md-font-icon="fa fa-share-alt fa-lg"></md-icon>
+                        <md-tooltip md-direction="top"> اشتراک گذاری</md-tooltip>
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
     </md-dialog-content>
 </md-dialog>

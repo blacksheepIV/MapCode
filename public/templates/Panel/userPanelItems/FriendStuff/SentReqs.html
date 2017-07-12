@@ -1,12 +1,14 @@
-<md-content layout="row" dir="rtl" ng-controller="friendsCtrl" ng-init="initFriends()">
+<md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" dir="rtl"
+            ng-controller="friendsCtrl" ng-init="initFriends()">
     <div class="animate-switch-container" ng-switch on="noSentReq">
         <div class="animate-switch" ng-switch-when="true">هیچ درخواست دوستی از طرف شما ارسال نشده</div>
         <div class="animate-switch" ng-switch-when="false">
             <md-list class="md-dense" flex>
-                <md-list-item ng-repeat="sentRequest in sentReqs"  class="noleft">
+                <md-list-item ng-repeat="sentRequest in sentReqs" class="noleft">
                     <img src="../img/Avatar/img_avatar3.png" alt="Person" class="md-avatar" width="96" height="96"/>
                     <p>{{sentRequest}}</p>
-                    <md-icon class="md-secondary" ng-click="abortSentReq(sentRequest)" aria-label="abort" md-font-icon="fa fa-times"></md-icon>
+                    <md-icon class="md-secondary" ng-click="abortSentReq(sentRequest)" aria-label="abort"
+                             md-font-icon="fa fa-times"></md-icon>
                 </md-list-item>
             </md-list>
         </div>

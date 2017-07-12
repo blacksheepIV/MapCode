@@ -1,17 +1,24 @@
-<md-content layout="column" layout-md="column" layout-sm="column" ng-controller="mainViewCtrl" ng-init="initMainView()"
-            style=" height:100% ; background-image: url('../../../img/BGs/mapBlurry.JPG');background-repeat: no-repeat;background-size: 100% 100%;">
-    <div layout="row" layout-md="row" layout-sm="row" flex="100" flex-md="100" flex-sm="100">
-        <div flex="35" flex-md="35" flex-sm="35"></div>
-        <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-md="column" layout-sm="column" layout-padding
-                       layout-align="center"
-                       layout-align-md="center" layout-align-sm="center"
+<md-content layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+            layout-xl="column" ng-controller="mainViewCtrl" ng-init="initMainView()"
+            style="max-width:100%; height:100%; background-image: url('../../../img/BGs/mapBlurry.png');background-repeat: repeat-y;">
+    <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+         flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100">
+        <div flex="35" flex-xs="35" flex-sm="35" flex-md="35" flex-lg="35" flex-xl="35"></div>
+        <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-xs="column" layout-sm="column"
+                       layout-md="column" layout-lg="column" layout-xl="column" layout-padding layout-align="center"
+                       layout-align-xs="center" layout-align-sm="center"
+                       layout-align-md="center" layout-align-lg="center" layout-align-xl="center"
                        style="height:100px; background-color: white; margin-top: 25px; ">
-            <div layout="row" layout-align="center" layout-md="row" layout-align-md="center" layout-sm="row"
-                 layout-align-md="center" flex="80" flex-md="80" flex-sm="80">
-                <form name="searchForm" layout="row" layout-md="row" layout-sm="row"
+            <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                 layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                 layout-align-md="center" layout-align-lg="center" layout-align-xl="center" flex="80" flex-xs="80"
+                 flex-sm="80" flex-md="80" flex-lg="80" flex-xl="80">
+                <form name="searchForm" layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                      layout-xl="row"
                       ng-submit="searchForm.$valid && searchPage()"
-                      layout-align="center center" layout-align-md="center center" layout-align-sm="center center"
-                      novalidate>
+                      layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"
+                      layout-align-md="center center" layout-align-lg="center center"
+                      layout-align-xl="center center" novalidate>
                     <input name="SearchBox" placeholder="جستجوی ..." id="searchInput" ng-model="searchBox" required/>
                     <!--  <div class="errorMsg" ng-messages="searchForm.SearchBox.$error" ng-if="searchForm.SearchBox.$touched">
                           <div ng-message="required">عبارتی برای جستجو وارد نشده):</div>
@@ -26,68 +33,77 @@
             </div> -->
         </md-whiteframe>
 
-        <div flex="35" flex-md="35" flex-sm="35"></div>
+        <div flex="35" flex-xs="35" flex-sm="35" flex-md="35" flex-lg="35" flex-lg="35"></div>
     </div>
-    <div layout="row" layout-md="row" layout-sm="row" flex="100" flex-md="100" flex-sm="100" layout-align="center"
-         layout-align-md="center" layout-align-sm="center">
+    <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+         flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100" layout-align="center"
+         layout-align-xs="center" layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+         layout-align-xl="center">
         <md-whiteframe class="md-whiteframe-6dp" layout="column" layout-md="column" layout-sm="column"
-                       layout-align="center"
-                       layout-align-md="center" layout-align-sm="center"
+                       layout-align="center" layout-align-md="center" layout-align-sm="center"
                        style="height:150px; width: 800px; background-color: white;">
-            <div layout="row" layout-md="row" layout-sm="row" layout-align="center" layout-align-md="center"
-                 layout-align-sm="center">
+            <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
+                 layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
+                 layout-align-lg="center" layout-align-xl="center">
                 <h4>پربازدیدترین دسته ها</h4>
             </div>
-            <div flex="35" flex-md="35" flex-sm="35"></div>
-            <div layout="row" layout-md="row" layout-sm="row" flex="100" flex-md="100" flex-sm="100">
-                <div flex="10" flex-md="10" flex-sm="10"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+            <div flex="35" flex-xs="35" flex-sm="35" flex-md="35" flex-lg="35" flex-xl="35"></div>
+            <div layout="row" layout-xs="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100" flex-xs="100"
+                 flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100">
+                <div flex="10" flex-xs="10" flex-sm="10" flex-md="10" flex-lg="10" flex-xl="10"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/344.png" style="width: 32px;height: 32px;"/>
                         <h6 style="margin-top:-10px; ">پارکینگ</h6>
                     </a>
 
                 </div>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/333.png" style="width: 32px; height: 32px;"/>
                         <h6 style="margin-top:-10px; ">پمپ بنزین</h6>
                     </a>
                 </div>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
                 <a href="#" style="text-decoration: none; display: block;">
                     <img class="png-icon" src="../../../img/cats/350.png" style="width: 32px; height: 32px;"/>
                     <h6 style="margin-top:-10px; ">ایستگاه مترو</h6>
                 </a>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
                 <a href="#" style="text-decoration: none; display: block;">
                     <img class="png-icon" src="../../../img/cats/49.png" style="width: 32px; height: 32px;"/>
                     <h6 style="margin-top:-10px; ">رستوران</h6>
                 </a>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/333.png" style="width: 32px; height: 32px;"/>
                         <h6 style="margin-top:-10px; ">پمپ بنزین</h6>
                     </a>
                 </div>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/4.png" style="width: 32px; height: 32px;"/>
                         <h6 style="margin-top:-10px; ">سینما</h6>
                     </a>
                 </div>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/105.png" style="width: 32px; height: 32px;"/>
                         <h6 style="margin-top:-10px;">پاساژ و مرکزخرید</h6>
                     </a>
                 </div>
-                <div flex="5" flex-md="5" flex-sm="5"></div>
-                <div layout="column" layout-md="column" layout-sm="column">
+                <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
                     <a href="#" style="text-decoration: none; display: block;">
                         <img class="png-icon" src="../../../img/cats/201.png" style="width: 32px; height: 32px;"/>
                         <h6 style="margin-top:-10px;">آژانس مسافرتی</h6>
