@@ -255,7 +255,7 @@ var getDetailedQuery =
     " WHERE `T`.`code` = ? AND" +
     " (" +
     "   `T`.public = TRUE %s" +
-    " )";
+    " ) AND (DATEDIFF(`T`.`expiration_date`, CURDATE()) >= -3 OR `T`.`owner_id` = ?)";
 /**
  * @callback pointsGetDetailedWithRequesterUserCallback
  * @param err
@@ -266,6 +266,9 @@ var getDetailedQuery =
  * If user is not set, only public points will be available
  * But if it's available his/her private points and his/her
  * friends private points will also be available.
+ *
+ * Except requester's points, all other points that are expired
+ * won't be returned.
  *
  * @param {object} requesterUser The user who wants to access a point's detailed info.
  * @param {string} requesterUser.username
@@ -285,8 +288,11 @@ module.exports.getDetailedWithRequesterUser = function (requesterUser, pointCode
             // Checks if user is given it will include private query in main query
             (requesterUser ? getDetailedPrivateQuery : '')
         ),
+        [pointCode]
         // Checks if user is given it will add necessary query values
-        [pointCode].concat( requesterUser ? [requesterUser.username, requesterUser.id, requesterUser.id] : [] ),
+            .concat(requesterUser ? [requesterUser.username, requesterUser.id, requesterUser.id] : [])
+            // Add requester's id or insert null for expiration checking
+            .concat(requesterUser ? requesterUser.id : null),
         function (err, results) {
             if (err) {
                 console.error("get@models/points: MySQL: Error happened getting detailed point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
@@ -299,7 +305,7 @@ module.exports.getDetailedWithRequesterUser = function (requesterUser, pointCode
 
             var result = results[0];
 
-            // If user is signed out or is not point's owner then remove owner fields
+            // If user is not signed-in or is not point's owner then remove owner fields
             if (!requesterUser || requesterUser.id !== result.owner_id)
                 result = lodashOmit(result, ownerFields);
 
