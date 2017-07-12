@@ -96,7 +96,7 @@ module.exports.runSelectQuery = function (options, callback) {
 
     // Insert custom conditions passed as raw SQL in the query
     if (options.customConditions) {
-        query += options.conditions ? "AND " : "WHERE ";
+        query += options.conditions ? " " : "WHERE ";
         query += options.customConditions;
     }
 
