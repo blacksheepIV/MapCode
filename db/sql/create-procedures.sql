@@ -138,14 +138,13 @@ CREATE PROCEDURE `addPoint`
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CATEGORY_NOT_FOUND';
     END IF;
 
-    SELECT COUNT(*)
+    SELECT
+    SUBSTRING(MAX(`code`), 3)
     INTO @cat_count
-    FROM points
-    WHERE points.category = category_id
+    FROM `points`
+    WHERE `points`.`category` = category_id
     FOR UPDATE;
 
-    SET @cat_count = @cat_count + 1;
-    SET @cat_count = CAST(@cat_count AS CHAR(10));
     SET @cat_count = CONCAT(REPEAT('0', 9 - CHAR_LENGTH(@cat_count)), @cat_count);
 
     SET @first_code = CAST(@first_code AS CHAR(10));
