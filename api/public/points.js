@@ -177,6 +177,7 @@ router.get('/points/search/',
             query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id]);
         }
 
+        query += mysqlFormat(" AND (DATEDIFF(`expiration_date`, CURDATE()) >= -3 OR `owner_id` = ?)", [req.user ? req.user.id : null]);
 
         db.conn.query(
             query += " LIMIT " + db.conn.escape(req.queryStart) + ", " + db.conn.escape(req.queryLimit),
