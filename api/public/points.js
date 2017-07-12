@@ -97,7 +97,8 @@ router.use('/points/search',
  *
  * @apiDescription if user is not logged in search is getting done only in public points but
  * if the use is logged in search is getting done in public points and user's own private points
- * and user's friends private points.
+ * and user's friends private points.<br />In this search API, despite the requester only points's
+ * public fields are available.
  *
  * @apiParam {String} [code] Point's code.
  * @apiParam {String} [name] Point's name.
