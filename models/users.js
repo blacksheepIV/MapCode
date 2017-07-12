@@ -665,7 +665,8 @@ module.exports.getPoints = function (username, publicOrPrivate, fields, start, l
         columns: fields,
         conditions: conditions,
         start: start,
-        limit: limit
+        limit: limit,
+        customConditions: "AND DATEDIFF(`expiration_date`, CURDATE()) >= -3"
     }, function (err, results) {
         // MySQL error
         if (err) {

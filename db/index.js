@@ -89,15 +89,15 @@ module.exports.runSelectQuery = function (options, callback) {
         query += "WHERE ";
         var conditions = Object.keys(options.conditions);
         conditions.forEach(function (cond, index) {
-            query += '?? = ?' + (index !== conditions.length - 1 ? 'AND ' : ' ');
+            query += '?? = ?' + (index !== conditions.length - 1 ? ' AND ' : ' ');
             values.push(cond, options.conditions[cond]);
         });
     }
 
     // Insert custom conditions passed as raw SQL in the query
     if (options.customConditions) {
-        query += options.conditions ? " " : "WHERE ";
-        query += options.customConditions;
+        query += options.conditions ? "" : "WHERE ";
+        query += options.customConditions + " ";
     }
 
     if (options.start || options.start === 0) {

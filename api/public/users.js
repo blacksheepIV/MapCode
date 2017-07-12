@@ -18,10 +18,11 @@ var customFielder = require('../../utils').customFielder;
  *
  * @apiDescription Get a user's points. If token user is username's friend
  * then he/she can access username's private points; Otherwise only
- * username's private points are accessible.
+ * username's private points are accessible.<br />Only live (non-expired)
+ * points will get returned.
  *
  * @apiParam {String{5..15}} username
- * @apiParam {String[]} [fields] A combination of accessible fields split with comma: lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags
+ * @apiParam {String[]} [fields] A combination of point's public fields split with comma: lat, lng, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags
  * @apiParam {Number{1..}} [start=1] Send points from start-th point!
  * @apiParam {Number{1..100}} [limit=100] Number of points to receive
  * @apiParam {Boolean} [private] Only private points
@@ -82,22 +83,21 @@ router.get('/users/:username/points',
 
     startLimitChecker,
 
-    customFielder('query', 'fields', pointModel.publicFields),
+    customFielder('query', 'fields', pointModel.publicFields, true),
 
     checkFriendshipStatus(),
 
     function (req, res) {
-        var publicOrPriavte = 'private';
+        var publicOrPriavte = 'public';
         if (req.isFriend === true) {
             publicOrPriavte = null; // Both public and private
             if (req.query.public)
                 publicOrPriavte = 'public';
-            else if (req.query.private) {
+            if (req.query.private)
                 if (publicOrPriavte === 'public')
                     publicOrPriavte = null;
                 else
                     publicOrPriavte = 'private';
-            }
         }
 
         usersModel.getPoints(
