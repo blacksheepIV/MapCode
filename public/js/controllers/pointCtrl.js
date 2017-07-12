@@ -161,10 +161,14 @@ function pointCtrl($scope, pointService, $mdDialog, localStorageService, toastr)
 
         }, function (res) {
             console.log(res);
+            console.log(res[0]);
             if (res.status === 404)
                 toastr.error('دسته بندی موردنظر یافت نشد!', 'خطا');
             else if (res.status === 400)
                 toastr.error('ارسال نقطه با خطا مواجه شد', 'خطا');
+            else if (res.status === 400 && res.data.errors[0]==="not_enough_credit") {
+                toastr.error('شما اعتبار کافی برای ثبت نقطه ندارید!', 'خطا');
+            }
         });
     };
     $scope.cancel = function () {
