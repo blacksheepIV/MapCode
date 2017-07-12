@@ -207,7 +207,7 @@ router.get('/points/search/',
  * are also accessible.
  *
  * @apiParam {String} [code] Point's code
- * @apiParam {String[]} [fields] Can be composition on these (separated with comma): lat, lng, submission_date, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags and if it's user's own point can include expiration_date too.
+ * @apiParam {String[]} [fields] Can be composition on these (separated with comma): lat, lng, name, phone, province, city, code, address, public, owner, rate, popularity, category, description, tags and if it's user's own point can include submission_date, expiration_date too.
  *
  * @apiExample
  *     Request-Example

@@ -21,7 +21,6 @@ var db = require('../db');
 module.exports.publicFields = [
     'lat',
     'lng',
-    'submission_date',
     'name',
     'phone',
     'province',
@@ -46,6 +45,7 @@ module.exports.publicFields = [
  * @see module:modules/points.publicFields
  */
 var ownerFields = module.exports.ownerFields = [
+    'submission_date',
     'expiration_date'
 ];
 
