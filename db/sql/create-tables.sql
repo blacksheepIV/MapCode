@@ -225,3 +225,14 @@ CREATE TABLE IF NOT EXISTS `confirmation_requests` (
     ON UPDATE CASCADE
 )
   ENGINE = INNODB;
+-- ------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `purchase_packages` (
+  `id`               SMALLINT UNSIGNED          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name`             VARCHAR(40)
+                     CHARACTER SET utf8mb4
+                     COLLATE utf8mb4_persian_ci NOT NULL,
+  `points_count`     SMALLINT UNSIGNED          NOT NULL,
+  `price`            INT UNSIGNED               NOT NULL,
+  `bonus_percentage` TINYINT UNSIGNED           NOT NULL
+)
+  ENGINE = INNODB;
