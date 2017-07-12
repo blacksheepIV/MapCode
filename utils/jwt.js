@@ -113,3 +113,16 @@ module.exports.removeFromRedis = function (userId) {
         redis.del(key);
     });
 };
+
+
+/**
+ * A middleware that checks if the user is signed-in and also an admin.
+ */
+module.exports.checkAdmin =  function (req, res, next) {
+    if (req.user && req.user.isAdmin)
+        return next();
+
+    return res.status(401).json({
+        errors: ['auth_failure']
+    });
+};
