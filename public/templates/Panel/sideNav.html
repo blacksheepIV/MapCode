@@ -1,4 +1,4 @@
-<div ng-controller="mainCtrl" style="height:100%;" layout-fill>
+<div ng-controller="mainCtrl" ng-init="initVar()" style="height:100%;" layout-fill>
     <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" layout="column" layout-xs="column"
                 layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" style="height:100%;">
         <md-toolbar md-theme="Khaz" class="md-tall md-primary md-hue-2">
@@ -12,12 +12,14 @@
                     <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
                          layout-xl="column" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
                          flex-xl="100">
-                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
                             <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
                         </div>
                         <span class="md-subhead description" style="font-family: IRANSans;">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
-                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
+                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                             layout-xl="row">
                             <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج
                             </md-button>
                         </div>
@@ -27,30 +29,42 @@
         </md-toolbar>
         <md-content layout-margin dir="rtl" layout-align="center" layout-align-xs="center" layout-align-sm="center"
                     layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
-            <div class="sidenav" ng-show="isUser" layout="column" layout-xs="column" layout-sm="column"
-                 layout-md="column" layout-lg="column" layout-xl="column" layout-align="center" layout-align-xs="center"
-                 layout-align-sm="center" layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
-                <div>
-                    <span class="fa fa-address-card fa"></span>
-                    <a ui-sref="panel" class="menuItems"><h6>حساب کاربری من</h6></a>
+            <div class="animate-switch-container sidenav" ng-switch on="NotLoggedIn" layout="row" layout-xs="row"
+                 layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" layout-align="center"
+                 layout-align-xs="center" layout-align-sm="center" layout-align-md="center" layout-align-lg="center"
+                 layout-align-xl="center">
+                <div class="animate-switch" ng-switch-when="true">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                         layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
+                        <p>
+                            شما وارد سیستم نشدید،پس ببخشید دیگه
+                        </p>
+                        <img src="../../img/BGs/sad.svg" alt="oops" style="width:25%;height:auto; "/>
+                    </div>
                 </div>
-                <md-divider></md-divider>
-                <div>
-                    <span class="fa fa-heart fa"></span>
-                    <a href="#" class="menuItems"><h6> مکان های منتخب من</h6></a>
-                </div>
-                <md-divider></md-divider>
-                <div>
-                    <span class="fa fa-map-marker fa"></span>
-                    <a class="menuItems" ng-click="addPoint()"><h6> ثبت یک مکان جدید</h6></a>
-                </div>
-                <md-divider></md-divider>
-                <div>
-                    <span class="fa fa-map-marker fa"></span>
-                    <a ng-click="addPersonalPoint()" class="menuItems"><h6>ثبت یک مکان خصوصی</h6></a>
+                <div class="animate-switch" ng-switch-when="false">
+                    <div>
+                        <span class="fa fa-address-card fa"></span>
+                        <a ui-sref="panel" class="menuItems"><h6>حساب کاربری من</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-heart fa"></span>
+                        <a href="#" class="menuItems"><h6> مکان های منتخب من</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-map-marker fa"></span>
+                        <a class="menuItems" ng-click="addPoint()"><h6> ثبت یک مکان جدید</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-map-marker fa"></span>
+                        <a ng-click="addPersonalPoint()" class="menuItems"><h6>ثبت یک مکان خصوصی</h6></a>
+                    </div>
                 </div>
             </div>
-
         </md-content>
     </md-sidenav>
 </div>

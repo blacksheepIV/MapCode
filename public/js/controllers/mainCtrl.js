@@ -5,6 +5,7 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
     $scope.initVar = function () {
         $scope.toggleFlag = true;
         $rootScope.isUser = false;
+        $scope.NotLoggedIn = true;
         $scope.U = {
             name: "کاربر مهمان",
             credit: 0,
@@ -12,6 +13,7 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
         };
         if (authenticationToken.getToken()) {
             $rootScope.isUser = true;
+            $scope.NotLoggedIn = false;
             console.log(authenticationToken.getToken());
             RegisteredUsr.getUSrInfo().then(
                 function (Info) {
@@ -23,7 +25,7 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
                     console.log(Info); //failure in obtaining data
                 }
             );
-        } //why it is called 3 times?
+        }
         // console.log( $rootScope.isUser );
         $scope.customFullscreen = false;
 
@@ -57,9 +59,10 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
         $state.go('registration');
     };
     $scope.logOut = function () {
-        console.log("user just logged out.");
+
         authenticationToken.removeToken();
         $rootScope.isUser = false;
+        $scope.initVar();
         //$location.path("/");
         $state.go('home.mainTheme');
     }
