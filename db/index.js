@@ -94,6 +94,12 @@ module.exports.runSelectQuery = function (options, callback) {
         });
     }
 
+    // Insert custom conditions passed as raw SQL in the query
+    if (options.customConditions) {
+        query += options.conditions ? "AND " : "WHERE ";
+        query += options.customConditions;
+    }
+
     if (options.start || options.start === 0) {
         query += 'LIMIT ?';
         values.push(options.start);
