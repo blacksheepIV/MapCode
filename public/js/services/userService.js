@@ -25,7 +25,7 @@ var userService = function ($http) {
     };
     //****************************************************************************************************************
     this.searchUsers = function (name) {
-        var searchUser = window.apiHref + "users/search";
+        var searchUser = window.apiHref + "users-search";
         var searchingFor = {username: name};
         return $http({url: searchUser, method: "GET", params: searchingFor});
     };//end of searchUsers func
