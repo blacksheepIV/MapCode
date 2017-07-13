@@ -34,6 +34,8 @@
       QUERY_LIMIT_MAX = 50
       # Max friends number
       MAX_FRIENDS = 100
+      # (Optional) Maximum size of a user's avatar photo (Kb)
+      MAX_AVATAR_SIZE = 100
   `
   Note: If you want to use `npm run dball` these variables
   should not be inside quotations (Like above .env file example):
