@@ -41,3 +41,6 @@
 - `expired_points` table
 
 - Indexes on database tables
+
+- Add cron jobs for point expiration
+    https://github.com/kelektiv/node-cron
