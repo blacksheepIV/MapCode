@@ -1,4 +1,3 @@
-var fs = require('fs');
 var path = require('path');
 var router = require('express').Router();
 var pointModel = require('../../models/points');
