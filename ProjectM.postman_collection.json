@@ -715,7 +715,7 @@
 					"name": "Search users",
 					"request": {
 						"url": {
-							"raw": "http://localhost:3000/api/users/search?username=aliff&fields=username",
+							"raw": "http://localhost:3000/api/users-search?username=mohammad",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -723,19 +723,12 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"users",
-								"search"
+								"users-search"
 							],
 							"query": [
 								{
 									"key": "username",
-									"value": "aliff",
-									"equals": true,
-									"description": ""
-								},
-								{
-									"key": "fields",
-									"value": "username",
+									"value": "mohammad",
 									"equals": true,
 									"description": ""
 								}

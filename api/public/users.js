@@ -117,7 +117,7 @@ router.get('/users/:username/points',
 
 
 /**
- * @api {get} /users/search Search users
+ * @api {get} /users-search/ Search users
  * @apiVersion 0.1.0
  * @apiName usersSearch
  * @apiGroup users
@@ -136,13 +136,13 @@ router.get('/users/:username/points',
  * @apiParam {String[]} [fields] Can be composition on these (separated with comma(',')): name, phone, username, description
  *
  * @apiExample Request-Example
- *     GET http://mapcode.ir/api/users/search?username=alireza&fields=name,description
+ *     GET http://mapcode.ir/api/users/users-search?username=alireza&fields=name,description
  *
  * @apiError (404) no_results_found
  *
  * @apiError (400) empty_search If neither username nor phone is provided. (Empty search in users is forbidden)
  */
-router.get('/users/search',
+router.get('/users-search',
     customFielder('query', 'fields', usersModel.nonFriendFields, true),
 
     startLimitChecker,
