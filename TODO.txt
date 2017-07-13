@@ -42,3 +42,5 @@
 
 - Add cron jobs for point expiration
     https://github.com/kelektiv/node-cron
+
+- Remove username from token
