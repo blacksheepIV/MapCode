@@ -32,7 +32,6 @@
 - SMS service
 
 - User document upload
-    - User avatar upload
 
 - Add triggers for `points` table
     * Check credit
