@@ -741,6 +741,38 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User avatar",
+					"request": {
+						"url": "http://localhost:3000/api/users-avatar",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiQjBJMkcifQ.KmLPVLoUFjblzBwEdTyiGSXo7BUJEJ0q-pNBj6LX2T4",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"description": "",
+									"type": "file",
+									"src": "yeganeh-1.png"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
