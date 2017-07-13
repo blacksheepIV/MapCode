@@ -551,13 +551,13 @@ module.exports.friendshipStatus = function (first_user, second_user, callback) {
 /**
  * Gets a user's info.
  *
- * @param {string} username
+ * @param {object} conditions
  * @param {string[]} fields List of fields to retrieve.
  * @param {usersGetCallback} [callback]
  *
  * @throws {'serverError'}
  */
-module.exports.get = function (username, fields, callback) {
+module.exports.get = function (conditions, fields, callback) {
     if (fields.length === 0)
         return callback(null, {});
 
@@ -565,9 +565,7 @@ module.exports.get = function (username, fields, callback) {
         {
             columns: fields,
             table: 'users',
-            conditions: {
-                username: username
-            }
+            conditions: conditions
         },
         function (err, results) {
             if (err) {
@@ -575,7 +573,7 @@ module.exports.get = function (username, fields, callback) {
                 return callback('serverError');
             }
 
-            // User with given username not found
+            // User with given conditions not found
             if (results.length === 0)
                 return callback(null, null);
 

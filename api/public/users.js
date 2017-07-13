@@ -220,7 +220,7 @@ router.get('/users/:username',
 
     function (req, res) {
         usersModel.get(
-            req.params.username,
+            {username: req.params.username},
             req.queryFields,
             function (err, user_info) {
                 if (err) return res.status(500).end();
