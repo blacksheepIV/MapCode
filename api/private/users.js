@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var router = require('express').Router();
 var asyncSeries = require('async/series');
+var asyncWaterfall = require('async/waterfall');
 var asyncSetImmediate = require('async/setImmediate');
 var multer = require('multer');
 
@@ -11,6 +12,157 @@ var redis = require('../../utils/redis');
 var smsModel = require('../../models/sms');
 var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
+
+
+/*
+    Create docs folder for user documents if not exists.
+ */
+require('mkdirp')(path.join(__dirname, '../../public/docs'), function (err) {
+    if (err)
+        console.error("api/private/users.js: Error in creating if not exists docs directory: mkdirp:\n\t\t%s", err);
+});
+
+
+router.route('/users-document')
+    /**
+     * @api {post} /users-document Update current user's document
+     * @apiVersion 0.1.0
+     * @apiNAme updateUserDocument
+     * @apiGroup users
+     * @apiPermission private
+     *
+     * @apiDescription If current user is verified (type 1 for real users and 3 for legal users),
+     * Account will go to verified and pending mode (type 6 for real users and 7 for legal users),
+     * But if the account is not verified, Account will go to pending mode (type 4 for real users
+     * and 5 for legal users).<br />If account is in pending mode any attempt to upload document
+     * will result in overriding the latest uploaded but not verified document.
+     *
+     * @apiParam {File} document
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "userType": 4
+     *     }
+     *
+     * @apiSuccess {Number} userType User's new type. User's type can remain the same.
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "error": "file_size",
+     *       "maxSize": 10
+     *     }
+     *
+     *
+     * @apiError (400) not_document_file No file has been sent in 'document' form field.
+     * @apiError (400) file_size File is bigger than max size limit. Size limit can be accessed in 'maxSize' (in MB) property of returned JSON.
+     * @apiError (400) not_zip_or_rar File is not 'zip' or 'rar' format.
+     */
+    .post(
+        multer().single('document'),
+        function (req, res) {
+            // Check if a file has been sent
+            if (!req.file)
+                return res.status(400).json({error: 'not_document_file'});
+
+            // Check file's size
+            // Uses process.env.MAX_DOCUMENT_SIZE if it's defined otherwise 10MB
+            var maxFileSize = (process.env.MAX_DOCUMENT_SIZE * 1024 * 1024 || 10 * 1024 * 1024);
+            if (req.file.size > maxFileSize)
+                return res.status(400).json({error: 'file_size', maxSize: maxFileSize / (1024 * 1024)});
+
+            // See file's mime type and check if it's an zip or rar
+            if (!Object.keys(usersModel.documentMimeTypes).includes(req.file.mimetype))
+                return res.status(400).json({error: 'not_zip_or_rar'});
+
+
+            // Get users's type
+            usersModel.get({id: req.user.id}, 'type', function (err, user) {
+                // serverError
+                if (err) return res.status(500).end();
+
+                /* If there is no such a user in database
+                 it means that token is in Redis
+                 so let's remove the token from Redis
+                 and return 401 Unauthorized error */
+                if (!user) {
+                    res.status(401).json({
+                        errors: ["auth_failure"]
+                    });
+
+                    return jwt.removeFromRedis(req.user.id);
+                }
+
+
+                var newUserType = null;
+                // User is is not in pending state
+                if (user.type <= 3)
+                // User's new type
+                    newUserType = usersModel.documentUploadNewType[user.type];
+
+                // New document's path
+                var filePath = path.join(
+                    __dirname,
+                    '../../public/docs/',
+                    req.user.id.toString() + // User's id
+                        '-' + (new Date()).getTime() + // Date as unix timestamp
+                        '.' + usersModel.documentMimeTypes[req.file.mimetype] // File extension
+                );
+
+                asyncWaterfall([
+                    // Get latest doc path for the user
+                    function (callback) {
+                        usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
+                            callback(null, latestDocPath || null);
+                        });
+                    },
+                    // Start saving new document
+                    function (latestDocPath, callback) {
+                        fs.writeFile(
+                            filePath,
+                            req.file.buffer,
+                            function (err) {
+                                // serverError
+                                if (err) {
+                                    res.status(500).end();
+                                    console.error("API {POST}/users-document: fs:\n\t\t%s", err);
+                                    return callback();
+                                }
+
+                                // If user type needs to get updated
+                                if (newUserType) {
+                                    // Update user's type
+                                    usersModel.updateUser({type: newUserType}, req.user.id, function (err) {
+                                        /* If any problem happened in updating user's type,
+                                           delete newly created document. */
+                                        if (err) {
+                                            res.status(500).end();
+                                            // Remove newly updated user's document
+                                            fs.unlink(filePath, function () {});
+                                            return callback();
+                                        }
+
+                                        return res.status(200).json({userType: newUserType});
+                                    });
+                                }
+                                else {
+                                    /* Remove last user document,
+                                     Because probably the user wanted to
+                                     edit the document */
+                                    if (latestDocPath)
+                                        fs.unlink(latestDocPath, function () {});
+
+                                    res.status(200).json({userType: user.type});
+                                    return callback();
+                                }
+                            }
+                        );
+                    }
+                ]);
+            });
+        }
+    );
 
 
 router.route('/users-avatar')
@@ -37,7 +189,7 @@ router.route('/users-avatar')
      *
      *
      * @apiError (400) not_avatar_file No file has been sent in 'avatar' form field.
-     * @apiError (400) file_size File is bigger than max size limit. Size limit can be accessed in 'maxSize' (in Kb) property of returned JSON.
+     * @apiError (400) file_size File is bigger than max size limit. Size limit can be accessed in 'maxSize' (in KB) property of returned JSON.
      * @apiError (400) not_an_image File is not an image.
      */
     .post(
@@ -48,7 +200,7 @@ router.route('/users-avatar')
                 return res.status(400).json({error: 'not_avatar_file'});
 
             // Check file's size
-            // Uses process.env.MAX_AVATAR_SIZE if it's defined otherwise 100Kb
+            // Uses process.env.MAX_AVATAR_SIZE if it's defined otherwise 100KB
             var maxFileSize = (process.env.MAX_AVATAR_SIZE * 1024 || 102400);
             if (req.file.size > maxFileSize)
                 return res.status(400).json({error: 'file_size', maxSize: maxFileSize / 1024});
