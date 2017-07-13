@@ -4,6 +4,9 @@ public/application/
 
 public/img/category-images/
 
+public/img/avatars/**
+!public/img/avatars/unknown.png
+
 node_modules/
 
 .env
