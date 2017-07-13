@@ -77,10 +77,15 @@ module.exports.runSelectQuery = function (options, callback) {
 
     if (options.columns === '*')
         query += "* ";
-    else
+    else {
+        // Convert options.columns to array if it's a single field string name
+        if (!Array.isArray(options.columns))
+            options.columns = [options.columns];
+
         options.columns.forEach(function (column, index) {
             query += "??" + (index !== options.columns.length - 1 ? ', ' : ' ');
         });
+    }
 
     query += "FROM ?? ";
     values.push(options.table);
