@@ -19,6 +19,7 @@ var glob = require('glob');
 var path = require('path');
 
 var db = require('../db');
+var jwt = require('../utils/jwt');
 
 
 /**
@@ -913,4 +914,67 @@ module.exports.getLatestDocument = function (id, callback) {
             callback(null, files.slice(-1)[0]);
         }
     );
+};
+
+
+/**
+ * A express middleware that expands req.user with req.user.id user's information.
+ *
+ * If error happened
+ *   and options.tolerateError is true goes on and calls next().
+ *   and options.tolerateError is false and options.onError is not set
+ *     sends 500 Server Error with empty response.
+ *   and options.tolerateError is false and options.onError is set
+ *     and is a function, calls options.onError.
+ *
+ * If
+ *
+ * @param {object} [options]
+ * @param {string|'*'|string[]} [options.fields]
+ * @param {boolean} [options.tolerateError] If true, tolerates errors.
+ * @param {function} [options.onError]
+ * @param {boolean} [options.tolerateNotFound] If true, tolerates not found.
+ * @param {function} [options.onNotFound]
+ *
+ * @returns {function} A express middleware
+ */
+module.exports.getMiddleware = function (options) {
+    return function (req, res, next) {
+        module.exports.get({id: req.user.id}, options.fields, function (err, user) {
+            if (err) {
+                if (options.tolerateError === true) {
+                    return next();
+                }
+                else {
+                    if (typeof options.onError === 'function')
+                        return options.onError();
+                    else
+                        return res.status(500).end();
+                }
+            }
+
+
+            if (!user) {
+                if (options.tolerateNotFound === true)
+                    return next();
+                else {
+                    if (typeof options.onNotFound === 'function')
+                        return options.onNotFound();
+                    else {
+                        res.status(401).json({
+                            errors: ["auth_failure"]
+                        });
+
+                        return jwt.removeFromRedis(req.user.id);
+                    }
+                }
+            }
+
+            Object.keys(user).forEach(function (column) {
+                req.user[column] = user[column];
+            });
+
+            next();
+        });
+    };
 };
