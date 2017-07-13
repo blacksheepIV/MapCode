@@ -31,8 +31,6 @@
 
 - SMS service
 
-- User document upload
-
 - Add triggers for `points` table
     * Check credit
     * Set `code` field
