@@ -15,6 +15,8 @@ var asyncSetImmediate = require('async/setImmediate');
 var moment = require('moment');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
+var glob = require('glob');
+var path = require('path');
 
 var db = require('../db');
 
@@ -41,6 +43,35 @@ var publicFields = module.exports.publicFields = [
     'bonus',
     'recommender_user'
 
+];
+
+
+/**
+ * Allowed user document mime-types
+ *
+ * @constant
+ * @type {string[]}
+ */
+module.exports.documentMimeTypes = {
+    'application/x-rar-compressed': 'rar',
+    'application/x-compressed': 'zip',
+    'application/x-zip-compressed': 'zip',
+    'application/zip': 'zip',
+    'multipart/x-zip': 'zip'
+};
+
+
+/**
+ * Get user's new type when uploading new document.
+ *
+ * @constant
+ * @type {number[]}
+ */
+module.exports.documentUploadNewType = [
+    4, // When type = 0
+    6, // When type = 1
+    5, // When type = 2
+    7  // When type = 3
 ];
 
 
@@ -844,6 +875,42 @@ module.exports.search = function (username, phone, fields, start, limit, callbac
             }
 
             callback(null, results);
+        }
+    );
+};
+
+
+/**
+ * @callback userGetLatestDocument
+ * @param err
+ * @param {string} path User's latest document path, is undefined if there is none.
+ */
+
+/**
+ * Returns the path of user's latest uploaded document.
+ *
+ * @param {number} id  User's id
+ * @param {userGetLatestDocument} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.getLatestDocument = function (id, callback) {
+    glob(
+        path.join(__dirname, '../public/docs/', '' + id + '-*'),
+        {},
+        function (err, files) {
+            if (err) {
+                console.error("getLatestDocument@models/users: 'glob':\n\t\t%s", err);
+                return callback('serverError');
+            }
+
+            files = files.sort(function(a, b) {
+                a = parseInt(a.slice(a.indexOf('-') + 1, a.lastIndexOf('.')));
+                b = parseInt(b.slice(b.indexOf('-') + 1, b.lastIndexOf('.')));
+                return a - b;
+            });
+
+            callback(null, files.slice(-1)[0]);
         }
     );
 };
