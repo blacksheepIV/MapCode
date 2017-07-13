@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path');
 var router = require('express').Router();
 var pointModel = require('../../models/points');
 
@@ -7,6 +9,57 @@ var validateWithSchema = require('../../utils').validateWithSchema;
 var checkFriendshipStatus = require('../../models/users').checkFriendshipStatus;
 var startLimitChecker = require('../../utils').startLimitChecker;
 var customFielder = require('../../utils').customFielder;
+
+
+/**
+ * @api {get} /users-avatar/:username Get a user's avatar image
+ * @apiVersion 0.1.0
+ * @apiNAme getUserAvatar
+ * @apiGroup users
+ * @apiPermission public
+ *
+ * @apiDescription Get a user's avatar image providing his/her username. Returns default
+ * profile avatar image if user doesn't have it.
+ *
+ * @apiParam {String{5..10}} [username]
+ *
+ * @apiError (404) username_not_found There is no user with given username.
+ */
+router.get('/users-avatar/:username',
+    function (req, res) {
+        usersModel.get({username: req.params.username}, 'id', function (err, user) {
+            // serverError
+            if (err)  return res.status(500).end();
+
+            // If user not found
+            if (!user)
+                return res.status(404).end();
+
+            res.sendFile(
+                path.join(__dirname, '../../public/img/avatars/', user.id.toString()),
+                function (err) {
+                    if (err) {
+                        // If user has no avatar
+                        if (err.code === 'ENOENT')
+                            // Send default avatar
+                            return res.sendFile(
+                                path.join(__dirname, '../../public/img/avatars/unknown.png'),
+                                function (err) {
+                                    if (err) {
+                                        res.status(500).end();
+                                        console.log("API {GET}/users-avatar/:username: res.sendFile: Sending default avatar:\n\t\t%s", err);
+                                    }
+                                }
+                            );
+
+                        res.status(500).end();
+                        console.log("API {GET}/users-avatar/:username: res.sendFile: Sending user's avatar:\n\t\t%s", err);
+                    }
+                }
+            );
+        });
+    }
+);
 
 
 /**

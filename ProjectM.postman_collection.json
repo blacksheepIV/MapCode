@@ -773,6 +773,17 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User avatar image",
+					"request": {
+						"url": "http://localhost:3000/api/users-avatar/alireza",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
