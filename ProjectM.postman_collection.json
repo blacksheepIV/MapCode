@@ -850,6 +850,23 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User document",
+					"request": {
+						"url": "http://localhost:3000/api/users-document",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWGR2WkUifQ.0GbdpHffnp2Mj2ugkHIqIdZum9xryVqKNUM_FozpuUc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

@@ -25,6 +25,57 @@ require('mkdirp')(path.join(__dirname, '../../public/docs'), function (err) {
 
 router.route('/users-document')
     /**
+     * @api {get} /users-document  Download current user's document
+     * @apiVersion 0.1.0
+     * @apiNAme getUserDocument
+     * @apiGroup users
+     * @apiPermission private
+     *
+     * @apiError (404) document_not_found If user is not verified or pending.
+     */
+    .get(
+        function (req, res) {
+            // Get users's type
+            usersModel.get({id: req.user.id}, 'type', function (err, user) {
+                // serverError
+                if (err) return res.status(500).end();
+
+                /* If there is no such a user in database
+                 it means that token is in Redis
+                 so let's remove the token from Redis
+                 and return 401 Unauthorized error */
+                if (!user) {
+                    res.status(401).json({
+                        errors: ["auth_failure"]
+                    });
+
+                    return jwt.removeFromRedis(req.user.id);
+                }
+
+
+                // If user is unverified
+                if (user.type === 0 || user.type === 2) {
+                    return res.status(404).end({errors: ['document_not_found']});
+                }
+
+                usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
+                    if (err) return res.status(500).end();
+
+                    return res.download(
+                        latestDocPath,
+                        'documents' + latestDocPath.substr(latestDocPath.lastIndexOf('.') + 1),
+                        function (err) {
+                            // Error during sending latest user's doc as response
+                            if (err) {
+                                return res.status(500).end();
+                            }
+                        }
+                    );
+                });
+            });
+        }
+    )
+    /**
      * @api {post} /users-document Delete current user's document
      * @apiVersion 0.1.0
      * @apiNAme deleteUserDocument
