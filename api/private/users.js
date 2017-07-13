@@ -25,7 +25,7 @@ require('mkdirp')(path.join(__dirname, '../../public/docs'), function (err) {
 
 router.route('/users-document')
     /**
-     * @api {get} /users-document  Download current user's document
+     * @api {get} /users-document  Get current user's document
      * @apiVersion 0.1.0
      * @apiNAme getUserDocument
      * @apiGroup users
