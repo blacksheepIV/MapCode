@@ -25,6 +25,97 @@ require('mkdirp')(path.join(__dirname, '../../public/docs'), function (err) {
 
 router.route('/users-document')
     /**
+     * @api {post} /users-document Delete current user's document
+     * @apiVersion 0.1.0
+     * @apiNAme deleteUserDocument
+     * @apiGroup users
+     * @apiPermission private
+     *
+     * @apiDescription If user is unverified (type 0 for real users and 2 for legal users)
+     * nothing will happen.<br />If user is pending (type 4 and 6 for unverified real users and verified
+     * real users, and 5 and 7 for unverified legal users and verified legal users) then latest
+     * uploaded document will get removed and user's type will get updated to what it was
+     * before uploading the latest document.<br />If user is verified (type 1 for real users and 3
+     * for legal users) then no document will get removed but user's type will change to unverified.
+     *
+     * @apiSuccess {Number} userType User's new type. User's type can remain the same.
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "userType": 0
+     *     }
+     */
+    .delete(
+        function (req, res) {
+            // Get users's type
+            usersModel.get({id: req.user.id}, 'type', function (err, user) {
+                // serverError
+                if (err) return res.status(500).end();
+
+                /* If there is no such a user in database
+                 it means that token is in Redis
+                 so let's remove the token from Redis
+                 and return 401 Unauthorized error */
+                if (!user) {
+                    res.status(401).json({
+                        errors: ["auth_failure"]
+                    });
+
+                    return jwt.removeFromRedis(req.user.id);
+                }
+
+                var newUserType = null;
+
+                // If user is in pending mode
+                if (user.type >= 4) {
+                    // Search and find the type that user has transformed from that to current type
+                    newUserType = usersModel.documentUploadNewType.indexOf(user.type);
+
+                    usersModel.updateUser(
+                        // Search and find the type that user has transformed from that to current type
+                        {type: newUserType},
+                        req.user.id,
+                        function (err) {
+                            // Problem happened during updating user's type
+                            if (err) return res.status(500).end();
+
+                            usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
+                                if (err) return res.status(500).end();
+
+                                if (latestDocPath)
+                                    // Remove latest user's doc
+                                    fs.unlink(latestDocPath, function () {});
+
+                                return res.status(200).json({userType: newUserType});
+                            });
+                        }
+                    );
+                }
+                // If user is verified
+                else if (user.type === 1 || user.type === 3) {
+                    newUserType = user.type === 1 ? 0 : 2;
+
+                    usersModel.updateUser(
+                        {type: newUserType},
+                        req.user.id,
+                        function (err) {
+                            // Problem happened during updating user's type
+                            if (err) return res.status(500).end();
+
+                            return res.status(200).json({userType: newUserType});
+                        }
+                    );
+                }
+                // If user is unverified
+                else {
+                    // Do nothing and just say OK!
+                    res.status(200).json({userType: user.type});
+                }
+            });
+        }
+    )
+    /**
      * @api {post} /users-document Update current user's document
      * @apiVersion 0.1.0
      * @apiNAme updateUserDocument
