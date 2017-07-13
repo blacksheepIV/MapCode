@@ -24,6 +24,11 @@ require('mkdirp')(path.join(__dirname, '../../public/docs'), function (err) {
 
 
 router.route('/users-document')
+    .all(
+        usersModel.getMiddleware({
+            fields: 'type'
+        })
+    )
     /**
      * @api {get} /users-document  Get current user's document
      * @apiVersion 0.1.0
@@ -35,43 +40,24 @@ router.route('/users-document')
      */
     .get(
         function (req, res) {
-            // Get users's type
-            usersModel.get({id: req.user.id}, 'type', function (err, user) {
-                // serverError
+            // If user is unverified
+            if (req.user.type === 0 || req.user.type === 2) {
+                return res.status(404).end({errors: ['document_not_found']});
+            }
+
+            usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
                 if (err) return res.status(500).end();
 
-                /* If there is no such a user in database
-                 it means that token is in Redis
-                 so let's remove the token from Redis
-                 and return 401 Unauthorized error */
-                if (!user) {
-                    res.status(401).json({
-                        errors: ["auth_failure"]
-                    });
-
-                    return jwt.removeFromRedis(req.user.id);
-                }
-
-
-                // If user is unverified
-                if (user.type === 0 || user.type === 2) {
-                    return res.status(404).end({errors: ['document_not_found']});
-                }
-
-                usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
-                    if (err) return res.status(500).end();
-
-                    return res.download(
-                        latestDocPath,
-                        'documents' + latestDocPath.substr(latestDocPath.lastIndexOf('.') + 1),
-                        function (err) {
-                            // Error during sending latest user's doc as response
-                            if (err) {
-                                return res.status(500).end();
-                            }
+                return res.download(
+                    latestDocPath,
+                    'documents' + latestDocPath.substr(latestDocPath.lastIndexOf('.') + 1),
+                    function (err) {
+                        // Error during sending latest user's doc as response
+                        if (err) {
+                            return res.status(500).end();
                         }
-                    );
-                });
+                    }
+                );
             });
         }
     )
@@ -99,71 +85,53 @@ router.route('/users-document')
      */
     .delete(
         function (req, res) {
-            // Get users's type
-            usersModel.get({id: req.user.id}, 'type', function (err, user) {
-                // serverError
-                if (err) return res.status(500).end();
+            var newUserType = null;
 
-                /* If there is no such a user in database
-                 it means that token is in Redis
-                 so let's remove the token from Redis
-                 and return 401 Unauthorized error */
-                if (!user) {
-                    res.status(401).json({
-                        errors: ["auth_failure"]
-                    });
+            // If user is in pending mode
+            if (req.user.type >= 4) {
+                // Search and find the type that user has transformed from that to current type
+                newUserType = usersModel.documentUploadNewType.indexOf(req.user.type);
 
-                    return jwt.removeFromRedis(req.user.id);
-                }
-
-                var newUserType = null;
-
-                // If user is in pending mode
-                if (user.type >= 4) {
+                usersModel.updateUser(
                     // Search and find the type that user has transformed from that to current type
-                    newUserType = usersModel.documentUploadNewType.indexOf(user.type);
+                    {type: newUserType},
+                    req.user.id,
+                    function (err) {
+                        // Problem happened during updating user's type
+                        if (err) return res.status(500).end();
 
-                    usersModel.updateUser(
-                        // Search and find the type that user has transformed from that to current type
-                        {type: newUserType},
-                        req.user.id,
-                        function (err) {
-                            // Problem happened during updating user's type
+                        usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
                             if (err) return res.status(500).end();
 
-                            usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
-                                if (err) return res.status(500).end();
-
-                                if (latestDocPath)
-                                    // Remove latest user's doc
-                                    fs.unlink(latestDocPath, function () {});
-
-                                return res.status(200).json({userType: newUserType});
-                            });
-                        }
-                    );
-                }
-                // If user is verified
-                else if (user.type === 1 || user.type === 3) {
-                    newUserType = user.type === 1 ? 0 : 2;
-
-                    usersModel.updateUser(
-                        {type: newUserType},
-                        req.user.id,
-                        function (err) {
-                            // Problem happened during updating user's type
-                            if (err) return res.status(500).end();
+                            if (latestDocPath)
+                                // Remove latest user's doc
+                                fs.unlink(latestDocPath, function () {});
 
                             return res.status(200).json({userType: newUserType});
-                        }
-                    );
-                }
-                // If user is unverified
-                else {
-                    // Do nothing and just say OK!
-                    res.status(200).json({userType: user.type});
-                }
-            });
+                        });
+                    }
+                );
+            }
+            // If user is verified
+            else if (req.user.type === 1 || req.user.type === 3) {
+                newUserType = req.user.type === 1 ? 0 : 2;
+
+                usersModel.updateUser(
+                    {type: newUserType},
+                    req.user.id,
+                    function (err) {
+                        // Problem happened during updating user's type
+                        if (err) return res.status(500).end();
+
+                        return res.status(200).json({userType: newUserType});
+                    }
+                );
+            }
+            // If user is unverified
+            else {
+                // Do nothing and just say OK!
+                res.status(200).json({userType: req.user.type});
+            }
         }
     )
     /**
@@ -218,91 +186,71 @@ router.route('/users-document')
             if (!Object.keys(usersModel.documentMimeTypes).includes(req.file.mimetype))
                 return res.status(400).json({error: 'not_zip_or_rar'});
 
+            var newUserType = null;
+            // User is is not in pending state
+            if (req.user.type <= 3)
+            // User's new type
+                newUserType = usersModel.documentUploadNewType[req.user.type];
 
-            // Get users's type
-            usersModel.get({id: req.user.id}, 'type', function (err, user) {
-                // serverError
-                if (err) return res.status(500).end();
+            // New document's path
+            var filePath = path.join(
+                __dirname,
+                '../../public/docs/',
+                req.user.id.toString() + // User's id
+                    '-' + (new Date()).getTime() + // Date as unix timestamp
+                    '.' + usersModel.documentMimeTypes[req.file.mimetype] // File extension
+            );
 
-                /* If there is no such a user in database
-                 it means that token is in Redis
-                 so let's remove the token from Redis
-                 and return 401 Unauthorized error */
-                if (!user) {
-                    res.status(401).json({
-                        errors: ["auth_failure"]
+            asyncWaterfall([
+                // Get latest doc path for the user
+                function (callback) {
+                    usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
+                        callback(null, latestDocPath || null);
                     });
-
-                    return jwt.removeFromRedis(req.user.id);
-                }
-
-
-                var newUserType = null;
-                // User is is not in pending state
-                if (user.type <= 3)
-                // User's new type
-                    newUserType = usersModel.documentUploadNewType[user.type];
-
-                // New document's path
-                var filePath = path.join(
-                    __dirname,
-                    '../../public/docs/',
-                    req.user.id.toString() + // User's id
-                        '-' + (new Date()).getTime() + // Date as unix timestamp
-                        '.' + usersModel.documentMimeTypes[req.file.mimetype] // File extension
-                );
-
-                asyncWaterfall([
-                    // Get latest doc path for the user
-                    function (callback) {
-                        usersModel.getLatestDocument(req.user.id, function (err, latestDocPath) {
-                            callback(null, latestDocPath || null);
-                        });
-                    },
-                    // Start saving new document
-                    function (latestDocPath, callback) {
-                        fs.writeFile(
-                            filePath,
-                            req.file.buffer,
-                            function (err) {
-                                // serverError
-                                if (err) {
-                                    res.status(500).end();
-                                    console.error("API {POST}/users-document: fs:\n\t\t%s", err);
-                                    return callback();
-                                }
-
-                                // If user type needs to get updated
-                                if (newUserType) {
-                                    // Update user's type
-                                    usersModel.updateUser({type: newUserType}, req.user.id, function (err) {
-                                        /* If any problem happened in updating user's type,
-                                           delete newly created document. */
-                                        if (err) {
-                                            res.status(500).end();
-                                            // Remove newly updated user's document
-                                            fs.unlink(filePath, function () {});
-                                            return callback();
-                                        }
-
-                                        return res.status(200).json({userType: newUserType});
-                                    });
-                                }
-                                else {
-                                    /* Remove last user document,
-                                     Because probably the user wanted to
-                                     edit the document */
-                                    if (latestDocPath)
-                                        fs.unlink(latestDocPath, function () {});
-
-                                    res.status(200).json({userType: user.type});
-                                    return callback();
-                                }
+                },
+                // Start saving new document
+                function (latestDocPath, callback) {
+                    fs.writeFile(
+                        filePath,
+                        req.file.buffer,
+                        function (err) {
+                            // serverError
+                            if (err) {
+                                res.status(500).end();
+                                console.error("API {POST}/users-document: fs:\n\t\t%s", err);
+                                return callback();
                             }
-                        );
-                    }
-                ]);
-            });
+
+                            // If user type needs to get updated
+                            if (newUserType) {
+                                // Update user's type
+                                usersModel.updateUser({type: newUserType}, req.user.id, function (err) {
+                                    /* If any problem happened in updating user's type,
+                                       delete newly created document. */
+                                    if (err) {
+                                        res.status(500).end();
+                                        // Remove newly updated user's document
+                                        fs.unlink(filePath, function () {});
+                                        return callback();
+                                    }
+
+                                    return res.status(200).json({userType: newUserType});
+                                });
+                            }
+                            else {
+                                /* Remove last user document,
+                                 Because probably the user wanted to
+                                 edit the document */
+                                if (latestDocPath)
+                                    fs.unlink(latestDocPath, function () {});
+
+                                res.status(200).json({userType: req.user.type});
+                                return callback();
+                            }
+                        }
+                    );
+                }
+            ]);
         }
     );
 
