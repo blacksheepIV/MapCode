@@ -13,65 +13,82 @@ var validateWithSchema = require('../../utils').validateWithSchema;
 var customFielder = require('../../utils').customFielder;
 
 
-/**
- * @api {post} /users-avatar Updates current user's avatar image
- * @apiVersion 0.1.0
- * @apiNAme updateUserAvatar
- * @apiGroup users
- * @apiPermission private
- *
- * @apiDescription Uploads and replaces if exists, the user's avatar image.
- *
- * @apiParam {File} avatar
- *
- * @apiSuccessExample Success-Response
- *     HTTP/1.1 200 OK
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
- *       "error": "file_size",
- *       "maxSize": 100
- *     }
- *
- *
- * @apiError (400) not_avatar_file No file has been sent in 'avatar' form field.
- * @apiError (400) file_size File is bigger than max size limit. Size limit can be accessed in 'maxSize' (in Kb) property of returned JSON.
- * @apiError (400) not_an_image File is not an image.
- */
-router.post('/users-avatar',
-    multer().single('avatar'),
-    function (req, res) {
-        // Check if a file has been sent
-        if (!req.file)
-            return res.status(400).json({error: 'not_avatar_file'});
+router.route('/users-avatar')
+    /**
+     * @api {post} /users-avatar Updates current user's avatar image
+     * @apiVersion 0.1.0
+     * @apiNAme updateUserAvatar
+     * @apiGroup users
+     * @apiPermission private
+     *
+     * @apiDescription Uploads and replaces if exists, the user's avatar image.
+     *
+     * @apiParam {File} avatar
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "error": "file_size",
+     *       "maxSize": 100
+     *     }
+     *
+     *
+     * @apiError (400) not_avatar_file No file has been sent in 'avatar' form field.
+     * @apiError (400) file_size File is bigger than max size limit. Size limit can be accessed in 'maxSize' (in Kb) property of returned JSON.
+     * @apiError (400) not_an_image File is not an image.
+     */
+    .post(
+        multer().single('avatar'),
+        function (req, res) {
+            // Check if a file has been sent
+            if (!req.file)
+                return res.status(400).json({error: 'not_avatar_file'});
 
-        // Check file's size
-        // Uses process.env.MAX_AVATAR_SIZE if it's defined otherwise 100Kb
-        var maxFileSize = (process.env.MAX_AVATAR_SIZE * 1024 || 102400);
-        if (req.file.size > maxFileSize)
-            return res.status(400).json({error: 'file_size', maxSize: maxFileSize / 1024});
+            // Check file's size
+            // Uses process.env.MAX_AVATAR_SIZE if it's defined otherwise 100Kb
+            var maxFileSize = (process.env.MAX_AVATAR_SIZE * 1024 || 102400);
+            if (req.file.size > maxFileSize)
+                return res.status(400).json({error: 'file_size', maxSize: maxFileSize / 1024});
 
-        // See file's mime type and check if it's an image
-        if (!req.file.mimetype.startsWith('image'))
-            return res.status(400).json({error: 'not_an_image'});
+            // See file's mime type and check if it's an image
+            if (!req.file.mimetype.startsWith('image'))
+                return res.status(400).json({error: 'not_an_image'});
 
 
-        fs.writeFile(
-            path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()),
-            req.file.buffer,
-            function (err) {
-                // serverError
-                if (err) {
-                    res.status(500).end();
-                    return console.error("API {POST}/users-avatar/: fs:\n\t\t%s", err);
+            fs.writeFile(
+                path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()),
+                req.file.buffer,
+                function (err) {
+                    // serverError
+                    if (err) {
+                        res.status(500).end();
+                        return console.error("API {POST}/users-avatar/: fs:\n\t\t%s", err);
+                    }
+
+                    res.status(200).end();
                 }
-
-                res.status(200).end();
-            }
-        );
-    }
-);
+            );
+        }
+    )
+    /**
+     * @api {post} /users-avatar Delete current user's avatar image
+     * @apiVersion 0.1.0
+     * @apiNAme deleteUserAvatar
+     * @apiGroup users
+     * @apiPermission private
+     *
+     * @apiDescription If user has no avatar image noting will happen.
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     */
+    .delete(function (req, res) {
+        fs.unlink(path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()), function () {});
+        res.status(200).end();
+    });
 
 
 router.route('/users/')
