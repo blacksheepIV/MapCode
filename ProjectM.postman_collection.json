@@ -801,6 +801,72 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "User document",
+					"request": {
+						"url": "http://localhost:3000/api/users-document",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWGR2WkUifQ.0GbdpHffnp2Mj2ugkHIqIdZum9xryVqKNUM_FozpuUc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "document",
+									"description": "",
+									"type": "file",
+									"src": "img.zip"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User document",
+					"request": {
+						"url": "http://localhost:3000/api/users-document",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWGR2WkUifQ.0GbdpHffnp2Mj2ugkHIqIdZum9xryVqKNUM_FozpuUc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "User document",
+					"request": {
+						"url": "http://localhost:3000/api/users-document",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGlyZXphIiwianRpIjoiWGR2WkUifQ.0GbdpHffnp2Mj2ugkHIqIdZum9xryVqKNUM_FozpuUc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

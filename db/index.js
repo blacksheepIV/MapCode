@@ -75,7 +75,7 @@ module.exports.runSelectQuery = function (options, callback) {
 
     var query = "SELECT ";
 
-    if (options.columns === '*')
+    if (options.columns === '*' || !options.columns)
         query += "* ";
     else {
         // Convert options.columns to array if it's a single field string name

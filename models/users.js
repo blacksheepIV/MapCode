@@ -15,8 +15,11 @@ var asyncSetImmediate = require('async/setImmediate');
 var moment = require('moment');
 var lodashIntersection = require('lodash/intersection');
 var lodashTrim = require('lodash/trim');
+var glob = require('glob');
+var path = require('path');
 
 var db = require('../db');
+var jwt = require('../utils/jwt');
 
 
 /**
@@ -41,6 +44,35 @@ var publicFields = module.exports.publicFields = [
     'bonus',
     'recommender_user'
 
+];
+
+
+/**
+ * Allowed user document mime-types
+ *
+ * @constant
+ * @type {string[]}
+ */
+module.exports.documentMimeTypes = {
+    'application/x-rar-compressed': 'rar',
+    'application/x-compressed': 'zip',
+    'application/x-zip-compressed': 'zip',
+    'application/zip': 'zip',
+    'multipart/x-zip': 'zip'
+};
+
+
+/**
+ * Get user's new type when uploading new document.
+ *
+ * @constant
+ * @type {number[]}
+ */
+module.exports.documentUploadNewType = [
+    4, // When type = 0
+    6, // When type = 1
+    5, // When type = 2
+    7  // When type = 3
 ];
 
 
@@ -846,4 +878,103 @@ module.exports.search = function (username, phone, fields, start, limit, callbac
             callback(null, results);
         }
     );
+};
+
+
+/**
+ * @callback userGetLatestDocument
+ * @param err
+ * @param {string} path User's latest document path, is undefined if there is none.
+ */
+
+/**
+ * Returns the path of user's latest uploaded document.
+ *
+ * @param {number} id  User's id
+ * @param {userGetLatestDocument} [callback]
+ *
+ * @throws {'serverError'}
+ */
+module.exports.getLatestDocument = function (id, callback) {
+    glob(
+        path.join(__dirname, '../public/docs/', '' + id + '-*'),
+        {},
+        function (err, files) {
+            if (err) {
+                console.error("getLatestDocument@models/users: 'glob':\n\t\t%s", err);
+                return callback('serverError');
+            }
+
+            files = files.sort(function(a, b) {
+                a = parseInt(a.slice(a.indexOf('-') + 1, a.lastIndexOf('.')));
+                b = parseInt(b.slice(b.indexOf('-') + 1, b.lastIndexOf('.')));
+                return a - b;
+            });
+
+            callback(null, files.slice(-1)[0]);
+        }
+    );
+};
+
+
+/**
+ * A express middleware that expands req.user with req.user.id user's information.
+ *
+ * If error happened
+ *   and options.tolerateError is true goes on and calls next().
+ *   and options.tolerateError is false and options.onError is not set
+ *     sends 500 Server Error with empty response.
+ *   and options.tolerateError is false and options.onError is set
+ *     and is a function, calls options.onError.
+ *
+ * If
+ *
+ * @param {object} [options]
+ * @param {string|'*'|string[]} [options.fields]
+ * @param {boolean} [options.tolerateError] If true, tolerates errors.
+ * @param {function} [options.onError]
+ * @param {boolean} [options.tolerateNotFound] If true, tolerates not found.
+ * @param {function} [options.onNotFound]
+ *
+ * @returns {function} A express middleware
+ */
+module.exports.getMiddleware = function (options) {
+    return function (req, res, next) {
+        module.exports.get({id: req.user.id}, options.fields, function (err, user) {
+            if (err) {
+                if (options.tolerateError === true) {
+                    return next();
+                }
+                else {
+                    if (typeof options.onError === 'function')
+                        return options.onError();
+                    else
+                        return res.status(500).end();
+                }
+            }
+
+
+            if (!user) {
+                if (options.tolerateNotFound === true)
+                    return next();
+                else {
+                    if (typeof options.onNotFound === 'function')
+                        return options.onNotFound();
+                    else {
+                        res.status(401).json({
+                            errors: ["auth_failure"]
+                        });
+
+                        return jwt.removeFromRedis(req.user.id);
+                    }
+                }
+            }
+
+            Object.keys(user).forEach(function (column) {
+                req.user[column] = user[column];
+            });
+
+            next();
+        });
+    };
 };
