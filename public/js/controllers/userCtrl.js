@@ -1,12 +1,13 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, localStorageService, $state, userService, $mdDialog, authenticationToken,toastr) {
+var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, $state, userService, $mdDialog, authenticationToken,toastr,upload) {
     var alteredData = {};
     $scope.initVars = function () {
         $scope.investigate = false; // user's not been investigated and approved yet
         $scope.emailPattern = '([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})';
         $scope.namePattern = '[\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200F ]+';
+        $scope.avatar = null;
         // $scope.namePattern='[a-zA-Z]+';
         $scope.mobilePattern = '09[1|2|3][0-9]{8}';
         $scope.user = {
@@ -44,7 +45,7 @@ var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, localStorageS
                     mobile_phone: Info.data.mobile_phone,
                     phone: Info.data.phone,
                     username: Info.data.username,
-                    password: '', // TODO:gotta get this password thing
+                    password: '',
                     passRepeat: '',
                     address: Info.data.address,
                     description: Info.data.description,
@@ -335,7 +336,27 @@ var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, localStorageS
             });
     };//end of updateInfo
     /*  ######################################################Edit User Info ################################################################# */
+    /* ####################################################################################################################################### */
+    $scope.update = function(){
+        console.log($scope.userForm.myavatar);
+        console.log($scope.avatar);
+        upload({
+            url: window.apiHref +"users-avatar",
+            method: 'POST',
+            avatar: {
+                aFile: $scope.userForm.myavatar // a jqLite type="file" element, upload() will extract all the files from the input and put them into the FormData object before sending.
+            }
+        }).then(
+            function (response) {
+                console.log(response.data); // will output whatever you choose to return from the server on a successful upload
+            },
+            function (response) {
+                console.error(response); //  Will return if status code is above 200 and lower than 300, same as $http
+            }
+        );
+    }
 
+    /* ####################################################################################################################################### */
     $scope.logOut = function () {
         //console.log("user just logged out.");
         authenticationToken.removeToken();

@@ -101,17 +101,27 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
             }
         })
         .state('panel.edit', {
-            url: '/editInfo',
+            url: '/edit',
             data: {
                 'selectedIndex': 0
             },
             views: {
                 'edited': {
-                    templateUrl: '../templates/Panel/userPanelItems/EditInfo.html',
+                    templateUrl: '../templates/Panel/userPanelItems/editStuff/edit.html',
                     controller: userCtrl
                 }
             }
         })
+        .state('panel.edit.editInfo', {
+            url: '/editInfo',
+            views: {
+                'editStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/editStuff/EditInfo.html',
+                    controller: friendsCtrl
+                }
+            }
+        })
+
         .state('panel.passChange', {
             url: '/passChange',
             data: {

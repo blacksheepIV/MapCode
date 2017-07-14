@@ -39,7 +39,7 @@
             <!-- first row -->
             <!-- 2nd row -->
             <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
-                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="70" flex-xl="25"
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
                                     class="md-block">
                     <label>ایمیل:</label>
                     <input type="email" name="mail" ng-model="user.email" ng-pattern="emailPattern"/>
@@ -49,7 +49,7 @@
                     </div>
                 </md-input-container>
                 <div flex="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
-                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="70" flex-xl="25"
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
                                     class="md-block">
                     <label>تاریخ تولد:</label>
                     <input type="text" name="birthdate" id="creationDate"/>
@@ -102,45 +102,22 @@
             <!-- 3rd row -->
             <!-- 4th row -->
             <div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row">
-                <div flex="25" flex-xs="70" flex-md="25" flex-sm="70" flex-xl="25">
-                    <div
-                            class="btn btn-primary btn-upload"
-                            upload-button
-                            url="/upload"
-                            on-success="onSuccess(response)"
-                    >آواتار:
-                    </div>
-                </div> <!-- gotta check the file being uploaded for corect type -->
-                <div flex="5" flex-md="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
-                <md-input-container flex="20" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
+
+                <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25"
                                     class="md-block">
                     <label>کدثبت:</label>
                     <input type="text" name="code" ng-model="user.code" ng-disabled="true"/>
                     <!--TODO:ask for it's pattern-->
                 </md-input-container>
                 <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
-                <div flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-lg="25" flex-xl="25">
-                    <div
-                            class="btn btn-primary btn-upload"
-                            upload-button
-                            url="/upload"
-                            on-success="onSuccess(response)"
-                    >مدارک:
-                    </div>
-                </div>
+                <md-input-container flex="55" flex-xs="55" flex-sm="70" flex-md="70" flex-lg="55" flex-xl="55"
+                                    class="md-block">
+                    <textarea ng-model="user.description" name="description" columns="8" md-maxlength="21844" rows="1"
+                              placeholder="توضیحاتت رو اینجا بنویس..." id="textAreas"></textarea>
+                </md-input-container>
+
             </div>
             <!-- 4th row -->
-            <!-- 5th row -->
-            <div layout="row" layout-xs="column" layout-sm="coulumn" layout-md="row" layout-lg="row" layout-xl="row"
-                 layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"
-                 layout-align-md="center center" layout-align-lg="center center" layout-align-xl="center center">
-                <md-input-container flex="70" flex-xs="70" flex-sm="70" flex-md="70" flex-lg="70" flex-xl="70"
-                                    class="md-block">
-                    <textarea ng-model="user.description" name="description" columns="8" md-maxlength="21844" rows="2"
-                              placeholder="توضیحاتت رو اینجا بنویس..." id="textAres"></textarea>
-                </md-input-container>
-            </div>
-            <!-- 5th row -->
             <div md-theme="NewTheme" layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
                  layout-xl="row"
                  layout-align="center center" layout-align-xs="center center" layout-align-sm="center center"

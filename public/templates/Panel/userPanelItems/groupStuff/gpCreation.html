@@ -1,35 +1,42 @@
-<md-content ng-controller="groupCtrl">
-    <form name="editGroup" class="form" dir="rtl" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
-          flex-xl="100" ng-submit="editGroup.$valid && createGp()" novalidate layout="column" layout-xs="column"
-          layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" layout-align="center">
-        <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="column" layout-lg="column"
-                           layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
-                           layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
-            <div class="md-dialog-content" dir="rtl">
-                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
-                     layout-xl="column">
-                    <md-input-container flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
-                                        flex-xl="100">
-                        <label>نام گروه:</label>
-                        <input type="text" name="name" ng-model="gpName" ng-minlength="1" ng-maxlength="25" required/>
-                    </md-input-container>
+<md-content ng-controller="groupCtrl" layout="column" layout-xs="column" layout-sm="column" layout-md="column"
+            layout-lg="column" layout-xl="column" layout-align="center">
+    <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
+                       layout-xl="row" layout-align="center" layout-align-xs="center" layout-align-sm="center"
+                       layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
+        <form name="editGroup" class="form" dir="rtl" flex="70" flex-xs="70" flex-sm="70" flex-md="70" flex-lg="70"
+              flex-xl="70" ng-submit="editGroup.$valid && createGp()" novalidate layout="column" layout-xs="column"
+              layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" layout-align="center">
+            <md-dialog-content layout="row" layout-xs="row" layout-sm="row" layout-md="column" layout-lg="column"
+                               layout-xl="column" layout-align="center" layout-align-xs="center"
+                               layout-align-sm="center"
+                               layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
+                <div class="md-dialog-content" dir="rtl">
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column">
+                        <md-input-container flex="70" flex-xs="70" flex-sm="70" flex-md="70" flex-lg="70"
+                                            flex-xl="70">
+                            <label>نام گروه:</label>
+                            <input type="text" name="name" ng-model="gpName" ng-minlength="1" ng-maxlength="25"
+                                   required/>
+                        </md-input-container>
+                    </div>
+                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                         layout-xl="column">
+                        <md-select multiple placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedMembers"
+                                   name="members" md-on-open="loadfriends()" required>
+                            <md-option ng-value="friend" ng-repeat="friend in friends ">{{friend}}</md-option>
+                        </md-select>
+                    </div>
                 </div>
-                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
-                     layout-xl="column">
-                    <md-select multiple placeholder="افزودن عضو:" class="md-no-underline" ng-model="addedMembers"
-                               name="members" md-on-open="loadfriends()" required>
-                        <md-option ng-value="friend" ng-repeat="friend in friends ">{{friend}}</md-option>
-                    </md-select>
-                </div>
-            </div>
-        </md-dialog-content>
-        <md-dialog-actions md-theme="docs-dark" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
-                           layout-lg="row" layout-xl="row" layout-align="center center" layout-align-xs="center center"
-                           layout-align-sm="center center" layout-align-md="center center"
-                           layout-align-lg="center center" layout-align-xl="center center">
-            <md-button flex="30" flex-xs="30" flex-sm="30" flex-md="30" flex-lg="30" flex-xl="30"
-                       class="md-raised md-accent md-hue-2 md-block" type="submit"> ساخت گروه
-            </md-button>
-        </md-dialog-actions>
-    </form>
+            </md-dialog-content>
+            <md-dialog-actions md-theme="docs-dark" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+                               layout-lg="row" layout-xl="row" layout-align="center center"
+                               layout-align-xs="center center"
+                               layout-align-sm="center center" layout-align-md="center center"
+                               layout-align-lg="center center" layout-align-xl="center center">
+                <md-button flex="30" flex-xs="30" flex-sm="30" flex-md="30" flex-lg="30" flex-xl="30"
+                           class="md-raised md-accent md-hue-2 md-block" type="submit"> ساخت گروه
+                </md-button>
+            </md-dialog-actions>
+        </form>
 </md-content>

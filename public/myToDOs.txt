@@ -1,5 +1,4 @@
 User's name can be english on registration --> waiting for backEnd -->gotta change the pattern
 document upload on panel
 md tabs not responsive on small screens
-map reload issue --> major issue
 not enough credit won't show

@@ -1,0 +1,28 @@
+<md-content layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row" flex="100"
+            flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100">
+    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+         layout-xl="column">
+        <a ui-sref=".editInfo">
+            <md-button
+                    title="ویرایش اطلاعات"
+                    target="_blank"
+                    aria-label="InfoEdit"
+                    class="md-icon-button launch">
+                <md-icon md-font-icon="fa fa-pencil-square-o fa-2x"></md-icon>
+            </md-button>
+        </a>
+        <span flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></span>
+        <a ui-sref=".upload">
+            <md-button
+                    title="آپلود مدارک"
+                    target="_blank"
+                    aria-label="docUpload"
+                    class="md-icon-button launch">
+                <md-icon md-font-icon="fa fa-upload fa-2x"></md-icon>
+            </md-button>
+        </a>
+    </div>
+    <md-divider></md-divider>
+    <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
+    <div ui-view="editStuff" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100" flex-xl="100"></div>
+</md-content>
