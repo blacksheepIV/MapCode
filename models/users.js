@@ -624,13 +624,13 @@ module.exports.get = function (conditions, fields, callback) {
 /**
  * Gets a user's detailed info.
  *
- * @param {string} username
+ * @param {object} conditions
  * @param {string[]} fields List of fields to retrieve.
  * @param {getDetailedCallback} [callback]
  *
  * @throws {'serverError'}
  */
-module.exports.getDetailed = function (username, fields, callback) {
+module.exports.getDetailed = function (conditions, fields, callback) {
     if (fields.length === 0)
         return callback(null, {});
 
@@ -638,9 +638,7 @@ module.exports.getDetailed = function (username, fields, callback) {
         {
             columns: fields,
             table: 'users_detailed',
-            conditions: {
-                username: username
-            }
+            conditions: conditions
         },
         function (err, results) {
             if (err) {
