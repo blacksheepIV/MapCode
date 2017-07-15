@@ -181,7 +181,7 @@ router.route('/points')
      *            "popularity": 0,
      *            "category": "کبابی",
      *            "description": "یک توضیح!",
-     *            "tags": ["رستوران", "food"]
+     *            "tags": "رستوران Food"
      *          }
      *        ]
      */
@@ -198,14 +198,11 @@ router.route('/points')
                     return console.error("MySQL: Error in getting token user's points: %s", err);
                 }
 
-                asyncEach(results, function (result, done) {
-                    result.tags = result.tags.split(' ');
-                    // Remove `owner_id` field
-                    delete result.owner_id;
-                    done();
-                }, function () {
-                    res.json(results);
-                });
+                // Remove `owner_id` field
+                for (var i = 0; i < results.length; i++)
+                    delete results[i].owner_id;
+
+                res.json(results);
             }
         );
 
