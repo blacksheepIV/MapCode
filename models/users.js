@@ -709,7 +709,7 @@ module.exports.getPoints = function (username, publicOrPrivate, fields, start, l
 
 /**
  * A express middleware that checks the friendship status of
- * token user with a username that is is req.params.username
+ * token user with a username that is req.params.username
  * and sets these variables:
  *     - req.isFriend Shows if two users are friends
  *     - req.isMySelf Shows if two users are the same
