@@ -543,11 +543,11 @@ router.route('/users/')
      *
      */
     .get(
-        customFielder('query', 'fields', usersModel.detailedPublicFields),
+        customFielder('query', 'fields', usersModel.detailedPublicFields, true),
 
         function (req, res) {
             usersModel.getDetailed(
-                req.user.username,
+                {id: req.user.id},
                 req.queryFields,
                 function (err, user_info) {
                     if (err) return res.status(500).end(0); // Server error
