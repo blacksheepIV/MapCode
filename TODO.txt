@@ -29,8 +29,6 @@
     * https://github.com/alexfernandez/loadtest
     * https://k6.readme.io/
 
-- SMS service
-
 - Add triggers for `points` table
     * Check credit
     * Set `code` field
@@ -49,3 +47,5 @@
 - API for most viewed categories
 
 - (?) Edit point
+
+- SMS verification message content

@@ -30,6 +30,7 @@
     "jshint": "latest"
   },
   "dependencies": {
+    "2972.ir": "^1.0.0",
     "async": "^2.3.0",
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",
