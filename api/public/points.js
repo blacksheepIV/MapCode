@@ -173,8 +173,8 @@ router.get('/points/search/',
         }
         // If request is authenticated search in public points + user's and his/her friends private points
         else {
-            var cond = "(public = TRUE  OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
-            query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id]);
+            var cond = "(public = TRUE OR `owner_id` = ? OR EXISTS (SELECT * FROM `friends` WHERE (first_user = ? and second_user = owner_id) OR (second_user = ? AND first_user = owner_id)))";
+            query += (hasCond ? " AND " : " WHERE ") + mysqlFormat(cond, [req.user.id, req.user.id, req.user.id]);
         }
 
         query += mysqlFormat(" AND (DATEDIFF(`expiration_date`, CURDATE()) >= -3 OR `owner_id` = ?)", [req.user ? req.user.id : null]);
