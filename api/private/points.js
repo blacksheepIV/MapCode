@@ -187,11 +187,11 @@ router.route('/points')
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT * FROM `points_detailed` " +
-            "WHERE `owner` = ? " +
+            "SELECT * FROM `points_detailed_with_owner_id` " +
+            "WHERE `owner_id` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
-            [req.user.username, req.queryStart, req.queryLimit],
+            [req.user.id, req.queryStart, req.queryLimit],
             function (err, results) {
                 if (err) {
                     res.status(500).end();
@@ -200,6 +200,8 @@ router.route('/points')
 
                 asyncEach(results, function (result, done) {
                     result.tags = result.tags.split(' ');
+                    // Remove `owner_id` field
+                    delete result.owner_id;
                     done();
                 }, function () {
                     res.json(results);
