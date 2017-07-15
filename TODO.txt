@@ -5,8 +5,6 @@
 
 - Check XSS
 
-- Change dynamic query generators to static query strings for speed optimization
-
 - User's name can be english
 
 - Remove unused tags from DB (with trigger or sth)
@@ -29,23 +27,17 @@
     * https://github.com/alexfernandez/loadtest
     * https://k6.readme.io/
 
-- Add triggers for `points` table
-    * Check credit
-    * Set `code` field
-    * Check `category` field
-
-- `expired_points` table
+- SMS verification message content
 
 - Indexes on database tables
 
-- Add cron jobs for point expiration
-    https://github.com/kelektiv/node-cron
+- (?) Edit point
 
 - Custom fields in {GET}/points API
     - Add model for it!
 
 - API for most viewed categories
 
-- (?) Edit point
-
-- SMS verification message content
+- Add cron jobs for point expiration
+    * https://github.com/kelektiv/node-cron
+    * `expired_points` table
