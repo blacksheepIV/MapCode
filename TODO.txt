@@ -47,3 +47,5 @@
 
 - Custom fields in {GET}/points API
     - Add model for it!
+
+- API for most viewed categories
