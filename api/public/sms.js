@@ -92,6 +92,8 @@ router.route('/sms/')
                             });
                         // Production environment
                         else {
+                            res.status(200).end();
+
                             sendSMS({
                                 username: process.env.SMS_USERNAME,
                                 password: process.env.SMS_PASSWORD,
@@ -101,8 +103,6 @@ router.route('/sms/')
                                 message: "کد تایید مپ‌کد: " + smsVerificationCode
                             }, function (err) {
                                 if (err) {
-                                    res.status(500).end();
-
                                     // 'request' package error
                                     if (isNaN(parseInt(err)))
                                         console.error("{POST}/sms/: 2972.ir: request:\n\t%s", err);
@@ -110,8 +110,6 @@ router.route('/sms/')
                                     else
                                         console.error("{POST}/sms/: 2972.ir: SMS service:\n\t%s", err);
                                 }
-                                else
-                                    res.status(200).end();
                             });
                         }
                     });
