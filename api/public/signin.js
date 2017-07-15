@@ -61,7 +61,6 @@ router.route('/signin')
                 else {
                     jwt.generateToken(
                         userId,
-                        req.body.username,
                         req.query.m !== undefined,
                         function (err, token) {
                             if (err) {

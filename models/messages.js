@@ -185,7 +185,7 @@ module.exports.delete = function (senderOrReceiver, msgCode, callback) {
  * Gets the list of user's messages.
  *
  * @param {string} receiverOrSender If is 'sender' gets user's sent messages and if is 'receiver' get's user's received messages.
- * @param {string} username User's username.
+ * @param {number|string} id User's id.
  * @param {boolean} unread If true, only gets unread messages.
  * @param {string[]} fields List of fields to retrieve.
  * @param {(number|string)} start
@@ -194,13 +194,13 @@ module.exports.delete = function (senderOrReceiver, msgCode, callback) {
  *
  * @throws {'serverError'}
  */
-module.exports.getUserMessages = function (receiverOrSender, username, unread, fields, start, limit, callback) {
+module.exports.getUserMessages = function (receiverOrSender, id, unread, fields, start, limit, callback) {
     db.conn.query(
         " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
         " FROM `messages_detailed`" +
         " WHERE ?? = ?" + (unread === true ? " AND `read` = FALSE" : '') +
         " LIMIT ?, ?",
-        [receiverOrSender, username, start, limit],
+        [receiverOrSender + '_id', id, start, limit],
         function (err, results) {
             // MySQL error
             if (err) {
@@ -223,20 +223,20 @@ module.exports.getUserMessages = function (receiverOrSender, username, unread, f
 /**
  * Gets message's content.
  *
- * @param {string} username Sender or receiver user's username.
+ * @param {string} id Sender or receiver id.
  * @param {(number|string)} msgCode Message's code.
  * @param {string[]} fields List of fields to retrieve.
  * @param {messagesGetCallback} [callback]
  *
  * @throws {'serverError'}
  */
-module.exports.get = function (username, msgCode, fields, callback) {
+module.exports.get = function (id, msgCode, fields, callback) {
     db.conn.query(
         " SELECT " + (fields === '*' ? '*' : fields.map(db.conn.escapeId)) +
         " FROM `messages_detailed` "+
-        " WHERE (`sender` = ? OR `receiver` = ?)" +
+        " WHERE (`sender_id` = ? OR `receiver_id` = ?)" +
         "       AND `code` = ?",
-        [username, username, msgCode],
+        [id, id, msgCode],
         function (err, results) {
             // MySQL error
             if (err) {

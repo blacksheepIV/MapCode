@@ -181,29 +181,28 @@ router.route('/points')
      *            "popularity": 0,
      *            "category": "کبابی",
      *            "description": "یک توضیح!",
-     *            "tags": ["رستوران", "food"]
+     *            "tags": "رستوران Food"
      *          }
      *        ]
      */
     .get(function (req, res) {
         db.conn.query(
             "SELECT * FROM `points_detailed` " +
-            "WHERE `owner` = ? " +
+            "WHERE `owner_id` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
-            [req.user.username, req.queryStart, req.queryLimit],
+            [req.user.id, req.queryStart, req.queryLimit],
             function (err, results) {
                 if (err) {
                     res.status(500).end();
                     return console.error("MySQL: Error in getting token user's points: %s", err);
                 }
 
-                asyncEach(results, function (result, done) {
-                    result.tags = result.tags.split(' ');
-                    done();
-                }, function () {
-                    res.json(results);
-                });
+                // Remove `owner_id` field
+                for (var i = 0; i < results.length; i++)
+                    delete results[i].owner_id;
+
+                res.json(results);
             }
         );
 

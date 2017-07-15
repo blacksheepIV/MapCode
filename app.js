@@ -46,7 +46,8 @@ function parseMainHtml() {
     fs.readFile(mainHtmlAbPath, {encoding: 'utf-8'}, function(err, fileContent) {
         if (!err) {
             mainHtml = mustache.render(fileContent, {
-                apiHref: process.env.API_HREF
+                apiHref: process.env.API_HREF,
+                NODE_ENV: process.env.NODE_ENV
             });
         }
         else {
@@ -65,7 +66,7 @@ app.get('/*', function (req, res) {
  */
 function watchMainHtml() {
     fs.watch(mainHtmlAbPath, function(eventType) {
-        if (eventType == 'change') {
+        if (eventType === 'change') {
             parseMainHtml();
         }
         watchMainHtml();

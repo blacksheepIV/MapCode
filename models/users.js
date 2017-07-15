@@ -550,21 +550,22 @@ module.exports.signIn = function (username, password, callback) {
  *     1 : Are friends
  *     2 : Are friends and first_user has requested
  *     3 : Are friends has second_user has requested
+ *     4 : Are same!
  *
- * @param {string} first_user
- * @param {string} second_user
+ * @param {string} first_user_username First user's username.
+ * @param {number|string} second_user_id Second user's id.
  * @param {usersFriendshipStatusCallback} [callback]
  *
  * @throws {'serverError'}
  */
-module.exports.friendshipStatus = function (first_user, second_user, callback) {
+module.exports.friendshipStatus = function (first_user_username, second_user_id, callback) {
     db.conn.query(
         "SELECT `friendshipStatus` (?, ?) as `status`",
-        [first_user, second_user],
+        [first_user_username, second_user_id],
         function (err, results) {
             // MySQL error
             if (err) {
-                console.error("areFriends@models/users: MySQL error in getting user's friendship from `friends_username` view:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
+                console.error("friendshipStatus@models/users: MySQL:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);
                 return callback('serverError');
             }
 
@@ -624,13 +625,13 @@ module.exports.get = function (conditions, fields, callback) {
 /**
  * Gets a user's detailed info.
  *
- * @param {string} username
+ * @param {object} conditions
  * @param {string[]} fields List of fields to retrieve.
  * @param {getDetailedCallback} [callback]
  *
  * @throws {'serverError'}
  */
-module.exports.getDetailed = function (username, fields, callback) {
+module.exports.getDetailed = function (conditions, fields, callback) {
     if (fields.length === 0)
         return callback(null, {});
 
@@ -638,9 +639,7 @@ module.exports.getDetailed = function (username, fields, callback) {
         {
             columns: fields,
             table: 'users_detailed',
-            conditions: {
-                username: username
-            }
+            conditions: conditions
         },
         function (err, results) {
             if (err) {
@@ -711,7 +710,7 @@ module.exports.getPoints = function (username, publicOrPrivate, fields, start, l
 
 /**
  * A express middleware that checks the friendship status of
- * token user with a username that is is req.params.username
+ * token user with a username that is req.params.username
  * and sets these variables:
  *     - req.isFriend Shows if two users are friends
  *     - req.isMySelf Shows if two users are the same
@@ -731,17 +730,8 @@ module.exports.checkFriendshipStatus = function () {
 
         // If user is signed in
         if (req.user) {
-            // If the requester and `username` are same
-            if (req.params.username === req.user.username) {
-                req.isFriend = true;
-                req.isMySelf = true;
-                req.friendship = 'friend';
-
-                return next();
-            }
-
             // Check if signed in user is a friend of `username`
-            module.exports.friendshipStatus(req.params.username, req.user.username, function (err, friendship_status) {
+            module.exports.friendshipStatus(req.params.username, req.user.id, function (err, friendship_status) {
                 // Server error
                 if (err) return res.status(500).end();
 
@@ -755,8 +745,14 @@ module.exports.checkFriendshipStatus = function () {
                     case 2: // username has requested to user
                         req.friendship = 'pending_to_me';
                         break;
-                    default: // user has requested to username
+                    case 3: // user has requested to username
                         req.friendship = 'pending_from_me';
+                        break;
+                    default:
+                        // Are same
+                        req.isFriend = true;
+                        req.isMySelf = true;
+                        req.friendship = 'friend';
                 }
 
                 next();

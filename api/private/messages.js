@@ -163,12 +163,12 @@ router.post('/messages',
 router.get('/messages',
     startLimitChecker,
 
-    customFielder('query', 'fields', messagesModel.publicFields),
+    customFielder('query', 'fields', messagesModel.publicFields, true),
 
     function (req, res) {
         messagesModel.getUserMessages(
             'receiver',
-            req.user.username,
+            req.user.id,
             req.query.unread !== undefined,
             req.queryFields,
             req.queryStart,
@@ -230,11 +230,11 @@ router.get('/messages',
  */
 router.get('/messages/outbox',
     startLimitChecker,
-    customFielder('query', 'fields', messagesModel.publicFields),
+    customFielder('query', 'fields', messagesModel.publicFields, true),
     function (req, res) {
         messagesModel.getUserMessages(
             'sender',
-            req.user.username,
+            req.user.id,
             false, // Both read and unread messages
             req.queryFields,
             req.queryStart,
@@ -297,11 +297,11 @@ router.route('/messages/:code')
     .get(
         validateWithSchema({'code': {isInt: {errorMessage: 'not_numeric'}}}, 'all', null, 'checkParams'),
 
-        customFielder('query', 'fields', messagesModel.publicFields),
+        customFielder('query', 'fields', messagesModel.publicFields, true),
 
         function (req, res) {
             messagesModel.get(
-                req.user.username,
+                req.user.id,
                 req.params.code,
                 req.queryFields,
                 function (err, msg) {

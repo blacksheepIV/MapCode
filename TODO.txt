@@ -43,4 +43,9 @@
 - Add cron jobs for point expiration
     https://github.com/kelektiv/node-cron
 
-- Remove username from token
+- Custom fields in {GET}/points API
+    - Add model for it!
+
+- API for most viewed categories
+
+- (?) Edit point
