@@ -298,9 +298,9 @@ blockquote {
 md-sidenav,
 md-sidenav.md-locked-open,
 md-sidenav.md-closed.md-locked-open-add-active {
-    min-width: 350px !important;
+    min-width: 250px !important;
     width: 85vw !important;
-    max-width: 415px !important;
+    max-width: 300px !important;
 }
 
 /*Vertical Tabs*/
@@ -364,22 +364,18 @@ md-sidenav.md-closed.md-locked-open-add-active {
 
 /* The navigation menu links */
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 0px 0px 0px 0px;
     text-decoration: none;
-    font-size: 1.25em;
+    font-size: 1.10em;
     color: #818181;
     display: inline-block;
-    transition: 0.3s
+    transition: 0.3s;
+    margin-bottom:-10px;
 }
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover, .offcanvas a:focus {
     color: #f1f1f1;
-}
-
-.SNav_items {
-    display: block;
-    border-bottom: 1px dashed black;
 }
 
 /* ************************************************************************************************************* */
@@ -551,4 +547,25 @@ md-grid-tile {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+}
+.button {
+    -moz-appearance: button;
+    /* Firefox */
+    -webkit-appearance: button;
+    /* Safari and Chrome */
+    padding: 10px;
+    margin: 10px;
+    width: 70px;
+}
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 200px;
+    height: 65px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+.dragover {
+    border: 5px dashed blue;
 }

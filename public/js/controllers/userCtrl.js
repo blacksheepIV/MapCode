@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 09-Apr-17.
  */
-var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, $state, userService, $mdDialog, authenticationToken,toastr,upload) {
+var userCtrl = function ($scope, $http, $rootScope, RegisteredUsr, $state, userService, $mdDialog, authenticationToken,toastr) {
     var alteredData = {};
     $scope.initVars = function () {
         $scope.investigate = false; // user's not been investigated and approved yet

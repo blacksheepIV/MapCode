@@ -121,7 +121,15 @@ mapCodeApp.config(function ($locationProvider, $httpProvider, $stateProvider, $u
                 }
             }
         })
-
+        .state('panel.edit.upload', {
+            url: '/upload',
+            views: {
+                'editStuff': {
+                    templateUrl: '../templates/Panel/userPanelItems/editStuff/docsUpload.html',
+                    controller: friendsCtrl
+                }
+            }
+        })
         .state('panel.passChange', {
             url: '/passChange',
             data: {

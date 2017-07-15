@@ -1,30 +1,25 @@
 <div ng-controller="mainCtrl" ng-init="initVar()" style="height:100%;" layout-fill>
     <md-sidenav class="md-sidenav-right" md-component-id="right" md-whiteframe="4" layout="column" layout-xs="column"
                 layout-sm="column" layout-md="column" layout-lg="column" layout-xl="column" style="height:100%;">
-        <md-toolbar md-theme="Khaz" class="md-tall md-primary md-hue-2">
-            <div class="md-toolbar-tools" layout="column" layout-xs="column" layout-sm="column" layout-md="column"
-                 layout-lg="column" layout-xl="column" layout-fill layout-align="center" layout-align-xs="center"
-                 layout-align-sm="center" layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
-                <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
-                     layout-align="center" layout-align-xs="center" layout-align-sm="center" layout-align-md="center"
-                     layout-align-lg="center" layout-align-xl="center" flex="100" flex-xs="100" flex-sm="100"
-                     flex-md="100" flex-lg="100" flex-xl="100">
-                    <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
-                         layout-xl="column" flex="100" flex-xs="100" flex-sm="100" flex-md="100" flex-lg="100"
-                         flex-xl="100">
-                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
-                             layout-xl="row">
-                            <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
-                            <md-icon class="fa fa-user-circle-o fa-4x"></md-icon>
-                        </div>
-                        <span class="md-subhead description" style="font-family: IRANSans;">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
-                        <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row"
-                             layout-xl="row">
-                            <md-button class="md-raised md-accent md-hue-2" ng-click="logOut()" ng-show="isUser">خروج
-                            </md-button>
-                        </div>
+        <md-toolbar md-theme="agreedGreen" class="md-tall md-primary md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-xs="row" layout-sm="row" layout-md="row"
+                 layout-lg="row" layout-xl="row" layout-fill>
+                <img src="../../img/avatars/unknown.png"
+                     style="width:60px;height:60px;margin-left:10px;border-radius:5px;" ng-show="!NotLoggedIn"/>
+                <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
+                     layout-xl="column">
+                    <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
+                        <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
+                        <md-button class="md-icon-button" aria-label="More" ng-click="logOut()"
+                                   ng-show="!NotLoggedIn">
+                            <md-icon md-font-icon="fa fa-power-off fa-2x"></md-icon>
+                            <md-tooltip md-direction="bottom"> خروج از سیستم</md-tooltip>
+                        </md-button>
                     </div>
+                    <span class="md-subhead description" style="font-family: IRANSans;" ng-show="!NotLoggedIn">اعتبار:{{U.credit}} , امتیاز:{{U.bonus}}</span>
+
                 </div>
+
             </div>
         </md-toolbar>
         <md-content layout-margin dir="rtl" layout-align="center" layout-align-xs="center" layout-align-sm="center"
@@ -37,10 +32,25 @@
                     <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
                          layout-xl="column" layout-align="center" layout-align-xs="center" layout-align-sm="center"
                          layout-align-md="center" layout-align-lg="center" layout-align-xl="center">
-                        <p>
-                            شما وارد سیستم نشدید،پس ببخشید دیگه
-                        </p>
-                        <img src="../../img/BGs/sad.svg" alt="oops" style="width:25%;height:auto;"/>
+                        <div>
+                            <span class="fa fa-info-circle fa"></span>
+                            <a ng-click="routTo(aboutUs)" class="menuItems"><h6>درباره ما</h6></a>
+                        </div>
+                        <md-divider></md-divider>
+                        <div>
+                            <span class="fa fa-phone fa"></span>
+                            <a ng-click="routTo(contactUs)" class="menuItems"><h6>تماس با ما</h6></a>
+                        </div>
+                        <md-divider></md-divider>
+                        <div>
+                            <span class="fa fa-gavel fa"></span>
+                            <a ng-click="routTo(rules)" class="menuItems"><h6>قوانین و مقررات</h6></a>
+                        </div>
+                        <md-divider></md-divider>
+                        <div>
+                            <span class="fa fa-question-circle-o fa"></span>
+                            <a ng-click="routTo(guide)" class="menuItems"><h6>راهنمای سایت</h6></a>
+                        </div>
                     </div>
                 </div>
                 <div class="animate-switch" ng-switch-when="false">
@@ -49,22 +59,43 @@
                         <a ui-sref="panel" class="menuItems"><h6>حساب کاربری من</h6></a>
                     </div>
                     <md-divider></md-divider>
-                    <div>
-                        <span class="fa fa-heart fa"></span>
-                        <a href="#" class="menuItems"><h6> مکان های منتخب من</h6></a>
-                    </div>
-                    <md-divider></md-divider>
+                    <!-- <div>
+                         <span class="fa fa-heart fa"></span>
+                         <a href="#" class="menuItems"><h6> مکان های منتخب من</h6></a>
+                     </div>
+                     <md-divider></md-divider> -->
                     <div>
                         <span class="fa fa-map-marker fa"></span>
                         <a class="menuItems" ng-click="addPoint()"><h6> ثبت یک مکان جدید</h6></a>
                     </div>
                     <md-divider></md-divider>
                     <div>
-                        <span class="fa fa-map-marker fa"></span>
+                        <span class="fa fa-map-pin fa"></span>
                         <a ng-click="addPersonalPoint()" class="menuItems"><h6>ثبت یک مکان خصوصی</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-info-circle fa"></span>
+                        <a ng-click="routTo(aboutUs)" class="menuItems"><h6>درباره ما</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-phone fa"></span>
+                        <a ng-click="routTo(contactUs)" class="menuItems"><h6>تماس با ما</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-gavel fa"></span>
+                        <a ng-click="routTo(rules)" class="menuItems"><h6>قوانین و مقررات</h6></a>
+                    </div>
+                    <md-divider></md-divider>
+                    <div>
+                        <span class="fa fa-question-circle-o fa"></span>
+                        <a ng-click="routTo(guide)" class="menuItems"><h6>راهنمای سایت</h6></a>
                     </div>
                 </div>
             </div>
-        </md-content>
-    </md-sidenav>
+</div>
+</md-content>
+</md-sidenav>
 </div>

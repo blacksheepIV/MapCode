@@ -15,7 +15,7 @@ mapCodeApp.config(function ($mdThemingProvider, localStorageServiceProvider, toa
         .accentPalette('cyan')
         .warnPalette('orange')
         .dark();
-    $mdThemingProvider.theme('Khaz', 'default')
+    $mdThemingProvider.theme('agreedGreen', 'default')
         .primaryPalette('green')
         .accentPalette('lime')
         .warnPalette('yellow')
