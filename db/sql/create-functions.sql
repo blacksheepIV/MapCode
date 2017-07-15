@@ -209,71 +209,71 @@ DELIMITER ;
       1 : Are friends
       2 : Are friends and first_user has requested
       3 : Are friends has second_user has requested
+      4 : Are same!
 
-    Note: If any one given usernames does not exist, 0 will return.
+    Note: If given username or id does not exist, 0 will return.
  */
 DELIMITER ~
 CREATE FUNCTION `friendshipStatus`
   (
-    first_user  VARCHAR(15),
-    second_user VARCHAR(15)
+    first_user_username VARCHAR(15),
+    second_user_id      MEDIUMINT UNSIGNED
   )
   RETURNS TINYINT
   BEGIN
+    DECLARE first_user_id MEDIUMINT UNSIGNED DEFAULT NULL;
+    DECLARE tmp_user_id MEDIUMINT UNSIGNED DEFAULT NULL;
+
     -- Fetch first user's id from it's username
     SELECT `users`.`id`
-    INTO @first_user_id
+    INTO first_user_id
     FROM `users`
-    WHERE `users`.`username` = first_user
+    WHERE `users`.`username` = first_user_username
     LOCK IN SHARE MODE;
     -- Check if there is any user with given username
-    IF found_rows() != 1
+    IF first_user_id IS NULL
     THEN
       RETURN 0;
     END IF;
 
-    -- Fetch second user's id from it's username
-    SELECT `users`.`id`
-    INTO @second_user_id
-    FROM `users`
-    WHERE `users`.`username` = second_user
-    LOCK IN SHARE MODE;
-    -- Check if there is any user with given username
-    IF found_rows() != 1
+    -- Check if they are same
+    IF first_user_id = second_user_id
     THEN
-      RETURN 0;
+      RETURN 4;
     END IF;
 
     -- Check if they are fiends
     SELECT `friends`.`first_user`
-    INTO @dummy
+    INTO tmp_user_id
     FROM `friends`
-    WHERE (`friends`.`first_user` = @first_user_id
+    WHERE (`friends`.`first_user` = first_user_id
            AND
-           `friends`.second_user = @second_user_id)
+           `friends`.second_user = second_user_id)
           OR
-          (`friends`.`first_user` = @second_user_id
+          (`friends`.`first_user` = second_user_id
            AND
-           `friends`.second_user = @first_user_id);
-    IF found_rows() > 0
+           `friends`.second_user = first_user_id)
+    LIMIT 1;
+
+    IF tmp_user_id IS NOT NULL
     THEN
       RETURN 1;
     END IF;
 
     -- Check if there is any request between them
-    SELECT `friend_requests`.requester
-    INTO @requester
+    SELECT `friend_requests`.`requester`
+    INTO tmp_user_id
     FROM `friend_requests`
-    WHERE (`friend_requests`.`first_user` = @first_user_id
+    WHERE (`friend_requests`.`first_user` = first_user_id
            AND
-           `friend_requests`.second_user = @second_user_id)
+           `friend_requests`.second_user = second_user_id)
           OR
-          (`friend_requests`.`first_user` = @second_user_id
+          (`friend_requests`.`first_user` = second_user_id
            AND
-           `friend_requests`.second_user = @first_user_id);
+           `friend_requests`.second_user = first_user_id);
     IF found_rows() > 0
     THEN
-      IF @requester = @first_user_id
+      IF tmp_user_id = first_user_id
       THEN
         RETURN 2;
       ELSE
