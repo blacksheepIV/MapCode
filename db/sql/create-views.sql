@@ -18,8 +18,9 @@ CREATE ALGORITHM = MERGE VIEW users_public AS
     LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
 
 
-CREATE ALGORITHM = MERGE VIEW users_detailed AS
+CREATE ALGORITHM = MERGE VIEW `users_detailed` AS
   SELECT
+    `users`.`id`,
     `users`.`name`,
     `users`.`melli_code`,
     `users`.`email`,
@@ -43,7 +44,6 @@ CREATE ALGORITHM = MERGE VIEW users_detailed AS
     userUnreadMessagesCount(`users`.`id`)       AS `unread_messages_count`
   FROM `users`
     LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
-
 
 CREATE VIEW point_tags_concated AS
   SELECT
