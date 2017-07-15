@@ -105,8 +105,7 @@ CREATE PROCEDURE `addPoint`
     END;
 
     START TRANSACTION;
-    SELECT SQL_CALC_FOUND_ROWS
-      users.credit
+    SELECT SQL_CALC_FOUND_ROWS users.credit
     INTO credit
     FROM users
     WHERE id = owner
@@ -114,12 +113,14 @@ CREATE PROCEDURE `addPoint`
 
     IF FOUND_ROWS() != 1
     THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'OWNER_NOT_FOUND';
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'OWNER_NOT_FOUND';
     END IF;
 
     IF credit <= 0
     THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NOT_ENOUGH_CREDIT';
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'NOT_ENOUGH_CREDIT';
     END IF;
 
     SELECT SQL_CALC_FOUND_ROWS
@@ -135,15 +136,23 @@ CREATE PROCEDURE `addPoint`
 
     IF FOUND_ROWS() != 1
     THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CATEGORY_NOT_FOUND';
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'CATEGORY_NOT_FOUND';
     END IF;
 
-    SELECT
-    SUBSTRING(MAX(`code`), 3)
+    SELECT SUBSTRING(MAX(`code`), 9)
     INTO @cat_count
     FROM `points`
     WHERE `points`.`category` = category_id
     FOR UPDATE;
+
+    SET @cat_count = CAST(@cat_count AS UNSIGNED);
+
+    IF @cat_count IS NULL
+    THEN
+      SET @cat_count = 0;
+    END IF;
+    SET @cat_count = @cat_count + 1;
 
     SET @cat_count = CONCAT(REPEAT('0', 9 - CHAR_LENGTH(@cat_count)), @cat_count);
 
@@ -189,7 +198,9 @@ CREATE PROCEDURE `addPoint`
     SET point_code = @code;
     SET @point_id = LAST_INSERT_ID();
 
-    UPDATE `users` SET `credit` = `credit` - 1 WHERE `id` = owner;
+    UPDATE `users`
+    SET `credit` = `credit` - 1
+    WHERE `id` = owner;
 
     COMMIT;
 
