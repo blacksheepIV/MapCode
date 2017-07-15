@@ -72,12 +72,11 @@ module.exports.JWTErrorIgnore = function (err, req, res, next) {
  Errors:
     - serverError
  */
-module.exports.generateToken = function (userId, username, isMobile, callback) {
+module.exports.generateToken = function (userId, isMobile, callback) {
     var jti = randomstring.generate({length: 5});
 
     jsonwebtoken.sign({
         id: userId,
-        username: username,
         jti: jti
     }, process.env.JWT_SECRET_CODE, {noTimestamp: true}, function (err, token) {
         // jsonwebtoken Error
