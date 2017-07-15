@@ -139,7 +139,7 @@ router.get('/points/search/',
         }
 
         var hasCond = false;
-        var query = "SELECT " + fields.join(', ') + " FROM `points_detailed_with_owner_id`";
+        var query = "SELECT " + fields.join(', ') + " FROM `points_detailed`";
 
         function checkQueryParam(subQuery, field, value) {
             if (req.query[field]) {

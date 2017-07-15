@@ -251,7 +251,7 @@ var getDetailedPrivateQuery =
  */
 var getDetailedQuery =
     " SELECT %s" +
-    " FROM `points_detailed_with_owner_id` AS `T`" +
+    " FROM `points_detailed` AS `T`" +
     " WHERE `T`.`code` = ? AND" +
     " (" +
     "   `T`.public = TRUE %s" +

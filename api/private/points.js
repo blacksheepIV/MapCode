@@ -187,7 +187,7 @@ router.route('/points')
      */
     .get(function (req, res) {
         db.conn.query(
-            "SELECT * FROM `points_detailed_with_owner_id` " +
+            "SELECT * FROM `points_detailed` " +
             "WHERE `owner_id` = ? " +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
