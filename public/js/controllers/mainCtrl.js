@@ -1,7 +1,7 @@
 /**
  * Created by blackSheep on 03-Apr-17.
  */
-var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authenticationToken, $mdDialog, pointService, RegisteredUsr) {
+var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authenticationToken, $mdDialog, pointService, RegisteredUsr,toastr) {
     $scope.initVar = function () {
         $scope.toggleFlag = true;
         $rootScope.isUser = false;
@@ -23,6 +23,9 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
                 },
                 function (Info) {
                     console.log(Info); //failure in obtaining data
+                    toastr.error(" دریافت اطلاعات کاربر با خطا مواجه شد، لطفا با ادمین تماس بگیرید","خطا");
+                    $scope.logOut();
+
                 }
             );
         }
@@ -67,6 +70,27 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
         $state.go('home.mainTheme');
     }
     //******************************************************************************************************************
+    $scope.routeTo = function(path){
+        console.log(path);
+        switch(path){
+            case 'aboutUs':
+                $state.go('home.aboutUs');
+                $scope.toggleRight();
+                break;
+            case 'contactUs':
+                $state.go('home.contactUs');
+                $scope.toggleRight();
+                break;
+            case 'rules':
+                $state.go('home.rules');
+                $scope.toggleRight();
+                break;
+            case 'guide':
+                $state.go('home.guide');
+                $scope.toggleRight();
+                break;
+        };
+    };//end of routTo function
     //******************************************************************************************************************
     $scope.addPoint = function () {
         console.log($state.current);
