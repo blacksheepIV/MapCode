@@ -35,24 +35,41 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
         $state.go('.mainTheme');
     }//end of initVar
     //################################################################################################################################################################################
-
     //################################################################################################################################################################################
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function () {
         return $mdSidenav('right').isOpen();
     };
     function buildToggler(navID) {
-        return function () {
-            // Component lookup should always be available since we are not using `ng-if`
-            $mdSidenav(navID)
-                .toggle()
-                .then(function () {
-                    $log.debug("toggle " + navID + " is done");
-                });
-        };
+      //  if( $scope.isAguest)
+          // $scope.showAlert();
+            console.log("bye");
+
+            return function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav(navID)
+                    .toggle()
+                    .then(function () {
+                        $log.debug("toggle " + navID + " is done");
+                    });
+            };
+
     }
 
     //##################################################################################################################
+    $scope.showAlert = function () {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('خطا!')
+                .textContent('متاسفانه کاربر میهمان مجاز به استفاده از امکانات نمی باشد.')
+                .ariaLabel('AlertDialog')
+                .ok('متوجه شدم')
+            // .targetEvent(ev)
+        );
+    };
+    /* #################################################################################################################### */
     $scope.login = function () {
         //  $location.path("/login");
         $state.go('login');
@@ -93,10 +110,12 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
     };//end of routTo function
     //******************************************************************************************************************
     $scope.addPoint = function () {
-        console.log($state.current);
-        if ($state.current.name === "home.showMap")
+      //  console.log($state.current);
+        if($scope.U.credit <1)
+          toastr.warning('عدم موجودی کافی برای ثبت نقطه،لطفا بسته خریداری کنید.','هشدار!');
+        else if ($state.current.name === "home.showMap" && $scope.U.credit >=1 )
             $state.go('home.showMap', {}, {reload: "home.showMap"});
-        else
+        else if($state.current.name !== "home.showMap" && $scope.U.credit >=1)
             $state.go('home.showMap');
         $scope.toggleRight();
         pointService.wannaSubmit("public");
@@ -104,9 +123,11 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
     //######################################################################################################################################
     $scope.addPersonalPoint = function () {
         console.log($state.current);
-        if ($state.current.name === "home.showMap")
+        if($scope.U.credit <1)
+            toastr.warning('عدم موجودی کافی برای ثبت نقطه،لطفا بسته خریداری کنید.','هشدار!');
+       else if ($state.current.name === "home.showMap" && $scope.U.credit >=1)
             $state.transitionTo('home.showMap', {}, {reload: "home.showMap"});
-        else
+        else if($state.current.name !== "home.showMap" && $scope.U.credit >=1)
             $state.go('home.showMap');
         $scope.toggleRight();
         pointService.wannaSubmit("personal");

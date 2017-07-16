@@ -5,7 +5,7 @@
              flex-xs="300" flex-sm="300" flex-md="300" flex-lg="300" flex-xl="300">
             <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row"
                  flex="auto" flex-xs="auto" flex-sm="auto" flex-md="auto" flex-lg="auto" flex-xl="auto">
-                <md-button class="md-icon-button " aria-label="Menu" ng-click="toggleRight()">
+                <md-button class="md-icon-button " aria-label="Menu" ng-click="toggleRight()" ng-disabled="!isUser">
                     <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
                     <md-tooltip md-direction="bottom"> منو</md-tooltip>
                 </md-button>

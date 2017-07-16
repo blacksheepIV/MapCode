@@ -6,6 +6,7 @@ var userService = function ($http) {
     var verCode = -1;
     var usrInfo = {};
     var usr = "";
+    var isGuest = true;
     this.setUserInfo = function (userData) {
         user = userData;
         //  console.log(user);
@@ -47,4 +48,6 @@ var userService = function ($http) {
         var getPoint = window.apiHref + "users/" + username + "/points";
         return $http({url: getPoint, method: "GET"});
     };
+    /* ############################################################################################################### */
+
 };//end of userService function
