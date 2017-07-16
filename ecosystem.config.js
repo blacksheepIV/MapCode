@@ -19,7 +19,7 @@ module.exports = {
             ref: 'origin/master',
             repo: 'git@gitlab.com:ProjectM/src.git',
             path: '/var/www/vhosts/mapcode.ir',
-            "post-deploy": 'npm install --production && npm start',
+            "post-deploy": 'npm install --production && npm start -- --env production',
             "env"  : {
                 "NODE_ENV": "production"
             }
