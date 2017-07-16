@@ -39,6 +39,13 @@
     * `expired_points` table
 
 - Favourite API
+    * Add 'is_favourite to:
+        - (DONE) {GET}/points/:code
+        - {GET}/points/
+        - {GET}/points/search
+        - {GET}/users/:username/points
+    * Add APIs
+    * Trigger for remove friendship and then removing favourite private points from friends
 
 - Rate API
 
