@@ -1,5 +1,4 @@
 var router = require('express').Router();
-var asyncEach = require('async/each');
 
 var db = require('../../db');
 var pointModel = require('../../models/points');
