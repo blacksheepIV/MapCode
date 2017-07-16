@@ -24,10 +24,11 @@
   },
   "devDependencies": {
     "apidoc": "latest",
-    "nsp": "latest",
-    "snyk": "latest",
+    "jshint": "latest",
     "mocha": "latest",
-    "jshint": "latest"
+    "nsp": "latest",
+    "pm2": "^2.5.0",
+    "snyk": "latest"
   },
   "dependencies": {
     "2972.ir": "^1.0.0",
