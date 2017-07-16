@@ -8,6 +8,7 @@
 var util = require('util');
 var lodashIncludes = require('lodash/includes');
 var lodashOmit = require('lodash/omit');
+var lodashPull = require('lodash/pull');
 
 var db = require('../db');
 
@@ -231,13 +232,13 @@ module.exports.add = function (point, callback) {
  * @type {string}
  */
 var getDetailedPrivateQuery =
-    " OR `T`.`owner` = ?" +
+    " OR `T`.`owner_id` = %s" +
     " OR EXISTS(SELECT *" +
     "      FROM `friends`" +
     "      WHERE" +
-    "        (`friends`.`first_user` = ? AND `friends`.`second_user` = `T`.`owner_id`)" +
+    "        (`friends`.`first_user` = %s AND `friends`.`second_user` = `T`.`owner_id`)" +
     "        OR" +
-    "        (`friends`.`second_user` = ? AND `friends`.`first_user` = `T`.`owner_id`)" +
+    "        (`friends`.`second_user` = %s AND `friends`.`first_user` = `T`.`owner_id`)" +
     "    )";
 /**
  * getDetailed function's main query.
@@ -252,10 +253,10 @@ var getDetailedPrivateQuery =
 var getDetailedQuery =
     " SELECT %s" +
     " FROM `points_detailed` AS `T`" +
-    " WHERE `T`.`code` = ? AND" +
+    " WHERE `T`.`code` = %s AND" +
     " (" +
     "   `T`.public = TRUE %s" +
-    " ) AND (DATEDIFF(`T`.`expiration_date`, CURDATE()) >= -3 OR `T`.`owner_id` = ?)";
+    " ) AND (DATEDIFF(`T`.`expiration_date`, CURDATE()) >= -3 OR `T`.`owner_id` = %s)";
 /**
  * @callback pointsGetDetailedWithRequesterUserCallback
  * @param err
@@ -271,7 +272,6 @@ var getDetailedQuery =
  * won't be returned.
  *
  * @param {object} requesterUser The user who wants to access a point's detailed info.
- * @param {string} requesterUser.username
  * @param {(number|string)} requesterUser.id
  * @param {string} pointCode Point's code.
  * @param {string[]} fields List of fields to retrieve. Must be subset of {@link module:models/points.publicFields}. If requesterUser is point's owner fields also can include {@link module:models/points.ownerFields}.
@@ -280,19 +280,38 @@ var getDetailedQuery =
  * @throws {'serverError'}
  */
 module.exports.getDetailedWithRequesterUser = function (requesterUser, pointCode, fields, callback) {
+    // User's escaped id
+    var escapedUserId = requesterUser ? db.conn.escape(requesterUser.id) : '';
+
+    var favouriteStatus = '';
+    var filledDetailedPrivateQuery = '';
+    // If user is signed in
+    if (requesterUser) {
+        if (fields.indexOf('is_favourite') !== -1)
+            favouriteStatus = ', `doesUserFavourite`(' + escapedUserId + ', `T`.`code`) AS `is_favourite`';
+
+        filledDetailedPrivateQuery = util.format(getDetailedPrivateQuery,
+            escapedUserId, escapedUserId, escapedUserId
+        );
+    }
+
+    // Remove this field because it's not a real field in `points_detailed` VIEW
+    // Before removing it make a copy of fields
+    fields = lodashPull(fields.slice(), 'is_favourite');
+
+    var query = util.format(
+        getDetailedQuery,
+        // Always add 'owner_id` to check for owner fields
+        fields.concat('owner_id').map(db.conn.escapeId).join(',') + favouriteStatus,
+        // Point's code
+        db.conn.escape(pointCode),
+        // Private query : can be empty string or a real query
+        filledDetailedPrivateQuery,
+        // User's id
+        requesterUser ? escapedUserId : 'NULL'
+    );
     db.conn.query(
-        util.format(
-            getDetailedQuery,
-            // Always add 'owner_id` to check for owner fields
-            fields.concat('owner_id').map(db.conn.escapeId).join(','),
-            // Checks if user is given it will include private query in main query
-            (requesterUser ? getDetailedPrivateQuery : '')
-        ),
-        [pointCode]
-        // Checks if user is given it will add necessary query values
-            .concat(requesterUser ? [requesterUser.username, requesterUser.id, requesterUser.id] : [])
-            // Add requester's id or insert null for expiration checking
-            .concat(requesterUser ? requesterUser.id : null),
+        query,
         function (err, results) {
             if (err) {
                 console.error("get@models/points: MySQL: Error happened getting detailed point:\n\t\t%s\n\tQuery:\n\t\t%s", err, err.sql);

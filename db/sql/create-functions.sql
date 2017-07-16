@@ -398,3 +398,46 @@ CREATE FUNCTION `userUnreadMessagesCount`
   END ~
 DELIMITER ;
 
+
+/*
+  Returns 1 if point is user's favourite
+  and 0 otherwise.
+ */
+DELIMITER ~
+CREATE FUNCTION `doesUserFavourite`
+  (
+    `user_id`  MEDIUMINT UNSIGNED,
+    `point_code` CHAR(17)
+  )
+  RETURNS BOOLEAN
+  BEGIN
+    DECLARE point_id INT UNSIGNED DEFAULT NULL;
+    DECLARE tmp_count TINYINT;
+
+    -- Get point's id from it's code
+    SELECT `points`.`id`
+    INTO point_id
+    FROM `points`
+    WHERE `points`.`code` = point_code
+    LOCK IN SHARE MODE;
+    -- Check if there is any point with given code
+    IF point_id IS NULL
+    THEN
+      RETURN FALSE;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO tmp_count
+    FROM `user_favourite_points` AS `T`
+    WHERE `T`.`user_id` = `user_id` AND `T`.`point_id` = `point_id`
+    LIMIT 1;
+
+    IF tmp_count = 1
+    THEN
+      RETURN TRUE;
+    END IF;
+
+    RETURN FALSE;
+
+  END ~
+DELIMITER ;

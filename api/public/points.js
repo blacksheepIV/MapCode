@@ -233,7 +233,7 @@ router.get('/points/:code',
     jwt.JWTCheck,
     jwt.JWTErrorIgnore,
 
-    customFielder('query', 'fields', pointsModel.publicFields.concat(pointsModel.ownerFields), true),
+    customFielder('query', 'fields', pointsModel.publicFields.concat(pointsModel.ownerFields).concat('is_favourite'), true),
 
     function (req, res) {
         pointsModel.getDetailedWithRequesterUser(
