@@ -5,6 +5,8 @@ var asyncSeries = require('async/series');
 var asyncWaterfall = require('async/waterfall');
 var asyncSetImmediate = require('async/setImmediate');
 var multer = require('multer');
+var mime = require('mime-types');
+var glob = require('glob');
 
 var jwt = require('../../utils/jwt');
 var usersModel = require('../../models/users');
@@ -286,9 +288,12 @@ router.route('/users-avatar')
             if (!req.file.mimetype.startsWith('image'))
                 return res.status(400).json({error: 'not_an_image'});
 
+            var avatarExtension = mime.extension(req.file.mimetype);
+            if (avatarExtension === false)
+                return res.status(400).json({error: 'not_an_image'});
 
             fs.writeFile(
-                path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()),
+                path.join(__dirname, '../../public/img/avatars/', req.user.id.toString() + '.' + avatarExtension),
                 req.file.buffer,
                 function (err) {
                     // serverError
@@ -315,8 +320,17 @@ router.route('/users-avatar')
      *     HTTP/1.1 200 OK
      */
     .delete(function (req, res) {
-        fs.unlink(path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()), function () {});
-        res.status(200).end();
+        glob(
+            path.join(__dirname, '../../public/img/avatars/', req.user.id.toString() + '.*'),
+            function (err, files) {
+                if (err)
+                    console.error("API {DELETE}/users-avatar/: glob:\n\t\t%s", err);
+                else if (files)
+                        fs.unlink(files[0]);
+
+                res.status(200).end();
+            }
+        );
     });
 
 

@@ -51,7 +51,7 @@ var publicFields = module.exports.publicFields = [
  * Allowed user document mime-types
  *
  * @constant
- * @type {string[]}
+ * @type {object}
  */
 module.exports.documentMimeTypes = {
     'application/x-rar-compressed': 'rar',

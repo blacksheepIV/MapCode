@@ -1,6 +1,7 @@
 var path = require('path');
 var router = require('express').Router();
 var pointsModel = require('../../models/points');
+var glob = require('glob');
 
 var jwt = require('../../utils/jwt');
 var usersModel = require('../../models/users');
@@ -25,6 +26,7 @@ var customFielder = require('../../utils').customFielder;
  * @apiError (404) username_not_found There is no user with given username.
  */
 router.get('/users-avatar/:username',
+    // TODO: usersModel.getMiddleware
     function (req, res) {
         usersModel.get({username: req.params.username}, 'id', function (err, user) {
             // serverError
@@ -34,25 +36,52 @@ router.get('/users-avatar/:username',
             if (!user)
                 return res.status(404).end();
 
-            res.sendFile(
-                path.join(__dirname, '../../public/img/avatars/', user.id.toString()),
-                function (err) {
-                    if (err) {
-                        // If user has no avatar
-                        if (err.code === 'ENOENT')
-                            // Send default avatar
-                            return res.sendFile(
-                                path.join(__dirname, '../../public/img/avatars/unknown.png'),
-                                function (err) {
-                                    if (err) {
-                                        res.status(500).end();
-                                        console.log("API {GET}/users-avatar/:username: res.sendFile: Sending default avatar:\n\t\t%s", err);
-                                    }
-                                }
-                            );
 
+            glob(
+                path.join(__dirname, '../../public/img/avatars/', user.id.toString() + '.*'),
+                function (err, files) {
+                    if (err) {
                         res.status(500).end();
-                        console.log("API {GET}/users-avatar/:username: res.sendFile: Sending user's avatar:\n\t\t%s", err);
+                        return console.error("API {GET}/users-avatar/: glob:\n\t\t%s", err);
+                    }
+
+                    // If avatar found
+                    if (files.length) {
+                        res.sendFile(
+                            files[0],
+                            function (err) {
+                                if (err) {
+                                    // If user has no avatar
+                                    if (err.code === 'ENOENT')
+                                        // Send default avatar
+                                        return res.sendFile(
+                                            path.join(__dirname, '../../public/img/avatars/unknown.png'),
+                                            function (err) {
+                                                if (err) {
+                                                    res.status(500).end();
+                                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending default avatar:\n\t\t%s", err);
+                                                }
+                                            }
+                                        );
+
+                                    res.status(500).end();
+                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending user's avatar:\n\t\t%s", err);
+                                }
+                            }
+                        );
+                    }
+                    // Avatar not found
+                    else {
+                        // Send default avatar
+                        return res.sendFile(
+                            path.join(__dirname, '../../public/img/avatars/unknown.png'),
+                            function (err) {
+                                if (err) {
+                                    res.status(500).end();
+                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending default avatar:\n\t\t%s", err);
+                                }
+                            }
+                        );
                     }
                 }
             );
