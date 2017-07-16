@@ -28,7 +28,7 @@
                 <div flex="5" flex-xs="5" flex-sm="5" flex-md="5" flex-lg="5" flex-xl="5"></div>
                 <md-input-container flex="25" flex-xs="70" flex-sm="70" flex-md="25" flex-xl="25" class="md-block">
                     <label>نام کاربری:</label>
-                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15" ng-disabled="true"/>
+                    <input type="text" name="username" ng-model="user.username" ng-maxlength="15" />
                     <!--TODO: ask;technically username should ont be editable-->
                     <div ng-messages="userForm.username.$error" ng-if="userForm.username.$touched">
                         <div ng-message="minlength">نام کاربری حداقل 5 کاراکتر است.</div>

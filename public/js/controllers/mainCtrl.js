@@ -7,7 +7,7 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
         $rootScope.isUser = false;
         $scope.NotLoggedIn = true;
         $scope.U = {
-            name: "کاربر مهمان",
+           username: "بازدیدکننده ",
             credit: 0,
             bonus: 0
         };
@@ -17,7 +17,7 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
             console.log(authenticationToken.getToken());
             RegisteredUsr.getUSrInfo().then(
                 function (Info) {
-                    $scope.U.name = Info.data.name;
+                    $scope.U.username = Info.data.username;
                     $scope.U.credit = Info.data.credit;
                     $scope.U.bonus = Info.data.bonus;
                 },
@@ -43,8 +43,6 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
     function buildToggler(navID) {
       //  if( $scope.isAguest)
           // $scope.showAlert();
-            console.log("bye");
-
             return function () {
                 // Component lookup should always be available since we are not using `ng-if`
                 $mdSidenav(navID)

@@ -9,7 +9,7 @@
                 <div layout="column" layout-xs="column" layout-sm="column" layout-md="column" layout-lg="column"
                      layout-xl="column">
                     <div layout="row" layout-xs="row" layout-sm="row" layout-md="row" layout-lg="row" layout-xl="row">
-                        <span class="md-headline" style="font-family: IRANSans;">{{U.name}}</span>
+                        <span class="md-headline" style="font-family: IRANSans;">{{U.username}}</span>
                         <md-button class="md-icon-button" aria-label="More" ng-click="logOut()"
                                    ng-show="!NotLoggedIn">
                             <md-icon md-font-icon="fa fa-power-off fa-2x"></md-icon>
@@ -78,7 +78,7 @@
                         <a ng-click="routeTo('aboutUs')" class="menuItems"><h6>درباره ما</h6></a>
                     </div>
                     <md-divider></md-divider>
-                    <div>
+                  <!--  <div>
                         <span class="fa fa-phone fa"></span>
                         <a ng-click="routeTo('contactUs')" class="menuItems"><h6>تماس با ما</h6></a>
                     </div>
@@ -86,6 +86,11 @@
                     <div>
                         <span class="fa fa-gavel fa"></span>
                         <a ng-click="routeTo('rules')" class="menuItems"><h6>قوانین و مقررات</h6></a>
+                    </div>
+                    <md-divider></md-divider> -->
+                    <div>
+                        <span class="fa fa-home fa"></span>
+                        <a ui-sref="home.mainTheme" class="menuItems"><h6>بازگشت به خانه</h6></a>
                     </div>
                     <md-divider></md-divider>
                     <div>
