@@ -64,7 +64,7 @@ router.route('/users-document')
         }
     )
     /**
-     * @api {post} /users-document Delete current user's document
+     * @api {DELETE} /users-document Delete current user's document
      * @apiVersion 0.1.0
      * @apiNAme deleteUserDocument
      * @apiGroup users
