@@ -31,13 +31,17 @@
 
 - Indexes on database tables
 
-- (?) Edit point
-
 - Custom fields in {GET}/points API
     - Add model for it!
-
-- API for most viewed categories
 
 - Add cron jobs for point expiration
     * https://github.com/kelektiv/node-cron
     * `expired_points` table
+
+- Favourite API
+
+- Rate API
+
+- Point seen API
+
+- After 3 days send an SMS for expiration
