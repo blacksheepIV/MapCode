@@ -5,6 +5,8 @@ var asyncSeries = require('async/series');
 var asyncWaterfall = require('async/waterfall');
 var asyncSetImmediate = require('async/setImmediate');
 var multer = require('multer');
+var mime = require('mime-types');
+var glob = require('glob');
 
 var jwt = require('../../utils/jwt');
 var usersModel = require('../../models/users');
@@ -62,7 +64,7 @@ router.route('/users-document')
         }
     )
     /**
-     * @api {post} /users-document Delete current user's document
+     * @api {DELETE} /users-document Delete current user's document
      * @apiVersion 0.1.0
      * @apiNAme deleteUserDocument
      * @apiGroup users
@@ -168,9 +170,11 @@ router.route('/users-document')
             if (req.file.size > maxFileSize)
                 return res.status(400).json({error: 'file_size', maxSize: maxFileSize / (1024 * 1024)});
 
-            // See file's mime type and check if it's an zip or rar
-            if (!Object.keys(usersModel.documentMimeTypes).includes(req.file.mimetype))
+            // See file's mime type and filename's extension and check if it's an zip or rar
+            if (!(req.file.mimetype in usersModel.documentMimeTypes) &&
+                    !(mime.lookup(req.file.filename) in usersModel.documentMimeTypes)) {
                 return res.status(400).json({error: 'not_zip_or_rar'});
+            }
 
             var newUserType = null;
             // User is is not in pending state
@@ -282,13 +286,17 @@ router.route('/users-avatar')
             if (req.file.size > maxFileSize)
                 return res.status(400).json({error: 'file_size', maxSize: maxFileSize / 1024});
 
-            // See file's mime type and check if it's an image
-            if (!req.file.mimetype.startsWith('image'))
+            // See file's mime type and filename's extension and check if it's an image
+            if (!req.file.mimetype.startsWith('image') &&
+                    !mime.lookup(req.file.filename).toString().startsWith('image'))
                 return res.status(400).json({error: 'not_an_image'});
 
+            var avatarExtension = mime.extension(req.file.mimetype);
+            if (avatarExtension === false)
+                return res.status(400).json({error: 'not_an_image'});
 
             fs.writeFile(
-                path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()),
+                path.join(__dirname, '../../public/img/avatars/', req.user.id.toString() + '.' + avatarExtension),
                 req.file.buffer,
                 function (err) {
                     // serverError
@@ -315,8 +323,17 @@ router.route('/users-avatar')
      *     HTTP/1.1 200 OK
      */
     .delete(function (req, res) {
-        fs.unlink(path.join(__dirname, '../../public/img/avatars/', req.user.id.toString()), function () {});
-        res.status(200).end();
+        glob(
+            path.join(__dirname, '../../public/img/avatars/', req.user.id.toString() + '.*'),
+            function (err, files) {
+                if (err)
+                    console.error("API {DELETE}/users-avatar/: glob:\n\t\t%s", err);
+                else if (files)
+                        fs.unlink(files[0]);
+
+                res.status(200).end();
+            }
+        );
     });
 
 

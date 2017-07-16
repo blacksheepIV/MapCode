@@ -51,7 +51,7 @@ var publicFields = module.exports.publicFields = [
  * Allowed user document mime-types
  *
  * @constant
- * @type {string[]}
+ * @type {object}
  */
 module.exports.documentMimeTypes = {
     'application/x-rar-compressed': 'rar',
@@ -923,7 +923,20 @@ module.exports.getLatestDocument = function (id, callback) {
  *   and options.tolerateError is false and options.onError is set
  *     and is a function, calls options.onError.
  *
- * If
+ * If req.user is undefined
+ *   and options.tolerateNoToken is true goes on and calls next().
+ *   and options.tolerateNoToken is false and options.onNoToken is not set
+ *     sends 401 Unauthorized with empty response.
+ *   and options.tolerateNoToken is false and options.onNoToken is set
+ *     and is a function, calls options.onNoToken.
+ *
+ * If no DB user found
+ *   and options.tolerateNotFound is true goes on and calls next().
+ *   and options.tolerateNotFound is false and options.onNotFound is not set
+ *     sends 401 Unauthorized with empty response and deletes token
+ *     from Redis.
+ *   and options.tolerateNotFound is false and options.onNotFound is set
+ *     and is a function, calls options.onNotFound.
  *
  * @param {object} [options]
  * @param {string|'*'|string[]} [options.fields]
@@ -931,11 +944,28 @@ module.exports.getLatestDocument = function (id, callback) {
  * @param {function} [options.onError]
  * @param {boolean} [options.tolerateNotFound] If true, tolerates not found.
  * @param {function} [options.onNotFound]
+ * @param {boolean} [options.tolerateNoToken] If true, tolerates if req.user is undefined.
+ * @param {function} [options.onNoToken]
  *
  * @returns {function} A express middleware
  */
 module.exports.getMiddleware = function (options) {
     return function (req, res, next) {
+        // No valid token has sent
+        if (!req.user) {
+            if (options.tolerateNoToken === true)
+                return next();
+            else {
+                if (typeof options.onNoToken === 'function')
+                    return options.onNoToken();
+                else {
+                    return res.status(401).json({
+                        errors: ["auth_failure"]
+                    });
+                }
+            }
+        }
+
         module.exports.get({id: req.user.id}, options.fields, function (err, user) {
             if (err) {
                 if (options.tolerateError === true) {
