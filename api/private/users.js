@@ -311,7 +311,7 @@ router.route('/users-avatar')
         }
     )
     /**
-     * @api {post} /users-avatar Delete current user's avatar image
+     * @api {DELETE} /users-avatar Delete current user's avatar image
      * @apiVersion 0.1.0
      * @apiNAme deleteUserAvatar
      * @apiGroup users
@@ -328,8 +328,8 @@ router.route('/users-avatar')
             function (err, files) {
                 if (err)
                     console.error("API {DELETE}/users-avatar/: glob:\n\t\t%s", err);
-                else if (files)
-                        fs.unlink(files[0]);
+                else if (files.length)
+                        fs.unlink(files[0], function () {});
 
                 res.status(200).end();
             }
