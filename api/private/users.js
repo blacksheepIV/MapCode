@@ -170,9 +170,11 @@ router.route('/users-document')
             if (req.file.size > maxFileSize)
                 return res.status(400).json({error: 'file_size', maxSize: maxFileSize / (1024 * 1024)});
 
-            // See file's mime type and check if it's an zip or rar
-            if (!Object.keys(usersModel.documentMimeTypes).includes(req.file.mimetype))
+            // See file's mime type and filename's extension and check if it's an zip or rar
+            if (!(req.file.mimetype in usersModel.documentMimeTypes) &&
+                    !(mime.lookup(req.file.filename) in usersModel.documentMimeTypes)) {
                 return res.status(400).json({error: 'not_zip_or_rar'});
+            }
 
             var newUserType = null;
             // User is is not in pending state
@@ -284,8 +286,9 @@ router.route('/users-avatar')
             if (req.file.size > maxFileSize)
                 return res.status(400).json({error: 'file_size', maxSize: maxFileSize / 1024});
 
-            // See file's mime type and check if it's an image
-            if (!req.file.mimetype.startsWith('image'))
+            // See file's mime type and filename's extension and check if it's an image
+            if (!req.file.mimetype.startsWith('image') &&
+                    !mime.lookup(req.file.filename).toString().startsWith('image'))
                 return res.status(400).json({error: 'not_an_image'});
 
             var avatarExtension = mime.extension(req.file.mimetype);
