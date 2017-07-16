@@ -370,7 +370,7 @@ md-sidenav.md-closed.md-locked-open-add-active {
     color: #818181;
     display: inline-block;
     transition: 0.3s;
-    margin-bottom:-10px;
+    margin-bottom: -10px;
 }
 
 /* When you mouse over the navigation links, change their color */
@@ -548,6 +548,7 @@ md-grid-tile {
     -moz-border-radius: 50%;
     border-radius: 50%;
 }
+
 .button {
     -moz-appearance: button;
     /* Firefox */
@@ -557,6 +558,7 @@ md-grid-tile {
     margin: 10px;
     width: 70px;
 }
+
 .drop-box {
     background: #F8F8F8;
     border: 5px dashed #DDD;
@@ -566,6 +568,7 @@ md-grid-tile {
     padding-top: 25px;
     margin: 10px;
 }
+
 .dragover {
     border: 5px dashed blue;
 }
