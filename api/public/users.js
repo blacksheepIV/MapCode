@@ -1,6 +1,6 @@
 var path = require('path');
 var router = require('express').Router();
-var pointModel = require('../../models/points');
+var pointsModel = require('../../models/points');
 
 var jwt = require('../../utils/jwt');
 var usersModel = require('../../models/users');
@@ -135,7 +135,7 @@ router.get('/users/:username/points',
 
     startLimitChecker,
 
-    customFielder('query', 'fields', pointModel.publicFields, true),
+    customFielder('query', 'fields', pointsModel.publicFields, true),
 
     checkFriendshipStatus(),
 
