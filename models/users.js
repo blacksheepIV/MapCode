@@ -91,7 +91,8 @@ module.exports.detailedPublicFields = publicFields.concat(
         'personal_points_count',
         'sent_messages_count',
         'received_messages_count',
-        'unread_messages_count'
+        'unread_messages_count',
+        'favourite_points'
     ]);
 
 

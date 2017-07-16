@@ -41,9 +41,11 @@ CREATE ALGORITHM = MERGE VIEW `users_detailed` AS
     userPersonalPointsCount(`users`.`id`)       AS `personal_points_count`,
     userSentMessagesCount(`users`.`id`)         AS `sent_messages_count`,
     userReceivedMessagesCount(`users`.`id`)     AS `received_messages_count`,
-    userUnreadMessagesCount(`users`.`id`)       AS `unread_messages_count`
+    userUnreadMessagesCount(`users`.`id`)       AS `unread_messages_count`,
+    `U`.points                                  AS `favourite_points`
   FROM `users`
-    LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`;
+    LEFT JOIN `users` AS T ON `users`.`recommender_user` = `T`.`id`
+    LEFT JOIN `user_favourite_points_concated` AS `U` ON `U`.`id` = `users`.`id`;
 
 CREATE VIEW point_tags_concated AS
   SELECT
@@ -119,3 +121,12 @@ CREATE VIEW `friends_username` AS
   FROM `friends`
     JOIN `users` AS U1 ON U1.`id` = `friends`.`first_user`
     JOIN `users` AS U2 ON U2.`id` = `friends`.`second_user`;
+
+
+CREATE VIEW `user_favourite_points_concated` AS
+  SELECT
+    `user_id`                                   AS `id`,
+    GROUP_CONCAT(`points`.`code` SEPARATOR ' ') AS `points`
+  FROM `user_favourite_points`
+    JOIN `points` ON `points`.`id` = `user_favourite_points`.`point_id`
+  GROUP BY `user_id`;

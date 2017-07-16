@@ -499,12 +499,12 @@ router.route('/users/')
      *
      * @apiDescription Get user's information by providing a token
      *
-     * @apiParam {String[]} [fields] A combination of fields split with comma: name, melli_code, email, date, mobile_phone, phone, username, address, description, type, code, credit, bonus, recommender_user, friend_requests_count, friends_count, points_count, personal_points_count, sent_messages_count, received_messages_count, unread_messages_count
+     * @apiParam {String[]} [fields] A combination of fields split with comma: name, melli_code, email, date, mobile_phone, phone, username, address, description, type, code, credit, bonus, recommender_user, friend_requests_count, friends_count, points_count, personal_points_count, sent_messages_count, received_messages_count, unread_messages_count, favourite_points
      *
      *
      * @apiSuccessExample
      *     Request-Example:
-     *         GET http://mapcode.ir/api/users?fiends=melli_code,email,address
+     *         GET http://mapcode.ir/api/users?fields=melli_code,email,address
      *     Response:
      *         HTTP/1.1 200 OK
      *
@@ -542,7 +542,8 @@ router.route('/users/')
      *             "personal_points_count": 2,
      *             "sent_messages_count": 0,
      *             "received_messages_count": 0,
-     *             "unread_messages_count": 0
+     *             "unread_messages_count": 0,
+     *             "favourite_points": "mp005001000000001 mp001006000000001"
      *         }
      *
      */

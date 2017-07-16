@@ -141,6 +141,15 @@ CREATE TABLE IF NOT EXISTS `points` (
 )
   ENGINE = INNODB;
 -- ------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `_favourite_points` (
+  `user_id`  MEDIUMINT UNSIGNED NOT NULL,
+  `point_id` INT UNSIGNED       NOT NULL,
+
+  PRIMARY KEY (`user_id`, `point_id`)
+
+)
+  ENGINE = INNODB;
+-- ------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `messages` (
   `id`          BIGINT UNSIGNED            NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `sender`   MEDIUMINT UNSIGNED NOT NULL,
