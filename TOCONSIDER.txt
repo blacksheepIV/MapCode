@@ -8,3 +8,14 @@
    from received messages?
    --------------------------------------------------------
    Current design is fine.
+
+2-
+    When requesting for sending SMS verification code
+    (in production environment), API always returns
+    '200 OK' response and then sends SMS request to
+    SMS service API. Then if any error happens in sending
+    request for SMS service API system just logs the error
+    and on the other hand user has to wait for a specific
+    amount of time (120 seconds) and then send another SMS
+    verification code request.
+    Is this process okay?

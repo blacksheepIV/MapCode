@@ -77,7 +77,7 @@ CREATE VIEW `points_detailed` AS
   FROM `points`
     JOIN `users` ON `users`.`id` = `points`.`owner`
     JOIN `point_categories` ON `point_categories`.`id` = `points`.`category`
-    JOIN `point_tags_concated` ON `point_tags_concated`.`id` = `points`.`id`;
+    LEFT JOIN `point_tags_concated` ON `point_tags_concated`.`id` = `points`.`id`;
 
 
 CREATE ALGORITHM = MERGE VIEW `messages_detailed` AS

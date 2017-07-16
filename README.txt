@@ -38,6 +38,12 @@
       MAX_AVATAR_SIZE = 100
       # (Optional) Maximum size of a user's document (MB)
       MAX_DOCUMENT_SIZE = 10
+      # 2972.ir account username
+      SMS_USERNAME = 'my username'
+      # 2972.ir account password
+      SMS_PASSWORD = 'my password'
+      # 2972.ir account number
+      SMS_NUMBER = 'my number'
   `
   Note: If you want to use `npm run dball` these variables
   should not be inside quotations (Like above .env file example):

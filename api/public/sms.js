@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var randomstring = require("randomstring");
+var sendSMS = require('2972.ir');
 
 var redis = require('../../utils/redis');
 var smsModel = require('../../models/sms');
@@ -89,8 +90,28 @@ router.route('/sms/')
                             res.json({
                                 'sms_code': smsVerificationCode
                             });
-                        else
+                        // Production environment
+                        else {
                             res.status(200).end();
+
+                            sendSMS({
+                                username: process.env.SMS_USERNAME,
+                                password: process.env.SMS_PASSWORD,
+                                number: process.env.SMS_NUMBER,
+                                recipient: req.body.mobile_phone,
+                                /*jshint -W100*/
+                                message: "کد تایید مپ‌کد: " + smsVerificationCode
+                            }, function (err) {
+                                if (err) {
+                                    // 'request' package error
+                                    if (isNaN(parseInt(err)))
+                                        console.error("{POST}/sms/: 2972.ir: request:\n\t%s", err);
+                                    // SMS service error
+                                    else
+                                        console.error("{POST}/sms/: 2972.ir: SMS service:\n\t%s", err);
+                                }
+                            });
+                        }
                     });
                 }
                 // The Redis key is already exists
