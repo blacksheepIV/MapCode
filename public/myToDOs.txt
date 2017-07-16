@@ -2,3 +2,5 @@ User's name can be english on registration --> waiting for backEnd -->gotta chan
 document upload on panel
 md tabs not responsive on small screens
 handle 500 error on each request
+points retrieval divided to two groups expired not expired yet --> add a page for expired ones --->handle reqs
+registration --> on second step let it go back and edit previous datas 
