@@ -82,8 +82,8 @@ var mainCtrl = function ($scope, $rootScope, $mdSidenav, $log, $state, authentic
 
         authenticationToken.removeToken();
         $rootScope.isUser = false;
-        $scope.initVar();
-        //$location.path("/");
+       // $scope.initVar();
+        $scope.toggleRight();
         $state.go('home.mainTheme');
     }
     //******************************************************************************************************************
