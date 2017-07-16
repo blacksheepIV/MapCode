@@ -72,8 +72,8 @@ router.route('/users-document')
      * nothing will happen.<br />If user is pending (type 4 and 6 for unverified real users and verified
      * real users, and 5 and 7 for unverified legal users and verified legal users) then latest
      * uploaded document will get removed and user's type will get updated to what it was
-     * before uploading the latest document.<br />If user is verified (type 1 for real users and 3
-     * for legal users) then no document will get removed but user's type will change to unverified.
+     * before uploading the latest document.<br />If user is verified nothing will happen; So if
+     * a verified user wants to become unverified, has to send an ticket for admin.
      *
      * @apiSuccess {Number} userType User's new type. User's type can remain the same.
      *
@@ -112,22 +112,7 @@ router.route('/users-document')
                     }
                 );
             }
-            // If user is verified
-            else if (req.user.type === 1 || req.user.type === 3) {
-                newUserType = req.user.type === 1 ? 0 : 2;
-
-                usersModel.updateUser(
-                    {type: newUserType},
-                    req.user.id,
-                    function (err) {
-                        // Problem happened during updating user's type
-                        if (err) return res.status(500).end();
-
-                        return res.status(200).json({userType: newUserType});
-                    }
-                );
-            }
-            // If user is unverified
+            // If user is verified or unverified
             else {
                 // Do nothing and just say OK!
                 res.status(200).json({userType: req.user.type});
