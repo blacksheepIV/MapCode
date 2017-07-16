@@ -146,6 +146,7 @@ router.route('/users-document')
      * But if the account is not verified, Account will go to pending mode (type 4 for real users
      * and 5 for legal users).<br />If account is in pending mode any attempt to upload document
      * will result in overriding the latest uploaded but not verified document.
+     * <br />This POST request should be sent as multipart/form-data.
      *
      * @apiParam {File} document
      *
@@ -264,6 +265,7 @@ router.route('/users-avatar')
      * @apiPermission private
      *
      * @apiDescription Uploads and replaces if exists, the user's avatar image.
+     * <br />This POST request should be sent as multipart/form-data.
      *
      * @apiParam {File} avatar
      *
