@@ -153,11 +153,14 @@ router.route('/points')
      * @apiPermission private
      *
      * @apiDescription Get the token user's public/private points.
+     * <br />If both 'expired' and 'non-expired' options are given, both will get returned.
      *
      * @apiParam {Number{1..}} [start=1] Send points from start-th point!
      * @apiParam {Number{1..100}} [limit=100] Number of points to receive.
      * @apiParam {Boolean} [private] Only send private points.
      * @apiParam {Boolean} [public] Only send public points (It will be ignored if `private` param is also set).
+     * @apiParam {Boolean} [expired] Only expired points
+     * @apiParam {Boolean} [non-expired] Only non-expired points
      *
      * @apiSuccessExample
      *     Request-Example:
@@ -186,9 +189,31 @@ router.route('/points')
      *        ]
      */
     .get(function (req, res) {
+        var expiredOption = 'both';
+        // Only expired option
+        if (req.query.expired !== undefined)
+            expiredOption = 'expired';
+        // Onl non-expired option
+        if (req.query['non-expired'] !== undefined)
+            // If both options are given
+            if (expiredOption === 'expired')
+                expiredOption = 'both';
+            else
+                expiredOption = 'non-expired';
+
+        var expiredCond = "";
+        switch (expiredOption) {
+            case 'non-expired':
+                expiredCond = "AND DATEDIFF(`expiration_date`, CURDATE()) >= -3 ";
+                break;
+            case 'expired':
+                expiredCond = "AND DATEDIFF(`expiration_date`, CURDATE()) < -3 ";
+                break;
+        }
+
         db.conn.query(
             "SELECT * FROM `points_detailed` " +
-            "WHERE `owner_id` = ? " +
+            "WHERE `owner_id` = ? " + expiredCond +
             (req.query.private !== undefined ? "AND `public` = FALSE " : (req.query.public !== undefined ? "AND `public` = TRUE " : "")) +
             "LIMIT ?, ?",
             [req.user.id, req.queryStart, req.queryLimit],
