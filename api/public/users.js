@@ -45,35 +45,11 @@ router.get('/users-avatar/:username',
                         return console.error("API {GET}/users-avatar/: glob:\n\t\t%s", err);
                     }
 
-                    // If avatar found
-                    if (files.length) {
+                    /**
+                     * Sends default avatar as response.
+                     */
+                    function sendDefaultAvatar () {
                         res.sendFile(
-                            files[0],
-                            function (err) {
-                                if (err) {
-                                    // If user has no avatar
-                                    if (err.code === 'ENOENT')
-                                        // Send default avatar
-                                        return res.sendFile(
-                                            path.join(__dirname, '../../public/img/avatars/unknown.png'),
-                                            function (err) {
-                                                if (err) {
-                                                    res.status(500).end();
-                                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending default avatar:\n\t\t%s", err);
-                                                }
-                                            }
-                                        );
-
-                                    res.status(500).end();
-                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending user's avatar:\n\t\t%s", err);
-                                }
-                            }
-                        );
-                    }
-                    // Avatar not found
-                    else {
-                        // Send default avatar
-                        return res.sendFile(
                             path.join(__dirname, '../../public/img/avatars/unknown.png'),
                             function (err) {
                                 if (err) {
@@ -83,6 +59,27 @@ router.get('/users-avatar/:username',
                             }
                         );
                     }
+
+
+                    // If avatar found
+                    if (files.length) {
+                        res.sendFile(
+                            files[0],
+                            function (err) {
+                                if (err) {
+                                    // If user has no avatar
+                                    if (err.code === 'ENOENT')
+                                        sendDefaultAvatar();
+
+                                    res.status(500).end();
+                                    console.error("API {GET}/users-avatar/:username: res.sendFile: Sending user's avatar:\n\t\t%s", err);
+                                }
+                            }
+                        );
+                    }
+                    // Avatar not found
+                    else
+                        sendDefaultAvatar();
                 }
             );
         });
