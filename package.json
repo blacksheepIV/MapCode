@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "2972.ir": "^1.0.1",
-    "async": "^2.5.0",
+    "async": "^2.6.4",
     "bcryptjs": "latest",
     "body-parser": "^1.17.1",
     "bower": "latest",
